@@ -1,58 +1,135 @@
 <script setup lang="ts">
-import { UIButton, UIInput } from "@connextable/ui";
-import { ref } from "vue";
+import {
+  UIDashboard,
+  UIDashboardNavGroup,
+  UIDashboardNavItem,
+  UIDashboardSidebar,
+} from "@connextable/ui";
+import { computed } from "vue";
 
-useHead({
-  title: "Connextable UI",
-  htmlAttrs: { lang: "ko" },
-});
+type CatalogItem = { path: string; title: string };
 
-const name = ref("");
-const submittedName = ref("");
+const route = useRoute();
+const router = useRouter();
+const title = computed(() =>
+  typeof route.meta.title === "string" ? route.meta.title : undefined,
+);
+const categories = new Map<string, CatalogItem[]>();
 
-function submit(event: SubmitEvent) {
-  if (!(event.currentTarget instanceof HTMLFormElement)) return;
-  const value = new FormData(event.currentTarget).get("name");
-  if (typeof value === "string") submittedName.value = value;
+for (const { path, meta, aliasOf } of router.getRoutes()) {
+  if (aliasOf || typeof meta.category !== "string" || typeof meta.title !== "string") {
+    continue;
+  }
+
+  const items = categories.get(meta.category) ?? [];
+  items.push({ path, title: meta.title });
+  categories.set(meta.category, items);
 }
+
+const groups = Array.from(categories, ([category, items]) => ({
+  category,
+  items: items.sort((a, b) => a.title.localeCompare(b.title, "en")),
+})).sort((a, b) => a.category.localeCompare(b.category, "ko"));
+
+useHead(() => ({
+  title: title.value ? `${title.value} · Connextable UI` : "Connextable UI",
+  htmlAttrs: { lang: "ko" },
+}));
 </script>
 
 <template>
-  <main class="playground">
-    <h1>Connextable UI</h1>
-    <form class="form" @submit.prevent="submit">
-      <label for="name">이름</label>
-      <UIInput id="name" v-model="name" name="name" required />
-      <UIButton type="submit">제출</UIButton>
-    </form>
-    <p v-if="submittedName" role="status">제출한 이름은 {{ submittedName }}입니다.</p>
-  </main>
+  <UIDashboard>
+    <template #sidebar>
+      <UIDashboardSidebar label="컴포넌트">
+        <template #header>
+          <a class="playground-skip" href="#playground-content">본문으로 건너뛰기</a>
+          <NuxtLink class="playground-brand" to="/">Connextable UI</NuxtLink>
+        </template>
+        <UIDashboardNavGroup
+          v-for="group in groups"
+          :key="group.category"
+          :label="group.category"
+        >
+          <UIDashboardNavItem v-for="item in group.items" :key="item.path">
+            <NuxtLink :to="item.path">{{ item.title }}</NuxtLink>
+          </UIDashboardNavItem>
+        </UIDashboardNavGroup>
+      </UIDashboardSidebar>
+    </template>
+    <main id="playground-content" class="playground-content" tabindex="-1">
+      <h1 v-if="title">{{ title }}</h1>
+      <NuxtPage />
+    </main>
+  </UIDashboard>
 </template>
 
 <style>
 body {
   margin: 0;
-  background: #f4f7f7;
+  background: var(--ui-color-surface);
   color: var(--ui-color-text);
   font-family: system-ui, sans-serif;
 }
 
-.playground {
-  max-inline-size: 28rem;
-  margin: 3rem auto;
-  padding: 1.5rem;
+.playground-skip {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  background: var(--ui-color-surface);
+  color: var(--ui-color-text);
 }
 
-.playground h1 {
-  margin-block: 0 1.5rem;
+.playground-skip:not(:focus) {
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.form {
+.playground-brand {
+  color: inherit;
+  font-size: 1.125rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.playground-brand:focus-visible,
+.playground-skip:focus-visible {
+  outline: 2px solid var(--ui-color-focus);
+  outline-offset: 3px;
+}
+
+.playground-content {
+  box-sizing: border-box;
+  max-inline-size: 72rem;
+  margin-inline: auto;
+  padding: clamp(1.25rem, 4vw, 3.5rem);
+  scroll-margin-block-start: 5rem;
+}
+
+.playground-content h1 {
+  margin: 0 0 2rem;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.playground-example {
   display: grid;
   gap: 0.75rem;
+  margin-block-end: 1.5rem;
 }
 
-.form button {
-  justify-self: start;
+.playground-example > h2 {
+  margin: 0;
+  font-size: 1.0625rem;
+}
+
+.playground-example__preview {
+  min-inline-size: 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--ui-dashboard-divider);
+  border-radius: var(--ui-control-radius);
 }
 </style>
