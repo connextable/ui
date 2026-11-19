@@ -1,0 +1,33 @@
+profile = "connextable-ui"
+
+[tools]
+node = { version = "26.x" }
+pnpm = { version = "12" }
+
+[defaults]
+tools = ["node", "pnpm"]
+
+[ports.playground]
+port = 3000
+range = [3000, 3099]
+
+[commands."install:workspace"]
+exec = ["pnpm", "install", "--frozen-lockfile"]
+
+[commands."build:workspace"]
+exec = ["pnpm", "build"]
+
+[commands."typecheck:workspace"]
+exec = ["pnpm", "typecheck"]
+
+[commands."dev:playground"]
+exec = ["pnpm", "dev", "--host", "127.0.0.1", "--port", "${bind.PLAYGROUND_PORT}", "--strictPort"]
+serve = ["playground"]
+
+[commands."dev:playground".bind]
+PLAYGROUND_PORT = { port = "playground" }
+PLAYGROUND_URL = { template = "http://127.0.0.1:${bind.PLAYGROUND_PORT}" }
+
+[commands."dev:playground".ready]
+exec = ["node", "scripts/check-playground.ts"]
+timeout = "3s"
