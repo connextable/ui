@@ -1,0 +1,11 @@
+:root {
+  --ui-color-accent: #234e5c;
+  --ui-color-on-accent: #fff;
+  --ui-color-text: #17252b;
+  --ui-color-surface: #fff;
+  --ui-color-border: #64737a;
+  --ui-color-focus: #1d6d7d;
+  --ui-control-height: 2.75rem;
+  --ui-control-radius: 0.5rem;
+  --ui-control-padding-inline: 0.75rem;
+}

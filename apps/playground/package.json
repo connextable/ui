@@ -1,0 +1,19 @@
+{
+  "name": "@connextable/ui-playground",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@connextable/ui": "workspace:*",
+    "nuxt": "4.6.4",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}
