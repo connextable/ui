@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { DisclosureContent } from "@sectile/vue/disclosure";
+import { DisclosureContent, type DisclosureContentProps, type DisclosureSlotProps } from "@sectile/vue/disclosure";
 
-defineProps<{ divided?: boolean }>();
+const { divided, forcePresent = true, ...contentProps } = defineProps<
+  Omit<DisclosureContentProps, "asChild"> & { divided?: boolean }
+>();
+defineSlots<{ default?(state: DisclosureSlotProps): unknown }>();
 </script>
 
 <template>
-  <DisclosureContent class="ui-disclosure-content" force-present>
+  <DisclosureContent v-bind="contentProps" v-slot="state" class="ui-disclosure-content" :force-present="forcePresent">
     <div class="ui-disclosure-content__clip">
       <div v-if="divided" class="ui-disclosure-content__divider" aria-hidden="true"></div>
-      <slot />
+      <slot v-bind="state" />
     </div>
   </DisclosureContent>
 </template>

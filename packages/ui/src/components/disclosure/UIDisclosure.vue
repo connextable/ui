@@ -1,25 +1,20 @@
 <script setup lang="ts">
-import { DisclosureRoot } from "@sectile/vue/disclosure";
+import { DisclosureRoot, type DisclosureRootProps, type DisclosureSlotProps } from "@sectile/vue/disclosure";
 
-withDefaults(defineProps<{
-  contentId?: string;
-  modelValue?: boolean;
-  defaultValue?: boolean;
-  disabled?: boolean;
-  variant?: "plain" | "outline";
-}>(), { modelValue: undefined });
+const { variant = "plain", modelValue = undefined, ...rootProps } = defineProps<
+  DisclosureRootProps & { variant?: "plain" | "outline" }
+>();
 
 defineEmits<{ "update:modelValue": [open: boolean] }>();
+defineSlots<{ default?(state: DisclosureSlotProps): unknown }>();
 </script>
 
 <template>
   <DisclosureRoot
+    v-bind="rootProps"
     class="ui-disclosure"
-    :data-variant="variant ?? 'plain'"
-    :content-id="contentId"
+    :data-variant="variant"
     :model-value="modelValue"
-    :default-value="defaultValue"
-    :disabled="disabled"
     @update:model-value="$emit('update:modelValue', $event)"
     v-slot="state"
   >

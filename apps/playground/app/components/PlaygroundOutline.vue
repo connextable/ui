@@ -1,29 +1,27 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, shallowRef, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, shallowRef, useTemplateRef, watch } from "vue";
 
 const props = defineProps<{ content: HTMLElement | null }>();
-const headings = shallowRef<HTMLElement[]>([]);
+const headingSelector = "[data-playground-heading][id]";
+const headings = shallowRef<{ element: HTMLElement; id: string; text: string; level: number }[]>([]);
 const activeId = ref("");
-const links = computed(() => headings.value.map((heading) => ({
-  id: heading.id,
-  text: heading.textContent?.trim() ?? "",
-  nested: heading.tagName === "H3",
-})));
+const scroller = useTemplateRef<HTMLDivElement>("scroller");
+const list = useTemplateRef<HTMLUListElement>("list");
+const baseLevel = computed(() => Math.min(...headings.value.map(heading => heading.level)));
+const rail = shallowRef<{ path: string; length: number; segments: Map<string, { start: number; length: number }> }>();
+const indicator = computed(() => rail.value?.segments.get(activeId.value));
 
 let frame = 0;
 
 function updateActive() {
   frame = 0;
   const first = headings.value[0];
-  if (!first) {
-    activeId.value = "";
-    return;
-  }
-  const offset = Number.parseFloat(getComputedStyle(first).scrollMarginTop) || 0;
+  if (!first) return;
+  const offset = Number.parseFloat(getComputedStyle(first.element).scrollMarginTop) || 0;
   const atBottom = window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
   const current = atBottom
     ? headings.value.at(-1)
-    : headings.value.findLast((heading) => heading.getBoundingClientRect().top <= offset + 4);
+    : headings.value.findLast((heading) => heading.element.getBoundingClientRect().top <= offset + 4);
   activeId.value = (current ?? first).id;
 }
 
@@ -32,15 +30,99 @@ function onScroll() {
 }
 
 watch(() => props.content, (content, _previous, onCleanup) => {
-  if (!content) return;
+  if (!content) {
+    headings.value = [];
+    activeId.value = "";
+    return;
+  }
   const collectHeadings = () => {
-    headings.value = Array.from(content.querySelectorAll<HTMLElement>("[data-playground-heading][id]"));
+    headings.value = Array.from(content.querySelectorAll<HTMLElement>(headingSelector), element => ({
+      element,
+      id: element.id,
+      text: element.textContent?.trim() ?? "",
+      level: Number(element.tagName.slice(1)),
+    }));
     onScroll();
   };
   collectHeadings();
-  const observer = new MutationObserver(collectHeadings);
+  const containsHeading = (node: Node) => node instanceof Element
+    && (node.matches(headingSelector) || node.querySelector(headingSelector));
+  const observer = new MutationObserver(records => {
+    if (records.some(record => {
+      const target = record.target instanceof Element ? record.target : record.target.parentElement;
+      return target?.closest(headingSelector)
+        || [...record.addedNodes, ...record.removedNodes].some(containsHeading);
+    })) collectHeadings();
+  });
   observer.observe(content, { childList: true, subtree: true, characterData: true });
-  onCleanup(() => observer.disconnect());
+  const resize = new ResizeObserver(onScroll);
+  resize.observe(content);
+  onCleanup(() => {
+    observer.disconnect();
+    resize.disconnect();
+  });
+}, { flush: "post", immediate: true });
+
+function measureRail() {
+  if (!list.value) {
+    rail.value = undefined;
+    return;
+  }
+  const rows = Array.from(list.value.querySelectorAll<HTMLAnchorElement>("a"), link => ({
+    id: link.getAttribute("href")!.slice(1),
+    x: link.offsetLeft + 1,
+    top: link.offsetTop,
+    bottom: link.offsetTop + link.offsetHeight,
+  }));
+  if (!rows.length) return;
+
+  const segments = new Map<string, { start: number; length: number }>();
+  let { x, top: y } = rows[0]!;
+  let length = 0;
+  const path = [`M ${x} ${y}`];
+  const lineTo = (nextX: number, nextY: number) => {
+    if (nextX === x && nextY === y) return;
+    length += Math.hypot(nextX - x, nextY - y);
+    path.push(`L ${nextX} ${nextY}`);
+    x = nextX;
+    y = nextY;
+  };
+  for (const [index, row] of rows.entries()) {
+    const previous = rows[index - 1];
+    const next = rows[index + 1];
+    const start = length;
+    const entry = previous ? Math.min(Math.abs(row.x - previous.x) / 2, (row.bottom - row.top) / 4) : 0;
+    const exit = next ? Math.min(Math.abs(row.x - next.x) / 2, (row.bottom - row.top) / 4) : 0;
+    lineTo(row.x, row.top + entry);
+    lineTo(row.x, row.bottom - exit);
+    // Split each bend at the row boundary so the highlight follows the same track.
+    if (next && exit) lineTo((row.x + next.x) / 2, row.bottom);
+    segments.set(row.id, { start, length: length - start });
+  }
+  rail.value = { path: path.join(" "), length, segments };
+}
+
+watch(list, (element, _previous, onCleanup) => {
+  measureRail();
+  if (!element) return;
+  const resize = new ResizeObserver(measureRail);
+  resize.observe(element);
+  onCleanup(() => resize.disconnect());
+}, { flush: "post" });
+watch(headings, measureRail, { flush: "post" });
+
+watch(activeId, () => {
+  const viewport = scroller.value;
+  const link = list.value?.querySelector<HTMLAnchorElement>('[aria-current="location"]');
+  if (!viewport || !link || viewport.scrollHeight <= viewport.clientHeight) return;
+  const visible = viewport.getBoundingClientRect();
+  const target = link.getBoundingClientRect();
+  if (target.top >= visible.top && target.bottom <= visible.bottom) return;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  viewport.scrollTo({
+    top: viewport.scrollTop + target.top - visible.top - (viewport.clientHeight - target.height) / 2,
+    behavior: reduced ? "instant" : "smooth",
+  });
 }, { flush: "post" });
 
 onMounted(() => {
@@ -57,51 +139,112 @@ onUnmounted(() => {
 
 <template>
   <div class="playground-outline">
-    <nav v-if="links.length" aria-labelledby="playground-outline-title">
+    <nav v-if="headings.length" aria-labelledby="playground-outline-title">
       <h2 id="playground-outline-title">이 페이지</h2>
-      <ul>
-        <li v-for="link in links" :key="link.id" :data-nested="link.nested || undefined">
-          <a
-            :href="`#${link.id}`"
-            :aria-current="activeId === link.id ? 'location' : undefined"
-          >{{ link.text }}</a>
-        </li>
-      </ul>
+      <div ref="scroller" class="playground-outline__scroller">
+        <div class="playground-outline__entries">
+          <svg v-if="rail" class="playground-outline__rail" aria-hidden="true">
+            <path :d="rail.path" class="playground-outline__track" />
+            <path
+              v-if="indicator"
+              :d="rail.path"
+              class="playground-outline__indicator"
+              :style="{
+                strokeDasharray: `${indicator.length} ${rail.length}`,
+                strokeDashoffset: -indicator.start,
+              }"
+            />
+          </svg>
+          <ul ref="list">
+            <li
+              v-for="heading in headings"
+              :key="heading.id"
+              :style="{ '--outline-depth': heading.level - baseLevel }"
+            >
+              <a
+                :href="`#${heading.id}`"
+                :aria-current="activeId === heading.id ? 'location' : undefined"
+                :title="heading.text"
+              >{{ heading.text }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
   </div>
 </template>
 
 <style scoped>
 .playground-outline {
+  display: flex;
+  min-inline-size: 0;
+}
+
+.playground-outline nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   min-inline-size: 0;
 }
 
 .playground-outline h2 {
-  margin: 0 0 0.625rem;
+  margin: 0 0 var(--ui-space-sm);
   font-size: 0.8125rem;
   font-weight: 700;
+}
+
+.playground-outline__scroller {
+  overflow-y: auto;
+  padding: var(--ui-space-xs);
+}
+
+.playground-outline__entries,
+.playground-outline ul {
+  position: relative;
+}
+
+.playground-outline__rail {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  fill: none;
+  pointer-events: none;
+}
+
+.playground-outline__track {
+  stroke: var(--ui-color-divider);
+}
+
+.playground-outline__indicator {
+  stroke: var(--ui-color-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition:
+    stroke-dasharray var(--ui-motion-standard) var(--ui-ease-out),
+    stroke-dashoffset var(--ui-motion-standard) var(--ui-ease-out);
 }
 
 .playground-outline ul {
   margin: 0;
   padding: 0;
-  border-inline-start: 1px solid var(--ui-color-divider);
   list-style: none;
+}
+
+.playground-outline li {
+  padding-inline-start: calc(var(--outline-depth) * var(--ui-space-md));
 }
 
 .playground-outline a {
   display: block;
-  margin-inline-start: -1px;
-  padding: 0.3125rem 0.25rem 0.3125rem 0.75rem;
-  border-inline-start: 2px solid transparent;
+  padding: 0.3125rem var(--ui-space-xs) 0.3125rem var(--ui-space-md);
   color: var(--ui-color-text-muted);
   font-size: 0.8125rem;
   text-decoration: none;
-  overflow-wrap: anywhere;
-}
-
-.playground-outline [data-nested] a {
-  padding-inline-start: 1.375rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color var(--ui-motion-fast) var(--ui-ease-out);
 }
 
 .playground-outline a:is(:hover, [aria-current]) {
@@ -109,33 +252,17 @@ onUnmounted(() => {
 }
 
 .playground-outline a[aria-current] {
-  border-inline-start-color: currentColor;
   font-weight: 650;
 }
 
 .playground-outline a:focus-visible {
-  outline: 2px solid var(--ui-color-focus);
-  outline-offset: 1px;
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+  outline-offset: var(--ui-focus-ring-offset);
 }
 
 @media (width < 68rem) {
-  .playground-outline ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 0.875rem;
-    border-inline-start: 0;
-  }
-
-  .playground-outline a,
-  .playground-outline [data-nested] a {
-    margin: 0;
-    padding-inline: 0.125rem;
-    border-inline-start: 0;
-    border-block-end: 2px solid transparent;
-  }
-
-  .playground-outline a[aria-current] {
-    border-block-end-color: currentColor;
+  .playground-outline__scroller {
+    max-block-size: min(40dvh, 16rem);
   }
 }
 </style>

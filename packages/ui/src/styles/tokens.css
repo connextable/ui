@@ -25,6 +25,8 @@
   --ui-color-divider: var(--ui-color-border);
   --ui-color-focus: #688495;
   --ui-color-danger: #b53a3a;
+  --ui-focus-ring-width: 2px;
+  --ui-focus-ring-offset: calc(-1 * var(--ui-focus-ring-width) - var(--ui-space-2xs));
   --ui-focus-ring: inset 0 0 0 1px var(--ui-color-focus);
   --ui-focus-ring-danger: inset 0 0 0 2px rgb(181 58 58 / 45%);
   --ui-shadow-elevated:
@@ -51,10 +53,13 @@
 
 :where([data-ui-control-size]) {
   --ui-control-size-height: var(--ui-control-height);
+  --ui-control-size-padding-block: 0.375rem;
   --ui-control-size-padding-inline: 1.125rem;
   --ui-control-size-font: var(--ui-font-size-body);
   --ui-control-size-icon: 1.125rem;
   --ui-control-size-radius: var(--ui-radius-lg);
+
+  padding: var(--ui-control-size-padding-block) var(--ui-control-size-padding-inline);
 }
 
 :where([data-ui-control-size="sm"]) {
@@ -70,6 +75,14 @@
   --ui-control-size-padding-inline: 1.25rem;
   --ui-control-size-font: 1rem;
   --ui-control-size-icon: 1.25rem;
+}
+
+:where([data-ui-control-shape="square"]) {
+  --ui-control-size-padding-inline: var(--ui-control-size-padding-block);
+
+  box-sizing: border-box;
+  inline-size: var(--ui-control-size-height);
+  aspect-ratio: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { DisclosureRoot, DisclosureTrigger } from "@sectile/vue/disclosure";
 import { ref, useId, useTemplateRef } from "vue";
 import UIButton from "../button/UIButton.vue";
 
@@ -7,6 +8,13 @@ defineProps<{ label: string }>();
 const navigationId = useId();
 const open = ref(false);
 const toggle = useTemplateRef<InstanceType<typeof UIButton>>("toggle");
+const navigationScroll = useTemplateRef<HTMLDivElement>("navigationScroll");
+
+defineExpose({
+  scrollNavigationToTop() {
+    navigationScroll.value?.scrollTo({ top: 0 });
+  },
+});
 
 function closeNavigation() {
   if (!open.value) return;
@@ -26,21 +34,14 @@ function onNavigationClick(event: MouseEvent) {
 </script>
 
 <template>
-  <aside class="ui-dashboard-sidebar" @keydown.esc="closeNavigation">
+  <DisclosureRoot v-model="open" as="aside" class="ui-dashboard-sidebar" :content-id="navigationId" @keydown.esc="closeNavigation">
     <div class="ui-dashboard-sidebar__top">
       <div v-if="$slots.header" class="ui-dashboard-sidebar__header">
         <slot name="header" />
       </div>
-      <UIButton
-        ref="toggle"
-        class="ui-dashboard-sidebar__toggle"
-        variant="outline"
-        :aria-controls="navigationId"
-        :aria-expanded="open"
-        @click="open = !open"
-      >
-        {{ label }}
-      </UIButton>
+      <DisclosureTrigger as-child>
+        <UIButton ref="toggle" class="ui-dashboard-sidebar__toggle" variant="outline">{{ label }}</UIButton>
+      </DisclosureTrigger>
     </div>
     <nav
       :id="navigationId"
@@ -49,12 +50,17 @@ function onNavigationClick(event: MouseEvent) {
       :data-open="open"
       @click="onNavigationClick"
     >
-      <slot />
+      <div v-if="$slots['navigation-header']" class="ui-dashboard-sidebar__navigation-header">
+        <slot name="navigation-header" />
+      </div>
+      <div ref="navigationScroll" class="ui-dashboard-sidebar__navigation-scroll">
+        <slot />
+      </div>
     </nav>
     <div v-if="$slots.footer" class="ui-dashboard-sidebar__footer">
       <slot name="footer" />
     </div>
-  </aside>
+  </DisclosureRoot>
 </template>
 
 <style scoped>
@@ -72,6 +78,10 @@ function onNavigationClick(event: MouseEvent) {
   overflow-wrap: anywhere;
 }
 
+.ui-dashboard-sidebar__top:has(+ .ui-dashboard-sidebar__navigation > .ui-dashboard-sidebar__navigation-header) .ui-dashboard-sidebar__header {
+  padding-block-end: 0;
+}
+
 .ui-dashboard-sidebar .ui-dashboard-sidebar__toggle {
   display: none;
   --ui-button-border: var(--ui-color-divider);
@@ -82,10 +92,26 @@ function onNavigationClick(event: MouseEvent) {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
+  min-block-size: 0;
+}
+
+.ui-dashboard-sidebar__navigation-header {
+  flex: none;
+  padding: var(--ui-space-md);
+}
+
+.ui-dashboard-sidebar__navigation-scroll {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
   gap: 1.5rem;
   min-block-size: 0;
   overflow-y: auto;
-  padding: 0.75rem;
+  padding: var(--ui-space-md);
+}
+
+.ui-dashboard-sidebar__navigation-header + .ui-dashboard-sidebar__navigation-scroll {
+  padding-block-start: 0;
 }
 
 .ui-dashboard-sidebar__footer {
@@ -112,6 +138,10 @@ function onNavigationClick(event: MouseEvent) {
 
   .ui-dashboard-sidebar__header {
     padding: 0;
+  }
+
+  .ui-dashboard-sidebar__top:has(+ .ui-dashboard-sidebar__navigation[data-open="true"] > .ui-dashboard-sidebar__navigation-header) {
+    padding-block-end: 0;
   }
 
   .ui-dashboard-sidebar .ui-dashboard-sidebar__toggle {

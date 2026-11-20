@@ -1,18 +1,38 @@
 <script setup lang="ts">
 import { UIDisclosure, UIDisclosureContent, UIDisclosureTrigger } from "@connextable/ui";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import PlaygroundCodeBlock from "./PlaygroundCodeBlock.vue";
 
-defineProps<{
+const props = defineProps<{
   id: string;
   title: string;
   description?: string;
-  source: string;
+  source: string | (() => Promise<string>);
   wide?: boolean;
   headingLevel?: 2 | 3;
 }>();
 
 const hasOpenedCode = ref(false);
+const loadedSource = ref<string>();
+const sourceFailed = ref(false);
+const renderedSource = computed(() => typeof props.source === "string" ? props.source : loadedSource.value);
+let loadingSource = false;
+
+async function revealSource(open: boolean) {
+  if (!open) return;
+  hasOpenedCode.value = true;
+  if (typeof props.source === "string" || loadingSource || loadedSource.value !== undefined) return;
+
+  loadingSource = true;
+  sourceFailed.value = false;
+  try {
+    loadedSource.value = await props.source();
+  } catch {
+    sourceFailed.value = true;
+  } finally {
+    loadingSource = false;
+  }
+}
 </script>
 
 <template>
@@ -28,11 +48,13 @@ const hasOpenedCode = ref(false);
       class="playground-example__frame"
       variant="outline"
       :content-id="`${id}-source`"
-      @update:model-value="hasOpenedCode ||= $event"
+      @update:model-value="revealSource"
       v-slot="{ open }"
     >
-      <div class="playground-example__demo" :class="{ 'playground-example__demo--wide': wide }">
-        <slot />
+      <div class="playground-example__demo">
+        <div class="playground-example__preview ui-field-layout" :class="{ 'playground-example__preview--wide': wide }">
+          <slot />
+        </div>
         <UIDisclosureTrigger
           class="playground-example__toggle"
           size="sm"
@@ -43,9 +65,12 @@ const hasOpenedCode = ref(false);
         </UIDisclosureTrigger>
       </div>
       <UIDisclosureContent divided role="region" :aria-label="`${title} Vue 코드`">
-        <PlaygroundCodeBlock v-if="hasOpenedCode">
-          <div v-html="source" />
+        <PlaygroundCodeBlock v-if="hasOpenedCode && renderedSource">
+          <div v-html="renderedSource" />
         </PlaygroundCodeBlock>
+        <p v-else-if="hasOpenedCode" class="playground-example__source-status" role="status">
+          {{ sourceFailed ? "코드를 불러오지 못했습니다. 코드를 다시 열어 주세요." : "코드를 불러오는 중입니다." }}
+        </p>
       </UIDisclosureContent>
     </UIDisclosure>
   </section>
@@ -53,11 +78,12 @@ const hasOpenedCode = ref(false);
 
 <style scoped>
 .playground-example {
+  container: playground-example / inline-size;
   min-inline-size: 0;
   margin-block-end: 3rem;
 }
 
-.playground-example :is(h2, h3, p) {
+.playground-example > :is(h2, h3, p) {
   margin: 0;
 }
 
@@ -79,26 +105,53 @@ const hasOpenedCode = ref(false);
   overflow-wrap: anywhere;
 }
 
+.playground-example .playground-example__source-status {
+  padding: var(--ui-space-sm) var(--ui-space-md);
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-body-sm);
+}
+
 .playground-example__frame {
   margin-block-start: 1rem;
 }
 
 .playground-example__demo {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  padding: clamp(1rem, 4vw, 2rem) clamp(0.75rem, 2vw, 1.25rem);
-  padding-block-end: calc(var(--ui-control-height-small) + 0.75rem);
+  --ui-form-max-inline-size: 26rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: flex-end;
+  gap: var(--ui-space-xs) var(--ui-space-md);
+  padding: var(--ui-space-sm);
 }
 
-.playground-example__demo--wide {
+.playground-example__preview {
+  display: grid;
+  flex: 1 1 max-content;
+  grid-column: 2;
+  justify-items: center;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  padding: var(--ui-space-md) clamp(var(--ui-space-xs), 1vw, var(--ui-space-md));
+}
+
+.playground-example__preview--wide {
+  flex-basis: min(100%, 42rem);
   justify-items: stretch;
 }
 
 .playground-example__toggle {
-  position: absolute;
-  inset-block-end: 0.375rem;
-  inset-inline-end: 0.5rem;
+  flex: none;
+  grid-column: 3;
+  justify-self: end;
   white-space: nowrap;
+}
+
+@container playground-example (inline-size >= 36rem) {
+  .playground-example__demo:not(:has(.playground-example__preview--wide)) {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, max-content) minmax(max-content, 1fr);
+  }
 }
 </style>

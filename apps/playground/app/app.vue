@@ -1,27 +1,45 @@
 <script setup lang="ts">
 import {
+  UIButton,
   UIDashboard,
   UIDashboardNavbar,
   UIDashboardNavGroup,
   UIDashboardNavItem,
   UIDashboardPanel,
   UIDashboardSidebar,
+  UIInput,
 } from "@connextable/ui";
-import { computed, onMounted, ref, useTemplateRef } from "vue";
+import { Search, X } from "@lucide/vue";
+import { computed, onMounted, ref, useTemplateRef, watch } from "vue";
+import { catalog, catalogBySlug } from "~/data/catalog";
+import { catalogNavigation } from "~/data/catalog-navigation";
 
-type CatalogItem = { path: string; title: string; parts: readonly string[] };
+type CatalogItem = {
+  path: string;
+  title: string;
+  parts: readonly string[];
+};
 
 const route = useRoute();
 const router = useRouter();
 const documentContent = useTemplateRef<HTMLElement>("documentContent");
+const sidebar = useTemplateRef<InstanceType<typeof UIDashboardSidebar>>("sidebar");
+const searchInput = useTemplateRef("searchInput");
+const searchQuery = ref("");
+const expandedItems = ref<Record<string, boolean>>({});
+const expandedSearchItems = ref<Record<string, boolean>>({});
 const mounted = ref(false);
 const selectedPart = computed(() => mounted.value ? route.hash.slice(1) : "");
+const catalogPage = computed(() =>
+  route.name === "components-name" ? catalogBySlug.get(String(route.params.name)) : undefined,
+);
 const title = computed(() =>
-  typeof route.meta.title === "string" ? route.meta.title : undefined,
+  catalogPage.value?.title ?? route.meta.title,
 );
 const description = computed(() =>
-  typeof route.meta.description === "string" ? route.meta.description : undefined,
+  catalogPage.value?.description ?? route.meta.description,
 );
+const category = computed(() => catalogPage.value?.category ?? route.meta.category);
 const categories = new Map<string, CatalogItem[]>();
 
 for (const { path, meta, aliasOf } of router.getRoutes()) {
@@ -34,10 +52,80 @@ for (const { path, meta, aliasOf } of router.getRoutes()) {
   categories.set(meta.category, items);
 }
 
-const groups = Array.from(categories, ([category, items]) => ({
-  category,
-  items: items.sort((a, b) => a.title.localeCompare(b.title, "en")),
-})).sort((a, b) => a.category.localeCompare(b.category, "ko"));
+for (const { slug, title, category, parts } of catalog) {
+  const items = categories.get(category) ?? [];
+  items.push({ path: `/components/${slug}`, title, parts: parts ?? [] });
+  categories.set(category, items);
+}
+
+const categoryPriority = new Map([...catalogNavigation.keys()].map((name, index) => [name, index]));
+const groups = Array.from(categories, ([category, items]) => {
+  const itemPriority = new Map(catalogNavigation.get(category)?.map((name, index) => [name, index]));
+  return {
+    category,
+    items: items.sort((a, b) =>
+      (itemPriority.get(a.title) ?? itemPriority.size) - (itemPriority.get(b.title) ?? itemPriority.size)
+      || a.title.localeCompare(b.title, "en"),
+    ),
+  };
+}).sort((a, b) =>
+  (categoryPriority.get(a.category) ?? categoryPriority.size) - (categoryPriority.get(b.category) ?? categoryPriority.size)
+  || a.category.localeCompare(b.category, "ko"),
+);
+
+function normalizeSearch(value: string) {
+  return value.normalize("NFKC").toLowerCase().replace(/[\s_-]+/gu, "");
+}
+
+const query = computed(() => normalizeSearch(searchQuery.value));
+const showOverview = computed(() => normalizeSearch("디자인 시스템").includes(query.value));
+const visibleGroups = computed(() => {
+  if (!query.value) return groups;
+
+  return groups.flatMap((group) => {
+    const items = group.items.flatMap((item) => {
+      if (normalizeSearch(item.title).includes(query.value)) return [item];
+
+      const parts = item.parts.filter((part) =>
+        normalizeSearch(part).includes(query.value),
+      );
+      return parts.length ? [{ ...item, parts }] : [];
+    });
+    return items.length ? [{ ...group, items }] : [];
+  });
+});
+
+watch(query, () => {
+  expandedSearchItems.value = {};
+  sidebar.value?.scrollNavigationToTop();
+});
+
+watch([() => route.path, selectedPart], ([path, part]) => {
+  if (groups.some(group => group.items.some(item => item.path === path && item.parts.includes(part)))) {
+    expandedItems.value[path] = true;
+    expandedSearchItems.value[path] = true;
+  }
+});
+
+function isExpanded(path: string) {
+  return query.value ? expandedSearchItems.value[path] ?? true : expandedItems.value[path] ?? path === route.path;
+}
+
+function setExpanded(path: string, expanded: boolean) {
+  const items = query.value ? expandedSearchItems : expandedItems;
+  items.value[path] = expanded;
+}
+
+function clearSearch() {
+  searchQuery.value = "";
+  searchInput.value?.focus({ preventScroll: true });
+}
+
+function onSearchEscape(event: KeyboardEvent) {
+  if (event.isComposing || !searchQuery.value) return;
+  event.stopPropagation();
+  clearSearch();
+}
 
 useHead(() => ({
   title: title.value ? `${title.value} · Connextable UI` : "Connextable UI",
@@ -50,7 +138,7 @@ onMounted(() => { mounted.value = true; });
 <template>
   <UIDashboard>
     <template #sidebar>
-      <UIDashboardSidebar label="컴포넌트">
+      <UIDashboardSidebar ref="sidebar" label="컴포넌트">
         <template #header>
           <a class="playground-skip" href="#playground-content">본문으로 건너뛰기</a>
           <NuxtLink class="playground-brand" to="/">
@@ -58,20 +146,51 @@ onMounted(() => { mounted.value = true; });
             Connextable UI
           </NuxtLink>
         </template>
-        <UIDashboardNavGroup label="시작하기">
+        <template #navigation-header>
+          <div role="search" aria-label="컴포넌트" @keydown.esc="onSearchEscape">
+            <UIInput
+              ref="searchInput"
+              v-model="searchQuery"
+              size="sm"
+              variant="soft"
+              role="searchbox"
+              aria-label="컴포넌트 검색"
+              placeholder="컴포넌트 검색"
+              autocomplete="off"
+            >
+              <template #leading><Search aria-hidden="true" /></template>
+              <template v-if="searchQuery" #trailing>
+                <UIButton size="sm" variant="ghost" icon-only aria-label="검색어 지우기" @click="clearSearch">
+                  <template #leading><X /></template>
+                </UIButton>
+              </template>
+            </UIInput>
+          </div>
+        </template>
+        <p v-if="!showOverview && !visibleGroups.length" class="playground-sidebar-search__empty" role="status">
+          일치하는 컴포넌트가 없습니다.
+        </p>
+        <UIDashboardNavGroup v-if="showOverview" label="시작하기">
           <UIDashboardNavItem>
             <NuxtLink to="/">디자인 시스템</NuxtLink>
           </UIDashboardNavItem>
         </UIDashboardNavGroup>
         <UIDashboardNavGroup
-          v-for="group in groups"
+          v-for="group in visibleGroups"
           :key="group.category"
           :label="group.category"
         >
-          <UIDashboardNavItem v-for="item in group.items" :key="item.path">
+          <UIDashboardNavItem
+            v-for="item in group.items"
+            :key="item.path"
+            :class="{ 'playground-sidebar-item--leaf': !item.parts.length }"
+            :disclosure-label="item.parts.length ? `${item.title} 구성 항목` : undefined"
+            :expanded="isExpanded(item.path)"
+            @update:expanded="setExpanded(item.path, $event)"
+          >
             <NuxtLink
               :to="item.path"
-              :aria-current-value="route.path === item.path && item.parts.includes(selectedPart) ? 'false' : 'page'"
+              :aria-current-value="route.path === item.path && isExpanded(item.path) && item.parts.includes(selectedPart) ? 'false' : 'page'"
             >
               {{ item.title }}
             </NuxtLink>
@@ -79,7 +198,7 @@ onMounted(() => { mounted.value = true; });
               <UIDashboardNavItem v-for="part in item.parts" :key="part">
                 <NuxtLink
                   :to="{ path: item.path, hash: `#${part}` }"
-                  :aria-current-value="selectedPart === part ? 'location' : 'false'"
+                  :aria-current-value="route.path === item.path && selectedPart === part ? 'location' : 'false'"
                 >{{ part }}</NuxtLink>
               </UIDashboardNavItem>
             </template>
@@ -95,9 +214,9 @@ onMounted(() => { mounted.value = true; });
         <UIDashboardNavbar>
           <p class="playground-location">
             Playground
-            <template v-if="route.meta.category">
+            <template v-if="category">
               <span aria-hidden="true">/</span>
-              {{ route.meta.category }}
+              {{ category }}
             </template>
           </p>
         </UIDashboardNavbar>
@@ -172,13 +291,25 @@ body {
 
 .playground-brand:focus-visible,
 .playground-skip:focus-visible {
-  outline: 2px solid var(--ui-color-focus);
-  outline-offset: 3px;
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+  outline-offset: var(--ui-focus-ring-offset);
 }
 
 .playground-package {
   color: var(--ui-color-text-muted);
   font-size: 0.75rem;
+}
+
+.playground-sidebar-search__empty {
+  margin: 0;
+  padding-inline: var(--ui-space-xs);
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-body-sm);
+}
+
+.playground-sidebar-item--leaf > a {
+  margin-inline-start: var(--ui-control-height-small);
+  padding-inline-start: var(--ui-space-xs);
 }
 
 .playground-main {
@@ -228,8 +359,8 @@ body {
   position: sticky;
   grid-area: outline;
   inset-block-start: 1.5rem;
-  max-block-size: calc(100dvh - 3rem);
-  overflow-y: auto;
+  box-sizing: border-box;
+  max-block-size: calc(100dvh - 1.5rem - var(--ui-dashboard-panel-padding));
   padding-block: 0.375rem;
 }
 
@@ -266,7 +397,6 @@ body {
   .playground-document__outline {
     position: static;
     max-block-size: none;
-    overflow: visible;
   }
 }
 

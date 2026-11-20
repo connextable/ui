@@ -1,7 +1,6 @@
 .ui-field-control {
   box-sizing: border-box;
   min-block-size: var(--ui-control-size-height);
-  padding-inline: var(--ui-control-size-padding-inline);
   border: 1px solid var(--ui-color-border);
   border-radius: var(--ui-control-size-radius);
   background: var(--ui-color-surface);
@@ -18,49 +17,50 @@
   background: var(--ui-color-surface-muted);
 }
 
-.ui-field-control::placeholder {
+.ui-field-control::placeholder,
+.ui-field-control > :is(input, textarea)::placeholder {
   color: var(--ui-color-placeholder);
   opacity: 1;
 }
 
-.ui-field-control:is([data-ui-readonly], [readonly]) {
+.ui-field-control:is([data-ui-readonly], [readonly], :has(> [readonly])) {
   border-color: var(--ui-color-border);
   background: var(--ui-color-surface-readonly);
   caret-color: transparent;
   cursor: default;
 }
 
-.ui-field-control:hover:where(:not(:disabled, :focus, [data-ui-readonly], [readonly])) {
+.ui-field-control:hover:where(:not(:disabled, :focus, [data-ui-readonly], [readonly], :has(> :is(:disabled, :focus, [readonly])))) {
   border-color: var(--ui-color-border-hover);
 }
 
-.ui-field-control:disabled {
+.ui-field-control:is(:disabled, :has(> :disabled)) {
   border-color: var(--ui-color-border);
   background: var(--ui-color-surface-muted);
   color: var(--ui-color-disabled);
   cursor: default;
 }
 
-.ui-field-control:is(:focus-visible, [data-state="open"]) {
+.ui-field-control:is(:focus-visible, :has(> :focus-visible), [data-state="open"]) {
   border-color: var(--ui-color-focus);
 }
 
-.ui-field-control:focus-visible {
-  outline: 1px solid transparent;
-  outline-offset: -1px;
+.ui-field-control:is(:focus-visible, :has(> :focus-visible)) {
+  outline: var(--ui-focus-ring-width) solid transparent;
+  outline-offset: var(--ui-focus-ring-offset);
   box-shadow: var(--ui-focus-ring);
 }
 
-.ui-field-control[aria-invalid="true"] {
+.ui-field-control:is([aria-invalid="true"], :has(> [aria-invalid="true"])) {
   border-color: var(--ui-color-danger);
 }
 
-.ui-field-control[aria-invalid="true"]:focus-visible {
+.ui-field-control:is([aria-invalid="true"], :has(> [aria-invalid="true"])):is(:focus-visible, :has(> :focus-visible)) {
   box-shadow: var(--ui-focus-ring-danger);
 }
 
 @media (forced-colors: active) {
-  .ui-field-control:focus-visible {
+  .ui-field-control:is(:focus-visible, :has(> :focus-visible)) {
     outline-color: Highlight;
   }
 }

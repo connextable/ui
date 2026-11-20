@@ -16,7 +16,7 @@
 }
 
 .playground-code-block :deep(pre:focus-visible) {
-  outline: 2px solid var(--ui-color-focus);
-  outline-offset: -2px;
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+  outline-offset: var(--ui-focus-ring-offset);
 }
 </style>

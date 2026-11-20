@@ -1,0 +1,49 @@
+.ui-field,
+:where(.ui-field-layout) :where(label:has(> :is(input, textarea, select, .ui-field-control))) {
+  display: grid;
+  align-content: start;
+  gap: var(--ui-space-sm);
+  min-inline-size: 0;
+}
+
+:where(.ui-field-layout, .ui-field) :where(label, legend),
+:where(.ui-field-label, label.ui-field) {
+  color: var(--ui-color-text);
+  font-size: var(--ui-font-size-body-sm);
+  font-weight: 600;
+  line-height: var(--ui-line-height-body);
+  overflow-wrap: anywhere;
+}
+
+:where(label.ui-field, .ui-field-layout label) > :is(input, textarea, select):not(.ui-field-control) {
+  font: 500 var(--ui-font-size-body)/1.35 var(--ui-font-sans);
+}
+
+:where(.ui-field-layout) :where([data-scope$="-range-field"][data-part="root"]:has(> label + label)) {
+  display: grid;
+  gap: var(--ui-space-md);
+}
+
+:where(.ui-form__output),
+:where(.ui-field-layout) :where(output:not(p > output), p:has(> output)) {
+  display: block;
+  box-sizing: border-box;
+  flex: 0 0 100%;
+  justify-self: stretch;
+  min-inline-size: 0;
+  margin: 0;
+  padding-block-start: var(--ui-space-sm);
+  border-block-start: 1px solid var(--ui-color-divider);
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-body-sm);
+  line-height: var(--ui-line-height-body);
+  overflow-wrap: anywhere;
+}
+
+:where(.ui-field-layout) :where(output:not(.ui-form__output, p > output), p:has(> output)) {
+  margin-block-start: var(--ui-space-md);
+}
+
+:where(.ui-form__output, .ui-field-layout output):empty {
+  border-block-start-color: transparent;
+}
