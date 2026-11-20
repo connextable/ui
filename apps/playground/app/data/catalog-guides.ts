@@ -21,6 +21,87 @@ interface CatalogGuide {
 }
 
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
+  grid: {
+    examples: [
+      { id: "grid-disabled", title: "특정 셀 건너뛰기", description: "방향키로 상태 열을 지나갈 때 Ready 셀은 비활성입니다." },
+      { id: "grid-selection", title: "선택한 셀 알리기", description: "이동한 후 선택하면 외부 출력에 셀 값이 표시됩니다." },
+      { id: "grid-edit-mode", title: "셀의 편집 모드 진입과 종료", description: "셀에서 F2를 눌러 편집 모드에 진입하거나 Enter와 Escape로 탐색 모드에 돌아갑니다." },
+    ],
+    title: "그리드 셀 사이를 키보드로 이동",
+    description: "행별 셀 id를 rows에 전달합니다. 셀을 포커스한 뒤 방향키를 누르면 위치에 맞춰 다음 셀로 이동합니다.",
+    api: {
+      rows: "행별로 셀 식별자를 묶은 배열입니다.",
+      "Cell value": "화면의 셀을 rows에 등록한 식별자와 연결합니다.",
+    },
+  },
+  "data-table": {
+    sections: [
+      { id: "examples", title: "열과 행 탐색", section: "structure" },
+      { id: "table-selection", title: "행 선택", section: "selection" },
+      { id: "table-source", title: "데이터 요청", section: "source" },
+    ],
+    examples: [
+      { id: "data-table-sort", section: "structure", title: "열 기준 정렬", description: "이름을 누르면 정렬 방향이 바뀌고 같은 행이 새 위치로 이동합니다." },
+      { id: "data-table-filter", section: "structure", title: "열 필터와 빈 결과", description: "이름의 일부를 입력해 일치하는 행을 표시합니다." },
+      { id: "data-table-resize", section: "structure", title: "열 너비 조절", description: "이름 헤더에 있는 조절점을 끌어 열 너비를 바꿉니다." },
+      { id: "data-table-grouped-headers", section: "structure", title: "두 단계 열 제목", description: "월별 수치를 도입 전과 후로 묶습니다. 제목의 행·열 병합은 열 스키마에서 결정합니다." },
+      { id: "data-table-sticky-header", section: "structure", title: "스크롤해도 남는 열 제목", description: "표 안에서 아래로 스크롤하거나 화살표 키를 눌러 열 제목이 위에 고정되는지 확인합니다." },
+      { id: "data-table-selection", section: "selection", title: "행 단위 선택", description: "선택 컨트롤을 눌러 한 행을 선택합니다." },
+      { id: "data-table-bulk-selection", section: "selection", title: "검색 범위의 행 전체 선택", description: "헤더에서 전체 선택을 누르면 Provider를 읽는 요약과 행별 체크가 함께 갱신됩니다.", parts: ["useUIDataTableContext"] },
+      { id: "data-table-pages", section: "source", title: "2만 5천 건의 페이지 탐색", description: "이전·다음 페이지를 누르면 소스가 요청받은 여섯 행을 반환합니다." },
+      { id: "data-table-reload", section: "source", title: "지연되는 데이터 로드", description: "새로 고침으로 소스를 다시 요청하고 완료되면 같은 표를 표시합니다." },
+      { id: "data-table-retry", section: "source", title: "요청 실패 후 다시 시도", description: "오류를 재현하면 마지막으로 성공한 결과를 계속 읽을 수 있습니다. 다시 시도하면 상태가 복구됩니다." },
+    ],
+    title: "데이터 소스의 행과 열 표시",
+    description: "source에 데이터 요청을 처리하는 함수를 전달하고, 반환한 컨트롤러로 컴포넌트를 만듭니다. Cell의 column에는 열 id를 지정합니다.",
+    api: { source: "데이터 요청을 받아 행과 열 스키마를 반환하는 함수입니다.", "Body #default": "현재 row를 제공하는 슬롯입니다." },
+  },
+  "data-grid": {
+    sections: [
+      { id: "examples", title: "셀 탐색과 행 선택", section: "navigation" },
+      { id: "grid-editing", title: "셀 편집과 검증", section: "editing" },
+      { id: "grid-query", title: "정렬과 필터", section: "query" },
+    ],
+    examples: [
+      { id: "data-grid-cursor", section: "navigation", title: "현재 포커스된 셀 읽기", description: "셀을 클릭하고 방향키로 이동하면 그리드 밖의 요약도 갱신됩니다.", parts: ["useUIDataGridContext"] },
+      { id: "data-grid-disabled-cell", section: "navigation", title: "이동에서 제외되는 셀", description: "방향키를 움직여 첫 번째 행의 상태 셀을 건너뜁니다." },
+      { id: "data-grid-move-wrap", section: "navigation", title: "행 양끝을 이어서 탐색", description: "외부 버튼으로 다음 열을 여러 번 선택하면 같은 행의 마지막 열에서 첫 열로 이동합니다." },
+      { id: "data-grid-row-selection", section: "navigation", title: "그리드 행 선택", description: "셀 이동과 별도로 행 전체를 선택합니다." },
+      { id: "data-grid-edit", section: "editing", title: "셀에서 편집하고 확정", description: "상태 셀에 포커스를 두고 F2를 눌러 편집합니다. Enter로 확정하거나 Escape로 원래 값으로 돌아갑니다." },
+      { id: "data-grid-validated-edit", section: "editing", title: "재고 수량 검증", description: "수량을 편집해 -1을 입력하면 저장이 거부됩니다. 0~999 사이의 정수를 입력해 다시 확정하세요." },
+      { id: "data-grid-sort", section: "query", title: "그리드 정렬", description: "작업 이름을 눌러 그리드 행의 정렬을 바꿉니다." },
+      { id: "data-grid-filter", section: "query", title: "그리드의 상태 열 필터", description: "상태에 ‘대기’를 입력하고 결과로 남은 셀을 탐색합니다." },
+    ],
+    title: "작업 상태 그리드 탐색",
+    description: "데이터 소스를 그리드의 셀에 연결합니다. 셀을 클릭한 뒤 방향키로 행과 열 사이를 이동해 보세요.",
+    api: { source: "데이터 요청을 받아 그리드의 행과 열 스키마를 반환합니다.", "Body #default": "렌더링할 행을 제공하는 슬롯입니다." },
+  },
+  "data-tree-grid": {
+    examples: [
+      { id: "data-tree-grid-collapsed", title: "필요할 때 하위 행 읽기", description: "처음에는 닫힌 그룹을 펼쳐 하위 행이 들어오는 것을 봅니다." },
+      { id: "data-tree-grid-async", title: "지연 응답으로 하위 행 펼치기", description: "부서를 펼치면 하위 프로젝트가 도착할 때 행이 들어오고, 옆 부서는 새 위치로 이동합니다." },
+      { id: "data-tree-grid-expansion", title: "중첩 그룹의 펼침 상태 읽기", description: "플랫폼과 API 그룹을 차례로 펼치고 요약과 보이는 행이 동기화되는지 확인합니다.", parts: ["useUIDataTreeGridContext"] },
+      { id: "data-tree-grid-group-selection", title: "그룹의 하위 행 선택", description: "그룹의 선택 컨트롤 하나로 하위 행을 선택합니다." },
+      { id: "data-tree-grid-edit", title: "하위 행을 편집해 소스에 반영", description: "웹사이트 담당자 셀을 F2로 열고 값을 저장합니다. 데이터 소스를 다시 읽어 편집 결과를 표시합니다." },
+    ],
+    title: "서비스의 하위 행 표시",
+    description: "플랫폼 행을 펼치거나 접어 보세요. source는 요청의 expansion을 읽고 현재 보이는 행을 반환합니다.",
+    api: { source: "현재 확장 상태를 반영한 행을 반환합니다.", defaultExpansion: "처음부터 펼쳐 둘 그룹의 id입니다.", "RowDisclosure": "현재 그룹 행의 확장 상태를 변경합니다." },
+  },
+  "tree-grid": {
+    examples: [
+      { id: "tree-grid-headers", title: "열 제목 파트", description: "그리드의 열 제목을 Header와 HeaderCell로 구성합니다.", parts: ["UITreeGridHeader", "UITreeGridHeaderCell"] },
+      { id: "tree-grid-expand", title: "외부에서 열림 상태 제어", description: "목록 바깥의 버튼으로 모든 그룹을 펼치거나 접습니다." },
+      { id: "tree-grid-edit", title: "하위 행의 담당자 편집", description: "웹사이트 담당자 셀에서 F2로 편집합니다. Enter로 적용하고 Escape로 취소할 수 있습니다.", parts: ["UITreeGridEditor", "UITreeGridGroup"] },
+    ],
+    title: "계층형 행과 셀 구성",
+    description: "그룹 행을 펼쳐 하위 행을 확인합니다. 편집할 수 있는 셀은 편집 상태에 따라 표현과 입력을 전환합니다.",
+    api: {
+      "Row value": "행 컨트롤과 연결할 행 id입니다.",
+      "Cell column-index": "셀의 열 위치를 지정합니다.",
+      "Disclosure for": "이 컨트롤이 펼칠 행의 id입니다.",
+    },
+  },
   chart: {
     title: "선 차트",
     description: "주간 매출처럼 시간에 따라 달라지는 값을 선으로 연결합니다. 날짜와 매출 필드를 각 축에 연결하고 UIChartLine에 데이터를 전달합니다.",

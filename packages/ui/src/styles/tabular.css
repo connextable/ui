@@ -219,7 +219,7 @@
   }
 
   :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"], [data-scope="tree-grid"])
-    :where(button[data-part="sort-trigger"], button[data-part="disclosure"], button[data-part="row-disclosure"]) {
+    :is(button[data-part="sort-trigger"], button[data-part="disclosure"], button[data-part="row-disclosure"]) {
     flex: none;
     min-block-size: var(--ui-tabular-action-size);
     min-inline-size: var(--ui-tabular-action-size);
@@ -231,7 +231,7 @@
     font: inherit;
   }
 
-  :where([data-scope="tree-grid"], [data-scope="data-tree-grid"]):where(button[data-part="disclosure"], button[data-part="row-disclosure"]) {
+  :where([data-scope="tree-grid"], [data-scope="data-tree-grid"]):is(button[data-part="disclosure"], button[data-part="row-disclosure"]) {
     inline-size: var(--ui-tabular-action-size);
     block-size: var(--ui-tabular-action-size);
     margin-block: calc((1em * var(--ui-line-height-body) - var(--ui-tabular-action-size)) / 2);
@@ -240,7 +240,7 @@
   }
 
   :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"], [data-scope="tree-grid"])
-    :where(button[data-part="sort-trigger"], button[data-part="disclosure"], button[data-part="row-disclosure"], button[data-part="column-resize-handle"]):where(:hover:not(:disabled, [aria-disabled="true"])) {
+    :is(button[data-part="sort-trigger"], button[data-part="disclosure"], button[data-part="row-disclosure"], button[data-part="column-resize-handle"]):where(:hover:not(:disabled, [aria-disabled="true"])) {
     background: var(--ui-color-surface-hover);
   }
 
