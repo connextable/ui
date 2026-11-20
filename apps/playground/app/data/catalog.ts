@@ -60,6 +60,9 @@ export const catalog: readonly CatalogEntry[] = [
       "DataTable.Editor",
       "UITabularRows",
       "UIDataActions",
+      "UIDataSurface",
+      "UIDataLabel",
+      "UIDataStatus",
     ],
   },
   {
@@ -213,6 +216,3 @@ export const catalog: readonly CatalogEntry[] = [
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));
-      "UIDataSurface",
-      "UIDataLabel",
-      "UIDataStatus",
