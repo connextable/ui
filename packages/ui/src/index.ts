@@ -10,6 +10,9 @@ export { default as UIDashboardToolbar } from "./components/dashboard/UIDashboar
 export { default as UIDisclosure } from "./components/disclosure/UIDisclosure.vue";
 export { default as UIDisclosureContent } from "./components/disclosure/UIDisclosureContent.vue";
 export { default as UIDisclosureTrigger } from "./components/disclosure/UIDisclosureTrigger.vue";
+export { default as UIForm } from "./components/form/UIForm.vue";
+export { default as UIFormActions } from "./components/form/UIFormActions.vue";
+export { default as UIFormField } from "./components/form/UIFormField.vue";
 export { default as UIInput } from "./components/text-input/UIInput.vue";
 export { default as UIProgress } from "./components/progress/UIProgress.vue";
 export { default as UIRadioGroup, type UIRadioGroupOption } from "./components/selection/UIRadioGroup.vue";
