@@ -15,10 +15,14 @@ const services = [
 const rows = services.map(({ id, parentID }) => ({
   id, parentID, cells: [`${id}-name`, `${id}-owner`, `${id}-status`],
 }));
+const values = new Map(services.flatMap<[string, string]>(({ id, name, owner, status }) => [
+  [`${id}-name`, name], [`${id}-owner`, owner], [`${id}-status`, status],
+]));
 </script>
 
 <template>
-  <UITreeGrid :rows="rows" :headers="headers" :default-expanded-value="['platform']"
+  <UITreeGrid :rows="rows" :headers="headers" :default-expanded-value="['platform']" readonly
+    :get-cell-value="id => values.get(id) ?? ''" :set-cell-value="() => {}"
     aria-label="서비스 목록" v-slot="{ expandedValue }">
     <UITreeGridHeader>
       <UITreeGridHeaderCell v-for="(_, index) in headers" :key="index" :column-index="index + 1" />
