@@ -185,10 +185,35 @@ const partRoles: Readonly<Record<string, string>> = {
   useUIChartAxisSelector: "특정 축에 해당하는 상태를 구독합니다.",
 };
 
+const tabularParts: Readonly<Record<string, string>> = {
+  Provider: "팩토리가 만든 컨트롤러를 같은 컴포넌트 모음에 연결합니다.",
+  Root: "표 또는 그리드의 접근성 역할과 이름을 설정합니다.",
+  Caption: "데이터 표의 제목을 표시합니다.",
+  Header: "하나 이상의 열 제목 행을 담습니다.",
+  HeaderRow: "같은 단계에 있는 열 제목을 묶습니다.",
+  ColumnHeader: "열이나 제목 그룹을 스키마의 식별자와 연결합니다.",
+  SortTrigger: "열의 정렬 방향을 바꿉니다.",
+  FilterControl: "검색 값을 현재 열이나 전체 데이터의 필터에 연결합니다.",
+  ColumnResizeHandle: "열 너비를 조절합니다.",
+  Body: "컨트롤러가 받아들인 행을 렌더링합니다.",
+  Row: "직접 렌더링하는 행을 컨트롤러의 행 id와 연결합니다.",
+  Cell: "행에 있는 값이나 편집기를 표시합니다.",
+  SelectionControl: "표에서 현재 행의 선택을 바꿉니다.",
+  RowSelectionControl: "그리드에서 현재 행의 선택을 바꿉니다.",
+  BulkSelectionControl: "검색 범위나 그룹에 포함된 행의 선택을 한꺼번에 바꿉니다.",
+  Disclosure: "표에서 그룹 행을 펼치고 접습니다.",
+  RowDisclosure: "트리 그리드에서 그룹 행을 펼치고 접습니다.",
+  Editor: "셀 값을 편집하고 입력한 값을 확정합니다.",
+};
+
 const suffixes = Object.keys(roles).sort((a, b) => b.length - a.length);
 
 export function describeCatalogPart(part: string): string | undefined {
   if (partRoles[part]) return partRoles[part];
+  const tabularPart = /^(?:DataTable|DataGrid|DataTreeGrid)\.(.+)$/.exec(part)?.[1];
+  if (tabularPart) return tabularParts[tabularPart];
+  if (part === "UITabularRows") return "키가 유지되는 행을 정렬하거나 펼칠 때 위치 전환을 적용합니다.";
+  if (part === "UIDataActions") return "표나 가상화 영역 아래에 상태 요약과 조작 버튼을 배치합니다.";
   const suffix = suffixes.find((key) => part.endsWith(key));
   return suffix ? roles[suffix] : undefined;
 }
