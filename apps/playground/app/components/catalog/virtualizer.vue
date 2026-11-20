@@ -3,6 +3,7 @@ import {
   createDenseTrackGridLayout,
   createUniformExtentIndex,
   trackGridLayoutStrategy,
+  UIDataSurface,
   UIVirtualizer,
   UIVirtualizerItem,
   UIVirtualizerSurface,
@@ -20,11 +21,14 @@ const state = createDenseTrackGridLayout(
 </script>
 
 <template>
-  <UIVirtualizer :default-state="state" :strategy="trackGridLayoutStrategy" v-slot="{ placements }">
-    <UIVirtualizerSurface>
-      <UIVirtualizerItem v-for="item in placements" :key="item.id" :placement="item" size="both">
-        {{ item.id }}
-      </UIVirtualizerItem>
-    </UIVirtualizerSurface>
-  </UIVirtualizer>
+  <UIDataSurface>
+    <template #toolbar><strong>행·열 배치</strong><output>{{ count }}행 × {{ count }}열</output></template>
+    <UIVirtualizer :default-state="state" :strategy="trackGridLayoutStrategy" aria-label="행·열 배치" v-slot="{ placements }">
+      <UIVirtualizerSurface>
+        <UIVirtualizerItem v-for="item in placements" :key="item.id" :placement="item" size="both">
+          {{ item.id }}
+        </UIVirtualizerItem>
+      </UIVirtualizerSurface>
+    </UIVirtualizer>
+  </UIDataSurface>
 </template>

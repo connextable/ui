@@ -22,11 +22,16 @@ interface CatalogGuide {
 
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   virtualizer: {
+    sections: [
+      { id: "examples", title: "레이아웃 구성", section: "layout" },
+      { id: "virtualizer-navigation", title: "뷰포트와 탐색", section: "navigation" },
+    ],
     examples: [
-      { id: "virtualizer-frames", title: "헤더와 푸터", description: "배치 영역 양쪽에 Header와 Footer를 연결합니다.", parts: ["UIVirtualizerHeader", "UIVirtualizerFooter"] },
-      { id: "virtualizer-initial-viewport", title: "초기 렌더 범위", description: "측정 전에 초기 뷰포트를 전달해 첫 행과 열의 렌더 범위를 정합니다." },
-      { id: "virtualizer-plan", title: "현재 보이는 셀 범위 읽기", description: "스크롤하면 useUIVirtualizer가 반환한 배치에서 첫 셀과 보이는 셀 개수를 읽습니다.", parts: ["useUIVirtualizer"] },
-      { id: "virtualizer-overscan", title: "보이는 셀과 미리 준비한 셀", description: "뷰포트 바깥 160px를 추가하면 보이는 셀 수는 그대로이고 미리 준비한 셀 수가 늘어납니다." },
+      { id: "virtualizer-frames", section: "layout", title: "헤더와 푸터", description: "배치 영역 양쪽에 Header와 Footer를 연결합니다.", parts: ["UIVirtualizerHeader", "UIVirtualizerFooter"] },
+      { id: "virtualizer-initial-viewport", section: "layout", title: "초기 렌더 범위", description: "측정 전에 초기 뷰포트를 전달해 첫 행과 열의 렌더 범위를 정합니다." },
+      { id: "virtualizer-plan", section: "navigation", title: "현재 보이는 셀 범위 읽기", description: "스크롤하면 useUIVirtualizer가 반환한 배치에서 첫 셀과 보이는 셀 개수를 읽습니다.", parts: ["useUIVirtualizer"] },
+      { id: "virtualizer-overscan", section: "navigation", title: "보이는 셀과 미리 준비한 셀", description: "뷰포트 바깥 160px를 추가하면 보이는 셀 수는 그대로이고 미리 준비한 셀 수가 늘어납니다." },
+      { id: "virtualizer-worksheet", section: "navigation", title: "가로·세로로 떨어진 셀 찾기", description: "이동 버튼을 누르면 80행 × 32열 워크시트에서 지정한 셀이 나타나고 강조됩니다." },
     ],
     title: "행·열 배치 직접 지정",
     description: "행과 열의 크기와 배치 전략을 루트에 전달합니다. 스크롤에 따라 슬롯의 placements가 바뀌고, 그 위치만 그립니다.",
@@ -230,6 +235,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "virtual-list-filter", section: "data", title: "가상 목록 검색", description: "‘서울’을 검색하고 스크롤해 보세요. 일치하는 항목이 없으면 빈 상태를 표시합니다." },
       { id: "virtual-list-prepend", section: "data", title: "이전 기록을 추가하며 현재 위치 유지", description: "목록을 아래로 스크롤한 다음 이전 기록을 추가해 첫 항목이 유지되는지 확인합니다." },
       { id: "virtual-list-stream", section: "data", title: "끝에 닿으면 다음 기록 불러오기", description: "불러온 기록의 마지막에 가까워지면 가상 응답으로 40건씩 추가합니다." },
+      { id: "virtual-list-chat", section: "data", title: "새 메시지 따라가기", description: "이전 메시지를 읽는 동안 새 메시지를 받아도 위치가 유지됩니다. 최신으로 이동한 다음에는 새 메시지를 따라갑니다." },
+      { id: "virtual-list-range-source", section: "data", title: "보이는 범위만 요청하고 저장", description: "9,001번으로 이동하면 그 주변 행을 요청합니다. 로딩 전후 행 높이가 유지되고 다시 돌아오면 받아 둔 데이터를 사용합니다." },
     ],
     title: "변경 기록 5만 건 탐색",
     description: "스크롤하면 화면에 보이는 범위가 바뀝니다. 아래에서 전체 기록과 DOM에 렌더링한 행 수를 비교할 수 있습니다.",
@@ -254,6 +261,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "virtual-grid-scrollport", section: "navigation", title: "바깥 컨테이너에서 스크롤", description: "갤러리 제목과 가상 그리드가 같은 컨테이너의 스크롤을 공유합니다." },
       { id: "virtual-grid-jump", section: "navigation", title: "열 수를 바꾼 후 특정 항목으로 이동", description: "두 열로 바꾼 다음 scrollToID로 75번 항목을 화면 위에 표시합니다." },
       { id: "virtual-grid-selection", section: "navigation", title: "화면 밖에서도 선택 유지", description: "상자를 선택하고 멀리 스크롤하세요. 선택 위치로 돌아오면 같은 상자가 선택된 상태로 나타납니다." },
+      { id: "virtual-grid-live-stock", section: "layout", title: "입고 후 재고순 재배치", description: "가장 재고가 적은 품목에 18개 입고하면 더 여유가 생긴 품목이 새 칸으로 이동합니다." },
+      { id: "virtual-grid-compare", section: "navigation", title: "떨어진 항목들의 값 합산", description: "서로 다른 위치의 자재를 선택하면 화면에서 벗어난 항목도 합계에 남습니다." },
     ],
     title: "고정 높이 행을 그리드로 표시",
     description: "size-policy에 행 높이를 전달하고 lane-policy에 최소 열 너비와 최대 열 개수를 지정합니다. 스크롤하면서 행의 렌더링 범위를 확인합니다.",
@@ -272,9 +281,10 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "virtual-masonry-placement", title: "카드 배치 정책 바꾸기", description: "짧은 열부터 채우다가 버튼을 누르면 각 열을 순서대로 사용합니다." },
       { id: "virtual-masonry-relayout", title: "너비에 따라 메모 재배치", description: "컨테이너 폭이 바뀌면 열 수를 다시 계산합니다." },
       { id: "virtual-masonry-expand", title: "카드 내용이 펼쳐질 때 높이 재측정", description: "메모를 펼치거나 접으면 실제 높이에 맞춰 아래 카드가 부드럽게 이동합니다." },
+      { id: "virtual-masonry-filter", title: "분류를 바꿔 카드 다시 배치", description: "필터를 누르면 선택한 분류의 메모가 남고, 같은 메모가 새 열이나 위치로 이동합니다." },
     ],
     title: "높이가 다른 항목을 열로 배치",
-    description: "항목별 높이를 추정하고 반응형 열을 지정합니다. 초기 뷰포트는 서버에서 렌더링할 때 사용할 크기입니다.",
+    description: "실제 메모의 길이로 높이를 측정합니다. 열 너비가 달라져 메모가 줄바꿈되면 아래 카드의 위치도 다시 계산합니다.",
     api: {
       "initial-viewport": "실제 뷰포트를 측정하기 전에 사용할 영역입니다.",
       "lane-policy": "열 개수와 간격을 계산하는 방식입니다.",
@@ -289,6 +299,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "virtual-spatial-scrollport", title: "고정 제목 아래에서 배치도를 스크롤", description: "바깥 영역을 가로·세로로 스크롤합니다. 제목 높이는 뷰포트 inset에 반영합니다." },
       { id: "virtual-spatial-layout", title: "배치 좌표 변경", description: "8열과 4열 사이에서 전환하면 같은 점검 구역이 새 좌표로 이동합니다." },
       { id: "virtual-spatial-jump", title: "선반 6천 개에서 위치 찾기", description: "선반 번호를 눌러 가로·세로로 떨어진 해당 선반까지 이동하고 강조 표시합니다." },
+      { id: "virtual-spatial-schedule", title: "일정이 밀릴 때 한 트랙만 이동", description: "품질 검사 작업의 지연을 반영하면 그 트랙의 작업만 뒤로 이동합니다. 가로로 스크롤해 다음 작업도 확인할 수 있습니다." },
     ],
     title: "좌표로 배치한 항목 스크롤",
     description: "getRect에서 각 항목의 좌표와 크기를 반환합니다. 가로 또는 세로로 스크롤하면 보이는 영역에 포함된 항목이 갱신됩니다.",
