@@ -33,7 +33,7 @@
     outline-offset: var(--ui-focus-ring-offset);
   }
 
-  :where([data-ui-tabular-scroll]) :where([data-part="column-header"], [data-part="headerCell"]) {
+  :where([data-ui-tabular-scroll]) [data-part="header"] {
     position: sticky;
     inset-block-start: 0;
     z-index: 1;
