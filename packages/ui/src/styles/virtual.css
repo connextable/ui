@@ -1,5 +1,5 @@
 @layer ui.sectile {
-  :where([data-scope="virtual-list"], [data-scope="virtual-grid"], [data-scope="virtual-masonry"], [data-scope="virtual-spatial"], [data-scope="virtualizer"]):where([data-part="root"], [data-part="viewport"]) {
+  :where([data-scope="virtualizer"][data-part="root"]) {
     --ui-virtual-height: 18rem;
 
     block-size: var(--ui-virtual-height);
@@ -26,7 +26,8 @@
     border-block-end: 1px solid var(--ui-color-divider);
   }
 
-  :where([data-scope="virtual-grid"], [data-scope="virtual-masonry"], [data-scope="virtual-spatial"]):where([data-part="root"]) {
+  :where([data-virtual-layout="virtual-grid"], [data-virtual-layout="virtual-masonry"],
+    [data-virtual-layout="virtual-spatial"]):where([data-scope="virtualizer"][data-part="root"]) {
     --ui-virtual-radius: var(--ui-radius-lg);
     --ui-virtual-item-radius: max(0px, calc(var(--ui-virtual-radius) - var(--ui-space-sm)));
 
