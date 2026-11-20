@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { ref, useId, useTemplateRef } from "vue";
+import UIButton from "../button/UIButton.vue";
 
 defineProps<{ label: string }>();
 
 const navigationId = useId();
 const open = ref(false);
-const toggle = useTemplateRef<HTMLButtonElement>("toggle");
+const toggle = useTemplateRef<InstanceType<typeof UIButton>>("toggle");
 
 function closeNavigation() {
   if (!open.value) return;
   open.value = false;
 
-  const button = toggle.value;
-  if (button?.getClientRects().length) button.focus({ preventScroll: true });
+  const button = toggle.value?.$el;
+  if (button instanceof HTMLButtonElement && button.getClientRects().length) {
+    button.focus({ preventScroll: true });
+  }
 }
 
 function onNavigationClick(event: MouseEvent) {
@@ -28,16 +31,16 @@ function onNavigationClick(event: MouseEvent) {
       <div v-if="$slots.header" class="ui-dashboard-sidebar__header">
         <slot name="header" />
       </div>
-      <button
+      <UIButton
         ref="toggle"
         class="ui-dashboard-sidebar__toggle"
-        type="button"
+        variant="outline"
         :aria-controls="navigationId"
         :aria-expanded="open"
         @click="open = !open"
       >
         {{ label }}
-      </button>
+      </UIButton>
     </div>
     <nav
       :id="navigationId"
@@ -48,6 +51,9 @@ function onNavigationClick(event: MouseEvent) {
     >
       <slot />
     </nav>
+    <div v-if="$slots.footer" class="ui-dashboard-sidebar__footer">
+      <slot name="footer" />
+    </div>
   </aside>
 </template>
 
@@ -57,8 +63,8 @@ function onNavigationClick(event: MouseEvent) {
   flex-direction: column;
   box-sizing: border-box;
   block-size: 100%;
-  border-inline-end: 1px solid var(--ui-dashboard-divider);
-  background: var(--ui-color-surface);
+  border-inline-end: 1px solid var(--ui-color-divider);
+  background: var(--ui-dashboard-sidebar-background, var(--ui-color-surface));
 }
 
 .ui-dashboard-sidebar__header {
@@ -66,21 +72,10 @@ function onNavigationClick(event: MouseEvent) {
   overflow-wrap: anywhere;
 }
 
-.ui-dashboard-sidebar__toggle {
+.ui-dashboard-sidebar .ui-dashboard-sidebar__toggle {
   display: none;
-  min-block-size: var(--ui-control-height);
-  padding: 0.5rem var(--ui-control-padding-inline);
-  border: 1px solid var(--ui-dashboard-divider);
-  border-radius: var(--ui-control-radius);
-  background: var(--ui-color-surface);
-  color: var(--ui-color-text);
-  font: inherit;
-  cursor: pointer;
-}
-
-.ui-dashboard-sidebar__toggle:focus-visible {
-  outline: 2px solid var(--ui-color-focus);
-  outline-offset: 2px;
+  --ui-button-border: var(--ui-color-divider);
+  --ui-button-ink: var(--ui-color-text);
 }
 
 .ui-dashboard-sidebar__navigation {
@@ -93,11 +88,17 @@ function onNavigationClick(event: MouseEvent) {
   padding: 0.75rem;
 }
 
+.ui-dashboard-sidebar__footer {
+  padding: 0.875rem 1rem;
+  border-block-start: 1px solid var(--ui-color-divider);
+  overflow-wrap: anywhere;
+}
+
 @container ui-dashboard (inline-size <= 42rem) {
   .ui-dashboard-sidebar {
     block-size: auto;
     border-inline-end: 0;
-    border-block-end: 1px solid var(--ui-dashboard-divider);
+    border-block-end: 1px solid var(--ui-color-divider);
   }
 
   .ui-dashboard-sidebar__top {
@@ -113,8 +114,8 @@ function onNavigationClick(event: MouseEvent) {
     padding: 0;
   }
 
-  .ui-dashboard-sidebar__toggle {
-    display: block;
+  .ui-dashboard-sidebar .ui-dashboard-sidebar__toggle {
+    display: inline-flex;
     margin-inline-start: auto;
   }
 
@@ -122,7 +123,8 @@ function onNavigationClick(event: MouseEvent) {
     max-block-size: 55dvh;
   }
 
-  .ui-dashboard-sidebar__navigation[data-open="false"] {
+  .ui-dashboard-sidebar__navigation[data-open="false"],
+  .ui-dashboard-sidebar__navigation[data-open="false"] + .ui-dashboard-sidebar__footer {
     display: none;
   }
 }
