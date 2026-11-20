@@ -213,3 +213,6 @@ export const catalog: readonly CatalogEntry[] = [
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));
+      "UIDataSurface",
+      "UIDataLabel",
+      "UIDataStatus",

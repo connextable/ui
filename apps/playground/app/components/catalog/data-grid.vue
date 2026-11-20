@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
+import { UIDataStatus, createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
 
 const tasks = [
   { kind: "leaf", id: "1", cells: { task: "시안 검토", owner: "민지", status: "완료" } },
@@ -32,9 +32,13 @@ const DataGrid = createUIDataGridComponents(grid);
         </DataGrid.HeaderRow>
       </DataGrid.Header>
       <DataGrid.Body v-slot="{ row }">
-        <DataGrid.Cell column="task">{{ row.cells.task }}</DataGrid.Cell>
+        <DataGrid.Cell column="task" data-ui-tabular-primary>{{ row.cells.task }}</DataGrid.Cell>
         <DataGrid.Cell column="owner">{{ row.cells.owner }}</DataGrid.Cell>
-        <DataGrid.Cell column="status">{{ row.cells.status }}</DataGrid.Cell>
+        <DataGrid.Cell column="status">
+          <UIDataStatus :tone="row.cells.status === '완료' ? 'success' : row.cells.status === '진행 중' ? 'accent' : 'neutral'">
+            {{ row.cells.status }}
+          </UIDataStatus>
+        </DataGrid.Cell>
       </DataGrid.Body>
     </DataGrid.Root>
   </DataGrid.Provider>

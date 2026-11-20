@@ -2,6 +2,7 @@
 import {
   UITabularRows, UITreeGrid, UITreeGridCell, UITreeGridDisclosure,
   UITreeGridHeader, UITreeGridHeaderCell, UITreeGridRow,
+  UIDataStatus,
 } from "@connextable/ui";
 import { ChevronRight } from "@lucide/vue";
 
@@ -40,7 +41,9 @@ const values = new Map(services.flatMap<[string, string]>(({ id, name, owner, st
           {{ service.name }}
         </UITreeGridCell>
         <UITreeGridCell :value="`${service.id}-owner`" :column-index="2">{{ service.owner }}</UITreeGridCell>
-        <UITreeGridCell :value="`${service.id}-status`" :column-index="3">{{ service.status }}</UITreeGridCell>
+        <UITreeGridCell :value="`${service.id}-status`" :column-index="3">
+          <UIDataStatus :tone="service.status === '운영 중' ? 'success' : 'warning'">{{ service.status }}</UIDataStatus>
+        </UITreeGridCell>
       </UITreeGridRow>
     </UITabularRows>
   </UITreeGrid>

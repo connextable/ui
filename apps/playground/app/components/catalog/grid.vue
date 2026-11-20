@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  UIDataSurface,
   UIGrid,
   UIGridCell,
   UIGridRow,
@@ -11,11 +12,14 @@ const rows = days.map(day => times.map(time => `${day} ${time}`));
 </script>
 
 <template>
-  <UIGrid :rows="rows" label="요일별 예약 시간">
-    <UIGridRow v-for="row in rows" :key="row[0]">
-      <UIGridCell v-for="cell in row" :key="cell" :value="cell" :aria-label="cell" data-ui-tabular-numeric>
-        {{ cell }}
-      </UIGridCell>
-    </UIGridRow>
-  </UIGrid>
+  <UIDataSurface>
+    <template #toolbar><strong>요일별 예약 시간</strong></template>
+    <UIGrid :rows="rows" label="요일별 예약 시간" data-ui-tabular-striped>
+      <UIGridRow v-for="row in rows" :key="row[0]">
+        <UIGridCell v-for="cell in row" :key="cell" :value="cell" :aria-label="cell" data-ui-tabular-numeric>
+          {{ cell }}
+        </UIGridCell>
+      </UIGridRow>
+    </UIGrid>
+  </UIDataSurface>
 </template>

@@ -214,6 +214,9 @@ export function describeCatalogPart(part: string): string | undefined {
   if (tabularPart) return tabularParts[tabularPart];
   if (part === "UITabularRows") return "키가 유지되는 행을 정렬하거나 펼칠 때 위치 전환을 적용합니다.";
   if (part === "UIDataActions") return "표나 가상화 영역 아래에 상태 요약과 조작 버튼을 배치합니다.";
+  if (part === "UIDataSurface") return "데이터 영역의 상단 조작부와 하단 요약을 본문과 함께 묶습니다.";
+  if (part === "UIDataLabel") return "행이나 항목의 이름, 보조 정보와 아이콘을 나란히 표시합니다.";
+  if (part === "UIDataStatus") return "상태 이름을 색과 함께 표시합니다.";
   const suffix = suffixes.find((key) => part.endsWith(key));
   return suffix ? roles[suffix] : undefined;
 }

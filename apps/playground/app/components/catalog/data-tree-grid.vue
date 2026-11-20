@@ -3,8 +3,8 @@ import { createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/
 import { ChevronRight } from "@lucide/vue";
 
 const children = [
-  { kind: "leaf", id: "site", cells: { service: "웹사이트", team: "프런트엔드" } },
-  { kind: "leaf", id: "api", cells: { service: "API", team: "백엔드" } },
+  { kind: "leaf", id: "site", parentGroupID: "platform", depth: 1, cells: { service: "웹사이트", team: "프런트엔드" } },
+  { kind: "leaf", id: "api", parentGroupID: "platform", depth: 1, cells: { service: "API", team: "백엔드" } },
 ] as const;
 
 const tree = useUIDataTreeGrid({
