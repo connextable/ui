@@ -1,0 +1,405 @@
+@layer ui.sectile {
+  :where([data-scope="chart"][data-part="root"]) {
+    --ui-chart-series-1: var(--ui-color-accent);
+    --ui-chart-series-2: #2f8a78;
+    --ui-chart-series-3: #bb8053;
+    --ui-chart-series-4: #686396;
+    --ui-chart-series-5: #5b8ba8;
+    --ui-chart-series-6: #8d6d45;
+    --ui-chart-heatmap-low: var(--ui-color-accent-soft);
+    --ui-chart-heatmap-high: var(--ui-color-accent);
+    --ui-chart-rise: #268275;
+    --ui-chart-fall: var(--ui-color-danger);
+    --ui-chart-label: var(--ui-color-text-muted);
+    --ui-chart-grid: color-mix(in srgb, var(--ui-chart-label) 25%, var(--ui-color-divider));
+    --ui-chart-tick-size: 0.75rem;
+    --ui-chart-category-duration: 340ms;
+
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ui-space-md);
+    min-inline-size: 0;
+    color: var(--ui-color-text);
+  }
+
+  :where([data-scope="chart"][data-part="plot"]) {
+    position: relative;
+    min-inline-size: 0;
+    block-size: var(--ui-chart-plot-height, 17rem);
+  }
+
+  :where(.ui-chart-plot) {
+    block-size: auto;
+  }
+
+  :where(.ui-chart-plot__stage) {
+    position: relative;
+    block-size: var(--ui-chart-plot-height, 17rem);
+  }
+
+  :where(.ui-chart-plot__title) {
+    padding-inline: var(--ui-space-xs);
+    color: var(--ui-chart-label);
+    font-size: var(--ui-chart-tick-size);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  :where(.ui-chart-plot__title--x) {
+    text-align: center;
+  }
+
+  :where([data-scope="chart"][data-part="root"] > .ui-button) {
+    justify-self: start;
+  }
+
+  :where([data-scope="chart"][data-part="plot"][data-ui-chart-adjoining-bars]) {
+    --ui-chart-adjoining-bars: 1;
+  }
+
+  :where([data-scope="chart"][data-part="plot"], .ui-chart-plot__stage) > :where([data-scope="chart"][data-part="renderer"]) {
+    /* Sectile measures CSS pixels before allocating the canvas bitmap. */
+    position: absolute;
+    inset: 0;
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    font: 500 var(--ui-chart-tick-size) / 1 var(--ui-font-sans);
+  }
+
+  :where([data-ui-chart-pan] [data-scope="chart"][data-part="renderer"]) {
+    cursor: grab;
+  }
+
+  :where([data-ui-chart-pan] [data-scope="chart"][data-part="renderer"]:active) {
+    cursor: grabbing;
+  }
+
+  :where(.ui-chart-view-hint) {
+    margin: 0;
+    color: var(--ui-chart-label);
+    font-size: var(--ui-font-size-body-sm);
+  }
+
+  :where(.ui-chart-plot__controls) {
+    position: absolute;
+    z-index: 3;
+    inset-block-start: var(--ui-space-xs);
+    inset-inline-end: var(--ui-space-xs);
+    transition: opacity var(--ui-motion-fast) var(--ui-ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    :where([data-scope="chart"][data-part="root"]:not(:focus-within)
+      .ui-chart-plot__stage:not(:hover):not(:has([aria-expanded="true"])) .ui-chart-plot__controls) {
+      opacity: 0;
+    }
+  }
+
+  :where(.ui-chart-plot__controls:has(> .ui-chart-view-toolbar)) {
+    inset: 0;
+    pointer-events: none;
+  }
+
+  :where(.ui-chart-view-toolbar, .ui-chart-view-toolbar__axes) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ui-space-xs);
+  }
+
+  :where(.ui-chart-view-toolbar) {
+    --ui-chart-view-button-size: 1.75rem;
+  }
+
+  @media (pointer: coarse) {
+    :where(.ui-chart-view-toolbar) {
+      --ui-chart-view-button-size: var(--ui-control-height-small);
+    }
+  }
+
+  :where(.ui-chart-plot__controls > .ui-chart-view-toolbar) {
+    position: absolute;
+    inset: var(--ui-chart-view-insets);
+    pointer-events: none;
+  }
+
+  :where(.ui-chart-plot__controls .ui-chart-view-toolbar__axes) {
+    position: absolute;
+    box-sizing: border-box;
+    padding: var(--ui-space-xs);
+  }
+
+  :where(.ui-chart-plot__controls .ui-chart-view-toolbar__axes[data-orientation="x"]) {
+    left: 0;
+    right: 0;
+    inset-block-end: 0;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  :where(.ui-chart-plot__controls .ui-chart-view-toolbar:has(> [data-orientation="y"]) > [data-orientation="x"]) {
+    left: calc(var(--ui-chart-view-button-size) + 2 * (var(--ui-space-2xs) + var(--ui-space-xs) + 1px));
+  }
+
+  :where(.ui-chart-plot__controls .ui-chart-view-toolbar__axes[data-orientation="y"]) {
+    left: 0;
+    inset-block-start: 50%;
+    translate: 0 -50%;
+  }
+
+  :where(.ui-chart-plot__controls .ui-chart-view-toolbar__axes[data-orientation="y"] > [data-part="view-controls"]) {
+    flex-direction: column;
+  }
+
+  :where(.ui-chart-view-toolbar [data-part="view-controls"]) {
+    box-sizing: border-box;
+    max-inline-size: 100%;
+    gap: 0;
+    padding: var(--ui-space-2xs);
+    border: 1px solid var(--ui-color-divider);
+    border-radius: var(--ui-radius-sm);
+    background: var(--ui-color-surface);
+    pointer-events: auto;
+  }
+
+  :where(.ui-chart-view-toolbar button[data-scope="chart"]) {
+    block-size: var(--ui-chart-view-button-size);
+    inline-size: var(--ui-chart-view-button-size);
+    min-block-size: 0;
+    min-inline-size: 0;
+    padding: 0;
+    border: 0;
+    border-radius: calc(var(--ui-radius-sm) - var(--ui-space-2xs));
+    background: transparent;
+  }
+
+  :where(.ui-chart-view-toolbar button[data-scope="chart"]:hover:enabled) {
+    background: var(--ui-color-surface-hover);
+  }
+
+  :where(.ui-chart-view-toolbar svg) {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  :where([data-ui-chart-themed] > svg > [data-chart-overlay="axes"],
+    [data-ui-chart-themed] > svg > [data-chart-overlay="grid"],
+    [data-ui-chart-themed] > svg > [data-chart-overlay="legend"]) {
+    display: none;
+  }
+
+  :where([data-scope="chart"][data-part="root"]:has(.ui-chart-plot) > svg [data-chart-overlay="axis-label"]) {
+    display: none;
+  }
+
+  :where([data-chart-overlay="axis-tick"], [data-chart-overlay="axis-baseline"]) {
+    stroke: var(--ui-chart-grid);
+  }
+
+  :where([data-chart-overlay="axis-value"], [data-chart-overlay="axis-label"]) {
+    fill: var(--ui-chart-label);
+    font-family: var(--ui-font-sans);
+  }
+
+  :where(
+    [data-ui-chart-themed] > svg > [data-chart-overlay="interaction"] > :is([data-chart-overlay="interaction-active"], [data-chart-overlay="interaction-cursor"]),
+    [data-ui-chart-themed]:not([data-ui-chart-region]) > svg > [data-chart-overlay="interaction"] > [data-chart-overlay="interaction-selection"]
+  ) {
+    display: none;
+  }
+
+  :where([data-ui-chart-themed][data-ui-chart-region] > svg > [data-chart-overlay="interaction"] > [data-chart-overlay="interaction-selection"]) {
+    fill: var(--ui-color-accent);
+    stroke: var(--ui-color-focus);
+    stroke-width: 1px;
+  }
+
+  :where(.ui-chart-legend, .ui-chart-scale-legend) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ui-space-sm) calc(2 * var(--ui-space-md));
+    margin: 0;
+    padding: 0;
+    color: var(--ui-chart-label);
+    font-size: var(--ui-font-size-metadata);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where(.ui-chart-legend) {
+    list-style: none;
+    justify-content: center;
+  }
+
+  :where(.ui-chart-legend[data-align="start"]) {
+    justify-content: flex-start;
+  }
+
+  :where(.ui-chart-center) {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    gap: var(--ui-space-xs);
+    color: var(--ui-chart-label);
+    font-size: var(--ui-font-size-metadata);
+    text-align: center;
+    pointer-events: none;
+  }
+
+  :where(.ui-chart-center__summary) {
+    position: absolute;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  :where(.ui-chart-center__content) {
+    grid-area: 1 / 1;
+    display: grid;
+    place-items: center;
+    gap: var(--ui-space-xs);
+  }
+
+  :where(.ui-chart-center-content-enter-active, .ui-chart-center-content-leave-active) {
+    transition: opacity var(--ui-motion-fast) var(--ui-ease-out);
+  }
+
+  :where(.ui-chart-center-content-enter-from, .ui-chart-center-content-leave-to) {
+    opacity: 0;
+  }
+
+  :where(.ui-chart-center strong) {
+    color: var(--ui-color-text);
+    font-size: 1.875rem;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where(.ui-chart-legend > li) {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-sm);
+  }
+
+  :where(.ui-chart-legend strong) {
+    color: var(--ui-color-text);
+    font-weight: 650;
+  }
+
+  :where(.ui-chart-legend__swatch) {
+    flex: none;
+    inline-size: 0.65rem;
+    block-size: 0.65rem;
+    border-radius: var(--ui-space-2xs);
+  }
+
+  :where(.ui-chart-scale-legend) {
+    justify-content: center;
+    gap: var(--ui-space-xs) var(--ui-space-sm);
+  }
+
+  :where(.ui-chart-scale-legend__ramp) {
+    flex: 0 1 7rem;
+    min-inline-size: 3rem;
+    block-size: var(--ui-space-sm);
+    border-radius: 999px;
+    background: linear-gradient(to right, var(--ui-chart-heatmap-low), var(--ui-chart-heatmap-high));
+  }
+
+  :where(.ui-chart-tooltip) {
+    position: absolute;
+    z-index: 2;
+    inset: 0 auto auto 0;
+    overflow: hidden;
+    width: 0;
+    height: 0;
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-surface);
+    box-shadow: 0 0 0 1px var(--ui-color-border), var(--ui-shadow-elevated);
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-metadata);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.96;
+    transition:
+      opacity var(--ui-motion-fast) var(--ui-ease-out),
+      scale var(--ui-motion-fast) var(--ui-ease-out);
+  }
+
+  :where(.ui-chart-tooltip__band) {
+    position: absolute;
+    z-index: 1;
+    inset: 0 auto auto 0;
+    background: color-mix(in srgb, var(--ui-color-accent) 8%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-accent) 18%, transparent);
+    border-radius: var(--ui-radius-sm);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--ui-motion-fast) var(--ui-ease-out);
+  }
+
+  :where(.ui-chart-tooltip__band[data-open="true"]) {
+    opacity: 1;
+  }
+
+  :where(.ui-chart-tooltip__band[data-follow="true"]) {
+    transition:
+      opacity var(--ui-motion-fast) var(--ui-ease-out),
+      translate var(--ui-motion-fast) var(--ui-ease-out),
+      width var(--ui-motion-fast) var(--ui-ease-out),
+      height var(--ui-motion-fast) var(--ui-ease-out);
+  }
+
+  :where(.ui-chart-tooltip[data-open="true"]) {
+    opacity: 1;
+    scale: 1;
+  }
+
+  :where(.ui-chart-tooltip[data-follow="true"]) {
+    transition:
+      opacity var(--ui-motion-fast) var(--ui-ease-out),
+      scale var(--ui-motion-fast) var(--ui-ease-out),
+      translate var(--ui-motion-fast) var(--ui-ease-out),
+      width var(--ui-motion-standard) var(--ui-ease-out),
+      height var(--ui-motion-standard) var(--ui-ease-out);
+  }
+
+  :where(.ui-chart-tooltip__content) {
+    display: grid;
+    gap: var(--ui-space-xs);
+    box-sizing: border-box;
+    inline-size: max-content;
+    max-inline-size: min(18rem, var(--ui-chart-tooltip-width-limit, 18rem));
+    max-block-size: var(--ui-chart-tooltip-height-limit, none);
+    padding: var(--ui-space-sm) var(--ui-space-md);
+    line-height: var(--ui-line-height-body);
+    overflow-wrap: anywhere;
+  }
+
+  :where(.ui-chart-tooltip__title, .ui-chart-tooltip__value strong) {
+    font-weight: 650;
+  }
+
+  :where(.ui-chart-tooltip__value) {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ui-space-md);
+  }
+
+  :where(.ui-chart-tooltip__value > span) {
+    color: var(--ui-color-text-muted);
+  }
+
+  :where(.ui-chart-tooltip__series) {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-xs);
+  }
+}

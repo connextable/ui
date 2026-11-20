@@ -11,7 +11,7 @@ export default defineConfig({
       cssFileName: "styles",
     },
     rolldownOptions: {
-      external: ["vue", /^@sectile\//],
+      external: ["vue", "@lucide/vue", /^@sectile\//],
     },
   },
 });

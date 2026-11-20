@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@connextable/ui": "workspace:*",
+    "@lucide/vue": "catalog:",
     "nuxt": "4.6.4",
+    "valibot": "1.5.0",
     "vue": "catalog:"
   },
   "devDependencies": {
