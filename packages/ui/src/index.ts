@@ -7,7 +7,11 @@ export { default as UIDashboardNavItem } from "./components/dashboard/UIDashboar
 export { default as UIDashboardPanel } from "./components/dashboard/UIDashboardPanel.vue";
 export { default as UIDashboardSidebar } from "./components/dashboard/UIDashboardSidebar.vue";
 export { default as UIDashboardToolbar } from "./components/dashboard/UIDashboardToolbar.vue";
+export { default as UIDisclosure } from "./components/disclosure/UIDisclosure.vue";
+export { default as UIDisclosureContent } from "./components/disclosure/UIDisclosureContent.vue";
+export { default as UIDisclosureTrigger } from "./components/disclosure/UIDisclosureTrigger.vue";
 export { default as UIInput } from "./components/text-input/UIInput.vue";
+export { default as UIProgress } from "./components/progress/UIProgress.vue";
 export { default as UIRadioGroup, type UIRadioGroupOption } from "./components/selection/UIRadioGroup.vue";
 export { default as UISelect } from "./components/select/UISelect.vue";
 export { default as UISelectContent } from "./components/select/UISelectContent.vue";
