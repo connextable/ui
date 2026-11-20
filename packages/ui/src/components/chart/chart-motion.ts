@@ -141,17 +141,18 @@ function categoryTravel(previous?: ChartPaintAxis, next?: ChartAxisLayout) {
 
 function retainLineEdges(
   previous: ChartPaintFrame,
+  before: ChartPaintBatch | undefined,
   batch: ChartPolylineBatch,
   data: Float64Array,
   from: Float32Array,
   x: ChartAxisLayout,
   y: ChartAxisLayout,
 ) {
-  const before = previous.batches.find(item => item.layerIndex === batch.layerIndex && item.type === "polyline");
-  const geometry = previous.dataBatches?.find(item => item.layerIndex === batch.layerIndex)?.geometry;
+  if (before?.type !== "polyline" || before.offsets.length !== 2) return;
+  const geometry = previous.dataBatches?.find(item => item.layerIndex === before.layerIndex)?.geometry;
   const beforeData = before?.lineData ?? (geometry?.type === "polyline" ? geometry.positions : undefined);
   const plot = previous.layout?.plot;
-  if (!plot || before?.type !== "polyline" || before.offsets.length !== 2 || !beforeData?.length) return;
+  if (!plot || !beforeData?.length) return;
 
   const stride = CHART_POINT_STRIDE;
   let first = 0;
@@ -232,8 +233,13 @@ export function createChartFrameTween(previous: ChartPaintFrame, next: ChartProj
   }
 
   const layout = next.layout;
+  const previousLayerIndices = new Map(previous.layerRevisions?.map(({ layerID }, index) => [layerID, index]));
+  const previousBatches = new Map(previous.batches.map(batch => [batch.layerIndex, batch]));
   let hasAnimatedMarks = false;
   const plans = next.batches.map(batch => {
+    const layerID = next.layerRevisions?.[batch.layerIndex]?.layerID;
+    const previousLayer = layerID === undefined ? batch.layerIndex : previousLayerIndices.get(layerID);
+    const previousBatch = previousLayer === undefined ? undefined : previousBatches.get(previousLayer);
     const data = next.dataBatches?.find(({ layerIndex }) => layerIndex === batch.layerIndex);
     const x = layout?.axes.find(({ axis }) => axis.id === data?.xAxisID)
       ?? layout?.axes.find(({ axis }) => axis.orientation === "x");
@@ -305,16 +311,12 @@ export function createChartFrameTween(previous: ChartPaintFrame, next: ChartProj
 
     if (movingLineWindow && batch.offsets.length === 2 && lineData?.length && y && oldY?.axis.scale === y.axis.scale
       && y.axis.scale !== "categorical") {
-      const tween = retainLineEdges(previous, batch, lineData, from, x, y);
+      const tween = retainLineEdges(previous, previousBatch, batch, lineData, from, x, y);
       if (tween) return tween;
     }
 
     if (categoricalBars && previous.generation !== next.generation) {
-      const layerID = next.layerRevisions?.[batch.layerIndex]?.layerID;
-      const previousLayer = layerID === undefined
-        ? batch.layerIndex
-        : previous.layerRevisions?.findIndex(layer => layer.layerID === layerID);
-      const previousBars = previous.batches.find(item => item.layerIndex === previousLayer);
+      const previousBars = previousBatch;
       if (previousBars?.type === "rectangle") {
         const active = new Set(Array.from(batch.identityIndices, index => next.identities[index]));
         const departing: { id: DatumID; rectangle: Float32Array; baseline: number }[] = [];
@@ -349,9 +351,7 @@ export function createChartFrameTween(previous: ChartPaintFrame, next: ChartProj
         }
       }
     }
-    const previousCell = scrollX || scrollY
-      ? previous.batches.find(item => item.type === "cell" && item.layerIndex === batch.layerIndex)
-      : undefined;
+    const previousCell = scrollX || scrollY ? previousBatch : undefined;
     if (batch.type === "cell" && previousCell?.type === "cell") {
       const nextIds = new Set(Array.from(batch.identityIndices, index => next.identities[index]));
       const exiting = Array.from(previousCell.identityIndices, (index, item) =>

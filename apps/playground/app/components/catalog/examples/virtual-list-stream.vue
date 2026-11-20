@@ -40,7 +40,7 @@ onScopeDispose(() => clearTimeout(timer));
   </UIVirtualList>
   <UIDataActions>
     <output aria-live="polite">{{ loading ? '다음 기록을 불러오는 중' : `${entries.length} / ${total}건 불러옴` }}</output>
-    <UIButton size="sm" variant="outline" :disabled="entries.length === total" :loading="loading"
+    <UIButton size="sm" variant="outline" :loading="loading"
       @click="list?.scrollToID(entries.length, 'end')">불러온 끝으로 이동</UIButton>
   </UIDataActions>
 </template>

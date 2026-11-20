@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { UIButton, UIDataActions, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
 
 const failNext = ref(false);
@@ -25,34 +25,37 @@ const table = useUIDataTable({
   },
 });
 const Table = createUIDataTableComponents(table);
+const failed = computed(() => table.status.value === "error");
 
-function simulateFailure() {
-  failNext.value = true;
+function requestAgain() {
+  failNext.value = !failed.value;
   table.reload();
 }
 </script>
 
 <template>
   <Table.Provider>
-  <Table.Root aria-label="서비스 상태" :aria-busy="table.status.value === 'loading'">
-    <Table.Header>
-      <Table.HeaderRow>
-        <Table.ColumnHeader column="service">서비스</Table.ColumnHeader>
-        <Table.ColumnHeader column="status">상태</Table.ColumnHeader>
-      </Table.HeaderRow>
-    </Table.Header>
-    <Table.Body v-slot="{ row }">
-      <Table.Cell column="service">{{ row.cells.service }}</Table.Cell>
-      <Table.Cell column="status">{{ row.cells.status }}</Table.Cell>
-    </Table.Body>
-  </Table.Root>
+    <Table.Root aria-label="서비스 상태" :aria-busy="table.status.value === 'loading'">
+      <Table.Header>
+        <Table.HeaderRow>
+          <Table.ColumnHeader column="service">서비스</Table.ColumnHeader>
+          <Table.ColumnHeader column="status">상태</Table.ColumnHeader>
+        </Table.HeaderRow>
+      </Table.Header>
+      <Table.Body v-slot="{ row }">
+        <Table.Cell column="service">{{ row.cells.service }}</Table.Cell>
+        <Table.Cell column="status">{{ row.cells.status }}</Table.Cell>
+      </Table.Body>
+    </Table.Root>
   </Table.Provider>
   <UIDataActions>
     <output aria-live="polite">
-      {{ table.status.value === 'error' ? '불러오지 못했습니다. 마지막 응답을 표시합니다.'
+      {{ failed ? '불러오지 못했습니다. 마지막 응답을 표시합니다.'
         : table.status.value === 'loading' ? '가상 응답을 기다리는 중' : '서비스 2개 · 최신 응답' }}
     </output>
-    <UIButton v-if="table.status.value === 'error'" size="sm" @click="table.reload()">다시 시도</UIButton>
-    <UIButton v-else size="sm" variant="outline" :loading="table.status.value === 'loading'" @click="simulateFailure">오류 재현</UIButton>
+    <UIButton size="sm" :variant="failed ? 'solid' : 'outline'"
+      :loading="table.status.value === 'loading'" @click="requestAgain">
+      {{ failed ? '다시 시도' : '오류 재현' }}
+    </UIButton>
   </UIDataActions>
 </template>
