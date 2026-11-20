@@ -1,0 +1,307 @@
+@layer ui.sectile {
+  :where([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-table"],
+    [data-scope="data-grid"], [data-scope="data-tree-grid"])[data-part="root"] {
+    --ui-tabular-cell-padding: var(--ui-control-padding-inline);
+    --ui-tabular-cell-height: var(--ui-control-height-small);
+    --ui-tabular-action-size: 1.5rem;
+
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-inline-size: 0;
+    border: 1px solid var(--ui-color-divider);
+    border-radius: var(--ui-control-radius);
+    background: var(--ui-color-surface);
+    font-size: var(--ui-font-size-body-sm);
+    line-height: var(--ui-line-height-body);
+  }
+
+  :where([data-ui-tabular-scroll]) {
+    overflow: auto;
+    max-inline-size: 100%;
+    border: 1px solid var(--ui-color-divider);
+    border-radius: var(--ui-control-radius);
+    overscroll-behavior-inline: contain;
+  }
+
+  :where([data-ui-tabular-scroll]) > :where([data-part="root"]) {
+    border: 0;
+    border-radius: 0;
+  }
+
+  :where([data-ui-tabular-scroll][tabindex]:focus-visible) {
+    outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+    outline-offset: var(--ui-focus-ring-offset);
+  }
+
+  :where([data-ui-tabular-scroll]) :where([data-part="column-header"], [data-part="headerCell"]) {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+  }
+
+  :where([data-ui-tabular-numeric]) {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"],
+    [data-scope="grid"], [data-scope="tree-grid"]):where([data-part="row"]) {
+    background: var(--ui-color-surface);
+    transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
+
+    &:where(:hover, :focus-within) {
+      background: var(--ui-color-surface-readonly);
+    }
+
+    &:where([aria-selected="true"], :has(> [data-part="cell"] input:checked[data-part$="selection-control"])) {
+      background: var(--ui-color-accent-soft);
+    }
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"],
+    [data-scope="grid"], [data-scope="tree-grid"]):where([data-part="cell"][aria-disabled="true"]) {
+    color: var(--ui-color-disabled);
+  }
+
+  :where(table[data-scope="data-table"][data-part="root"]) {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  :where([data-scope="data-table"][data-part="caption"]) {
+    padding-block-end: var(--ui-space-sm);
+    color: var(--ui-color-text-muted);
+    text-align: start;
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"])
+    :where(.ui-tabular-empty) {
+    padding: var(--ui-space-md) var(--ui-tabular-cell-padding);
+    border-block-start: 1px solid var(--ui-color-divider);
+    color: var(--ui-color-text-muted);
+    text-align: center;
+  }
+
+  :where([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-table"],
+    [data-scope="data-grid"], [data-scope="data-tree-grid"]) {
+    &:where([data-part="cell"], [data-part="column-header"], [data-part="headerCell"]) {
+      box-sizing: border-box;
+      padding: var(--ui-space-sm) var(--ui-tabular-cell-padding);
+      text-align: start;
+      vertical-align: middle;
+      overflow-wrap: anywhere;
+    }
+
+    &:where([data-part="column-header"], [data-part="headerCell"]) {
+      position: relative;
+      background: var(--ui-color-surface-muted);
+      font-weight: 650;
+    }
+
+    &:where([data-part="cell"]) {
+      border-block-start: 1px solid var(--ui-color-divider);
+    }
+
+    &:where([data-part="column-header"]):has(> :where([data-part="column-resize-handle"])) {
+      padding-inline-end: var(--ui-tabular-action-size);
+    }
+
+    &:where([data-part="column-resize-handle"]) {
+      position: absolute;
+      inset-block: 0;
+      inset-inline-end: 0;
+      inline-size: var(--ui-tabular-action-size);
+      min-inline-size: 0;
+      min-block-size: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      cursor: col-resize;
+    }
+
+    &:where([data-part="column-resize-handle"])::after {
+      content: "";
+      inline-size: 1px;
+      block-size: 50%;
+      background: var(--ui-color-border);
+    }
+
+    &:where([data-part="cell"]) > :where([data-part="editor"], input:not([type="checkbox"], [type="radio"])) {
+      box-sizing: border-box;
+      inline-size: 100%;
+      min-inline-size: 0;
+      min-block-size: var(--ui-tabular-action-size);
+      margin-block: calc((1em * var(--ui-line-height-body) - var(--ui-tabular-action-size)) / 2);
+      padding: 0 var(--ui-space-sm);
+    }
+
+    &:where(input[data-part="filter-control"]) {
+      display: block;
+      inline-size: 100%;
+      min-inline-size: 0;
+      min-block-size: var(--ui-control-height-small);
+    }
+
+    &:where([data-scope="data-table"]):where(input[data-part="filter-control"]) {
+      margin-block-start: var(--ui-space-xs);
+    }
+  }
+
+  :where([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-grid"], [data-scope="data-tree-grid"]) {
+    &:where([data-part="root"]) {
+      overflow: clip;
+    }
+
+    &:where([data-part="row"], [data-part="header-row"], [data-scope="tree-grid"][data-part="header"]) {
+      display: flex;
+    }
+
+    &:where([data-part="cell"], [data-part="column-header"], [data-part="headerCell"]) {
+      display: flex;
+      flex: 1 1 auto;
+      align-items: center;
+      gap: var(--ui-space-xs);
+      inline-size: 0;
+      min-inline-size: 0;
+      min-block-size: var(--ui-tabular-cell-height);
+    }
+
+    &:where([data-part="column-header"]):has(> :where([data-part="filter-control"])) {
+      display: grid;
+      align-content: center;
+    }
+  }
+
+  :where([data-scope="data-table"]):where([data-part="cell"], [data-part="column-header"]) {
+    block-size: var(--ui-tabular-cell-height);
+  }
+
+  :where([data-scope="data-table"][data-part="header-row"]:first-child > [data-part="column-header"]:first-child) {
+    border-start-start-radius: max(0px, calc(var(--ui-control-radius) - 1px));
+  }
+
+  :where([data-scope="data-table"][data-part="header-row"]:first-child > [data-part="column-header"]:last-child) {
+    border-start-end-radius: max(0px, calc(var(--ui-control-radius) - 1px));
+  }
+
+  :where([data-scope="grid"][data-part="root"], [data-scope="tree-grid"][data-part="root"])
+    > :where([data-part="row"]:first-child)
+    > :where([data-part="cell"]) {
+    border-block-start: 0;
+  }
+
+  :where([data-scope="tree-grid"], [data-scope="data-tree-grid"]):where([data-part="row"]) {
+    --ui-tabular-tree-depth: 1;
+  }
+
+  @supports (padding-inline-start: calc(attr(aria-level type(<number>), 1) * 1px)) {
+    :where([data-scope="tree-grid"], [data-scope="data-tree-grid"]):where([data-part="row"]) {
+      --ui-tabular-tree-depth: attr(aria-level type(<number>), 1);
+    }
+  }
+
+  :where([data-scope="tree-grid"][data-part="row"] > [data-part="cell"]:first-child,
+    [data-scope="data-tree-grid"][data-part="row"] > [data-part="cell"][data-ui-tree-column]) {
+    --ui-tabular-tree-disclosure-space: 0px;
+
+    column-gap: 0;
+  }
+
+  :where([data-scope="tree-grid"][data-part="row"] > [data-part="cell"]:first-child,
+    [data-scope="data-tree-grid"][data-part="row"] > [data-part="cell"][data-ui-tree-column]):where(:not(:has(> [data-part="disclosure"], > [data-part="row-disclosure"]))) {
+    --ui-tabular-tree-disclosure-space: calc(var(--ui-tabular-action-size) + var(--ui-space-xs));
+  }
+
+  :where([data-scope="tree-grid"][data-part="row"] > [data-part="cell"]:first-child,
+    [data-scope="data-tree-grid"][data-part="row"] > [data-part="cell"][data-ui-tree-column])::before {
+    content: "";
+    flex: 0 0 calc((var(--ui-tabular-tree-depth) - 1) * var(--ui-space-md) + var(--ui-tabular-tree-disclosure-space));
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"], [data-scope="tree-grid"])
+    :where(button[data-part="sort-trigger"], button[data-part="disclosure"], button[data-part="row-disclosure"]) {
+    flex: none;
+    min-block-size: var(--ui-tabular-action-size);
+    min-inline-size: var(--ui-tabular-action-size);
+    padding: 0;
+    border: 0;
+    border-radius: var(--ui-radius-sm);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+  }
+
+  :where([data-scope="tree-grid"], [data-scope="data-tree-grid"]):where(button[data-part="disclosure"], button[data-part="row-disclosure"]) {
+    inline-size: var(--ui-tabular-action-size);
+    block-size: var(--ui-tabular-action-size);
+    margin-block: calc((1em * var(--ui-line-height-body) - var(--ui-tabular-action-size)) / 2);
+    margin-inline-end: var(--ui-space-xs);
+    color: var(--ui-color-text-muted);
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"], [data-scope="tree-grid"])
+    :where(button[data-part="sort-trigger"], button[data-part="disclosure"], button[data-part="row-disclosure"], button[data-part="column-resize-handle"]):where(:hover:not(:disabled, [aria-disabled="true"])) {
+    background: var(--ui-color-surface-hover);
+  }
+
+  :where([data-scope="tree-grid"][data-part="disclosure"][data-state="open"],
+    [data-scope="data-tree-grid"][data-part="row-disclosure"][aria-expanded="true"]) > :where(svg) {
+    rotate: 90deg;
+  }
+
+  :where([data-scope="tree-grid"][data-part="disclosure"],
+    [data-scope="data-tree-grid"][data-part="row-disclosure"]) > :where(svg) {
+    transition: rotate var(--ui-motion-fast) var(--ui-ease-out);
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"]):where(
+    input[data-part="selection-control"], input[data-part="row-selection-control"], button[data-part="bulk-selection-control"]
+  ) {
+    flex: none;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    min-inline-size: 0;
+    min-block-size: 0;
+    margin: 0;
+    padding: 0;
+    border-color: var(--ui-color-border-strong);
+    border-radius: 0.3125rem;
+    vertical-align: middle;
+    accent-color: var(--ui-color-accent);
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"])
+    :where(button[data-part="bulk-selection-control"][aria-checked="true"], button[data-part="bulk-selection-control"][aria-checked="mixed"]) {
+    border-color: var(--ui-color-accent);
+    background: var(--ui-color-accent);
+    color: var(--ui-color-on-accent);
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"])
+    :where([data-part="bulk-selection-control"]) > :where(.lucide-check, .lucide-minus) {
+    display: none;
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"])
+    :where([data-part="bulk-selection-control"][aria-checked="true"] > .lucide-check,
+      [data-part="bulk-selection-control"][aria-checked="mixed"] > .lucide-minus) {
+    display: block;
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"])
+    :where([data-part="sort-trigger"] > .lucide) {
+    color: var(--ui-color-text-muted);
+  }
+
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"]):where([data-part="column-header"]) {
+    & :where([data-part="sort-trigger"]) > :where(.lucide-arrow-up, .lucide-arrow-down),
+    &:where([aria-sort="ascending"], [aria-sort="descending"]) :where([data-part="sort-trigger"]) > :where(.lucide-arrow-up-down) {
+      display: none;
+    }
+
+    &:where([aria-sort="ascending"]) :where([data-part="sort-trigger"]) > :where(.lucide-arrow-up),
+    &:where([aria-sort="descending"]) :where([data-part="sort-trigger"]) > :where(.lucide-arrow-down) {
+      display: block;
+    }
+  }
+}
