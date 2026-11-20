@@ -17,5 +17,12 @@
   .ui-tabular-rows-enter-from {
     opacity: 0;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-tabular-rows-move,
+    .ui-tabular-rows-enter-active {
+      transition: none;
+    }
+  }
 }
 </style>

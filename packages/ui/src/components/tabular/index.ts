@@ -4,6 +4,9 @@ export {
   GridCell as UIGridCell,
 } from "@sectile/vue/grid";
 export { default as UIDataActions } from "../data/UIDataActions.vue";
+export { default as UIDataLabel } from "../data/UIDataLabel.vue";
+export { default as UIDataSurface } from "../data/UIDataSurface.vue";
+export { default as UIDataStatus } from "../data/UIDataStatus.vue";
 export { default as UITabularRows } from "./UITabularRows.vue";
 export {
   useDataTable as useUIDataTable,
