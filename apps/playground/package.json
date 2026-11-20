@@ -13,6 +13,8 @@
     "vue": "catalog:"
   },
   "devDependencies": {
+    "@types/node": "26.6.6",
+    "shiki": "4.6.0",
     "typescript": "catalog:",
     "vue-tsc": "catalog:"
   }

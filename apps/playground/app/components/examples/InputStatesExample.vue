@@ -1,0 +1,43 @@
+<script setup lang="ts">
+import { UIInput } from "@connextable/ui";
+import { computed, ref } from "vue";
+
+const email = ref("team");
+const hasEmailError = computed(
+  () => email.value !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value),
+);
+</script>
+
+<template>
+  <div class="input-error">
+    <label for="workspace-email">팀 이메일</label>
+    <UIInput
+      id="workspace-email"
+      v-model="email"
+      :aria-invalid="hasEmailError"
+      aria-describedby="workspace-email-hint"
+    />
+    <span id="workspace-email-hint" class="input-error__hint">
+      <template v-if="hasEmailError">이메일 형식으로 입력하세요. </template>
+      예시 team@example.com
+    </span>
+  </div>
+</template>
+
+<style scoped>
+.input-error {
+  display: grid;
+  inline-size: min(100%, 26rem);
+  gap: 0.5rem;
+}
+
+.input-error label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.input-error__hint {
+  color: var(--ui-color-text-muted);
+  font-size: 0.8125rem;
+}
+</style>

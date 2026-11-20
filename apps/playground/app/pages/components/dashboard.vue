@@ -1,73 +1,77 @@
 <script setup lang="ts">
-import {
-  UIDashboard,
-  UIDashboardNavGroup,
-  UIDashboardNavItem,
-  UIDashboardSidebar,
-} from "@connextable/ui";
+import { onMounted, onScopeDispose, ref } from "vue";
+import DashboardAnatomy from "~/components/examples/DashboardAnatomy.vue";
+import DashboardExample from "~/components/examples/DashboardExample.vue";
+import source from "~/components/examples/DashboardExample.vue?example-code&raw";
+import { dashboardParts } from "~/data/dashboard-parts";
 
 definePageMeta({
   title: "UIDashboard",
   category: "레이아웃",
+  description: "사이드바, 상단 바, 툴바, 상세 패널을 조합해 화면의 목적에 맞는 레이아웃을 구성합니다.",
+  componentParts: Object.keys(dashboardParts),
 });
+
+const route = useRoute();
+const router = useRouter();
+const selectedPart = ref("UIDashboardPanel");
+
+function selectLinkedPart(hash: string) {
+  const name = hash.slice(1);
+  if (Object.hasOwn(dashboardParts, name)) selectedPart.value = name;
+}
+
+onMounted(() => selectLinkedPart(route.hash));
+// Re-select the part when the current sidebar link is activated again.
+const removeRouteHook = router.afterEach((to) => {
+  if (to.path === route.path) selectLinkedPart(to.hash);
+});
+onScopeDispose(removeRouteHook);
 </script>
 
 <template>
-  <section class="playground-example" aria-labelledby="dashboard-example">
-    <h2 id="dashboard-example">사이드바와 본문</h2>
-    <UIDashboard class="dashboard-example">
-      <template #sidebar>
-        <UIDashboardSidebar label="미리보기 탐색">
-          <UIDashboardNavGroup label="워크스페이스">
-            <UIDashboardNavItem>
-              <a href="#dashboard-overview" aria-current="location">개요</a>
-            </UIDashboardNavItem>
-          </UIDashboardNavGroup>
-        </UIDashboardSidebar>
-      </template>
-      <div class="dashboard-example__content">
-        <h3 id="dashboard-overview" tabindex="-1">개요</h3>
-        <dl>
-          <dt>패키지</dt>
-          <dd>@connextable/ui</dd>
-        </dl>
-      </div>
-    </UIDashboard>
-  </section>
+  <div>
+    <PlaygroundExample
+      id="dashboard-example"
+      title="레이아웃 조합"
+      description="사이드바를 포함한 화면, 목록과 상세, 단일 패널을 전환해 보세요."
+      :source="source"
+      wide
+    >
+      <DashboardExample />
+    </PlaygroundExample>
+    <section class="dashboard-anatomy" aria-labelledby="dashboard-parts-title">
+      <span v-for="(_, name) in dashboardParts" :id="name" :key="name" class="dashboard-anatomy__anchor" aria-hidden="true" />
+      <h2 id="dashboard-parts-title" data-playground-heading tabindex="-1">구성도</h2>
+      <p>영역이나 컴포넌트 이름을 가리키면 해당 위치에 점선과 이름이 표시됩니다.</p>
+      <DashboardAnatomy v-model="selectedPart" />
+    </section>
+  </div>
 </template>
 
 <style scoped>
-.dashboard-example {
-  --ui-dashboard-height: 18rem;
-  --ui-dashboard-sidebar-width: 11rem;
-
-  overflow: clip;
-  border: 1px solid var(--ui-dashboard-divider);
-  border-radius: var(--ui-control-radius);
+.dashboard-anatomy {
+  margin-block-end: 3rem;
 }
 
-.dashboard-example__content {
-  padding: 1.25rem;
-}
-
-.dashboard-example__content h3 {
-  margin-block-start: 0;
-  scroll-margin-block-start: 8rem;
-}
-
-.dashboard-example__content dl {
-  display: grid;
-  gap: 0.25rem;
+.dashboard-anatomy h2 {
   margin: 0;
-  overflow-wrap: anywhere;
+  font-size: 1.5rem;
 }
 
-.dashboard-example__content dt {
-  font-size: 0.875rem;
+.dashboard-anatomy__anchor {
+  display: block;
+  scroll-margin-block-start: 2rem;
 }
 
-.dashboard-example__content dd {
-  margin: 0;
-  font-family: ui-monospace, monospace;
+.dashboard-anatomy p {
+  margin: 0.625rem 0 1rem;
+  color: var(--ui-color-text-muted);
+}
+
+@media (width <= 42rem) {
+  .dashboard-anatomy__anchor {
+    scroll-margin-block-start: 5.25rem;
+  }
 }
 </style>

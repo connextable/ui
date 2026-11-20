@@ -1,18 +1,26 @@
 <script setup lang="ts">
 import {
   UIDashboard,
+  UIDashboardNavbar,
   UIDashboardNavGroup,
   UIDashboardNavItem,
+  UIDashboardPanel,
   UIDashboardSidebar,
 } from "@connextable/ui";
-import { computed } from "vue";
+import { computed, onMounted, ref, useTemplateRef } from "vue";
 
-type CatalogItem = { path: string; title: string };
+type CatalogItem = { path: string; title: string; parts: readonly string[] };
 
 const route = useRoute();
 const router = useRouter();
+const documentContent = useTemplateRef<HTMLElement>("documentContent");
+const mounted = ref(false);
+const selectedPart = computed(() => mounted.value ? route.hash.slice(1) : "");
 const title = computed(() =>
   typeof route.meta.title === "string" ? route.meta.title : undefined,
+);
+const description = computed(() =>
+  typeof route.meta.description === "string" ? route.meta.description : undefined,
 );
 const categories = new Map<string, CatalogItem[]>();
 
@@ -22,7 +30,7 @@ for (const { path, meta, aliasOf } of router.getRoutes()) {
   }
 
   const items = categories.get(meta.category) ?? [];
-  items.push({ path, title: meta.title });
+  items.push({ path, title: meta.title, parts: meta.componentParts ?? [] });
   categories.set(meta.category, items);
 }
 
@@ -35,6 +43,8 @@ useHead(() => ({
   title: title.value ? `${title.value} · Connextable UI` : "Connextable UI",
   htmlAttrs: { lang: "ko" },
 }));
+
+onMounted(() => { mounted.value = true; });
 </script>
 
 <template>
@@ -43,23 +53,66 @@ useHead(() => ({
       <UIDashboardSidebar label="컴포넌트">
         <template #header>
           <a class="playground-skip" href="#playground-content">본문으로 건너뛰기</a>
-          <NuxtLink class="playground-brand" to="/">Connextable UI</NuxtLink>
+          <NuxtLink class="playground-brand" to="/">
+            <span class="playground-brand__mark" aria-hidden="true"></span>
+            Connextable UI
+          </NuxtLink>
         </template>
+        <UIDashboardNavGroup label="시작하기">
+          <UIDashboardNavItem>
+            <NuxtLink to="/">디자인 시스템</NuxtLink>
+          </UIDashboardNavItem>
+        </UIDashboardNavGroup>
         <UIDashboardNavGroup
           v-for="group in groups"
           :key="group.category"
           :label="group.category"
         >
           <UIDashboardNavItem v-for="item in group.items" :key="item.path">
-            <NuxtLink :to="item.path">{{ item.title }}</NuxtLink>
+            <NuxtLink
+              :to="item.path"
+              :aria-current-value="route.path === item.path && item.parts.includes(selectedPart) ? 'false' : 'page'"
+            >
+              {{ item.title }}
+            </NuxtLink>
+            <template v-if="item.parts.length" #children>
+              <UIDashboardNavItem v-for="part in item.parts" :key="part">
+                <NuxtLink
+                  :to="{ path: item.path, hash: `#${part}` }"
+                  :aria-current-value="selectedPart === part ? 'location' : 'false'"
+                >{{ part }}</NuxtLink>
+              </UIDashboardNavItem>
+            </template>
           </UIDashboardNavItem>
         </UIDashboardNavGroup>
+        <template #footer>
+          <code class="playground-package">@connextable/ui</code>
+        </template>
       </UIDashboardSidebar>
     </template>
-    <main id="playground-content" class="playground-content" tabindex="-1">
-      <h1 v-if="title">{{ title }}</h1>
-      <NuxtPage />
-    </main>
+    <UIDashboardPanel as="main" id="playground-content" class="playground-main" tabindex="-1">
+      <template #header>
+        <UIDashboardNavbar>
+          <p class="playground-location">
+            Playground
+            <template v-if="route.meta.category">
+              <span aria-hidden="true">/</span>
+              {{ route.meta.category }}
+            </template>
+          </p>
+        </UIDashboardNavbar>
+      </template>
+      <div class="playground-document">
+        <header v-if="title" class="playground-document__header">
+          <h1>{{ title }}</h1>
+          <p v-if="description" class="playground-intro">{{ description }}</p>
+        </header>
+        <PlaygroundOutline :content="documentContent" class="playground-document__outline" />
+        <article ref="documentContent" class="playground-document__content">
+          <NuxtPage />
+        </article>
+      </div>
+    </UIDashboardPanel>
   </UIDashboard>
 </template>
 
@@ -68,7 +121,8 @@ body {
   margin: 0;
   background: var(--ui-color-surface);
   color: var(--ui-color-text);
-  font-family: system-ui, sans-serif;
+  font-family: var(--ui-font-sans);
+  line-height: var(--ui-line-height-body);
 }
 
 .playground-skip {
@@ -88,10 +142,32 @@ body {
 }
 
 .playground-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
   color: inherit;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 750;
   text-decoration: none;
+}
+
+.playground-brand__mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: 0.625rem;
+  background: var(--ui-color-accent);
+  color: var(--ui-color-on-accent);
+}
+
+.playground-brand__mark::before {
+  inline-size: 0.75rem;
+  block-size: 0.625rem;
+  border-block: 2px solid currentColor;
+  transform: skew(-26deg);
+  content: "";
 }
 
 .playground-brand:focus-visible,
@@ -100,36 +176,103 @@ body {
   outline-offset: 3px;
 }
 
-.playground-content {
-  box-sizing: border-box;
-  max-inline-size: 72rem;
-  margin-inline: auto;
-  padding: clamp(1.25rem, 4vw, 3.5rem);
+.playground-package {
+  color: var(--ui-color-text-muted);
+  font-size: 0.75rem;
+}
+
+.playground-main {
+  --ui-dashboard-bar-padding-inline: clamp(1.25rem, 4vw, 3rem);
+  --ui-dashboard-panel-padding: clamp(1.25rem, 4vw, 3rem);
   scroll-margin-block-start: 5rem;
 }
 
-.playground-content h1 {
-  margin: 0 0 2rem;
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  line-height: 1.2;
+.playground-location {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin: 0;
+  color: var(--ui-color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+
+.playground-location span {
+  color: var(--ui-color-border-strong);
+}
+
+.playground-document {
+  display: grid;
+  grid-template:
+    "header outline" auto
+    "content outline" 1fr
+    / minmax(0, 1fr) 11rem;
+  align-items: start;
+  gap: 2rem clamp(1.5rem, 4vw, 3rem);
+  max-inline-size: 76rem;
+  margin-inline: auto;
+}
+
+.playground-document__header {
+  grid-area: header;
+  padding-block-end: 1.75rem;
+  border-block-end: 1px solid var(--ui-color-divider);
+}
+
+.playground-document__content {
+  grid-area: content;
+  min-inline-size: 0;
+}
+
+.playground-document__outline {
+  position: sticky;
+  grid-area: outline;
+  inset-block-start: 1.5rem;
+  max-block-size: calc(100dvh - 3rem);
+  overflow-y: auto;
+  padding-block: 0.375rem;
+}
+
+.playground-document h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  letter-spacing: -0.045em;
+  line-height: 1.1;
   overflow-wrap: anywhere;
 }
 
-.playground-example {
-  display: grid;
-  gap: 0.75rem;
-  margin-block-end: 1.5rem;
+.playground-intro {
+  max-inline-size: 52ch;
+  margin: 0.75rem 0 0;
+  color: var(--ui-color-text-muted);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
-.playground-example > h2 {
-  margin: 0;
-  font-size: 1.0625rem;
+[data-playground-heading] {
+  scroll-margin-block-start: 2rem;
 }
 
-.playground-example__preview {
-  min-inline-size: 0;
-  padding: clamp(1rem, 3vw, 1.5rem);
-  border: 1px solid var(--ui-dashboard-divider);
-  border-radius: var(--ui-control-radius);
+@media (width < 68rem) {
+  .playground-document {
+    grid-template:
+      "header"
+      "outline"
+      "content"
+      / minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .playground-document__outline {
+    position: static;
+    max-block-size: none;
+    overflow: visible;
+  }
+}
+
+@media (width <= 42rem) {
+  [data-playground-heading] {
+    scroll-margin-block-start: 5.25rem;
+  }
 }
 </style>

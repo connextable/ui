@@ -1,38 +1,53 @@
 <script setup lang="ts">
-import { UIButton } from "@connextable/ui";
-import { ref } from "vue";
+import ButtonExample from "~/components/examples/ButtonExample.vue";
+import buttonExampleSource from "~/components/examples/ButtonExample.vue?example-code&raw";
+import ButtonVariantExample from "~/components/examples/ButtonVariantExample.vue";
+import buttonVariantExampleSource from "~/components/examples/ButtonVariantExample.vue?example-code&raw";
+import ButtonSizeExample from "~/components/examples/ButtonSizeExample.vue";
+import buttonSizeExampleSource from "~/components/examples/ButtonSizeExample.vue?example-code&raw";
+import ButtonDisabledExample from "~/components/examples/ButtonDisabledExample.vue";
+import buttonDisabledExampleSource from "~/components/examples/ButtonDisabledExample.vue?example-code&raw";
 
 definePageMeta({
   title: "UIButton",
-  category: "폼",
+  category: "동작",
+  description: "강조 수준과 크기를 골라 화면에서 각 동작의 우선순위를 표현합니다.",
 });
-
-const activations = ref(0);
 </script>
 
 <template>
-  <section class="playground-example" aria-labelledby="button-example">
-    <h2 id="button-example">기본과 비활성 상태</h2>
-    <div class="playground-example__preview button-example">
-      <div class="button-example__controls">
-        <UIButton @click="activations++">실행</UIButton>
-        <UIButton disabled>비활성</UIButton>
-      </div>
-      <output>실행 횟수 {{ activations }}</output>
-    </div>
-  </section>
+  <div>
+    <PlaygroundExample
+      id="button-example"
+      title="기본 동작"
+      description="click 이벤트로 버튼 동작을 연결합니다."
+      :source="buttonExampleSource"
+    >
+      <ButtonExample />
+    </PlaygroundExample>
+    <PlaygroundExample
+      id="button-variant"
+      title="스타일"
+      description="variant만 바꿔 같은 크기의 버튼을 비교합니다."
+      :source="buttonVariantExampleSource"
+    >
+      <ButtonVariantExample />
+    </PlaygroundExample>
+    <PlaygroundExample
+      id="button-size"
+      title="크기"
+      description="크기를 선택해 size에 따른 버튼 높이를 비교합니다."
+      :source="buttonSizeExampleSource"
+    >
+      <ButtonSizeExample />
+    </PlaygroundExample>
+    <PlaygroundExample
+      id="button-disabled"
+      title="비활성"
+      description="disabled를 지정하면 눌러도 동작하지 않습니다."
+      :source="buttonDisabledExampleSource"
+    >
+      <ButtonDisabledExample />
+    </PlaygroundExample>
+  </div>
 </template>
-
-<style scoped>
-.button-example {
-  display: grid;
-  justify-items: start;
-  gap: 0.875rem;
-}
-
-.button-example__controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-</style>
