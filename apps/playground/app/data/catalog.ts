@@ -10,6 +10,18 @@ interface CatalogEntry {
 
 export const catalog: readonly CatalogEntry[] = [
   {
+    slug: "virtualizer",
+    title: "UIVirtualizer",
+    category: "가상화",
+    description: "사용자가 정의한 배치 방식에서 보이는 항목만 렌더링합니다.",
+    wide: true,
+    deferPreviews: true,
+    parts: [
+      "UIVirtualizerSurface", "UIVirtualizerItem", "UIVirtualizerHeader", "UIVirtualizerFooter", "useUIVirtualizer",
+      "createUniformExtentIndex", "createDenseTrackGridLayout", "trackGridLayoutStrategy",
+    ],
+  },
+  {
     slug: "grid",
     title: "UIGrid",
     category: "표와 그리드",
@@ -118,6 +130,38 @@ export const catalog: readonly CatalogEntry[] = [
       "useUIChartLayerSelector",
       "useUIChartAxisSelector",
     ],
+  },
+  {
+    slug: "virtual-list",
+    title: "UIVirtualList",
+    category: "가상화",
+    description: "화면에 보이는 구간의 목록을 렌더링합니다.",
+    wide: true,
+    deferPreviews: true,
+  },
+  {
+    slug: "virtual-grid",
+    title: "UIVirtualGrid",
+    category: "가상화",
+    description: "행과 열 중 보이는 구간을 렌더링합니다.",
+    wide: true,
+    deferPreviews: true,
+  },
+  {
+    slug: "virtual-masonry",
+    title: "UIVirtualMasonry",
+    category: "가상화",
+    description: "서로 다른 높이의 항목을 가상화된 열에 배치합니다.",
+    wide: true,
+    deferPreviews: true,
+  },
+  {
+    slug: "virtual-spatial",
+    title: "UIVirtualSpatial",
+    category: "가상화",
+    description: "좌표로 배치된 항목에서 보이는 구간을 렌더링합니다.",
+    wide: true,
+    deferPreviews: true,
   },
 ];
 

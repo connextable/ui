@@ -21,6 +21,17 @@ interface CatalogGuide {
 }
 
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
+  virtualizer: {
+    examples: [
+      { id: "virtualizer-frames", title: "헤더와 푸터", description: "배치 영역 양쪽에 Header와 Footer를 연결합니다.", parts: ["UIVirtualizerHeader", "UIVirtualizerFooter"] },
+      { id: "virtualizer-initial-viewport", title: "초기 렌더 범위", description: "측정 전에 초기 뷰포트를 전달해 첫 행과 열의 렌더 범위를 정합니다." },
+      { id: "virtualizer-plan", title: "현재 보이는 셀 범위 읽기", description: "스크롤하면 useUIVirtualizer가 반환한 배치에서 첫 셀과 보이는 셀 개수를 읽습니다.", parts: ["useUIVirtualizer"] },
+      { id: "virtualizer-overscan", title: "보이는 셀과 미리 준비한 셀", description: "뷰포트 바깥 160px를 추가하면 보이는 셀 수는 그대로이고 미리 준비한 셀 수가 늘어납니다." },
+    ],
+    title: "행·열 배치 직접 지정",
+    description: "행과 열의 크기와 배치 전략을 루트에 전달합니다. 스크롤에 따라 슬롯의 placements가 바뀌고, 그 위치만 그립니다.",
+    api: { "default-state": "처음 사용할 레이아웃 상태입니다.", strategy: "뷰포트에 어떤 항목을 어떤 위치에 배치할지 결정하는 Sectile 전략입니다." },
+  },
   grid: {
     examples: [
       { id: "grid-disabled", title: "특정 셀 건너뛰기", description: "방향키로 상태 열을 지나갈 때 Ready 셀은 비활성입니다." },
@@ -172,5 +183,63 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "chart-axis-summary", section: "rendering", title: "선형·로그 축 비교", description: "같은 요청 데이터를 선형 축과 로그 축으로 바꿔 보세요. 선과 점이 이동하고 눈금이 바뀝니다. 로그 축에서 10→100과 1,000→10,000은 같은 세로 간격입니다.", parts: ["useUIChartAxisSelector"] },
       { id: "chart-canvas", section: "rendering", title: "Canvas 해상도 비교", description: "렌더 배율에 따른 비트맵 크기와 실제 픽셀의 차이를 살펴봅니다.", parts: ["UIChartCanvas"] },
     ],
+  },
+  "virtual-list": {
+    sections: [
+      { id: "examples", title: "스크롤과 크기 측정", section: "layout" },
+      { id: "virtual-list-data", title: "검색과 데이터 추가", section: "data" },
+    ],
+    examples: [
+      { id: "virtual-list-horizontal", section: "layout", title: "가로 목록 스크롤", description: "가로로 스크롤하며 현재 범위에 있는 항목을 표시합니다." },
+      { id: "virtual-list-measured", section: "layout", title: "다른 높이의 행", description: "두 줄짜리 행의 실제 높이를 측정해 다음 행이 겹치지 않습니다." },
+      { id: "virtual-list-scrollport", section: "layout", title: "제목과 목록을 함께 스크롤", description: "바깥 스크롤 영역이 제목과 가상 목록을 함께 옮깁니다." },
+      { id: "virtual-list-filter", section: "data", title: "가상 목록 검색", description: "‘서울’을 검색하고 스크롤해 보세요. 일치하는 항목이 없으면 빈 상태를 표시합니다." },
+      { id: "virtual-list-prepend", section: "data", title: "이전 기록을 추가하며 현재 위치 유지", description: "목록을 아래로 스크롤한 다음 이전 기록을 추가해 첫 항목이 유지되는지 확인합니다." },
+      { id: "virtual-list-stream", section: "data", title: "끝에 닿으면 다음 기록 불러오기", description: "불러온 기록의 마지막에 가까워지면 가상 응답으로 40건씩 추가합니다." },
+    ],
+    title: "변경 기록 5만 건 탐색",
+    description: "스크롤하면 화면에 보이는 범위가 바뀝니다. 아래에서 전체 기록과 DOM에 렌더링한 행 수를 비교할 수 있습니다.",
+    api: { items: "가상화할 전체 항목입니다.", getID: "항목의 안정적인 식별자를 반환하는 함수입니다.", "size-policy": "행의 크기를 지정하거나 추정하거나 측정하는 방식입니다.", "#item": "현재 렌더링하는 항목의 value와 위치를 받습니다." },
+  },
+  "virtual-grid": {
+    sections: [
+      { id: "examples", title: "열 배치와 크기 측정", section: "layout" },
+      { id: "virtual-grid-navigation", title: "탐색과 선택 복원", section: "navigation" },
+    ],
+    examples: [
+      { id: "virtual-grid-fixed-lanes", section: "layout", title: "고정된 두 열", description: "너비에 관계없이 두 개의 열을 유지합니다." },
+      { id: "virtual-grid-responsive", section: "layout", title: "폭에 따라 열 변경", description: "버튼으로 그리드 너비를 바꿔 같은 항목이 새 열 배치로 이동하는 것을 봅니다." },
+      { id: "virtual-grid-row-heights", section: "layout", title: "내용에 따라 달라지는 행 높이", description: "촬영 메모가 있는 셀과 같은 행의 셀은 함께 다음 행의 위치를 결정합니다." },
+      { id: "virtual-grid-scrollport", section: "navigation", title: "바깥 컨테이너에서 스크롤", description: "갤러리 제목과 가상 그리드가 같은 컨테이너의 스크롤을 공유합니다." },
+      { id: "virtual-grid-jump", section: "navigation", title: "열 수를 바꾼 후 특정 항목으로 이동", description: "두 열로 바꾼 다음 scrollToID로 75번 항목을 화면 위에 표시합니다." },
+      { id: "virtual-grid-selection", section: "navigation", title: "화면 밖에서도 선택 유지", description: "상자를 선택하고 멀리 스크롤하세요. 선택 위치로 돌아오면 같은 상자가 선택된 상태로 나타납니다." },
+    ],
+    title: "고정 높이 행을 그리드로 표시",
+    description: "size-policy에 행 높이를 전달하고 lane-policy에 최소 열 너비와 최대 열 개수를 지정합니다. 스크롤하면서 행의 렌더링 범위를 확인합니다.",
+    api: { "lane-policy": "고정 열 수 또는 뷰포트 크기에 따른 반복 열 설정입니다.", "size-policy": "행의 높이 계산 방식을 지정합니다.", "#item": "항목의 값과 행·열 위치를 받습니다." },
+  },
+  "virtual-masonry": {
+    examples: [
+      { id: "virtual-masonry-measured", title: "실측하는 카드 높이", description: "카드의 본문 길이로 실제 높이를 측정합니다." },
+      { id: "virtual-masonry-fixed-lanes", title: "고정된 세 열", description: "가변 높이의 카드를 고정 세 열에 배치합니다." },
+      { id: "virtual-masonry-placement", title: "카드 배치 정책 바꾸기", description: "짧은 열부터 채우다가 버튼을 누르면 각 열을 순서대로 사용합니다." },
+      { id: "virtual-masonry-relayout", title: "너비에 따라 메모 재배치", description: "컨테이너 폭이 바뀌면 열 수를 다시 계산합니다." },
+      { id: "virtual-masonry-expand", title: "카드 내용이 펼쳐질 때 높이 재측정", description: "메모를 펼치거나 접으면 실제 높이에 맞춰 아래 카드가 부드럽게 이동합니다." },
+    ],
+    title: "높이가 다른 항목을 열로 배치",
+    description: "항목별 높이를 추정하고 반응형 열을 지정합니다. 초기 뷰포트는 서버에서 렌더링할 때 사용할 크기입니다.",
+    api: { "initial-viewport": "실제 뷰포트를 측정하기 전에 사용할 영역입니다.", "lane-policy": "열 개수와 간격을 계산하는 방식입니다.", "size-policy": "각 항목의 높이를 계산하는 방식입니다." },
+  },
+  "virtual-spatial": {
+    examples: [
+      { id: "virtual-spatial-overlap", title: "겹치는 지점 순서", description: "겹친 두 지점에서 get-z-index가 더 큰 지점이 위에 놓입니다." },
+      { id: "virtual-spatial-insets", title: "뷰포트 여백 지정", description: "위·아래 여백을 전달해 가상화 뷰포트 계산에 반영합니다." },
+      { id: "virtual-spatial-scrollport", title: "고정 제목 아래에서 배치도를 스크롤", description: "바깥 영역을 가로·세로로 스크롤합니다. 제목 높이는 뷰포트 inset에 반영합니다." },
+      { id: "virtual-spatial-layout", title: "배치 좌표 변경", description: "8열과 4열 사이에서 전환하면 같은 점검 구역이 새 좌표로 이동합니다." },
+      { id: "virtual-spatial-jump", title: "선반 6천 개에서 위치 찾기", description: "선반 번호를 눌러 가로·세로로 떨어진 해당 선반까지 이동하고 강조 표시합니다." },
+    ],
+    title: "좌표로 배치한 항목 스크롤",
+    description: "getRect에서 각 항목의 좌표와 크기를 반환합니다. 가로 또는 세로로 스크롤하면 보이는 영역에 포함된 항목이 갱신됩니다.",
+    api: { getRect: "항목의 x, y, width, height를 반환하는 함수입니다.", "size-ownership": "크기를 항목의 사각형으로 선언할지, 마운트된 DOM에서 측정할지 정합니다.", "#item": "항목의 값과 배치 정보, 겹침 순서를 받습니다." },
   },
 };
