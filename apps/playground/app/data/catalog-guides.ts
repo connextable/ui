@@ -106,7 +106,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "tree-grid-edit", title: "하위 행의 담당자 편집", description: "웹사이트 담당자 셀에서 F2로 편집합니다. Enter로 적용하고 Escape로 취소할 수 있습니다.", parts: ["UITreeGridEditor", "UITreeGridGroup"] },
     ],
     title: "계층형 행과 셀 구성",
-    description: "그룹 행을 펼쳐 하위 행을 확인합니다. 편집할 수 있는 셀은 편집 상태에 따라 표현과 입력을 전환합니다.",
+    description: "제품 플랫폼 행을 접거나 펼쳐 하위 서비스를 확인합니다. 서비스, 담당 팀, 상태를 열 제목과 함께 읽을 수 있습니다.",
     api: {
       "Row value": "행 컨트롤과 연결할 행 id입니다.",
       "Cell column-index": "셀의 열 위치를 지정합니다.",
