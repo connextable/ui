@@ -1,5 +1,6 @@
 export * from "./components/chart";
 export * from "./components/tabular";
+export * from "./components/virtual";
 export { default as UIButton } from "./components/button/UIButton.vue";
 export { default as UICheckbox, type UICheckboxValue } from "./components/selection/UICheckbox.vue";
 export { default as UIDashboard } from "./components/dashboard/UIDashboard.vue";

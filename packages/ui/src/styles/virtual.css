@@ -1,0 +1,56 @@
+@layer ui.sectile {
+  :where([data-scope="virtual-list"], [data-scope="virtual-grid"], [data-scope="virtual-masonry"], [data-scope="virtual-spatial"], [data-scope="virtualizer"]):where([data-part="root"], [data-part="viewport"]) {
+    --ui-virtual-height: 18rem;
+
+    block-size: var(--ui-virtual-height);
+    inline-size: 100%;
+    max-inline-size: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+    border: 1px solid var(--ui-color-divider);
+    border-radius: var(--ui-control-radius);
+    background: var(--ui-color-surface);
+    overscroll-behavior: contain;
+  }
+
+  :where([data-scope="virtual-list"], [data-scope="virtual-grid"], [data-scope="virtual-masonry"],
+    [data-scope="virtual-spatial"], [data-scope="virtualizer"]):where([data-part="item"]) {
+    box-sizing: border-box;
+    padding: var(--ui-space-sm) var(--ui-control-padding-inline);
+    background: var(--ui-color-surface);
+    font-size: var(--ui-font-size-body-sm);
+    overflow-wrap: anywhere;
+  }
+
+  :where([data-scope="virtual-list"][data-part="item"]) {
+    border-block-end: 1px solid var(--ui-color-divider);
+  }
+
+  :where([data-scope="virtual-grid"], [data-scope="virtual-masonry"], [data-scope="virtual-spatial"]):where([data-part="root"]) {
+    --ui-virtual-radius: var(--ui-radius-lg);
+    --ui-virtual-item-radius: max(0px, calc(var(--ui-virtual-radius) - var(--ui-space-sm)));
+
+    border-radius: var(--ui-virtual-radius);
+    background: var(--ui-color-surface-readonly);
+  }
+
+  :where([data-scope="virtual-grid"], [data-scope="virtual-masonry"], [data-scope="virtual-spatial"]):where([data-part="item"]) {
+    border: 1px solid var(--ui-color-divider);
+    border-radius: var(--ui-virtual-item-radius);
+  }
+
+  :where([data-scope="virtualizer"][data-part="item"]) {
+    border-inline-end: 1px solid var(--ui-color-divider);
+    border-block-end: 1px solid var(--ui-color-divider);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where([data-ui-virtual-layout-motion]) :where([data-virtual-layout][data-part="item"]) {
+    transition: transform var(--ui-motion-standard) var(--ui-ease-out);
+  }
+
+  :where([data-ui-virtual-current][data-part="item"]) {
+    border-color: var(--ui-color-accent);
+    background: var(--ui-color-accent-soft);
+  }
+}
