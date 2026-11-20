@@ -1,0 +1,68 @@
+.ui-choice {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 0.75rem;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-inline-size: var(--ui-control-height);
+  min-block-size: var(--ui-control-height);
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--ui-control-radius);
+  background: transparent;
+  color: var(--ui-color-text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background-color var(--ui-motion-fast) var(--ui-ease-out),
+    border-color var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+.ui-choice[data-variant="card"] {
+  inline-size: 100%;
+  padding: 0.75rem;
+  border-color: var(--ui-color-divider);
+  background: var(--ui-color-surface);
+}
+
+.ui-choice:enabled:hover {
+  background: var(--ui-color-surface-hover);
+}
+
+.ui-choice[data-variant="card"]:is([aria-checked="true"], [aria-checked="mixed"]) {
+  border-color: var(--ui-color-accent);
+  background: var(--ui-color-accent-soft);
+}
+
+.ui-choice:focus-visible {
+  outline: 2px solid var(--ui-color-focus);
+  outline-offset: 2px;
+}
+
+.ui-choice:disabled {
+  opacity: 0.55;
+}
+
+.ui-choice:disabled,
+.ui-choice[aria-readonly="true"] {
+  cursor: default;
+}
+
+.ui-choice__copy {
+  display: grid;
+  gap: 0.125rem;
+  min-inline-size: 0;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.ui-choice__label {
+  font-weight: 600;
+}
+
+.ui-choice__description {
+  color: var(--ui-color-text-muted);
+  font-size: 0.875em;
+}

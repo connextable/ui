@@ -1,6 +1,16 @@
 export { default as UIButton } from "./components/button/UIButton.vue";
+export { default as UICheckbox, type UICheckboxValue } from "./components/selection/UICheckbox.vue";
 export { default as UIDashboard } from "./components/dashboard/UIDashboard.vue";
 export { default as UIDashboardNavGroup } from "./components/dashboard/UIDashboardNavGroup.vue";
 export { default as UIDashboardNavItem } from "./components/dashboard/UIDashboardNavItem.vue";
 export { default as UIDashboardSidebar } from "./components/dashboard/UIDashboardSidebar.vue";
 export { default as UIInput } from "./components/text-input/UIInput.vue";
+export { default as UIRadioGroup, type UIRadioGroupOption } from "./components/selection/UIRadioGroup.vue";
+export { default as UISelect } from "./components/select/UISelect.vue";
+export { default as UISelectContent } from "./components/select/UISelectContent.vue";
+export { default as UISelectItem } from "./components/select/UISelectItem.vue";
+export { default as UISelectLabel } from "./components/select/UISelectLabel.vue";
+export { default as UISelectTrigger } from "./components/select/UISelectTrigger.vue";
+export { default as UISelectValue } from "./components/select/UISelectValue.vue";
+export type { UISelectOption } from "./components/select/select-context";
+export { default as UISwitch } from "./components/selection/UISwitch.vue";
