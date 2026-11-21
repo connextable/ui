@@ -31,8 +31,3 @@
     }
   }
 }
-
-/* The nested panel shares the calendar's layout while the outer popup stays open. */
-.ui-calendar-period-header__years[data-state="closed"] {
-  display: none;
-}
