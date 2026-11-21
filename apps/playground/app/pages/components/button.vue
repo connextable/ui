@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ButtonFormExample from "~/components/examples/ButtonFormExample.vue";
+import formSource from "~/components/examples/ButtonFormExample.vue?example-code&raw";
 import ButtonExample from "~/components/examples/ButtonExample.vue";
 import buttonExampleSource from "~/components/examples/ButtonExample.vue?example-code&raw";
 import ButtonVariantExample from "~/components/examples/ButtonVariantExample.vue";
@@ -48,6 +50,15 @@ definePageMeta({
       :source="buttonDisabledExampleSource"
     >
       <ButtonDisabledExample />
+    </PlaygroundExample>
+    <PlaygroundExample
+      id="button-submit"
+      title="폼 밖에서 제출"
+      description="type이 submit인 버튼은 form 속성으로 연결한 폼을 제출합니다."
+      :source="formSource"
+      :heading-level="3"
+    >
+      <ButtonFormExample />
     </PlaygroundExample>
   </div>
 </template>

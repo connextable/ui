@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import DisclosureControlledExample from "~/components/examples/DisclosureControlledExample.vue";
+import DisclosureControlledExampleSource from "~/components/examples/DisclosureControlledExample.vue?example-code&raw";
 import DisclosureExample from "~/components/examples/DisclosureExample.vue";
 import source from "~/components/examples/DisclosureExample.vue?example-code&raw";
 import DisclosureTriggerExample from "~/components/examples/DisclosureTriggerExample.vue";
@@ -34,6 +36,10 @@ const parts = {
       :source="part.source"
     >
       <component :is="part.component" />
+    </PlaygroundExample>
+    <PlaygroundExample id="disclosure-controlled" title="외부에서 열림 제어"
+      description="외부 UIButton과 Disclosure가 같은 열림 상태를 공유합니다." :source="DisclosureControlledExampleSource" :heading-level="3">
+      <DisclosureControlledExample />
     </PlaygroundExample>
   </div>
 </template>

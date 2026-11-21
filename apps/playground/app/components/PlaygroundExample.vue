@@ -64,7 +64,7 @@ async function revealSource(open: boolean) {
           {{ open ? "코드 접기" : "코드 보기" }}
         </UIDisclosureTrigger>
       </div>
-      <UIDisclosureContent divided role="region" :aria-label="`${title} Vue 코드`">
+      <UIDisclosureContent divided flush role="region" :aria-label="`${title} Vue 코드`">
         <PlaygroundCodeBlock v-if="hasOpenedCode && renderedSource">
           <div v-html="renderedSource" />
         </PlaygroundCodeBlock>
@@ -128,6 +128,7 @@ async function revealSource(open: boolean) {
 
 .playground-example__preview {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   flex: 1 1 max-content;
   grid-column: 2;
   justify-items: center;
@@ -139,6 +140,10 @@ async function revealSource(open: boolean) {
 .playground-example__preview--wide {
   flex-basis: min(100%, 42rem);
   justify-items: stretch;
+}
+
+.playground-example__preview > :deep(*) {
+  max-inline-size: 100%;
 }
 
 .playground-example__toggle {

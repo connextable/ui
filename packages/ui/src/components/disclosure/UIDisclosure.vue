@@ -27,4 +27,9 @@ defineSlots<{ default?(state: DisclosureSlotProps): unknown }>();
   border: 1px solid var(--ui-color-divider);
   border-radius: var(--ui-control-radius);
 }
+
+.ui-disclosure[data-variant="outline"]:has(> :deep(.ui-disclosure-trigger)) {
+  inline-size: min(100%, 26rem);
+  min-inline-size: 0;
+}
 </style>

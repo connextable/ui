@@ -3,8 +3,8 @@ import { UIDisclosure, UIDisclosureContent, UIDisclosureTrigger } from "@connext
 </script>
 
 <template>
-  <UIDisclosure>
+  <UIDisclosure variant="outline">
     <UIDisclosureTrigger variant="ghost">상세 정보</UIDisclosureTrigger>
-    <UIDisclosureContent>변경 사항은 저장 후에 적용됩니다.</UIDisclosureContent>
+    <UIDisclosureContent divided>변경 사항은 저장 후에 적용됩니다.</UIDisclosureContent>
   </UIDisclosure>
 </template>
