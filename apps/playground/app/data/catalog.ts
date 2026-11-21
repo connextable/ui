@@ -327,6 +327,12 @@ export const catalog: readonly CatalogEntry[] = [
     ],
   },
   {
+    slug: "number-field",
+    title: "UINumberField",
+    category: "입력",
+    description: "숫자를 입력하고 증감합니다.",
+  },
+  {
     slug: "spin-button",
     title: "UISpinButton",
     category: "입력",

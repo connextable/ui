@@ -1,3 +1,4 @@
+export { default as UINumberField } from "../text-input/UINumberField.vue";
 export {
   QuantityFieldRoot as UIQuantityField,
   QuantityFieldInput as UIQuantityFieldInput,

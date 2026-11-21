@@ -472,6 +472,24 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "tags-input-composition", title: "칩에 상태 아이콘 넣기", description: "구성 슬롯에서 승인 칩에 체크를 추가합니다. 크기와 배경은 입력 컨트롤의 공통 토큰을 따릅니다.", section: "composition", parts: ["UITagsInputItem", "UITagsInputItemText", "UITagsInputItemDelete"] },
     ],
   },
+  "number-field": {
+    title: "고정 단위가 있는 숫자 입력",
+    description: "unit에 지정한 단위가 입력창 오른쪽에 표시됩니다. 숫자를 수정하고 Enter로 확정해 보세요.",
+    api: {
+      unit: "입력창 안쪽 끝에 표시할 단위입니다. 모델과 제출에는 숫자 문자열이 사용됩니다.",
+      "default-value": "입력의 초기 숫자 문자열입니다.",
+      "v-model": "확정된 숫자 문자열을 외부 상태에 연결합니다.",
+      "policies.min / max": "확정할 수 있는 값의 범위를 지정합니다.",
+      "stepBy(delta)": "인스턴스에서 현재 값에 지정한 증감량을 적용합니다.",
+    },
+    examples: [
+      { id: "number-field-readonly", title: "읽기 전용 숫자", description: "확정된 수량을 읽고 복사할 수 있습니다." },
+      { id: "number-field-submit", title: "단위가 있는 숫자 제출", description: "수량을 입력해 제출하면 수량 필드에 숫자만 담깁니다.", section: "form" },
+      { id: "number-field-range", title: "확정할 수 있는 범위 지정", description: "policies에 min과 max를 전달합니다. 범위 밖의 값을 입력하고 Enter를 누르면 마지막 확정값이 유지됩니다." },
+      { id: "number-field-decimal", title: "소수점이 있는 길이 입력", description: "12.5를 12.75로 수정한 뒤 Enter를 눌러 확정값을 확인합니다." },
+      { id: "number-field-incomplete", title: "부호만 입력한 초안", description: "값을 지우고 마이너스 부호만 확정해 보세요. 숫자를 이어서 입력하면 새 값을 확정할 수 있습니다." },
+    ],
+  },
   "spin-button": {
     examples: [
       { id: "spin-button-page-step", title: "큰 단위 증감", description: "Page Up과 Page Down으로 한 번에 다섯 단위를 움직입니다." },

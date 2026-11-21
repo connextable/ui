@@ -2,6 +2,7 @@
   input[data-scope="combobox"][data-part="input"],
   input[data-scope="tree-select"][data-part="input"],
   input:is([data-scope="number-field"], [data-scope="quantity-field"], [data-scope="spin-button"])[data-part="input"]:not(
+    .ui-number-control > input,
     .ui-quantity-control input,
     [data-scope="spin-button"][data-part="root"]:has(> [data-part="increment"], > [data-part="decrement"]) input
   )
@@ -81,6 +82,7 @@
 
 :where(
   [data-scope="spin-button"][data-part="root"]:has(> [data-part="increment"], > [data-part="decrement"]),
+  .ui-number-control,
   .ui-quantity-control
 ) {
   --ui-number-extent: var(--ui-control-size-height, var(--ui-control-height));
@@ -139,6 +141,18 @@
     outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
     outline-offset: var(--ui-focus-ring-offset);
     box-shadow: none;
+  }
+}
+
+:where(.ui-number-control) {
+  inline-size: 14rem;
+
+  > .ui-numeric-unit {
+    box-sizing: border-box;
+    max-inline-size: 50%;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    pointer-events: none;
   }
 }
 
