@@ -534,4 +534,18 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "carousel-controlled", title: "외부 버튼에서 슬라이드 이동", description: "v-model에 새로운 슬라이드 id를 지정해 캐러셀 바깥에서 현재 슬라이드를 변경합니다." },
     ],
   },
+  "window-splitter": {
+    examples: [
+      { id: "window-splitter-vertical", title: "위아래 패널", description: "구분선을 위아래로 끌어 두 패널의 높이를 조정합니다." },
+      { id: "window-splitter-keyboard", title: "키보드로 너비 조절", description: "구분선에 포커스를 두고 왼쪽·오른쪽 방향키로 조절합니다." },
+      { id: "window-splitter-value", title: "탐색 영역의 너비를 읽을 수 있게 표시", description: "구분선의 현재값을 format-value로 ‘탐색 영역 40퍼센트’처럼 제공합니다." },
+    ],
+    title: "패널 너비 조절",
+    description: "손잡이를 끌거나 방향키를 눌러 before와 after 패널의 너비를 조절합니다. v-model에서 변경된 비율을 확인할 수 있습니다.",
+    api: {
+      "v-model": "첫 패널이 사용하는 비율을 연결합니다.",
+      "min / max": "손잡이가 이동할 수 있는 비율의 경계입니다.",
+      "Pane side": "손잡이 앞과 뒤의 두 패널을 구분합니다.",
+    },
+  },
 };

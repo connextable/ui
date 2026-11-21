@@ -379,6 +379,17 @@ export const catalog: readonly CatalogEntry[] = [
       "UICarouselIndicator",
     ],
   },
+  {
+    slug: "window-splitter",
+    title: "UIWindowSplitter",
+    category: "레이아웃",
+    description: "두 영역 사이의 경계를 움직여 크기를 조절합니다.",
+    wide: true,
+    parts: [
+      "UIWindowSplitterPane",
+      "UIWindowSplitterHandle",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));

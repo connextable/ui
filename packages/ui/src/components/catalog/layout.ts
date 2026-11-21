@@ -18,3 +18,8 @@ export {
 export { UICarouselNext, UICarouselPrevious } from "./carousel-controls";
 export { default as UICarouselPause } from "./UICarouselPause.vue";
 export { default as UICarouselSlide } from "./UICarouselSlide.vue";
+export {
+  WindowSplitterRoot as UIWindowSplitter,
+  WindowSplitterPane as UIWindowSplitterPane,
+  WindowSplitterHandle as UIWindowSplitterHandle,
+} from "@sectile/vue/window-splitter";

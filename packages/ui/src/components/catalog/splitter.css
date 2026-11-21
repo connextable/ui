@@ -1,0 +1,35 @@
+:where([data-scope="window-splitter"][data-part="root"]) {
+  display: grid;
+  grid-template-columns: minmax(0, var(--sectile-window-splitter-percentage, 50%)) auto minmax(0, 1fr);
+  align-items: stretch;
+}
+
+:where([data-scope="window-splitter"][data-part="root"][data-orientation="vertical"]) {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, var(--sectile-window-splitter-percentage, 50%)) auto minmax(0, 1fr);
+}
+
+:where([data-scope="window-splitter"][data-part="pane"]) {
+  min-inline-size: 0;
+  padding: var(--ui-space-md);
+  border: 1px solid var(--ui-color-divider);
+  border-radius: var(--ui-control-radius);
+  background: var(--ui-color-surface-muted);
+}
+
+:where([data-scope="window-splitter"][data-part="pane"]) pre {
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+:where([data-scope="window-splitter"][role="separator"]) {
+  min-inline-size: var(--ui-space-sm);
+  border-radius: var(--ui-radius-sm);
+  background: var(--ui-color-border);
+  cursor: col-resize;
+}
+
+:where([data-scope="window-splitter"][data-part="root"][data-orientation="vertical"]) :where([role="separator"]) {
+  min-block-size: var(--ui-space-sm);
+  cursor: row-resize;
+}
