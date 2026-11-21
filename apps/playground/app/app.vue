@@ -318,7 +318,7 @@ body {
 }
 
 .playground-sidebar-item--leaf > a {
-  margin-inline-start: var(--ui-control-height-small);
+  margin-inline-start: calc(var(--ui-control-height-small) + var(--ui-space-xs));
   padding-inline-start: var(--ui-space-xs);
 }
 

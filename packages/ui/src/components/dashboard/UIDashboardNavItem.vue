@@ -55,6 +55,7 @@ const emit = defineEmits<{ "update:expanded": [expanded: boolean] }>();
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
+  padding-inline-start: var(--ui-space-xs);
   border-radius: var(--ui-control-radius);
   background: var(--ui-dashboard-nav-row-fill, transparent);
 }
