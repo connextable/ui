@@ -136,7 +136,7 @@ onMounted(() => { mounted.value = true; });
 </script>
 
 <template>
-  <UIDashboard>
+  <UIDashboard class="playground-dashboard">
     <template #sidebar>
       <UIDashboardSidebar ref="sidebar" label="컴포넌트">
         <template #header>
@@ -189,17 +189,27 @@ onMounted(() => { mounted.value = true; });
             @update:expanded="setExpanded(item.path, $event)"
           >
             <NuxtLink
+              class="playground-sidebar-link"
               :to="item.path"
+              :title="item.title"
               :aria-current-value="route.path === item.path && isExpanded(item.path) && item.parts.includes(selectedPart) ? 'false' : 'page'"
             >
-              {{ item.title }}
+              <span>{{ item.title }}</span>
             </NuxtLink>
             <template v-if="item.parts.length" #children>
               <UIDashboardNavItem v-for="part in item.parts" :key="part">
                 <NuxtLink
+                  class="playground-sidebar-link"
                   :to="{ path: item.path, hash: `#${part}` }"
+                  :aria-label="part"
+                  :title="part"
                   :aria-current-value="route.path === item.path && selectedPart === part ? 'location' : 'false'"
-                >{{ part }}</NuxtLink>
+                >
+                  <span v-if="part.startsWith(item.title)" class="playground-sidebar-part">
+                    <span>{{ item.title }}</span><span>{{ part.slice(item.title.length) }}</span>
+                  </span>
+                  <span v-else>{{ part }}</span>
+                </NuxtLink>
               </UIDashboardNavItem>
             </template>
           </UIDashboardNavItem>
@@ -310,6 +320,36 @@ body {
 .playground-sidebar-item--leaf > a {
   margin-inline-start: var(--ui-control-height-small);
   padding-inline-start: var(--ui-space-xs);
+}
+
+.playground-dashboard {
+  --ui-dashboard-sidebar-width: clamp(15rem, 23vw, 17rem);
+}
+
+.playground-sidebar-link,
+.playground-sidebar-link > span {
+  min-inline-size: 0;
+}
+
+.playground-sidebar-link > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playground-sidebar-part {
+  display: flex;
+}
+
+.playground-sidebar-part > span {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playground-sidebar-part > span + span {
+  flex: 0 0 auto;
+  max-inline-size: 100%;
 }
 
 .playground-main {
