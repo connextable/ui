@@ -7,7 +7,6 @@
   max-inline-size: 100%;
   min-inline-size: var(--ui-control-height);
   min-block-size: var(--ui-control-height);
-  padding: 0.5rem;
   border: 1px solid transparent;
   border-radius: var(--ui-control-radius);
   background: transparent;
@@ -22,7 +21,6 @@
 
 .ui-choice[data-variant="card"] {
   inline-size: 100%;
-  padding: 0.75rem;
   border-color: var(--ui-color-divider);
   background: var(--ui-color-surface);
 }
@@ -37,8 +35,8 @@
 }
 
 .ui-choice:focus-visible {
-  outline: 2px solid var(--ui-color-focus);
-  outline-offset: 2px;
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+  outline-offset: var(--ui-focus-ring-offset);
 }
 
 .ui-choice:disabled {

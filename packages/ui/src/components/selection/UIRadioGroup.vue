@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from "@sectile/vue/radio-group";
-import { computed, useId } from "vue";
-
+import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot, type RadioGroupItemSlotProps } from "@sectile/vue/radio-group";
+import { useId } from "vue";
+import { definedControlAttrs } from "../control-attrs";
 import { useSelectionOptions, type SelectionOption } from "./selection-options";
 
 export interface UIRadioGroupOption extends SelectionOption {}
@@ -13,7 +13,8 @@ const {
   options,
   variant = "plain",
   orientation = "vertical",
-  required,
+  disabled = undefined,
+  readonly = undefined,
   ...controlProps
 } = defineProps<{
   label: string;
@@ -24,46 +25,52 @@ const {
   defaultValue?: string;
   disabled?: boolean;
   readonly?: boolean;
-  /** Enables native validation for a named form field. */
-  required?: boolean;
-  name?: string;
-  form?: string;
 }>();
 
 const emit = defineEmits<{ "update:modelValue": [value: string] }>();
+defineSlots<{
+  label?(): unknown;
+  optionLabel?(state: RadioGroupItemSlotProps & { option: UIRadioGroupOption }): unknown;
+}>();
 const id = useId();
 const { values, disabledValues } = useSelectionOptions(() => options);
-const formRequired = computed(() => Boolean(required && controlProps.name));
 </script>
 
 <template>
   <div class="ui-radio-group">
-    <span :id="`${id}-label`" class="ui-radio-group__label">{{ label }}</span>
+    <span :id="`${id}-label`" class="ui-radio-group__label"><slot name="label">{{ label }}</slot></span>
     <RadioGroupRoot
-      v-bind="{ ...$attrs, ...controlProps }"
+      v-bind="definedControlAttrs({
+        ...$attrs,
+        ...controlProps,
+        disabled,
+        readonly,
+        'aria-labelledby': $attrs['aria-labelledby'] ?? `${id}-label`,
+      })"
       class="ui-radio-group__options"
       :items="values"
       :disabled-items="disabledValues"
       :orientation="orientation"
-      :required="formRequired"
-      :aria-labelledby="`${id}-label`"
-      :aria-required="formRequired || undefined"
       @update:model-value="emit('update:modelValue', $event)"
     >
       <RadioGroupItem
         v-for="(option, index) in options"
         :key="option.value"
         class="ui-choice"
+        data-ui-control-size="md"
         :value="option.value"
         :data-variant="variant"
         :aria-labelledby="`${id}-${index}-label`"
         :aria-describedby="option.description ? `${id}-${index}-description` : undefined"
+        v-slot="state"
       >
         <span class="ui-radio-group__ring" aria-hidden="true">
           <RadioGroupIndicator class="ui-radio-group__indicator" force-present />
         </span>
         <span class="ui-choice__copy">
-          <span :id="`${id}-${index}-label`" class="ui-choice__label">{{ option.label }}</span>
+          <span :id="`${id}-${index}-label`" class="ui-choice__label">
+            <slot name="optionLabel" v-bind="state" :option="option">{{ option.label }}</slot>
+          </span>
           <span
             v-if="option.description"
             :id="`${id}-${index}-description`"

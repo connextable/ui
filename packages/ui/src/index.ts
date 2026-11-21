@@ -44,7 +44,10 @@ export { default as UISelectTrigger } from "./components/select/UISelectTrigger.
 export { default as UISelectValue } from "./components/select/UISelectValue.vue";
 export type { UISelectOption } from "./components/select/select-context";
 export { default as UISwitch } from "./components/selection/UISwitch.vue";
+export { SwitchThumb as UISwitchThumb } from "@sectile/vue/switch";
 export { default as UIToggleButton } from "./components/button/UIToggleButton.vue";
+export { CheckboxIndicator as UICheckboxIndicator } from "@sectile/vue/checkbox";
+export { RadioGroupItem as UIRadioGroupItem, RadioGroupIndicator as UIRadioGroupIndicator } from "@sectile/vue/radio-group";
 export {
   FormLabel as UIFormLabel,
   FormDescription as UIFormDescription,

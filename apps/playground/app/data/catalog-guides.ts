@@ -858,6 +858,22 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "as에 abbr을 전달합니다. title 같은 HTML 속성은 선택한 요소에 전달됩니다.",
     api: { as: "렌더링할 HTML 요소 이름 또는 Vue 컴포넌트입니다.", "as-child": "슬롯에 전달한 단일 자식에 루트의 속성을 적용합니다." },
   },
+  "checkbox-group": {
+    title: "여러 옵션을 한 그룹에서 선택",
+    description: "그룹의 items에 각 체크박스의 value를 등록합니다. 여러 옵션을 선택해 보세요.",
+    api: {
+      items: "그룹에 포함할 체크박스의 값입니다.",
+      "v-model": "선택한 값을 배열로 연결합니다.",
+      "Item disabled": "이 항목의 선택을 막습니다.",
+    },
+    examples: [
+      { id: "checkbox-group-readonly", title: "읽기 전용 그룹", description: "이미 선택된 항목을 그대로 표시합니다." },
+      { id: "checkbox-group-submit", title: "선택값 배열 제출", description: "체크한 항목만 Field의 이름으로 읽습니다.", section: "form" },
+      { id: "checkbox-group-disabled", title: "일부 옵션만 비활성화", description: "선택을 막을 항목의 UICheckboxGroupItem에 disabled를 지정합니다." },
+      { id: "checkbox-group-initial", title: "일부 항목을 선택한 상태로 시작", description: "default-value로 메일과 앱을 초기 선택합니다." },
+      { id: "checkbox-group-required", title: "알림 채널을 하나 이상 선택", description: "폼 스키마에서 최소 선택 개수를 지정합니다. 비워서 제출한 뒤 채널 하나를 선택하고 다시 제출합니다.", section: "form" },
+    ],
+  },
   feed: {
     examples: [
       { id: "feed-earlier", title: "고객 상담의 이전 기록 불러오기", description: "최근 상담 기록에서 시작해 이전 기록을 두 건씩 위에 추가합니다. 두 번째 요청에서는 예제 오류가 발생하며 다시 시도하면 전체 기록을 볼 수 있습니다.", parts: ["UIFeedLoadEarlier"] },

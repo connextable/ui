@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { SwitchRoot, SwitchThumb } from "@sectile/vue/switch";
+import { SwitchRoot, SwitchThumb, type SwitchSlotProps } from "@sectile/vue/switch";
 import { useId } from "vue";
+import { definedControlAttrs } from "../control-attrs";
+
+defineOptions({ inheritAttrs: false });
 
 const {
   label,
@@ -8,6 +11,8 @@ const {
   variant = "plain",
   size = "md",
   modelValue = undefined,
+  disabled = undefined,
+  readonly = undefined,
   ...controlProps
 } = defineProps<{
   label: string;
@@ -18,34 +23,41 @@ const {
   defaultValue?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  name?: string;
-  value?: string;
-  form?: string;
 }>();
 
 const emit = defineEmits<{ "update:modelValue": [value: boolean] }>();
+defineSlots<{
+  label?(state: SwitchSlotProps): unknown;
+  thumb?(state: SwitchSlotProps): unknown;
+}>();
 const id = useId();
 </script>
 
 <template>
   <SwitchRoot
-    v-bind="controlProps"
+    v-bind="definedControlAttrs({
+      ...$attrs,
+      ...controlProps,
+      disabled,
+      readonly,
+      'aria-labelledby': $attrs['aria-labelledby'] ?? `${id}-label`,
+      'aria-describedby': [$attrs['aria-describedby'], description && `${id}-description`].filter(Boolean).join(' ') || undefined,
+    })"
+    v-slot="state"
     class="ui-choice ui-switch"
     :model-value="modelValue"
     :data-variant="variant"
     :data-ui-control-size="size"
-    :aria-labelledby="`${id}-label`"
-    :aria-describedby="description ? `${id}-description` : undefined"
     @update:model-value="emit('update:modelValue', $event)"
   >
     <span class="ui-choice__copy">
-      <span :id="`${id}-label`" class="ui-choice__label">{{ label }}</span>
+      <span :id="`${id}-label`" class="ui-choice__label"><slot name="label" v-bind="state">{{ label }}</slot></span>
       <span v-if="description" :id="`${id}-description`" class="ui-choice__description">
         {{ description }}
       </span>
     </span>
     <span class="ui-switch__track" aria-hidden="true">
-      <SwitchThumb class="ui-switch__thumb" />
+      <SwitchThumb class="ui-switch__thumb"><slot name="thumb" v-bind="state" /></SwitchThumb>
     </span>
   </SwitchRoot>
 </template>
@@ -54,7 +66,6 @@ const id = useId();
 .ui-switch[data-ui-control-size] {
   min-inline-size: var(--ui-control-size-height);
   min-block-size: var(--ui-control-size-height);
-  padding-block: var(--ui-space-xs);
   border-radius: var(--ui-control-size-radius);
   font-size: var(--ui-control-size-font);
 }
@@ -63,9 +74,16 @@ const id = useId();
   border-color: var(--ui-color-divider);
 }
 
+.ui-switch[data-variant="plain"] {
+  gap: var(--ui-space-sm);
+  padding-inline: var(--ui-space-sm);
+  background: transparent;
+}
+
 .ui-switch__track {
   --ui-switch-thumb-size: calc(var(--ui-control-size-icon) - var(--ui-space-2xs));
   --ui-switch-track-padding: 0.1875rem;
+  --ui-switch-track-radius: var(--ui-radius-sm);
   --ui-switch-travel: var(--ui-control-size-icon);
   --ui-switch-direction: 1;
 
@@ -80,7 +98,7 @@ const id = useId();
   margin-inline-start: auto;
   padding-inline: var(--ui-switch-track-padding);
   border: 1px solid var(--ui-color-border-strong);
-  border-radius: var(--ui-control-size-radius);
+  border-radius: var(--ui-switch-track-radius);
   background: var(--ui-color-surface-muted);
   transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
 }
@@ -90,13 +108,30 @@ const id = useId();
 }
 
 .ui-switch[aria-checked="true"] .ui-switch__track {
+  border-color: var(--ui-color-accent);
   background: var(--ui-color-accent);
+}
+
+.ui-switch:enabled:not([aria-readonly="true"]):hover .ui-switch__track {
+  background: var(--ui-color-surface-hover);
+}
+
+.ui-switch:enabled:not([aria-readonly="true"]):active .ui-switch__track {
+  background: var(--ui-color-surface-active);
+}
+
+.ui-switch[aria-checked="true"]:enabled:not([aria-readonly="true"]):hover .ui-switch__track {
+  background: var(--ui-color-accent-hover);
+}
+
+.ui-switch[aria-checked="true"]:enabled:not([aria-readonly="true"]):active .ui-switch__track {
+  background: var(--ui-color-accent-active);
 }
 
 .ui-switch__thumb {
   inline-size: var(--ui-switch-thumb-size);
   block-size: var(--ui-switch-thumb-size);
-  border-radius: 50%;
+  border-radius: max(0px, calc(var(--ui-switch-track-radius) - var(--ui-switch-track-padding) - 1px));
   background: var(--ui-color-surface);
   box-shadow: 0 1px 2px rgb(25 28 29 / 24%);
   transform: translateX(0);
