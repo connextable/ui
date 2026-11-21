@@ -6,22 +6,39 @@ import {
   UIContextMenuSeparator,
   UIContextMenuTrigger,
 } from "@connextable/ui";
+import { Bold, Italic, RotateCcw } from "@lucide/vue";
+import { ref } from "vue";
 
 const commands = [
-  { id: "edit", parentID: null },
-  { id: "copy", parentID: null },
-  { id: "download", parentID: null },
+  { id: "bold", parentID: null },
+  { id: "italic", parentID: null },
+  { id: "reset", parentID: null },
 ];
+const bold = ref(false);
+const italic = ref(false);
+
+function invoke(command: string) {
+  if (command === "bold") bold.value = !bold.value;
+  if (command === "italic") italic.value = !italic.value;
+  if (command === "reset") {
+    bold.value = false;
+    italic.value = false;
+  }
+}
 </script>
 
 <template>
-  <UIContextMenu :items="commands">
-    <UIContextMenuTrigger as="div" tabindex="0">검토 문서</UIContextMenuTrigger>
+  <UIContextMenu :items="commands" label="문장 서식" @invoke="invoke">
+    <UIContextMenuTrigger
+      as="div"
+      tabindex="0"
+      :style="{ fontWeight: bold ? 700 : undefined, fontStyle: italic ? 'italic' : undefined }"
+    >Build once, share everywhere.</UIContextMenuTrigger>
     <UIContextMenuContent>
-      <UIContextMenuItem value="edit">이름 보기</UIContextMenuItem>
-      <UIContextMenuItem value="copy">복제</UIContextMenuItem>
+      <UIContextMenuItem value="bold" :icon="Bold">{{ bold ? "굵게 해제" : "굵게" }}</UIContextMenuItem>
+      <UIContextMenuItem value="italic" :icon="Italic">{{ italic ? "기울임 해제" : "기울임" }}</UIContextMenuItem>
       <UIContextMenuSeparator />
-      <UIContextMenuItem value="download">다운로드</UIContextMenuItem>
+      <UIContextMenuItem value="reset" :icon="RotateCcw">서식 지우기</UIContextMenuItem>
     </UIContextMenuContent>
   </UIContextMenu>
 </template>

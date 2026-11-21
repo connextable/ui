@@ -361,17 +361,27 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
   },
   "context-menu": {
-    examples: [
-      { id: "context-menu-keyboard", title: "키보드로 메뉴 열기", description: "영역에 포커스를 두고 Shift+F10으로 메뉴를 엽니다." },
-      { id: "context-menu-submenu", title: "우클릭 메뉴의 하위 항목", description: "영역에서 메뉴를 열고 내보낼 형식을 선택합니다.", parts: ["UIContextMenuSubContent"] },
-      { id: "context-menu-separator", title: "문서 작업과 다운로드 구분", description: "컨텍스트 메뉴의 작업 그룹을 구분선으로 나눕니다.", parts: ["UIContextMenuSeparator"] },
-      { id: "context-menu-disabled", title: "컨텍스트 메뉴에서 삭제 잠금", description: "복제는 실행할 수 있고 삭제는 방향키 탐색에서 건너뜁니다." },
+    sections: [
+      { id: "examples", title: "사용 사례", section: "scenarios" },
+      { id: "context-menu-behavior", title: "접근과 상태", section: "behavior" },
     ],
-    title: "우클릭으로 명령 메뉴 열기",
-    description: "트리거 위에서 우클릭한 뒤 명령을 선택합니다. 메뉴를 열기 위한 트리거와 선택 결과를 처리할 invoke를 연결합니다.",
+    examples: [
+      { id: "context-menu-tabs", section: "scenarios", title: "문서 탭 고정과 복제", description: "탭에서 메뉴를 열어 고정하면 목록 앞에 표시됩니다. 탭을 복제하거나 닫을 수도 있습니다." },
+      { id: "context-menu-columns", section: "scenarios", title: "표의 열 정렬과 숨기기", description: "재고나 단가 머리글에서 메뉴를 열면 해당 열을 기준으로 정렬하거나 숨길 수 있습니다." },
+      { id: "context-menu-inbox", section: "scenarios", title: "받은 메일 정리", description: "메일을 읽음으로 바꾸거나 중요 표시를 붙이고 받은편지함에서 보관할 수 있습니다." },
+      { id: "context-menu-submenu", section: "scenarios", title: "보드 카드 옮기기", description: "카드에서 메뉴를 열고 ‘다른 열로 이동’의 하위 메뉴에서 목적지를 고릅니다.", parts: ["UIContextMenuSubContent"] },
+      { id: "context-menu-separator", section: "scenarios", title: "문장 서식 적용과 초기화", description: "문장에서 메뉴를 열어 굵게 또는 기울임을 적용해 보세요. 서식 지우기는 구분선 아래에 있습니다.", parts: ["UIContextMenuSeparator"] },
+      { id: "context-menu-keyboard", section: "behavior", title: "키보드로 메뉴 열기", description: "영역에 포커스를 두고 Shift+F10으로 메뉴를 엽니다." },
+      { id: "context-menu-disabled", section: "behavior", title: "삭제할 수 없는 항목", description: "복제는 실행할 수 있고 삭제는 방향키 탐색에서 건너뜁니다." },
+    ],
+    title: "대상 파일의 이름 변경과 복제",
+    description: "파일에서 우클릭하거나 Shift+F10을 눌러 메뉴를 여세요. 이름 변경, 복제, 삭제는 메뉴를 연 파일에 적용됩니다.",
     api: {
       items: "우클릭 메뉴에 표시할 명령을 지정합니다.",
       "@invoke": "사용자가 실행한 명령의 id를 받습니다.",
+      "UIContextMenuItem.icon": "명령 이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.",
+      "UIContextMenuItem #leading": "상태에 따라 바뀌는 아이콘이나 사용자 정의 아이콘을 넣습니다.",
+      "UIContextMenuItem.tone": "danger로 지정하면 삭제 같은 명령이 위험 색상으로 표시됩니다.",
     },
   },
   transfer: {

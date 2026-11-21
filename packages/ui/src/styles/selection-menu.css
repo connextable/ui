@@ -171,6 +171,29 @@
   block-size: 1em;
 }
 
+.ui-menu-item__leading {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 1em;
+  block-size: 1em;
+}
+
+.ui-menu-item__leading > svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+:where([role="menu"]:has(> [data-part="item"] > .ui-menu-item__leading))
+  > [data-part="item"]:not(:has(> .ui-menu-item__leading))::before {
+  content: "";
+  flex: 0 0 1em;
+}
+
+[data-part="item"][data-ui-menu-tone="danger"]:not([aria-disabled="true"]) {
+  color: var(--ui-color-danger);
+}
+
 .ui-menu-item__chevron:dir(rtl) {
   scale: -1 1;
 }
