@@ -10,8 +10,8 @@ import { ref } from "vue";
 
 const lastAction = ref("");
 const commands = [
-  { id: "new-file", parentID: null, label: "New file", shortcut: "⌘N" },
-  { id: "new-folder", parentID: null, label: "New folder", shortcut: "⇧⌘N" },
+  { id: "new-file", parentID: null, label: "New file", shortcut: "⌘ N" },
+  { id: "new-folder", parentID: null, label: "New folder", shortcut: "⇧ ⌘ N" },
 ];
 const items = [...commands, { id: "import", parentID: null }];
 const commandLabels = new Map([...commands.map(({ id, label }) => [id, label] as const), ["import", "Import…"]]);

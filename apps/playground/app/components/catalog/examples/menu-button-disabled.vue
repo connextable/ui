@@ -22,8 +22,8 @@ const items = [
   <UIMenuButton :disabled-items="['import']" :items="items" @invoke="lastAction = $event">
     <UIMenuButtonTrigger>Create</UIMenuButtonTrigger>
     <UIMenuButtonContent>
-      <UIMenuItem value="new-file">New file <kbd>⌘N</kbd></UIMenuItem>
-      <UIMenuItem value="new-folder">New folder <kbd>⇧⌘N</kbd></UIMenuItem>
+      <UIMenuItem value="new-file">New file <kbd>⌘ N</kbd></UIMenuItem>
+      <UIMenuItem value="new-folder">New folder <kbd>⇧ ⌘ N</kbd></UIMenuItem>
       <UIMenuSeparator />
       <UIMenuItem value="import">Import…</UIMenuItem>
     </UIMenuButtonContent>

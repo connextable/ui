@@ -138,6 +138,9 @@
   }
 
   > kbd {
+    padding: var(--ui-space-2xs) var(--ui-space-xs);
+    border-radius: var(--ui-space-xs);
+    background: var(--ui-color-surface-muted);
     font: 400 var(--ui-font-size-metadata)/1 var(--ui-font-mono);
     white-space: nowrap;
   }
