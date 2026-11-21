@@ -427,4 +427,33 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "파일을 선택하고 Upload를 누르면 전달한 adapter가 실행됩니다. 이 예제의 어댑터는 로컬 파일 읽기 진행률을 보고합니다.",
     api: { file: "전송할 브라우저 File 객체입니다.", adapter: "진행률과 완료 결과를 연결하는 Sectile 전송 어댑터입니다.", "#status": "현재 업로드 상태를 받아 상태 메시지를 바꿉니다." },
   },
+  "tags-input": {
+    title: "태그 입력 및 삭제",
+    description: "Enter로 태그를 추가하고, 칩의 삭제 버튼이나 키보드로 지울 수 있습니다.",
+    api: {
+      "default-value": "처음 나타낼 태그 문자열의 배열입니다.",
+      "v-model": "태그 배열을 외부에서 관리합니다. 여러 태그 붙여넣기와 순서 변경을 활성화할 때 사용합니다.",
+      "split-paste": "쉼표 또는 줄바꿈으로 나뉜 텍스트를 여러 태그로 추가합니다.",
+      reorderable: "칩의 이동 손잡이를 표시합니다.",
+      "#default": "렌더링할 태그 목록을 value로 제공합니다.",
+      "Item index": "현재 태그의 위치를 삭제·표시 동작과 연결합니다.",
+      "policies.maxTags": "한 번에 등록할 수 있는 태그 수를 제한합니다.",
+    },
+    sections: [
+      { id: "examples", title: "태그 편집", section: "editing" },
+      { id: "tags-input-policies", title: "입력 정책", section: "policies" },
+      { id: "tags-input-styles", title: "구성", section: "composition" },
+    ],
+    examples: [
+      { id: "tags-input-paste", title: "여러 태그 붙여넣기", description: "예제 문자열을 복사해 붙여넣으세요. 새 태그는 추가되고, 이미 있는 ‘디자인’은 제외됩니다.", section: "editing" },
+      { id: "tags-input-reorder", title: "태그 순서 바꾸기", description: "손잡이로 칩을 끌거나, 손잡이에 포커스한 뒤 Alt와 왼쪽·오른쪽 화살표를 함께 눌러 순서를 바꿉니다.", section: "editing" },
+      { id: "tags-input-clear", title: "태그 한 번에 지우기", description: "입력창 오른쪽 버튼으로 선택된 태그를 모두 지웁니다.", section: "editing", parts: ["UITagsInputClear"] },
+      { id: "tags-input-external-draft", title: "외부 버튼으로 입력값 채우기", description: "버튼으로 초안을 채우고 Enter로 태그를 확정합니다.", section: "editing" },
+      { id: "tags-input-duplicates", title: "중복 태그 제한", description: "이미 있는 ‘Vue’를 다시 입력하면 새 태그가 생기지 않습니다.", section: "policies" },
+      { id: "tags-input-normalize", title: "태그 정규화", description: "TypeScript를 입력하면 소문자인 typescript로 저장됩니다.", section: "policies" },
+      { id: "tags-input-limit", title: "태그 개수 제한", description: "새 주제를 두 개까지 등록할 수 있습니다. 입력창 아래에서 현재 개수를 확인하세요.", section: "policies" },
+      { id: "tags-input-readonly", title: "긴 태그를 읽기 전용으로 표시", description: "긴 태그는 너비에 맞춰 줄바꿈됩니다.", section: "composition" },
+      { id: "tags-input-composition", title: "칩에 상태 아이콘 넣기", description: "구성 슬롯에서 승인 칩에 체크를 추가합니다. 크기와 배경은 입력 컨트롤의 공통 토큰을 따릅니다.", section: "composition", parts: ["UITagsInputItem", "UITagsInputItemText", "UITagsInputItemDelete"] },
+    ],
+  },
 };

@@ -229,6 +229,9 @@ importers:
       '@sectile/chart':
         specifier: 0.16.1
         version: 0.16.1
+      '@sectile/core':
+        specifier: 0.16.0
+        version: 0.16.0
       '@sectile/form':
         specifier: 0.15.2
         version: 0.15.2

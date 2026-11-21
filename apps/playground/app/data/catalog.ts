@@ -301,6 +301,19 @@ export const catalog: readonly CatalogEntry[] = [
       "useUIFileUploadGroup",
     ],
   },
+  {
+    slug: "tags-input",
+    title: "UITagsInput",
+    category: "입력",
+    description: "텍스트를 입력해 여러 태그를 관리합니다.",
+    parts: [
+      "UITagsInputItem",
+      "UITagsInputItemText",
+      "UITagsInputItemDelete",
+      "UITagsInputInput",
+      "UITagsInputClear",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));

@@ -21,6 +21,7 @@
   "dependencies": {
     "@lucide/vue": "catalog:",
     "@sectile/chart": "0.16.1",
+    "@sectile/core": "0.16.0",
     "@sectile/form": "0.15.2",
     "@sectile/tabular": "0.17.1",
     "@sectile/temporal": "0.15.1",
