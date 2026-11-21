@@ -2,6 +2,8 @@ export * from "./components/chart";
 export * from "./components/tabular";
 export * from "./components/scroll";
 export * from "./components/virtual";
+export { default as UILightbox } from "./components/lightbox/UILightbox.vue";
+export type { UILightboxItem, UILightboxImage, UILightboxVideo } from "./components/lightbox/lightbox-types";
 export * from "./components/catalog/navigation-menu";
 export { UIAnchor } from "./components/catalog/anchor";
 export * from "./components/catalog/menu";

@@ -22,5 +22,6 @@ import "./styles/sectile-overlays.css";
 import "./styles/sectile-collections.css";
 import "./styles/reorder.css";
 import "./styles/sectile-temporal.css";
+import "./components/lightbox/lightbox-motion.css";
 
 export * from "./index";

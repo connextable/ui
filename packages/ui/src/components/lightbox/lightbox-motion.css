@@ -1,0 +1,74 @@
+@layer ui.motion {
+  :root:is(
+    :active-view-transition-type(ui-lightbox-open),
+    :active-view-transition-type(ui-lightbox-next),
+    :active-view-transition-type(ui-lightbox-previous)
+  ) {
+    view-transition-name: none;
+
+    &::view-transition {
+      pointer-events: none;
+    }
+
+    &::view-transition-group(.ui-lightbox-media) {
+      animation-duration: var(--ui-motion-standard);
+      animation-timing-function: var(--ui-ease-out);
+    }
+
+    &::view-transition-image-pair(.ui-lightbox-media) {
+      overflow: clip;
+    }
+  }
+
+  :root:active-view-transition-type(ui-lightbox-open) .ui-lightbox__panel {
+    transition: none;
+  }
+
+  :root:active-view-transition-type(ui-lightbox-next) {
+    --ui-lightbox-slide-direction: 1;
+  }
+
+  :root:active-view-transition-type(ui-lightbox-previous) {
+    --ui-lightbox-slide-direction: -1;
+  }
+
+  :root:dir(rtl):active-view-transition-type(ui-lightbox-next) {
+    --ui-lightbox-slide-direction: -1;
+  }
+
+  :root:dir(rtl):active-view-transition-type(ui-lightbox-previous) {
+    --ui-lightbox-slide-direction: 1;
+  }
+
+  :root:is(:active-view-transition-type(ui-lightbox-next), :active-view-transition-type(ui-lightbox-previous)) {
+    &::view-transition-old(.ui-lightbox-media) {
+      animation: ui-lightbox-out var(--ui-motion-fast) var(--ui-ease-out) both;
+    }
+
+    &::view-transition-new(.ui-lightbox-media) {
+      animation: ui-lightbox-in var(--ui-motion-standard) var(--ui-ease-out) both;
+    }
+  }
+
+  @keyframes ui-lightbox-out {
+    to {
+      opacity: 0;
+      transform: translateX(calc(-4% * var(--ui-lightbox-slide-direction)));
+    }
+  }
+
+  @keyframes ui-lightbox-in {
+    from {
+      opacity: 0;
+      transform: translateX(calc(4% * var(--ui-lightbox-slide-direction)));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(.ui-lightbox-media),
+    ::view-transition-old(.ui-lightbox-media),
+    ::view-transition-new(.ui-lightbox-media) {
+      animation-duration: 0s;
+    }
+  }
+}
