@@ -49,7 +49,7 @@ const DataTreeGrid = createUIDataTreeGridComponents(tree);
             <DataTreeGrid.ColumnHeader column="owner">담당자</DataTreeGrid.ColumnHeader>
           </DataTreeGrid.HeaderRow>
         </DataTreeGrid.Header>
-        <DataTreeGrid.Body v-slot="{ row, editState }">
+        <DataTreeGrid.Body v-slot="{ row }">
           <DataTreeGrid.Cell column="service" data-ui-tree-column>
             <DataTreeGrid.RowDisclosure v-if="row.kind === 'group'" aria-label="플랫폼 그룹">
               <ChevronRight :size="16" aria-hidden="true" />
@@ -58,7 +58,7 @@ const DataTreeGrid = createUIDataTreeGridComponents(tree);
           </DataTreeGrid.Cell>
           <DataTreeGrid.Cell column="owner">
             <DataTreeGrid.Editor v-if="row.kind === 'leaf'" column="owner" :value="row.cells.owner" aria-label="새 담당자" />
-            <UITabularEditTrigger v-if="row.kind === 'leaf' && (editState.kind !== 'editing' || editState.cell.rowID !== row.id)"
+            <UITabularEditTrigger v-if="row.kind === 'leaf'"
               :aria-label="`${row.cells.service} 담당자 편집, 현재 ${row.cells.owner}`"
               @click="tree.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'owner' } })">
               {{ row.cells.owner }}

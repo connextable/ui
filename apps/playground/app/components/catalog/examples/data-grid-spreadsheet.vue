@@ -44,11 +44,11 @@ function parseBudget(input: string) {
             <Grid.ColumnHeader column="budget" data-ui-tabular-align="end">월 예산 (천 원)</Grid.ColumnHeader>
           </Grid.HeaderRow>
         </Grid.Header>
-        <Grid.Body v-slot="{ row, editState }">
+        <Grid.Body v-slot="{ row }">
           <Grid.Cell column="subject" data-ui-tabular-primary>{{ row.cells.subject }}</Grid.Cell>
           <Grid.Cell column="budget" data-ui-tabular-align="end" data-ui-tabular-numeric>
             <Grid.Editor column="budget" inputmode="numeric" :value="row.cells.budget" :parse-value="parseBudget" :aria-label="`${row.cells.subject} 예산`" />
-            <UITabularEditTrigger v-if="editState.kind !== 'editing' || editState.cell.rowID !== row.id"
+            <UITabularEditTrigger
               :aria-label="`${row.cells.subject} 예산 편집, 현재 ${number.format(row.cells.budget)}천 원`"
               @click="grid.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'budget' } })">
               {{ number.format(row.cells.budget) }}

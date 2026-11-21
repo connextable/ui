@@ -198,13 +198,36 @@
       background: var(--ui-color-border);
     }
 
-    &:where([data-part="cell"]) > :where([data-part="editor"], input:not([type="checkbox"], [type="radio"])) {
+    &:where([data-part="cell"]) > :where(input:not([type="checkbox"], [type="radio"], [data-part="editor"])) {
       box-sizing: border-box;
       inline-size: 100%;
       min-inline-size: 0;
       min-block-size: var(--ui-tabular-action-size);
       margin-block: calc((1em * var(--ui-line-height-body) - var(--ui-tabular-action-size)) / 2);
       padding: 0 var(--ui-space-sm);
+    }
+
+    &:where([data-part="cell"]):has(> :where([data-part="editor"])) {
+      position: relative;
+    }
+
+    &:where([data-part="cell"]) > [data-part="editor"] {
+      /* Keep the editor out of the row and column sizing calculations. */
+      position: absolute;
+      inset: var(--ui-tabular-cell-padding-block) var(--ui-tabular-cell-padding);
+      box-sizing: border-box;
+      inline-size: calc(100% - 2 * var(--ui-tabular-cell-padding));
+      block-size: calc(100% - 2 * var(--ui-tabular-cell-padding-block));
+      min-inline-size: 0;
+      min-block-size: 0;
+      margin: 0;
+      padding: 0 var(--ui-space-sm);
+    }
+
+    &:where([data-part="cell"]):has(> :where([data-part="editor"]:not([hidden]))) {
+      > :where(.ui-tabular-edit-trigger) {
+        visibility: hidden;
+      }
     }
 
     &:where(input[data-part="filter-control"]) {

@@ -51,8 +51,8 @@ function editOwner() {
       <UITreeGridGroup for="platform">
         <UITreeGridRow value="site" :row-index="2" :level="2">
           <UITreeGridCell value="site-name" :column-index="1">{{ read("site-name") }}</UITreeGridCell>
-          <UITreeGridCell value="site-owner" :column-index="2" v-slot="{ editing }">
-            <UITabularEditTrigger v-if="!editing" :aria-label="`웹사이트 담당자 편집, 현재 ${read('site-owner')}`" @click="editOwner">
+          <UITreeGridCell value="site-owner" :column-index="2">
+            <UITabularEditTrigger :aria-label="`웹사이트 담당자 편집, 현재 ${read('site-owner')}`" @click="editOwner">
               {{ read("site-owner") }}
             </UITabularEditTrigger>
             <UITreeGridEditor for="site-owner" label="웹사이트 담당자" />

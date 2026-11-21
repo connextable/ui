@@ -44,11 +44,11 @@ function parseQuantity(input: string) {
         <Grid.ColumnHeader column="quantity">재고 수량</Grid.ColumnHeader>
       </Grid.HeaderRow>
     </Grid.Header>
-    <Grid.Body v-slot="{ row, editState }">
+    <Grid.Body v-slot="{ row }">
       <Grid.Cell column="name">{{ row.cells.name }}</Grid.Cell>
       <Grid.Cell column="quantity" data-ui-tabular-numeric>
         <Grid.Editor column="quantity" inputmode="numeric" :value="row.cells.quantity" :parse-value="parseQuantity" :aria-label="`${row.cells.name} 수량`" />
-        <UITabularEditTrigger v-if="editState.kind !== 'editing' || editState.cell.rowID !== row.id"
+        <UITabularEditTrigger
           :aria-label="`${row.cells.name} 수량 편집, 현재 ${row.cells.quantity}개`"
           @click="grid.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'quantity' } })">
           {{ row.cells.quantity }}개
