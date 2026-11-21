@@ -10,7 +10,7 @@ const chosen = ref(choices[0]);
 </script>
 
 <template>
-  <UISheet side="bottom">
+  <UISheet side="bottom" swipe-to-dismiss>
     <UISheetTrigger>정렬 · {{ chosen }}</UISheetTrigger>
     <UISheetPortal>
       <UISheetOverlay />

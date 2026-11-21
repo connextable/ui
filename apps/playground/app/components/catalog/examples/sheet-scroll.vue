@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UISheet, UISheetClose, UISheetContent, UISheetDescription, UISheetHandle, UISheetOverlay, UISheetTitle, UISheetTrigger } from "@connextable/ui";
+import { UIButton, UISheet, UISheetClose, UISheetContent, UISheetDescription, UISheetOverlay, UISheetTitle, UISheetTrigger } from "@connextable/ui";
 import { ref } from "vue";
 
 const zones = [
@@ -18,8 +18,7 @@ const pickup = ref("");
   <UISheet>
     <UISheetTrigger as-child><UIButton variant="outline">수령 지점{{ pickup ? ` · ${pickup}` : " 선택" }}</UIButton></UISheetTrigger>
     <UISheetOverlay />
-    <UISheetContent width="34rem">
-      <UISheetHandle />
+    <UISheetContent size="lg">
       <UISheetTitle>방문 수령 지점</UISheetTitle>
       <UISheetDescription>운영 시간을 확인한 뒤 방문할 지점을 선택합니다.</UISheetDescription>
       <div class="pickup-options" role="group" aria-label="수령 지점 목록">

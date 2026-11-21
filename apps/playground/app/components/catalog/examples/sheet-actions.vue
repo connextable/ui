@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UISheet, UISheetClose, UISheetContent, UISheetDescription, UISheetHandle, UISheetOverlay, UISheetTitle, UISheetTrigger } from "@connextable/ui";
+import { UIButton, UISheet, UISheetClose, UISheetContent, UISheetDescription, UISheetOverlay, UISheetTitle, UISheetTrigger } from "@connextable/ui";
 import { Archive, ArchiveRestore, Copy } from "@lucide/vue";
 import { ref } from "vue";
 
@@ -12,8 +12,7 @@ const archived = ref(false);
     <UISheet>
       <UISheetTrigger as-child><UIButton variant="outline">보고서 작업</UIButton></UISheetTrigger>
       <UISheetOverlay />
-      <UISheetContent width="22rem">
-        <UISheetHandle />
+      <UISheetContent size="sm">
         <UISheetTitle>11월 정산 보고서</UISheetTitle>
         <UISheetDescription>보고서를 복제하거나 보관합니다.</UISheetDescription>
         <div class="ui-field-layout">

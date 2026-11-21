@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { DrawerContent, type DrawerPartProps } from "@sectile/vue/drawer";
 
-const { as, asChild, width } = defineProps<DrawerPartProps & {
+const { as, asChild, size = "md", block } = defineProps<DrawerPartProps & {
   as?: DrawerPartProps["as"];
   asChild?: boolean;
-  width?: string | number;
+  size?: "sm" | "md" | "lg";
+  block?: boolean;
 }>();
 </script>
 
 <template>
   <DrawerContent
     :as="as" :as-child="asChild" class="ui-sheet-panel"
-    :style="{ '--ui-sheet-width': typeof width === 'number' ? `${width}px` : width }"
+    :data-size="size" :data-block="block || undefined"
   >
     <slot />
   </DrawerContent>
