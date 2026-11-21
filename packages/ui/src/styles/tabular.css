@@ -1,14 +1,15 @@
 @layer ui.sectile {
   :where([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-table"],
-    [data-scope="data-grid"], [data-scope="data-tree-grid"])[data-part="root"] {
+    [data-scope="data-grid"], [data-scope="data-tree-grid"]):where([data-part="root"]) {
     --ui-tabular-cell-padding: var(--ui-control-padding-inline);
     --ui-tabular-cell-height: var(--ui-control-height);
+    --ui-tabular-cell-padding-block: var(--ui-space-sm);
     --ui-tabular-header-height: var(--ui-control-height-small);
     --ui-tabular-action-size: 1.75rem;
     --ui-tabular-line: color-mix(in srgb, var(--ui-color-divider) 65%, var(--ui-color-surface));
     --ui-tabular-header: var(--ui-color-surface-readonly);
     --ui-tabular-radius: max(0px, calc(
-      var(--ui-data-surface-radius, var(--ui-radius-md)) - var(--ui-data-surface-padding, 0px)
+      var(--ui-data-surface-radius, var(--ui-radius-md)) - var(--ui-data-surface-border, 0px) - var(--ui-data-surface-padding, 0px)
     ));
 
     box-sizing: border-box;
@@ -16,6 +17,7 @@
     min-inline-size: 0;
     border: 1px solid var(--ui-color-divider);
     border-radius: var(--ui-tabular-radius);
+    overflow: clip;
     background: var(--ui-color-surface);
     font-size: var(--ui-font-size-body-sm);
     line-height: var(--ui-line-height-body);
@@ -24,21 +26,24 @@
   :where([data-ui-tabular-density="compact"][data-part="root"]) {
     --ui-tabular-cell-height: var(--ui-control-height-small);
     --ui-tabular-cell-padding: var(--ui-space-sm);
+    --ui-tabular-cell-padding-block: var(--ui-space-xs);
   }
 
   :where([data-ui-tabular-scroll]) {
     overflow: auto;
     max-inline-size: 100%;
     border: 1px solid var(--ui-color-divider);
-    border-radius: var(--ui-radius-md);
+    border-radius: max(0px, calc(
+      var(--ui-data-surface-radius, var(--ui-radius-md)) - var(--ui-data-surface-border, 0px) - var(--ui-data-surface-padding, 0px)
+    ));
+    background: var(--ui-color-surface);
     overscroll-behavior-inline: contain;
   }
 
-  :where([data-ui-tabular-scroll]) > :where([data-part="root"]) {
-    --ui-tabular-radius: 0px;
-
+  :where([data-ui-tabular-scroll], [data-ui-tabular-scroll-content]) > :where([data-part="root"]) {
     border: 0;
     border-radius: 0;
+    overflow: visible;
   }
 
   :where([data-ui-tabular-scroll][tabindex]:focus-visible) {
@@ -51,6 +56,21 @@
     inset-block-start: 0;
     z-index: 1;
     box-shadow: 0 1px var(--ui-color-divider);
+  }
+
+  :where([data-ui-tabular-scroll]) [data-ui-tabular-pin-start] {
+    position: sticky;
+    inset-inline-start: 0;
+    z-index: 1;
+    border-inline-end: 1px solid var(--ui-color-divider);
+  }
+
+  :where([data-ui-tabular-scroll]) :where([data-part="cell"])[data-ui-tabular-pin-start] {
+    background: inherit;
+  }
+
+  :where([data-ui-tabular-scroll]:has([data-ui-tabular-pin-start])) [data-part="header"] {
+    z-index: 2;
   }
 
   :where([data-ui-tabular-numeric]) {
@@ -127,7 +147,7 @@
     [data-scope="data-grid"], [data-scope="data-tree-grid"]) {
     &:where([data-part="cell"], [data-part="column-header"], [data-part="headerCell"]) {
       box-sizing: border-box;
-      padding: var(--ui-space-sm) var(--ui-tabular-cell-padding);
+      padding: var(--ui-tabular-cell-padding-block) var(--ui-tabular-cell-padding);
       text-align: start;
       vertical-align: middle;
       overflow-wrap: anywhere;
@@ -195,10 +215,6 @@
   }
 
   :where([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-grid"], [data-scope="data-tree-grid"]) {
-    &:where([data-part="root"]) {
-      overflow: clip;
-    }
-
     &:where([data-part="row"], [data-part="header-row"], [data-scope="tree-grid"][data-part="header"]) {
       display: flex;
     }
@@ -230,14 +246,6 @@
   :where([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-grid"], [data-scope="data-tree-grid"])
     :where([data-part="column-header"], [data-part="headerCell"]) {
     min-block-size: var(--ui-tabular-header-height);
-  }
-
-  :where([data-scope="data-table"][data-part="header-row"]:first-child > [data-part="column-header"]:first-child) {
-    border-start-start-radius: max(0px, calc(var(--ui-tabular-radius) - 1px));
-  }
-
-  :where([data-scope="data-table"][data-part="header-row"]:first-child > [data-part="column-header"]:last-child) {
-    border-start-end-radius: max(0px, calc(var(--ui-tabular-radius) - 1px));
   }
 
   :where([data-ui-tabular-align="end"]) {
@@ -315,7 +323,7 @@
     transition: rotate var(--ui-motion-fast) var(--ui-ease-out);
   }
 
-  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"]):where(
+  :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"]):is(
     input[data-part="selection-control"], input[data-part="row-selection-control"], button[data-part="bulk-selection-control"]
   ) {
     flex: none;
@@ -332,10 +340,16 @@
   }
 
   :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"])
-    :where(button[data-part="bulk-selection-control"][aria-checked="true"], button[data-part="bulk-selection-control"][aria-checked="mixed"]) {
+    :is(button[data-part="bulk-selection-control"][aria-checked="true"], button[data-part="bulk-selection-control"][aria-checked="mixed"]) {
     border-color: var(--ui-color-accent);
     background: var(--ui-color-accent);
     color: var(--ui-color-on-accent);
+  }
+
+  :where(table[data-scope="data-table"])
+    :where([data-part="column-header"]:has(> [data-part="bulk-selection-control"])) {
+    inline-size: 1%;
+    white-space: nowrap;
   }
 
   :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"])

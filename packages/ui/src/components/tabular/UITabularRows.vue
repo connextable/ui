@@ -1,5 +1,11 @@
+<script setup lang="ts">
+function removeRow(_element: Element, done: () => void) {
+  done();
+}
+</script>
+
 <template>
-  <TransitionGroup name="ui-tabular-rows">
+  <TransitionGroup name="ui-tabular-rows" @leave="removeRow">
     <slot />
   </TransitionGroup>
 </template>

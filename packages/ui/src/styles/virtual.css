@@ -2,7 +2,7 @@
   :where([data-scope="virtualizer"][data-part="root"]) {
     --ui-virtual-height: 18rem;
     --ui-virtual-radius: max(0px, calc(
-      var(--ui-data-surface-radius, var(--ui-radius-lg)) - var(--ui-data-surface-padding, 0px)
+      var(--ui-data-surface-radius, var(--ui-radius-lg)) - var(--ui-data-surface-border, 0px) - var(--ui-data-surface-padding, 0px)
     ));
     --ui-virtual-item-radius: max(0px, calc(var(--ui-virtual-radius) - var(--ui-space-xs)));
 

@@ -14,13 +14,14 @@
 .ui-data-surface {
   --ui-data-surface-radius: var(--ui-radius-lg);
   --ui-data-surface-padding: var(--ui-space-sm);
+  --ui-data-surface-border: 1px;
 
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--ui-data-surface-padding);
   min-inline-size: 0;
   padding: var(--ui-data-surface-padding);
-  border: 1px solid var(--ui-color-divider);
+  border: var(--ui-data-surface-border) solid var(--ui-color-divider);
   border-radius: var(--ui-data-surface-radius);
   background: var(--ui-color-surface-readonly);
 }

@@ -22,7 +22,7 @@ const Table = createUIDataTableComponents(table);
   <UIDataSurface>
     <template #toolbar>
       <strong>시간대별 상담</strong>
-      <UIButton size="sm" variant="outline" :aria-pressed="compact" @click="compact = !compact">촘촘하게</UIButton>
+      <UIButton size="sm" :variant="compact ? 'soft' : 'outline'" :aria-pressed="compact" @click="compact = !compact">촘촘하게</UIButton>
     </template>
     <Table.Provider>
       <Table.Root aria-label="시간대별 상담" data-ui-tabular-striped :data-ui-tabular-density="compact ? 'compact' : undefined">

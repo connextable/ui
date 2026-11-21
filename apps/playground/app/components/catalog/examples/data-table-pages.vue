@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight } from "@lucide/vue";
-import { UIButton, UIDataActions, UITabularRows, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataActions, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
 
 const total = 25_000;
 const pageSize = 6;
@@ -41,17 +41,13 @@ const Table = createUIDataTableComponents(table);
           <Table.HeaderRow>
             <Table.ColumnHeader column="code">요청 번호</Table.ColumnHeader>
             <Table.ColumnHeader column="channel">채널</Table.ColumnHeader>
-            <Table.ColumnHeader column="count">처리 건수</Table.ColumnHeader>
+            <Table.ColumnHeader column="count" data-ui-tabular-align="end">처리 건수</Table.ColumnHeader>
           </Table.HeaderRow>
         </Table.Header>
-        <Table.Body manual v-slot="{ rows }">
-          <UITabularRows>
-            <Table.Row v-for="row in rows" :key="row.id" :row-i-d="row.id">
-              <Table.Cell :row-i-d="row.id" column="code" data-ui-tabular-numeric>{{ row.cells.code }}</Table.Cell>
-              <Table.Cell :row-i-d="row.id" column="channel">{{ row.cells.channel }}</Table.Cell>
-              <Table.Cell :row-i-d="row.id" column="count" data-ui-tabular-numeric>{{ number.format(row.cells.count) }}</Table.Cell>
-            </Table.Row>
-          </UITabularRows>
+        <Table.Body v-slot="{ row }">
+          <Table.Cell column="code" data-ui-tabular-numeric>{{ row.cells.code }}</Table.Cell>
+          <Table.Cell column="channel">{{ row.cells.channel }}</Table.Cell>
+          <Table.Cell column="count" data-ui-tabular-align="end" data-ui-tabular-numeric>{{ number.format(row.cells.count) }}</Table.Cell>
         </Table.Body>
       </Table.Root>
       <UIDataActions>

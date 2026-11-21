@@ -14,6 +14,10 @@
   border-block-start: 1px solid var(--ui-color-divider);
 }
 
+:where([data-part="root"], [data-ui-tabular-scroll]) + .ui-data-actions {
+  margin-block-start: var(--ui-space-sm);
+}
+
 :slotted(output) {
   flex: 1 1 12rem;
   min-inline-size: 0;
