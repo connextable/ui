@@ -7,8 +7,8 @@ export default defineNuxtConfig({
   // Rebuild Vite's dependency graph when pnpm changes a workspace peer resolution.
   watch: [fileURLToPath(new URL("../../pnpm-lock.yaml", import.meta.url))],
   vite: {
-    // Sectile form parts and controls must share the same Vue injection context.
-    optimizeDeps: { exclude: ["@sectile/vue"] },
+    // Share Vue injection keys and the registry that issues temporal field formats.
+    optimizeDeps: { exclude: ["@sectile/vue", "@sectile/temporal"] },
     plugins: [highlightExamples()],
   },
 });
