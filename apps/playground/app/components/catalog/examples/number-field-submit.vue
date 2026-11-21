@@ -12,7 +12,7 @@ function submit(event: SubmitEvent) {
 </script>
 
 <template>
-  <form class="ui-field-layout" @submit.prevent="submit">
+  <form class="number-submission ui-field-layout" @submit.prevent="submit">
     <div class="ui-field">
       <label :for="quantityId">수량</label>
       <UINumberField :id="quantityId" name="quantity" unit="개" required />
@@ -21,3 +21,11 @@ function submit(event: SubmitEvent) {
     <output>{{ result }}</output>
   </form>
 </template>
+
+<style scoped>
+.number-submission {
+  display: grid;
+  min-inline-size: 0;
+  gap: var(--ui-space-md);
+}
+</style>

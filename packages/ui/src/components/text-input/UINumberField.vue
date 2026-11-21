@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NumberField, type NumberFieldExpose, type NumberFieldProps } from "@sectile/vue/number-field";
-import { useId, useTemplateRef } from "vue";
+import { ref, useId, useTemplateRef } from "vue";
 import { definedControlAttrs } from "../control-attrs";
 
 defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "for" });
@@ -10,6 +10,7 @@ const { unit, disabled = undefined, readonly = undefined, required = undefined, 
 const emit = defineEmits<{ "update:modelValue": [value: string | null] }>();
 
 const control = useTemplateRef<InstanceType<typeof NumberField>>("control");
+const pointerFocus = ref(false);
 const unitId = useId();
 const unavailable = { status: "rejected", reason: "unavailable" } as const;
 
@@ -41,7 +42,16 @@ function focusInput() {
 </script>
 
 <template>
-  <span class="ui-number-control" :class="$attrs.class" :style="$attrs.style" @click.self="focusInput">
+  <span
+    class="ui-number-control"
+    :class="$attrs.class"
+    :style="$attrs.style"
+    :data-pointer-focus="pointerFocus || undefined"
+    @pointerdown="pointerFocus = true"
+    @pointercancel="pointerFocus = false"
+    @focusout="pointerFocus = false"
+    @click.self="focusInput"
+  >
     <NumberField
       ref="control"
       v-bind="inputBindings($attrs)"

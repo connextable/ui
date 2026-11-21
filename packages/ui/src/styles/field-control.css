@@ -147,6 +147,28 @@
 :where(.ui-number-control) {
   inline-size: 14rem;
 
+  &:has(> input:focus:not([aria-invalid="true"])) {
+    border-color: var(--ui-color-focus);
+  }
+
+  &:not([data-pointer-focus]):has(> input:focus-visible) {
+    outline: var(--ui-focus-ring-width) solid transparent;
+    outline-offset: var(--ui-focus-ring-offset);
+    box-shadow: var(--ui-focus-ring);
+
+    @media (forced-colors: active) {
+      outline-color: Highlight;
+    }
+  }
+
+  &:not([data-pointer-focus]):has(> input[aria-invalid="true"]:focus-visible) {
+    box-shadow: var(--ui-focus-ring-danger);
+  }
+
+  > input:focus-visible {
+    outline: none;
+  }
+
   > .ui-numeric-unit {
     box-sizing: border-box;
     max-inline-size: 50%;
