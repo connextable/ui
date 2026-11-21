@@ -27,11 +27,7 @@
 }
 
 .ui-data-surface__bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   justify-content: space-between;
-  gap: var(--ui-space-sm) var(--ui-space-md);
   min-block-size: var(--ui-control-height-small);
   padding-inline: var(--ui-space-xs);
   font-size: var(--ui-font-size-body-sm);

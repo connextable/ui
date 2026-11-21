@@ -1,0 +1,23 @@
+:where(
+  .ui-form-actions,
+  .ui-data-actions,
+  .ui-data-surface__bar,
+  .ui-dashboard-navbar,
+  .ui-dashboard-navbar__leading,
+  .ui-dashboard-navbar__trailing,
+  .ui-dashboard-toolbar,
+  .ui-dashboard-toolbar__controls
+) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ui-space-sm);
+}
+
+:where(.ui-form-actions, .ui-data-actions) {
+  justify-content: flex-end;
+}
+
+:where(.ui-form-actions, .ui-data-surface__bar, .ui-dashboard-navbar, .ui-dashboard-toolbar) {
+  column-gap: var(--ui-space-md);
+}

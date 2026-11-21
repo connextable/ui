@@ -19,20 +19,12 @@ defineProps<{ label?: string }>();
 
 <style scoped>
 .ui-dashboard-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 1rem;
-  padding: 0.5rem var(--ui-dashboard-bar-padding-inline, 1.25rem);
+  padding: var(--ui-space-sm) var(--ui-dashboard-bar-padding-inline, 1.25rem);
   border-block-start: 1px solid var(--ui-color-divider);
   background: var(--ui-dashboard-toolbar-background, var(--ui-color-surface-muted));
 }
 
 .ui-dashboard-toolbar__controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
   min-inline-size: 0;
 }
 

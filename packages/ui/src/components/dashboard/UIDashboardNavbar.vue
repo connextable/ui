@@ -14,13 +14,9 @@
 
 <style scoped>
 .ui-dashboard-navbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 0.875rem;
   min-block-size: var(--ui-dashboard-navbar-height, 3.5rem);
   box-sizing: border-box;
-  padding: 0.5rem var(--ui-dashboard-bar-padding-inline, 1.25rem);
+  padding: var(--ui-space-sm) var(--ui-dashboard-bar-padding-inline, 1.25rem);
 }
 
 .ui-dashboard-navbar__content {
@@ -31,10 +27,6 @@
 
 .ui-dashboard-navbar__leading,
 .ui-dashboard-navbar__trailing {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
   min-inline-size: 0;
 }
 
