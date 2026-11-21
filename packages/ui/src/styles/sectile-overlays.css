@@ -63,7 +63,7 @@
     font-weight: 680;
   }
 
-  :where([data-scope="dialog"], [data-scope="alert-dialog"], [data-scope="drawer"], [data-scope="popover"], [data-scope="toast"]):where([data-part="description"]) {
+  :where([data-scope="dialog"], [data-scope="alert-dialog"], [data-scope="drawer"], [data-scope="popover"]):where([data-part="description"]) {
     margin: var(--ui-space-sm) 0 var(--ui-space-md);
     color: var(--ui-color-text-muted);
     font-size: var(--ui-font-size-body-sm);
@@ -77,27 +77,6 @@
     border-radius: var(--ui-space-2xs);
     background: var(--ui-color-border-strong);
     touch-action: none;
-  }
-
-  :where([data-scope="toast"][data-part="viewport"]) {
-    position: fixed;
-    z-index: calc(var(--ui-layer-floating) + 3);
-    inset-inline-end: var(--ui-space-md);
-    inset-block-end: var(--ui-space-md);
-    display: grid;
-    gap: var(--ui-space-sm);
-    inline-size: min(23rem, calc(100vw - 1.5rem));
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  :where([data-scope="toast"][data-part="root"]) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--ui-space-md);
-    padding: var(--ui-space-md);
   }
 
   :where([data-scope="dialog"], [data-scope="alert-dialog"], [data-scope="drawer"], [data-scope="popover"], [data-scope="tooltip"], [data-scope="toast"]):where([data-part="content"], [data-part="overlay"], [data-part="root"]):where([data-state="closed"]) {

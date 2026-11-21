@@ -2,6 +2,7 @@ export { default as UIAlertDialogContent } from "./UIAlertDialogContent.vue";
 export { default as UIDialogContent } from "./UIDialogContent.vue";
 export { default as UIDrawerContent } from "./UIDrawerContent.vue";
 export { default as UISheetContent } from "./UISheetContent.vue";
+export { default as UIToastViewport, type UIToastPosition } from "./UIToastViewport.vue";
 export { UITooltip } from "./tooltip";
 export {
   AlertDialogRoot as UIAlertDialog,
@@ -56,10 +57,10 @@ export {
   ToastProvider as UIToastProvider,
   ToastPortal as UIToastPortal,
   ToastRoot as UIToast,
-  ToastViewport as UIToastViewport,
   ToastTitle as UIToastTitle,
   ToastDescription as UIToastDescription,
   ToastClose as UIToastClose,
+  type ToastProviderSlotProps as UIToastProviderSlotProps,
 } from "@sectile/vue/toast";
 export {
   createTooltipGroup as createUITooltipGroup,

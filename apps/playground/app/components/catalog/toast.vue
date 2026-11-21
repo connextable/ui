@@ -19,8 +19,8 @@ const notification = () => ({ id: `notice-${++sequence}`, title: "변경사항 �
     <UIButton @click="toast(notification())">알림 표시</UIButton>
     <UIToastViewport>
       <UIToast v-for="item in toasts" :key="item.id" :value="item.id">
-        <CircleCheck :size="18" aria-hidden="true" class="notice-icon" />
-        <UIToastTitle class="notice-title" />
+        <CircleCheck :size="16" aria-hidden="true" class="notice-icon" />
+        <UIToastTitle />
         <UIToastClose as-child>
           <UIButton size="sm" variant="ghost" icon-only aria-label="알림 닫기">
             <template #leading><X /></template>
@@ -37,8 +37,4 @@ const notification = () => ({ id: `notice-${++sequence}`, title: "변경사항 �
   color: var(--ui-color-accent);
 }
 
-.notice-title {
-  flex: 1 1 auto;
-  font-weight: 600;
-}
 </style>
