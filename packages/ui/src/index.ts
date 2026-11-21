@@ -2,6 +2,7 @@ export * from "./components/chart";
 export * from "./components/tabular";
 export * from "./components/virtual";
 export * from "./components/catalog/navigation-menu";
+export * from "./components/catalog/overlay";
 export { UIAnchor } from "./components/catalog/anchor";
 export * from "./components/catalog/menu";
 export * from "./components/catalog/cascade-select";

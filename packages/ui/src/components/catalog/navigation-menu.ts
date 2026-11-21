@@ -8,3 +8,4 @@ export {
   NavigationMenuViewport as UINavigationMenuViewport,
   NavigationMenuIndicator as UINavigationMenuIndicator,
 } from "@sectile/vue/navigation-menu";
+export { default as UINavigationMenuPopover, type UINavigationMenuEntry } from "./UINavigationMenuPopover.vue";

@@ -1,46 +1,20 @@
 <script setup lang="ts">
-import {
-  UINavigationMenu,
-  UINavigationMenuContent,
-  UINavigationMenuItem,
-  UINavigationMenuLink,
-  UINavigationMenuList,
-  UINavigationMenuTrigger,
-  UINavigationMenuViewport,
-} from "@connextable/ui";
-import { ChevronDown, ChevronRight } from "@lucide/vue";
+import { UINavigationMenuPopover, type UINavigationMenuEntry } from "@connextable/ui";
 
-const items = [
-  { id: "components", parentID: null },
-  { id: "dashboard", parentID: "components" },
-  { id: "tabular", parentID: "components" },
-  { id: "table", parentID: "tabular" },
-  { id: "tree", parentID: "tabular" },
+const items: readonly UINavigationMenuEntry[] = [
+  { id: "component", label: "컴포넌트", children: [
+    { id: "tabular", label: "표와 그리드", children: [
+      { id: "data", label: "데이터 테이블", href: "/components/data-table" },
+      { id: "grid", label: "데이터 그리드", href: "/components/data-grid" },
+    ] },
+    { id: "input", label: "입력", children: [
+      { id: "checkbox", label: "체크박스", href: "/components/checkbox" },
+      { id: "select", label: "셀렉트", href: "/components/select" },
+    ] },
+  ] },
 ];
 </script>
 
 <template>
-  <UINavigationMenu as="nav" :items="items" label="계층형 컴포넌트 탐색">
-    <UINavigationMenuList>
-      <UINavigationMenuItem>
-        <UINavigationMenuTrigger value="components" as="button" type="button">
-          컴포넌트 분류
-          <ChevronDown :size="14" aria-hidden="true" data-ui-navigation-chevron="down" />
-        </UINavigationMenuTrigger>
-      </UINavigationMenuItem>
-    </UINavigationMenuList>
-    <UINavigationMenuViewport>
-      <UINavigationMenuContent for="components">
-        <UINavigationMenuLink value="dashboard" as="a" href="/components/dashboard">대시보드</UINavigationMenuLink>
-        <UINavigationMenuTrigger value="tabular" as="button" type="button">
-          표와 그리드
-          <ChevronRight :size="14" aria-hidden="true" data-ui-navigation-chevron="side" />
-        </UINavigationMenuTrigger>
-      </UINavigationMenuContent>
-      <UINavigationMenuContent for="tabular">
-        <UINavigationMenuLink value="table" as="a" href="/components/data-table">데이터 테이블</UINavigationMenuLink>
-        <UINavigationMenuLink value="tree" as="a" href="/components/data-tree-grid">트리 그리드</UINavigationMenuLink>
-      </UINavigationMenuContent>
-    </UINavigationMenuViewport>
-  </UINavigationMenu>
+  <UINavigationMenuPopover :items="items" label="컴포넌트 탐색" />
 </template>
