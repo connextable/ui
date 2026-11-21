@@ -500,4 +500,22 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "accordion-multiple", title: "여러 섹션 함께 열기", description: "type을 multiple로 지정하고 각각의 헤더를 눌러 동시에 펼칩니다." },
     ],
   },
+  pagination: {
+    title: "목록의 페이지 이동",
+    description: "전체 항목 수와 페이지당 항목 수를 지정합니다. 현재 페이지와 이동 버튼, 생략 부호가 한 줄에 표시됩니다.",
+    api: {
+      total: "전체 항목 수입니다.",
+      "default-items-per-page": "초기 페이지별 항목 수입니다.",
+      "items-per-page": "v-model로 페이지를 제어할 때 함께 지정할 페이지당 항목 수입니다.",
+      "v-model": "현재 페이지 번호를 외부 상태에 연결합니다.",
+      "#default": "페이지 버튼과 생략 구분을 포함한 items를 제공합니다.",
+    },
+    examples: [
+      { id: "pagination-page-size", title: "페이지 크기 변경", description: "한 페이지에 표시할 수를 바꾸면 전체 페이지 수가 달라집니다." },
+      { id: "pagination-siblings", title: "인접 페이지 수 조절", description: "현재 페이지 양쪽에 한 페이지씩 표시하고 떨어진 범위는 생략합니다." },
+      { id: "pagination-empty", title: "데이터가 없을 때", description: "빈 결과에서는 이동 항목이 없는 상태를 확인합니다." },
+      { id: "pagination-edges", title: "첫 페이지와 마지막 페이지로 이동", description: "범위의 양 끝으로 곧바로 이동합니다. 이미 도착한 방향의 버튼은 비활성화됩니다.", parts: ["UIPaginationFirst", "UIPaginationLast"] },
+      { id: "pagination-controlled", title: "현재 페이지를 외부에서 읽기", description: "v-model과 items-per-page를 함께 지정합니다. 다음·이전 버튼을 누르면 바깥의 페이지 표시도 바뀝니다." },
+    ],
+  },
 };

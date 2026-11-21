@@ -350,6 +350,19 @@ export const catalog: readonly CatalogEntry[] = [
       "UIAccordionContent",
     ],
   },
+  {
+    slug: "pagination",
+    title: "UIPagination",
+    category: "레이아웃",
+    description: "페이지 사이를 이동합니다.",
+    parts: [
+      "UIPaginationItem",
+      "UIPaginationFirst",
+      "UIPaginationPrevious",
+      "UIPaginationNext",
+      "UIPaginationLast",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));
