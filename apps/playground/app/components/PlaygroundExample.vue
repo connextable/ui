@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { UIDisclosure, UIDisclosureContent, UIDisclosureTrigger } from "@connextable/ui";
-import { computed, inject, onBeforeUnmount, onMounted, ref } from "vue";
-import { playgroundVisualStatesKey } from "~/utils/playground-visual-states";
+import { computed, inject, onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
+import { playgroundPrimaryExampleKey } from "~/utils/playground-primary-example";
 import PlaygroundCodeBlock from "./PlaygroundCodeBlock.vue";
 
 const props = defineProps<{
@@ -13,17 +13,14 @@ const props = defineProps<{
   headingLevel?: 2 | 3;
 }>();
 
-const visualStates = inject(playgroundVisualStatesKey, undefined);
-const previewTarget = computed(() => visualStates?.activeId.value === props.id ? visualStates.target.value : null);
-let unregisterVisualExample: (() => void) | undefined;
+const primaryExample = inject(playgroundPrimaryExampleKey, undefined);
+const isPrimaryExample = computed(() => primaryExample?.id.value === props.id);
+const preview = useTemplateRef<HTMLElement>("preview");
+let unregisterExample: (() => void) | undefined;
 onMounted(() => {
-  unregisterVisualExample = visualStates?.register({
-    id: props.id,
-    title: props.title,
-    description: props.description,
-  });
+  unregisterExample = primaryExample?.register(props.id);
 });
-onBeforeUnmount(() => unregisterVisualExample?.());
+onBeforeUnmount(() => unregisterExample?.());
 
 const hasOpenedCode = ref(false);
 const loadedSource = ref<string>();
@@ -65,12 +62,9 @@ async function revealSource(open: boolean) {
       v-slot="{ open }"
     >
       <div class="playground-example__demo">
-        <Teleport :to="previewTarget ?? undefined" :disabled="!previewTarget">
-          <div class="playground-example__preview ui-field-layout" :class="{ 'playground-example__preview--wide': wide }">
-            <slot />
-          </div>
-        </Teleport>
-        <a v-if="previewTarget" class="playground-example__state-link" href="#visual-states">시각 상태에서 보는 중</a>
+        <div ref="preview" class="playground-example__preview ui-field-layout" :class="{ 'playground-example__preview--wide': wide }">
+          <slot />
+        </div>
         <UIDisclosureTrigger
           class="playground-example__toggle"
           size="sm"
@@ -90,6 +84,7 @@ async function revealSource(open: boolean) {
       </UIDisclosureContent>
     </UIDisclosure>
   </section>
+  <PlaygroundVisualStates v-if="isPrimaryExample" :source="preview" />
 </template>
 
 <style scoped>
@@ -169,14 +164,6 @@ async function revealSource(open: boolean) {
   grid-column: 3;
   justify-self: end;
   white-space: nowrap;
-}
-
-.playground-example__state-link {
-  grid-column: 2;
-  margin-inline: auto;
-  padding: var(--ui-space-md);
-  color: var(--ui-color-accent);
-  font-size: var(--ui-font-size-body-sm);
 }
 
 @container playground-example (inline-size >= 36rem) {

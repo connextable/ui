@@ -238,9 +238,9 @@ onMounted(() => { mounted.value = true; });
         </header>
         <PlaygroundOutline :content="documentContent" class="playground-document__outline" />
         <article ref="documentContent" class="playground-document__content">
-          <PlaygroundVisualStates :key="route.path" :enabled="route.path.startsWith('/components/') && Boolean(title)">
+          <PlaygroundComponentExamples :key="route.path" :enabled="route.path.startsWith('/components/') && Boolean(title)">
             <NuxtPage />
-          </PlaygroundVisualStates>
+          </PlaygroundComponentExamples>
         </article>
       </div>
     </UIDashboardPanel>
