@@ -840,6 +840,24 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "popover-position", title: "트리거 끝에 정렬", description: "side와 align을 함께 지정해 팝오버를 트리거의 아래쪽 끝에 맞춥니다." },
     ],
   },
+  "host-provider": {
+    examples: [
+      { id: "host-provider-nested", title: "가까운 포털 대상", description: "안쪽 Provider의 포털 콘텐츠는 안쪽 수신 영역에 렌더링됩니다." },
+      { id: "host-provider-direction", title: "오른쪽에서 왼쪽으로 읽기", description: "Provider 방향을 하위 탭에 전달해 화살표 방향 탐색을 확인합니다." },
+    ],
+    title: "포털이 렌더링될 위치 지정",
+    description: "portal-target에 대상의 선택자를 전달합니다. Provider 아래의 UIHostPortal이 그 위치에 콘텐츠를 렌더링합니다.",
+    api: { "portal-target": "포털을 연결할 요소 또는 CSS 선택자입니다.", direction: "하위 컴포넌트에 전달할 글의 방향입니다." },
+  },
+  primitive: {
+    examples: [
+      { id: "primitive-as-child", title: "자식의 의미 살리기", description: "속성을 자식 요소에 전달해 제목이나 버튼의 의미를 유지합니다." },
+      { id: "primitive-element-ref", title: "렌더링된 요소 참조", description: "element-ref로 실제 HTML 요소를 받아 포커스를 이동합니다." },
+    ],
+    title: "렌더링할 요소 선택",
+    description: "as에 abbr을 전달합니다. title 같은 HTML 속성은 선택한 요소에 전달됩니다.",
+    api: { as: "렌더링할 HTML 요소 이름 또는 Vue 컴포넌트입니다.", "as-child": "슬롯에 전달한 단일 자식에 루트의 속성을 적용합니다." },
+  },
   feed: {
     examples: [
       { id: "feed-earlier", title: "고객 상담의 이전 기록 불러오기", description: "최근 상담 기록에서 시작해 이전 기록을 두 건씩 위에 추가합니다. 두 번째 요청에서는 예제 오류가 발생하며 다시 시도하면 전체 기록을 볼 수 있습니다.", parts: ["UIFeedLoadEarlier"] },
@@ -855,6 +873,17 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "request-window": "현재 목록의 앞이나 뒤 항목이 필요할 때 방향, 기준 항목, 리비전, 요청 번호를 전달합니다.",
       revision: "목록 요청을 처리한 뒤 갱신합니다. 실패 후 동일한 목록으로 돌아갈 때도 대기 상태를 해제할 수 있습니다.",
     },
+  },
+  image: {
+    examples: [
+      { id: "image-fallback", title: "로드 실패의 기본 대체 콘텐츠", description: "이미지를 읽을 수 없으면 alt 텍스트가 대체 콘텐츠로 나타납니다." },
+      { id: "image-custom-fallback", title: "로드 실패 UI 바꾸기", description: "fallback 슬롯으로 상태 아이콘과 안내문을 표시합니다." },
+      { id: "image-responsive", title: "화면에 맞는 이미지 해상도 선택", description: "srcset에 두 해상도를 제공하고 sizes에 이미지가 표시되는 예상 폭을 지정합니다." },
+      { id: "image-aspect-ratio", title: "프레임의 비율에 맞춰 이미지 자르기", description: "같은 이미지의 정사각형과 가로형 프레임을 비교합니다.", section: "appearance" },
+    ],
+    title: "이미지 표시",
+    description: "이미지 주소와 이미지의 내용을 설명하는 대체 텍스트를 전달합니다.",
+    api: { src: "브라우저가 불러올 이미지 주소입니다.", alt: "이미지의 의미를 설명하는 텍스트입니다.", "#fallback": "이미지 로드에 실패했을 때 표시할 콘텐츠입니다." },
   },
   meter: {
     examples: [

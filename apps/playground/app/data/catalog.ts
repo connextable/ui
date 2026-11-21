@@ -685,6 +685,19 @@ export const catalog: readonly CatalogEntry[] = [
     parts: ["UIScrollFade", "useUIScrollArea", "useUIInfiniteScroll"],
   },
   {
+    slug: "host-provider",
+    title: "UIHostProvider",
+    category: "레이아웃",
+    description: "하위 오버레이의 기본 포털 위치와 쓰기 방향을 지정합니다.",
+    parts: ["UIHostPortal"],
+  },
+  {
+    slug: "primitive",
+    title: "UIPrimitive",
+    category: "레이아웃",
+    description: "as로 결과 요소를 지정하고 공통 속성을 전달합니다.",
+  },
+  {
     slug: "feed",
     title: "UIFeed",
     category: "레이아웃",
@@ -694,6 +707,12 @@ export const catalog: readonly CatalogEntry[] = [
       "UIFeedLoadEarlier",
       "UIFeedLoadNewer",
     ],
+  },
+  {
+    slug: "image",
+    title: "UIImage",
+    category: "레이아웃",
+    description: "이미지의 로드 상태에 따라 대체 콘텐츠를 표시합니다.",
   },
   {
     slug: "meter",

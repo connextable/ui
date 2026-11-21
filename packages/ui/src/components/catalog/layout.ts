@@ -60,3 +60,6 @@ export {
   WindowSplitterPane as UIWindowSplitterPane,
   WindowSplitterHandle as UIWindowSplitterHandle,
 } from "@sectile/vue/window-splitter";
+export { default as UIImage } from "./UIImage.vue";
+export { Primitive as UIPrimitive } from "@sectile/vue/primitive";
+export { HostProvider as UIHostProvider, HostPortal as UIHostPortal } from "@sectile/vue/host-provider";
