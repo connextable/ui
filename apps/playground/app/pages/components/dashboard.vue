@@ -3,6 +3,10 @@ import { onMounted, onScopeDispose, ref } from "vue";
 import DashboardAnatomy from "~/components/examples/DashboardAnatomy.vue";
 import DashboardExample from "~/components/examples/DashboardExample.vue";
 import source from "~/components/examples/DashboardExample.vue?example-code&raw";
+import DashboardAsideExample from "~/components/examples/DashboardAsideExample.vue";
+import asideSource from "~/components/examples/DashboardAsideExample.vue?example-code&raw";
+import DashboardPanelSlotsExample from "~/components/examples/DashboardPanelSlotsExample.vue";
+import panelSource from "~/components/examples/DashboardPanelSlotsExample.vue?example-code&raw";
 import { dashboardParts } from "~/data/dashboard-parts";
 
 definePageMeta({
@@ -31,15 +35,24 @@ onScopeDispose(removeRouteHook);
 
 <template>
   <div>
-    <PlaygroundExample
-      id="dashboard-example"
-      title="레이아웃 조합"
-      description="사이드바를 포함한 화면, 목록과 상세, 단일 패널을 전환해 보세요."
-      :source="source"
-      wide
-    >
-      <DashboardExample />
-    </PlaygroundExample>
+    <PlaygroundExampleSection id="usage" title="기본 사용법">
+      <PlaygroundExample id="dashboard-example" title="사이드바와 본문"
+        description="사이드바에서 메뉴를 선택하면 본문의 해당 위치로 이동합니다."
+        :source="source" :heading-level="3" wide>
+        <DashboardExample />
+      </PlaygroundExample>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="examples" title="동작별 예제">
+      <PlaygroundExample id="dashboard-aside" title="목록과 상세 패널"
+        description="선택한 문서의 내용이 aside 슬롯에 표시됩니다." :source="asideSource" :heading-level="3" wide>
+        <DashboardAsideExample />
+      </PlaygroundExample>
+      <PlaygroundExample id="dashboard-panel-slots" title="패널의 헤더와 툴바"
+        description="필터는 toolbar에, 페이지 제목과 초기화는 header에 배치합니다."
+        :source="panelSource" :heading-level="3" wide>
+        <DashboardPanelSlotsExample />
+      </PlaygroundExample>
+    </PlaygroundExampleSection>
     <section class="dashboard-anatomy" aria-labelledby="dashboard-parts-title">
       <span v-for="(_, name) in dashboardParts" :id="name" :key="name" class="dashboard-anatomy__anchor" aria-hidden="true" />
       <h2 id="dashboard-parts-title" data-playground-heading tabindex="-1">구성도</h2>
@@ -69,9 +82,4 @@ onScopeDispose(removeRouteHook);
   color: var(--ui-color-text-muted);
 }
 
-@media (width <= 42rem) {
-  .dashboard-anatomy__anchor {
-    scroll-margin-block-start: 5.25rem;
-  }
-}
 </style>

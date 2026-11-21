@@ -7,7 +7,9 @@ import {
   UIDashboardNavItem,
   UIDashboardPanel,
   UIDashboardSidebar,
+  UIHostProvider,
   UIInput,
+  UITemporalProvider,
 } from "@connextable/ui";
 import { Search, X } from "@lucide/vue";
 import { computed, onMounted, ref, useTemplateRef, watch } from "vue";
@@ -24,6 +26,8 @@ const route = useRoute();
 const router = useRouter();
 const documentContent = useTemplateRef<HTMLElement>("documentContent");
 const sidebar = useTemplateRef<InstanceType<typeof UIDashboardSidebar>>("sidebar");
+const navbar = useTemplateRef<InstanceType<typeof UIDashboardNavbar>>("navbar");
+const stickySizes = ref<{ header: number; sidebar: number }>();
 const searchInput = useTemplateRef("searchInput");
 const searchQuery = ref("");
 const expandedItems = ref<Record<string, boolean>>({});
@@ -100,6 +104,21 @@ watch(query, () => {
   sidebar.value?.scrollNavigationToTop();
 });
 
+watch([sidebar, navbar], ([sidebarComponent, navbarComponent], _, onCleanup) => {
+  const sidebarElement = sidebarComponent?.$el;
+  const header = navbarComponent?.$el?.parentElement;
+  if (!(sidebarElement instanceof HTMLElement) || !(header instanceof HTMLElement)) return;
+
+  const measure = () => {
+    stickySizes.value = { header: header.getBoundingClientRect().height, sidebar: sidebarElement.getBoundingClientRect().height };
+  };
+  const observer = new ResizeObserver(measure);
+  observer.observe(header);
+  observer.observe(sidebarElement);
+  measure();
+  onCleanup(() => observer.disconnect());
+}, { flush: "post" });
+
 watch([() => route.path, selectedPart], ([path, part]) => {
   if (groups.some(group => group.items.some(item => item.path === path && item.parts.includes(part)))) {
     expandedItems.value[path] = true;
@@ -129,7 +148,12 @@ function onSearchEscape(event: KeyboardEvent) {
 
 useHead(() => ({
   title: title.value ? `${title.value} · Connextable UI` : "Connextable UI",
-  htmlAttrs: { lang: "ko" },
+  htmlAttrs: {
+    lang: "ko",
+    style: stickySizes.value
+      ? `--playground-header-height: ${stickySizes.value.header}px; --playground-sidebar-height: ${stickySizes.value.sidebar}px;`
+      : undefined,
+  },
 }));
 
 onMounted(() => { mounted.value = true; });
@@ -219,11 +243,11 @@ onMounted(() => { mounted.value = true; });
         </template>
       </UIDashboardSidebar>
     </template>
-    <UIDashboardPanel as="main" id="playground-content" class="playground-main" tabindex="-1">
+    <UIDashboardPanel as="main" id="playground-content" class="playground-main" tabindex="-1" sticky-header>
       <template #header>
-        <UIDashboardNavbar>
+        <UIDashboardNavbar ref="navbar">
           <p class="playground-location">
-            Playground
+            플레이그라운드
             <template v-if="category">
               <span aria-hidden="true">/</span>
               {{ category }}
@@ -238,8 +262,12 @@ onMounted(() => { mounted.value = true; });
         </header>
         <PlaygroundOutline :content="documentContent" class="playground-document__outline" />
         <article ref="documentContent" class="playground-document__content">
-          <PlaygroundComponentExamples :key="route.path" :enabled="route.path.startsWith('/components/') && Boolean(title)">
-            <NuxtPage />
+          <PlaygroundComponentExamples :key="route.path" :enabled="route.path.startsWith('/components/') && Boolean(title) && catalogPage?.visualStates !== false">
+            <UIHostProvider portal-target="#teleports">
+              <UITemporalProvider>
+                <NuxtPage />
+              </UITemporalProvider>
+            </UIHostProvider>
           </PlaygroundComponentExamples>
         </article>
       </div>
@@ -248,6 +276,12 @@ onMounted(() => { mounted.value = true; });
 </template>
 
 <style>
+html {
+  --playground-sidebar-offset: 0px;
+  --playground-sticky-height: calc(var(--playground-header-height, 3.5rem) + var(--playground-sidebar-offset));
+  scroll-padding-block-start: var(--playground-sticky-height);
+}
+
 body {
   margin: 0;
   background: var(--ui-color-surface);
@@ -356,7 +390,11 @@ body {
 .playground-main {
   --ui-dashboard-bar-padding-inline: clamp(1.25rem, 4vw, 3rem);
   --ui-dashboard-panel-padding: clamp(1.25rem, 4vw, 3rem);
-  scroll-margin-block-start: 5rem;
+  --ui-dashboard-panel-sticky-offset: var(--playground-sidebar-offset);
+}
+
+.playground-main:focus {
+  outline: none;
 }
 
 .playground-location {
@@ -399,9 +437,9 @@ body {
 .playground-document__outline {
   position: sticky;
   grid-area: outline;
-  inset-block-start: 1.5rem;
+  inset-block-start: calc(var(--playground-sticky-height) + 1.5rem);
   box-sizing: border-box;
-  max-block-size: calc(100dvh - 1.5rem - var(--ui-dashboard-panel-padding));
+  max-block-size: calc(100dvh - var(--playground-sticky-height) - 1.5rem - var(--ui-dashboard-panel-padding));
   padding-block: 0.375rem;
 }
 
@@ -442,8 +480,8 @@ body {
 }
 
 @media (width <= 42rem) {
-  [data-playground-heading] {
-    scroll-margin-block-start: 5.25rem;
+  html {
+    --playground-sidebar-offset: var(--playground-sidebar-height, 3.5rem);
   }
 }
 </style>

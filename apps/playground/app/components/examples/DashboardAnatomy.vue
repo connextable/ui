@@ -6,7 +6,7 @@ const part = defineModel<string>({ required: true });
 </script>
 
 <template>
-  <PlaygroundAnatomy v-model="part" label="Dashboard 구성 영역" :parts="dashboardParts">
+  <PlaygroundAnatomy v-model="part" label="대시보드 구성 영역" :parts="dashboardParts">
     <div class="dashboard-diagram">
       <div class="dashboard-diagram__sidebar" data-ui-anatomy-part="UIDashboardSidebar">
         <strong>작업 공간</strong>

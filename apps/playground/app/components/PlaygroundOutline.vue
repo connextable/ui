@@ -18,10 +18,11 @@ function updateActive() {
   const first = headings.value[0];
   if (!first) return;
   const offset = Number.parseFloat(getComputedStyle(first.element).scrollMarginTop) || 0;
+  const sticky = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
   const atBottom = window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
   const current = atBottom
     ? headings.value.at(-1)
-    : headings.value.findLast((heading) => heading.element.getBoundingClientRect().top <= offset + 4);
+    : headings.value.findLast((heading) => heading.element.getBoundingClientRect().top <= offset + sticky + 4);
   activeId.value = (current ?? first).id;
 }
 

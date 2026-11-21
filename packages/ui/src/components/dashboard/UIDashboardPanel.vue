@@ -3,6 +3,7 @@ withDefaults(
   defineProps<{
     as?: "div" | "main" | "section" | "article" | "aside";
     variant?: "plain" | "outlined" | "subtle";
+    stickyHeader?: boolean;
   }>(),
   { as: "div", variant: "plain" },
 );
@@ -10,7 +11,7 @@ withDefaults(
 
 <template>
   <component :is="as" class="ui-dashboard-panel" :data-variant="variant">
-    <header v-if="$slots.header || $slots.toolbar" class="ui-dashboard-panel__header">
+    <header v-if="$slots.header || $slots.toolbar" class="ui-dashboard-panel__header" :data-sticky="stickyHeader || undefined">
       <slot name="header" />
       <slot name="toolbar" />
     </header>
@@ -48,6 +49,13 @@ withDefaults(
 
 .ui-dashboard-panel__header {
   border-block-end-width: 1px;
+}
+
+.ui-dashboard-panel__header[data-sticky] {
+  position: sticky;
+  z-index: 2;
+  inset-block-start: var(--ui-dashboard-panel-sticky-offset, 0px);
+  background: var(--ui-dashboard-panel-header-background, var(--ui-dashboard-panel-background, var(--ui-color-surface)));
 }
 
 .ui-dashboard-panel__body,

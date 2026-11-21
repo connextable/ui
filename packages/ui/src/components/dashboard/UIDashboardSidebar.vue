@@ -2,17 +2,18 @@
 import { DisclosureRoot, DisclosureTrigger } from "@sectile/vue/disclosure";
 import { ref, useId, useTemplateRef } from "vue";
 import UIButton from "../button/UIButton.vue";
+import UIScrollArea from "../scroll/UIScrollArea.vue";
 
 defineProps<{ label: string }>();
 
 const navigationId = useId();
 const open = ref(false);
 const toggle = useTemplateRef<InstanceType<typeof UIButton>>("toggle");
-const navigationScroll = useTemplateRef<HTMLDivElement>("navigationScroll");
+const navigationScroll = useTemplateRef<InstanceType<typeof UIScrollArea>>("navigationScroll");
 
 defineExpose({
   scrollNavigationToTop() {
-    navigationScroll.value?.scrollTo({ top: 0 });
+    navigationScroll.value?.scrollToEdge("top", "instant");
   },
 });
 
@@ -48,14 +49,15 @@ function onNavigationClick(event: MouseEvent) {
       class="ui-dashboard-sidebar__navigation"
       :aria-label="label"
       :data-open="open"
+      :data-has-header="Boolean($slots['navigation-header']) || undefined"
       @click="onNavigationClick"
     >
-      <div v-if="$slots['navigation-header']" class="ui-dashboard-sidebar__navigation-header">
-        <slot name="navigation-header" />
-      </div>
-      <div ref="navigationScroll" class="ui-dashboard-sidebar__navigation-scroll">
-        <slot />
-      </div>
+      <UIScrollArea ref="navigationScroll" class="ui-dashboard-sidebar__navigation-scroll" :tabindex="-1">
+        <template v-if="$slots['navigation-header']" #header>
+          <div class="ui-dashboard-sidebar__navigation-header"><slot name="navigation-header" /></div>
+        </template>
+        <div class="ui-dashboard-sidebar__navigation-items"><slot /></div>
+      </UIScrollArea>
     </nav>
     <div v-if="$slots.footer" class="ui-dashboard-sidebar__footer">
       <slot name="footer" />
@@ -78,7 +80,7 @@ function onNavigationClick(event: MouseEvent) {
   overflow-wrap: anywhere;
 }
 
-.ui-dashboard-sidebar__top:has(+ .ui-dashboard-sidebar__navigation > .ui-dashboard-sidebar__navigation-header) .ui-dashboard-sidebar__header {
+.ui-dashboard-sidebar__top:has(+ .ui-dashboard-sidebar__navigation[data-has-header]) .ui-dashboard-sidebar__header {
   padding-block-end: 0;
 }
 
@@ -101,16 +103,23 @@ function onNavigationClick(event: MouseEvent) {
 }
 
 .ui-dashboard-sidebar__navigation-scroll {
-  display: flex;
+  --ui-scroll-area-max-height: none;
+  --ui-scroll-area-border: 0;
+  --ui-scroll-area-radius: 0;
+  --ui-scroll-area-background: transparent;
+  --ui-scroll-area-overscroll: contain;
   flex: 1 1 auto;
+  min-block-size: 0;
+}
+
+.ui-dashboard-sidebar__navigation-items {
+  display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  min-block-size: 0;
-  overflow-y: auto;
   padding: var(--ui-space-md);
 }
 
-.ui-dashboard-sidebar__navigation-header + .ui-dashboard-sidebar__navigation-scroll {
+.ui-dashboard-sidebar__navigation[data-has-header] .ui-dashboard-sidebar__navigation-items {
   padding-block-start: 0;
 }
 
@@ -140,7 +149,7 @@ function onNavigationClick(event: MouseEvent) {
     padding: 0;
   }
 
-  .ui-dashboard-sidebar__top:has(+ .ui-dashboard-sidebar__navigation[data-open="true"] > .ui-dashboard-sidebar__navigation-header) {
+  .ui-dashboard-sidebar__top:has(+ .ui-dashboard-sidebar__navigation[data-open="true"][data-has-header]) {
     padding-block-end: 0;
   }
 

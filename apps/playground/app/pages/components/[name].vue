@@ -126,12 +126,6 @@ const parts = (entry.parts ?? []).map((name) => {
   outline-offset: var(--ui-focus-ring-offset);
 }
 
-@media (width <= 42rem) {
-  .catalog-reference__part {
-    scroll-margin-block-start: 5.25rem;
-  }
-}
-
 .catalog-reference dd {
   margin: 0;
   color: var(--ui-color-text-muted);
