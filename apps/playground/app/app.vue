@@ -387,10 +387,16 @@ body {
   max-inline-size: 100%;
 }
 
-.playground-main {
+.playground-main.ui-dashboard-panel {
   --ui-dashboard-bar-padding-inline: clamp(1.25rem, 4vw, 3rem);
   --ui-dashboard-panel-padding: clamp(1.25rem, 4vw, 3rem);
   --ui-dashboard-panel-sticky-offset: var(--playground-sidebar-offset);
+
+  background-color: #fff;
+}
+
+.playground-main > .ui-dashboard-panel__header {
+  --ui-dashboard-panel-header-background: #fff;
 }
 
 .playground-main:focus {
