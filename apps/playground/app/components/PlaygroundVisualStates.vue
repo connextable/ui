@@ -84,6 +84,7 @@ const fillCard = ':is([data-scope="chart"], [data-scope="grid"], [data-scope="tr
 const roomyControl = [
   fillCard, calendarContent, ".ui-file-row[data-pickable]",
   '[data-scope="toggle-group"][data-part="root"]',
+  ':is([data-scope="checkbox-tree"], [data-scope="cascade-list"], [data-scope="stepper"])[data-part="root"]',
   '[data-part="anchor"]:is([data-scope="date-range"], [data-scope^="date-time"], [data-scope*="-range-picker"])',
   ':is([data-scope="transfer"], [data-scope="tree-view"], [data-scope="carousel"], [data-scope="navigation-menu"], [data-scope="tree-reorder"], [data-scope="color-picker"])[data-part="root"]',
 ].join(",");

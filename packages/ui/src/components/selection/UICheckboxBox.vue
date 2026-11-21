@@ -33,7 +33,7 @@ import { Check, Minus } from "@lucide/vue";
     border-color var(--ui-motion-fast) var(--ui-ease-out);
 }
 
-:is(.ui-checkbox, [data-scope="checkbox-group"][data-part="item"]):is([aria-checked="true"], [aria-checked="mixed"]) .ui-checkbox__box,
+:is(.ui-checkbox, [data-scope="checkbox-group"][data-part="item"], [data-scope="checkbox-tree"][data-part="item"]):is([aria-checked="true"], [aria-checked="mixed"]) .ui-checkbox__box,
 .ui-checkbox__box:has(> .ui-checkbox__control:is(:checked, :indeterminate, [aria-checked="true"], [aria-checked="mixed"])) {
   border-color: var(--ui-color-accent);
   background: var(--ui-color-accent);
@@ -85,9 +85,9 @@ import { Check, Minus } from "@lucide/vue";
     scale var(--ui-motion-standard) var(--ui-ease-out);
 }
 
-:is(.ui-checkbox, [data-scope="checkbox-group"][data-part="item"])[aria-checked="true"] .ui-checkbox__mark--checked,
+:is(.ui-checkbox, [data-scope="checkbox-group"][data-part="item"], [data-scope="checkbox-tree"][data-part="item"])[aria-checked="true"] .ui-checkbox__mark--checked,
 .ui-checkbox__box:has(> .ui-checkbox__control:is(:checked:not(:indeterminate), [aria-checked="true"])) .ui-checkbox__mark--checked,
-.ui-checkbox[aria-checked="mixed"] .ui-checkbox__mark--mixed,
+:is(.ui-checkbox, [data-scope="checkbox-tree"][data-part="item"])[aria-checked="mixed"] .ui-checkbox__mark--mixed,
 .ui-checkbox__box:has(> .ui-checkbox__control:is(:indeterminate, [aria-checked="mixed"])) .ui-checkbox__mark--mixed {
   opacity: 1;
   scale: 1;

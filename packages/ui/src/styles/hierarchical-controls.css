@@ -1,0 +1,172 @@
+:where([data-scope="tree-view"][data-part="root"], [data-scope="checkbox-tree"][data-part="root"]) {
+  box-sizing: border-box;
+  inline-size: 22rem;
+  max-inline-size: 100%;
+  display: grid;
+  gap: var(--ui-space-2xs);
+  padding: var(--ui-space-xs);
+  border: 1px solid var(--ui-color-divider);
+  border-radius: var(--ui-control-radius);
+}
+
+:where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="item"] {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-xs);
+  min-inline-size: 0;
+  min-block-size: var(--ui-control-height-small);
+  padding: var(--ui-space-2xs) var(--ui-space-xs);
+  border-radius: var(--ui-radius-sm);
+  overflow-wrap: normal;
+}
+
+:where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="item"]:not(:has(> [data-part="disclosure"]))::before {
+  flex: 0 0 1.625rem;
+  content: "";
+}
+
+:where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="disclosure"] {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: 1.625rem;
+  block-size: 1.625rem;
+  min-inline-size: 0;
+  min-block-size: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ui-space-xs);
+  background: transparent;
+}
+
+:where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="disclosure"] > svg {
+  flex: none;
+  transition: rotate var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+:where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="disclosure"][data-state="open"] > svg {
+  rotate: 90deg;
+}
+
+:where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="group"] {
+  display: grid;
+  gap: var(--ui-space-2xs);
+  margin-inline-start: 0.875rem;
+  padding-inline-start: var(--ui-space-xs);
+  border-inline-start: 1px solid var(--ui-color-divider);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+:where([data-scope="checkbox-tree"])[data-part="item"][aria-checked] {
+  background-color: transparent;
+  color: var(--ui-color-text);
+}
+
+:where([data-scope="checkbox-tree"])[data-part="item"][aria-disabled="true"] {
+  color: var(--ui-color-disabled);
+  opacity: 0.7;
+}
+
+:where([data-scope="tree-view"], [data-scope="tree-select"])[data-part="item"]:where([aria-selected="true"]) {
+  background-color: var(--ui-color-accent-soft);
+  color: var(--ui-color-accent);
+}
+
+:where([data-scope="tree-select"])[data-part="root"] {
+  display: grid;
+  gap: var(--ui-space-xs);
+  inline-size: 22rem;
+  max-inline-size: 100%;
+}
+
+.ui-tree-select-field {
+  position: relative;
+  min-inline-size: 0;
+
+  > input {
+    inline-size: 100%;
+    padding-inline-end: calc(var(--ui-control-height-small) + var(--ui-space-md));
+  }
+
+  > svg {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: var(--ui-control-padding-inline);
+    translate: 0 -50%;
+    color: var(--ui-color-text-muted);
+    pointer-events: none;
+  }
+
+  &[data-has-selection] input::placeholder {
+    color: var(--ui-color-text);
+  }
+
+  &[data-open] > svg {
+    rotate: 180deg;
+  }
+}
+
+:where([data-scope="tree-select"])[data-part="content"]:not([hidden]) {
+  display: grid;
+  align-content: start;
+  gap: var(--ui-space-2xs);
+}
+
+:where([data-scope="cascade-list"])[data-part="root"] {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 6rem), 1fr));
+  gap: 0;
+  inline-size: min(100%, 32rem);
+  box-sizing: border-box;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--ui-color-divider);
+  border-radius: var(--ui-radius-md);
+}
+
+:where([data-scope="cascade-list"])[data-part="value"] {
+  grid-column: 1 / -1;
+  padding: var(--ui-space-sm) var(--ui-space-md);
+  border-block-end: 1px solid var(--ui-color-divider);
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-body-sm);
+  overflow-wrap: anywhere;
+}
+
+:where([data-scope="cascade-list"])[data-part="column"] {
+  display: grid;
+  align-content: start;
+  gap: var(--ui-space-2xs);
+  min-inline-size: 0;
+  padding: var(--ui-space-xs);
+}
+
+:where([data-scope="cascade-list"])[data-part="column"] + :where([data-part="column"]) {
+  border-inline-start: 1px solid var(--ui-color-divider);
+}
+
+:where([data-scope="cascade-list"])[data-part="item"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ui-space-xs);
+  min-inline-size: 0;
+  padding: var(--ui-space-xs) var(--ui-space-sm);
+  font-size: var(--ui-font-size-body-sm);
+  overflow-wrap: normal;
+  cursor: pointer;
+}
+
+:where([data-scope="cascade-list"])[data-part="item"]:where([aria-selected="true"], [data-state="checked"]) {
+  background-color: var(--ui-color-accent-soft);
+  color: var(--ui-color-accent);
+}
+
+:where([data-scope="tree-view"], [data-scope="tree-select"], [data-scope="checkbox-tree"], [data-scope="cascade-list"])[data-part]:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}

@@ -182,7 +182,7 @@
 }
 
 :where([data-scope="menubar"][data-part="root"], [data-scope="tabs"][data-part="list"],
-  [data-scope="stepper"][data-part="list"], [data-scope="toggle-group"][data-part="root"]
+  [data-scope="toggle-group"][data-part="root"]
 ) {
   --ui-segmented-radius: var(--ui-radius-md);
   --ui-segmented-padding: var(--ui-space-xs);
@@ -206,9 +206,7 @@
   }
 }
 
-:where([data-scope="stepper"][data-part="list"] [data-part="trigger"],
-  [data-scope="menubar"][data-part="root"] > [data-part="item"]
-) {
+:where([data-scope="menubar"][data-part="root"] > [data-part="item"]) {
   border-radius: calc(var(--ui-segmented-radius) - var(--ui-segmented-padding));
 }
 

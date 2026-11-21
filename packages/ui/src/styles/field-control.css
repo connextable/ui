@@ -137,21 +137,19 @@
     font-variant-numeric: tabular-nums;
   }
 
-  :where(input:focus-visible, button:focus-visible, .ui-select-trigger:focus-visible) {
+  :where(button:focus-visible, .ui-select-trigger:focus-visible) {
     outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
     outline-offset: var(--ui-focus-ring-offset);
     box-shadow: none;
   }
 }
 
-:where(.ui-number-control) {
-  inline-size: 14rem;
-
-  &:has(> input:focus:not([aria-invalid="true"])) {
+:where(.ui-number-control, .ui-quantity-control, [data-scope="spin-button"][data-part="root"]:has(> [data-part="increment"], > [data-part="decrement"])) {
+  &:has(> input:focus:not([aria-invalid="true"]), > .ui-numeric-value > input:focus:not([aria-invalid="true"])) {
     border-color: var(--ui-color-focus);
   }
 
-  &:not([data-pointer-focus]):has(> input:focus-visible) {
+  &:not([data-pointer-focus]):has(> input:focus-visible, > .ui-numeric-value > input:focus-visible) {
     outline: var(--ui-focus-ring-width) solid transparent;
     outline-offset: var(--ui-focus-ring-offset);
     box-shadow: var(--ui-focus-ring);
@@ -161,13 +159,19 @@
     }
   }
 
-  &:not([data-pointer-focus]):has(> input[aria-invalid="true"]:focus-visible) {
+  &:not([data-pointer-focus]):has(> input[aria-invalid="true"]:focus-visible, > .ui-numeric-value > input[aria-invalid="true"]:focus-visible) {
     box-shadow: var(--ui-focus-ring-danger);
   }
 
-  > input:focus-visible {
+  & > input:focus-visible,
+  & > .ui-numeric-value > input:focus-visible {
     outline: none;
+    box-shadow: none;
   }
+}
+
+:where(.ui-number-control) {
+  inline-size: 14rem;
 
   > .ui-numeric-unit {
     box-sizing: border-box;
@@ -180,7 +184,9 @@
 
 :where([data-scope="spin-button"][data-part="root"]) {
   &:has(> [data-part="increment"], > [data-part="decrement"]) {
-    overflow: clip;
+    --ui-spin-action-size: min(var(--ui-control-height-small), calc(var(--ui-number-extent) - 10px));
+    gap: var(--ui-space-2xs);
+    padding: var(--ui-space-2xs);
   }
 
   :where(.ui-numeric-value) {
@@ -196,10 +202,13 @@
   :where(button[data-part="increment"], button[data-part="decrement"]) {
     display: grid;
     place-items: center;
+    align-self: center;
     flex: none;
-    inline-size: calc(var(--ui-number-extent) - 2px);
+    inline-size: var(--ui-spin-action-size);
+    block-size: var(--ui-spin-action-size);
     min-block-size: 0;
     padding: 0;
+    border-radius: var(--ui-radius-sm);
     transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
 
     &:disabled {
@@ -217,7 +226,7 @@
 
   &[data-layout="field"]:has(> [data-part="increment"], > [data-part="decrement"]) {
     display: inline-grid;
-    grid-template-columns: minmax(0, 1fr) var(--ui-control-height-small);
+    grid-template-columns: minmax(0, 1fr) var(--ui-spin-action-size);
     grid-template-rows: repeat(2, minmax(0, 1fr));
 
     > :where(input, .ui-numeric-value) {
@@ -233,12 +242,11 @@
     > :where([data-part="increment"], [data-part="decrement"]) {
       grid-column: 2;
       inline-size: 100%;
-      border-inline-start: 1px solid var(--ui-color-divider);
+      block-size: 100%;
     }
 
     > [data-part="increment"] {
       grid-row: 1;
-      border-block-end: 1px solid var(--ui-color-divider);
     }
 
     > [data-part="decrement"] {

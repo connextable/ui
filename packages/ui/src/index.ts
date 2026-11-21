@@ -13,6 +13,7 @@ export { default as UISpinner } from "./components/progress/UISpinner.vue";
 export { ToggleGroupRoot as UIToggleGroup, ToggleGroupItem as UIToggleGroupItem } from "@sectile/vue/toggle-group";
 export { default as UIButton } from "./components/button/UIButton.vue";
 export { default as UICheckbox, type UICheckboxValue } from "./components/selection/UICheckbox.vue";
+export { default as UICheckboxTreeIndicator } from "./components/selection/UICheckboxBox.vue";
 export { default as UIDashboard } from "./components/dashboard/UIDashboard.vue";
 export { default as UIDashboardNavbar } from "./components/dashboard/UIDashboardNavbar.vue";
 export { default as UIDashboardNavGroup } from "./components/dashboard/UIDashboardNavGroup.vue";

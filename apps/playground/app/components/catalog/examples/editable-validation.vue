@@ -1,0 +1,29 @@
+<script setup lang="ts">
+import {
+  UIEditable,
+  UIEditableArea,
+  UIEditableCancelTrigger,
+  UIEditableEditTrigger,
+  UIEditableInput,
+  UIEditablePreview,
+  UIEditableSubmitTrigger,
+  UIFormActions,
+} from "@connextable/ui";
+
+const policies = { validate: (draft: string) => draft.trim().length >= 3 };
+</script>
+
+<template>
+  <UIEditable default-value="제품 설계" label="작업 이름" :policies="policies" v-slot="{ value, draft, editing }">
+    <UIEditableArea>
+      <UIEditablePreview as="button" type="button">{{ value }}</UIEditablePreview>
+      <UIEditableInput aria-label="새 작업 이름" />
+    </UIEditableArea>
+    <UIFormActions>
+      <UIEditableEditTrigger>수정</UIEditableEditTrigger>
+      <UIEditableSubmitTrigger>저장</UIEditableSubmitTrigger>
+      <UIEditableCancelTrigger>취소</UIEditableCancelTrigger>
+    </UIFormActions>
+    <p v-if="editing && !policies.validate(draft)" aria-live="polite">이름은 세 글자 이상이어야 합니다.</p>
+  </UIEditable>
+</template>

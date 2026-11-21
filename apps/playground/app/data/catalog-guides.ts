@@ -597,4 +597,150 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "date-range-picker-formatting", title: "날짜 범위의 표기 변경", description: "UITemporalProvider로 언어를 지정하고, 영문 날짜 버튼을 눌러 같은 값을 format 함수로 표시해 보세요.", parts: ["UIDateRangePickerValue"] },
     ],
   },
+  editable: {
+    examples: [
+      { id: "editable-display-name", title: "다른 초기값으로 다시 열기", description: "취소 후 편집을 다시 시작하면 마지막으로 확정된 값이 나타납니다." },
+      { id: "editable-cancel", title: "편집 취소", description: "문구를 수정하고 Escape로 기존 문구를 복원합니다." },
+      { id: "editable-blur", title: "바깥을 눌러 확정", description: "문구를 바꾼 뒤 편집 영역 밖을 눌러 확정합니다." },
+      { id: "editable-validation", title: "길이가 짧은 초안 거절", description: "세 글자 미만으로 고쳐 저장해 보세요. 편집을 이어서 이름을 늘리면 확정할 수 있습니다." },
+      { id: "editable-readonly", title: "인라인 편집 잠금", description: "문구를 표시하면서 편집 시작을 막습니다." },
+    ],
+    title: "표시 중인 값을 바로 편집",
+    description: "값을 눌러 같은 자리에서 편집합니다. Enter로 확정하고 Escape로 취소합니다.",
+    api: {
+      "default-value": "화면에 처음 표시할 확정값입니다.",
+      "#default": "편집 영역의 현재 상태와 확정값을 제공합니다.",
+    },
+  },
+  rating: {
+    examples: [
+      { id: "rating-clear", title: "평가 지우기", description: "선택한 별점을 미평가 상태로 되돌립니다." },
+      { id: "rating-readonly", title: "읽기 전용 별점", description: "이미 매겨진 별점을 유지합니다." },
+      { id: "rating-disabled", title: "특정 점수 비활성", description: "5점을 선택할 수 없게 제한합니다." },
+      { id: "rating-icons", title: "하트 아이콘으로 평가 표시", description: "각 항목에 하트를 넣으면 선택한 점수까지 하트가 채워집니다." },
+    ],
+    title: "별점 매기기",
+    description: "별을 눌러 점수를 고릅니다. 선택한 점수까지 별이 채워집니다.",
+    api: {
+      items: "선택 가능한 별점 값입니다.",
+      clearable: "선택된 별점을 해제할 수 있게 합니다.",
+      "default-value": "처음 표시할 별점입니다.",
+    },
+  },
+  stepper: {
+    examples: [
+      { id: "stepper-indicator", title: "완료한 단계 표시", description: "단계 이름 옆에 완료 및 현재 상태를 표시합니다." },
+      { id: "stepper-disabled", title: "진입할 수 없는 단계", description: "검토 단계를 비활성화합니다." },
+      { id: "stepper-vertical", title: "세로 단계 목록", description: "세로 목록에서 서로 다른 단계를 선택합니다." },
+      { id: "stepper-controlled", title: "별도 버튼으로 단계 이동", description: "스테퍼 바깥의 버튼에서 v-model을 바꾸면 선택된 단계와 본문이 함께 바뀝니다." },
+    ],
+    title: "여러 단계 사이를 이동",
+    description: "단계마다 같은 value를 Step과 Content에 지정합니다. 이전·다음 버튼으로 이동하면 현재 단계의 콘텐츠가 표시됩니다.",
+    api: {
+      items: "단계마다 부여한 식별자입니다.",
+      "v-model": "현재 단계의 식별자입니다.",
+      "Step / Content value": "단계 버튼과 콘텐츠를 같은 단계에 연결합니다.",
+    },
+  },
+  slider: {
+    title: "하나의 범위 값 조절",
+    description: "thumb을 끌거나 방향키를 눌러 min과 max 사이의 값을 바꿉니다. v-model에는 현재 값의 문자열이 전달됩니다.",
+    api: {
+      "v-model": "현재 슬라이더의 값을 연결합니다.",
+      "min / max": "트랙의 시작값과 끝값입니다.",
+      step: "한 단계에서 값이 바뀌는 간격입니다.",
+    },
+    examples: [
+      { id: "slider-readonly", title: "이미 결정된 값", description: "손잡이의 접근성 이름과 값을 읽고 수정하지 못합니다." },
+      { id: "slider-vertical", title: "세로 방향", description: "손잡이를 위아래로 움직여 값을 바꿉니다." },
+      { id: "slider-format", title: "단위를 함께 읽기", description: "format-value로 손잡이에서 읽을 값의 단위를 지정합니다." },
+      { id: "slider-step", title: "일정 간격으로 이동", description: "step을 25로 지정해 조절할 수 있는 값을 0, 25, 50, 75, 100으로 제한합니다." },
+    ],
+  },
+  "multi-thumb-slider": {
+    examples: [
+      { id: "multi-thumb-slider-gap", title: "손잡이 최소 간격", description: "두 경계 사이에 최소 세 스텝을 유지합니다." },
+      { id: "multi-thumb-slider-labels", title: "손잡이의 접근성 이름", description: "Tab으로 최소 금액과 최대 금액 손잡이를 찾아 각각 변경합니다." },
+      { id: "multi-thumb-slider-vertical", title: "세로 범위 조절", description: "두 경계값을 위아래로 조절합니다." },
+    ],
+    title: "범위의 시작값과 끝값 지정",
+    description: "두 손잡이를 움직여 범위의 양 끝을 설정합니다. thumbs의 순서대로 현재 값이 모델에 들어갑니다.",
+    api: {
+      thumbs: "각 손잡이의 식별자를 값 배열과 같은 순서로 등록합니다.",
+      "v-model": "손잡이별 현재 값을 배열로 연결합니다.",
+      "Thumb value": "이 손잡이가 대응하는 식별자입니다.",
+    },
+  },
+  "color-picker": {
+    examples: [
+      { id: "color-picker-channels", title: "RGB 채널 직접 입력", description: "채널 숫자를 바꾸면 색상 값이 갱신됩니다." },
+      { id: "color-picker-text", title: "텍스트로 색상 입력", description: "HEX 값을 입력해 선택색을 바꿉니다.", parts: ["UIColorPickerTextInput"] },
+      { id: "color-picker-format", title: "표현 형식 바꾸기", description: "같은 색상을 HEX와 HSV로 확인합니다.", parts: ["UIColorPickerFormatTrigger"] },
+      { id: "color-picker-alpha", title: "투명도 조절", description: "알파 슬라이더로 투명도를 변경합니다.", parts: ["UIColorPickerAlphaSlider", "UIColorPickerSwatch"] },
+      { id: "color-picker-native", title: "브라우저 색상 선택기", description: "브라우저의 색상 선택 입력을 사용합니다.", parts: ["UIColorPickerNativeInput"] },
+    ],
+    title: "색상과 투명도 조절",
+    description: "색상 영역의 점을 이동해 채도와 명도를 조절합니다. Hue와 Alpha 입력에서 색상각과 투명도를 확인할 수 있습니다.",
+    api: {
+      "default-value": "초기에 사용할 색상입니다.",
+      "allow-alpha": "투명도 채널을 사용할지 지정합니다.",
+      "#default": "text 등 현재 색상 상태를 읽습니다.",
+    },
+  },
+  "tree-select": {
+    examples: [
+      { id: "tree-select-value", title: "선택된 노드 읽기", description: "선택한 노드의 값을 출력에서 확인합니다." },
+      { id: "tree-select-multiple", title: "계층에서 여러 값 선택", description: "디자인 아래 두 항목을 모두 선택할 수 있습니다." },
+      { id: "tree-select-disclosure", title: "하위 팀 펼치기", description: "팀을 펼치는 버튼과 선택 동작이 구분됩니다.", parts: ["UITreeSelectDisclosure"] },
+      { id: "tree-select-search-empty", title: "검색 결과가 없을 때 표시", description: "아래 방향키로 트리를 열고 ‘화면’과 ‘운영’을 입력해 결과를 비교합니다." },
+      { id: "tree-select-disabled-branch", title: "잠긴 가지 건너뛰기", description: "디자인 팀의 가지와 자식은 비활성으로 두고 개발 팀의 웹을 선택합니다." },
+    ],
+    title: "계층형 팀 목록에서 선택",
+    description: "입력을 열어 디자인 팀과 하위 팀을 탐색합니다. 루트의 nodes에 부모와 자식 관계를 지정하고 항목을 해당 그룹 안에 배치합니다.",
+    api: {
+      nodes: "선택할 항목의 id와 parentID를 전달합니다.",
+      "selection-mode": "트리에서 한 항목 또는 여러 항목을 선택할지 지정합니다.",
+      "default-expanded-values": "처음 표시할 하위 항목의 상위 노드를 지정합니다.",
+    },
+  },
+  "tree-view": {
+    examples: [
+      { id: "tree-view-controlled", title: "외부에서 폴더 펼치기", description: "모두 펼치기를 눌러 외부에서 확장 상태를 변경합니다." },
+      { id: "tree-view-disabled", title: "선택할 수 없는 노드", description: "Settings 노드는 선택할 수 없습니다." },
+    ],
+    title: "폴더의 하위 항목 펼치기",
+    description: "폴더 옆의 버튼을 누르거나 방향키로 계층을 탐색합니다. v-model:expanded-values에 펼쳐진 폴더의 id가 담깁니다.",
+    api: {
+      nodes: "트리 항목의 id와 부모 노드를 전달합니다.",
+      "v-model:expanded-values": "현재 펼쳐진 노드 id를 외부 상태에 연결합니다.",
+      "Group for": "하위 그룹이 어느 상위 항목에 속하는지 지정합니다.",
+    },
+  },
+  "checkbox-tree": {
+    examples: [
+      { id: "checkbox-tree-subtree", title: "하위 가지 전체 제한", description: "부모를 비활성화하면 subtree 정책으로 그 아래 노드도 함께 제한합니다." },
+      { id: "checkbox-tree-mixed", title: "혼합 상태 부모", description: "이메일만 선택되면 상위 항목이 혼합 상태입니다." },
+      { id: "checkbox-tree-locked-child", title: "선택이 잠긴 하위 항목", description: "상위 항목을 선택해도 잠긴 모바일 값은 바뀌지 않습니다." },
+    ],
+    title: "하위 항목을 묶어 선택",
+    description: "알림 채널을 선택하면 하위 항목이 함께 선택됩니다. 아래 항목 하나만 해제해 상위 항목의 혼합 상태를 확인할 수 있습니다.",
+    api: {
+      nodes: "부모와 자식 관계를 가진 선택 항목입니다.",
+      "default-expanded-values": "처음 펼쳐 놓을 상위 항목의 id입니다.",
+      "Item #default": "선택, 미선택 또는 혼합을 checked로 받습니다.",
+    },
+  },
+  "cascade-list": {
+    examples: [
+      { id: "cascade-list-branch", title: "상위 항목 바꾸기", description: "다른 국가로 바꾸면 다음 열의 도시가 바뀝니다." },
+      { id: "cascade-list-markers", title: "선택 표시와 다음 계층", description: "체크와 꺾쇠로 현재 위치를 확인합니다.", parts: ["UICascadeListItemIndicator", "UICascadeListItemChevron"] },
+    ],
+    title: "단계별로 지역 고르기",
+    description: "id와 parentID로 계층을 지정합니다. 루트가 제공하는 columns로 열을 만들고 각 열의 항목을 렌더링합니다.",
+    api: {
+      nodes: "id와 parentID로 표현한 계층 데이터입니다.",
+      "default-value": "초기에 선택할 노드의 id입니다.",
+      "#default": "현재 경로에서 표시할 열을 columns로 받습니다.",
+    },
+  },
 };
