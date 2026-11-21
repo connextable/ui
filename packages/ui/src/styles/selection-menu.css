@@ -41,41 +41,6 @@
   overflow: auto;
   overscroll-behavior: contain;
   box-shadow: var(--ui-shadow-elevated);
-  opacity: 0;
-  scale: 1 0.98;
-  transform-origin: center top;
-  transition:
-    opacity var(--ui-motion-fast) var(--ui-ease-out),
-    scale var(--ui-motion-fast) var(--ui-ease-out);
-
-  &[data-side="top"] {
-    transform-origin: center bottom;
-  }
-
-  &[data-side="right"] {
-    transform-origin: left center;
-  }
-
-  &[data-side="left"] {
-    transform-origin: right center;
-  }
-
-  &[data-state="open"] {
-    opacity: 1;
-    scale: none;
-    transition-duration: var(--ui-motion-fast), var(--ui-motion-standard);
-  }
-
-  &[data-state="closed"] {
-    pointer-events: none;
-  }
-
-  @starting-style {
-    &[data-state="open"] {
-      opacity: 0;
-      scale: 1 0.96;
-    }
-  }
 }
 
 :where([data-scope="menu-button"][data-part="content"],

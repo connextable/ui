@@ -23,3 +23,93 @@
     transition: opacity var(--ui-motion-standard) var(--ui-ease-out), scale var(--ui-motion-standard) var(--ui-ease-out);
   }
 }
+
+@property --ui-overlay-offset {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+:where(
+  .ui-select-content,
+  [data-scope="popover"][data-part="content"],
+  [data-scope="tooltip"][data-part="content"],
+  [data-scope="combobox"][data-part="content"],
+  [data-scope="tree-select"][data-part="content"],
+  [data-scope="cascade-select"][data-part="content"],
+  [data-scope="menu-button"][data-part="content"],
+  [data-scope="context-menu"][data-part="content"],
+  [data-scope="navigation-menu"][data-part="sub-content"],
+  [data-scope="menubar"]:is([data-part="content"], [data-part="sub-content"]),
+  [data-scope="menu"][data-part="sub-content"],
+  [data-scope$="-picker"]:is([data-part="content"], [data-part="popup"]),
+  :is([data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"])[data-part="content"]
+)[data-state] {
+  --ui-overlay-enter-duration: var(--ui-motion-standard);
+  --ui-overlay-exit-duration: var(--ui-motion-fast);
+  --ui-overlay-enter-distance: var(--ui-space-sm);
+  --ui-overlay-exit-distance: var(--ui-space-2xs);
+  --ui-overlay-x: 0;
+  --ui-overlay-y: -1;
+
+  /* Interpolate the distance so late placement or a flip can resolve the direction. */
+  &[data-side="top"] {
+    --ui-overlay-y: 1;
+  }
+
+  &[data-side="left"] {
+    --ui-overlay-x: 1;
+    --ui-overlay-y: 0;
+  }
+
+  &[data-side="right"] {
+    --ui-overlay-x: -1;
+    --ui-overlay-y: 0;
+  }
+
+  &:where(.ui-select-content, [data-scope="combobox"], [data-scope="tree-select"], [data-scope="cascade-select"],
+    [data-scope="menu-button"], [data-scope="context-menu"], [data-scope="menu"], [data-scope="menubar"], [data-scope="navigation-menu"]
+  ) {
+    --ui-overlay-enter-duration: var(--ui-motion-fast);
+    --ui-overlay-exit-duration: calc(var(--ui-motion-fast) * 0.7);
+    --ui-overlay-enter-distance: var(--ui-space-xs);
+  }
+
+  &:where([data-scope="tooltip"]) {
+    --ui-overlay-enter-duration: var(--ui-motion-fast);
+    --ui-overlay-exit-duration: calc(var(--ui-motion-fast) * 0.7);
+    --ui-overlay-enter-distance: var(--ui-space-2xs);
+    --ui-overlay-exit-distance: 0px;
+  }
+
+  translate: calc(var(--ui-overlay-x) * var(--ui-overlay-offset, 0px))
+    calc(var(--ui-overlay-y) * var(--ui-overlay-offset, 0px));
+  transition-property: opacity, --ui-overlay-offset;
+  transition-duration: var(--ui-overlay-exit-duration);
+  transition-timing-function: ease-out;
+
+  &:where([data-state="open"]) {
+    opacity: 1;
+    --ui-overlay-offset: 0px;
+    transition-duration: var(--ui-overlay-enter-duration);
+    transition-timing-function: var(--ui-ease-out);
+  }
+
+  &:where([data-state="closed"]) {
+    opacity: 0;
+    --ui-overlay-offset: var(--ui-overlay-exit-distance);
+    pointer-events: none;
+  }
+
+  @starting-style {
+    &:where([data-state="open"]) {
+      opacity: 0;
+      --ui-overlay-offset: var(--ui-overlay-enter-distance);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    --ui-overlay-enter-distance: 0px;
+    --ui-overlay-exit-distance: 0px;
+  }
+}
