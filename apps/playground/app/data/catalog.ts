@@ -326,6 +326,18 @@ export const catalog: readonly CatalogEntry[] = [
       "UITagsInputClear",
     ],
   },
+  {
+    slug: "quantity-field",
+    title: "UIQuantityField",
+    category: "입력",
+    description: "수량과 단위를 함께 입력합니다.",
+    parts: [
+      "UIQuantityFieldInput",
+      "UIQuantityFieldUnitSelect",
+      "UIQuantityFieldValue",
+      "createUIStandardQuantityPolicies",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));

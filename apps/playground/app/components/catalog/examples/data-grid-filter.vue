@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { createUIDataGridComponents, UITabularColumnHeading, UITabularFilterPopover, useUIDataGrid } from "@connextable/ui";
+import { createUIDataGridComponents, UISelect, UISelectContent, UISelectTrigger, UITabularColumnHeading, UITabularFilterPopover, useUIDataGrid } from "@connextable/ui";
 
 const tasks = [
   { kind: "leaf", id: "review", cells: { task: "시안 검토", status: "완료" } },
   { kind: "leaf", id: "audit", cells: { task: "접근성 검사", status: "대기" } },
 ] as const;
+const filterID = "status-search";
+const statusOptions = [
+  { value: "all", label: "전체 상태" },
+  { value: "완료", label: "완료" },
+  { value: "대기", label: "대기" },
+];
 const data = useUIDataGrid({
   source: (request) => {
-    const query = String(request.query.filters.find(filter => filter.id === "status-search")?.value ?? "");
+    const query = String(request.query.filters.find(filter => filter.id === filterID)?.value ?? "");
     const rows = tasks.filter(row => !query || row.cells.status === query);
     return {
       ...request,
@@ -15,12 +21,21 @@ const data = useUIDataGrid({
       viewRevision: request.requestID,
       matchingLeafCount: { kind: "known", value: rows.length },
       visibleRowCount: { kind: "known", value: rows.length },
-      columnSchema: { revision: request.columnSchemaRevision, columns: [{ id: "task" }, { id: "status" }], headers: [] },
+      columnSchema: { revision: request.columnSchemaRevision, columns: [{ id: "task" }, { id: "status", capabilities: ["filter"] }], headers: [] },
       removedRowIDs: [],
     };
   },
 });
 const DataGrid = createUIDataGridComponents(data);
+
+function filterByStatus(status: string | null) {
+  const query = data.snapshot.value.tabular.state.query;
+  const filters = query.filters.filter(filter => filter.id !== filterID);
+  if (status && status !== "all") {
+    filters.push({ id: filterID, scope: "column", columnID: "status", predicate: "equals", value: status });
+  }
+  data.dispatch({ type: "set-query", query: { ...query, filters } });
+}
 </script>
 
 <template>
@@ -35,24 +50,19 @@ const DataGrid = createUIDataGridComponents(data);
               <template #actions>
                 <UITabularFilterPopover
                   label="상태 필터"
-                  :value="String(query.filters.find(filter => filter.id === 'status-search')?.value ?? '')"
+                  :value="String(query.filters.find(filter => filter.id === filterID)?.value ?? '')"
                   v-slot="{ value }"
                 >
-                  <DataGrid.FilterControl
-                    as="select"
-                    scope="column"
-                    column="status"
-                    id="status-search"
-                    predicate="equals"
+                  <UISelect
                     aria-label="상태 선택"
-                    class="ui-field-control"
-                    data-ui-control-size="sm"
-                    :value="value"
+                    size="sm"
+                    :options="statusOptions"
+                    :model-value="value || 'all'"
+                    @update:model-value="filterByStatus"
                   >
-                    <option value="">전체 상태</option>
-                    <option value="완료">완료</option>
-                    <option value="대기">대기</option>
-                  </DataGrid.FilterControl>
+                    <UISelectTrigger />
+                    <UISelectContent width="trigger" />
+                  </UISelect>
                 </UITabularFilterPopover>
               </template>
             </UITabularColumnHeading>

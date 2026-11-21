@@ -8,7 +8,7 @@ import { useSelectContext } from "./select-context";
 defineOptions({ inheritAttrs: false });
 defineProps<{ variant?: "outline" | "soft" }>();
 
-const { uid, triggerId, trigger, readonly, required, error, size } = useSelectContext();
+const { uid, triggerId, trigger, label, readonly, required, error, size } = useSelectContext();
 const part = useTemplateRef<InstanceType<typeof SelectTrigger>>("part");
 
 watchEffect(() => {
@@ -27,7 +27,7 @@ watchEffect(() => {
     :data-ui-control-size="size"
     :data-ui-readonly="readonly || undefined"
     :data-variant="variant ?? 'outline'"
-    :aria-labelledby="`${uid}-label ${uid}-value`"
+    :aria-labelledby="label ? `${uid}-label ${uid}-value` : undefined"
     :aria-required="required || undefined"
     :aria-describedby="[$attrs['aria-describedby'], error && `${uid}-error`].filter(Boolean).join(' ') || undefined"
   >

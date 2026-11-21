@@ -11,7 +11,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<{
   id?: string;
-  label: string;
+  label?: string;
   options: readonly UISelectOption[];
   size?: "sm" | "md" | "lg";
   placeholder?: string;
@@ -48,7 +48,7 @@ provide(selectKey, {
   trigger,
   error,
   triggerId: computed(() => props.id ?? `${uid}-trigger`),
-  label: computed(() => props.label),
+  label: computed(() => props.label ?? ""),
   options: computed(() => props.options),
   size: computed(() => props.size),
   placeholder: computed(() => props.placeholder),
@@ -103,9 +103,9 @@ function onInvalid(event: Event) {
 
 <template>
   <div class="ui-select" @focusout="onFocusOut" @invalid.capture="onInvalid">
-    <slot name="label"><UISelectLabel /></slot>
+    <slot name="label"><UISelectLabel v-if="label" /></slot>
     <SelectRoot
-      :label="label"
+      :label="label ?? (typeof $attrs['aria-label'] === 'string' ? $attrs['aria-label'] : undefined)"
       :items="values"
       :disabled-items="disabledValues"
       :text-value="textValue"

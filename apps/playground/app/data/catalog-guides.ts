@@ -130,7 +130,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "data-grid-validated-edit", section: "editing", title: "재고 수량 검증", description: "수량을 편집해 -1을 입력하면 저장이 거부됩니다. 0~999 사이의 정수를 입력해 다시 확정하세요.", parts: ["DataGrid.Editor"] },
       { id: "data-grid-spreadsheet", section: "editing", title: "예산 편집 후 합계 다시 계산", description: "예산 값 옆 연필 버튼을 눌러 숫자를 바꾸고 Enter로 저장합니다. 월 예산 합계도 바뀝니다." },
       { id: "data-grid-sort", section: "query", title: "그리드 정렬", description: "작업 옆 정렬 아이콘을 눌러 행의 순서를 바꿉니다.", parts: ["DataGrid.SortTrigger"] },
-      { id: "data-grid-filter", section: "query", title: "그리드의 상태 열 필터", description: "상태 옆 필터 아이콘을 누르고 팝오버에서 ‘대기’를 선택하면 해당 행만 남습니다.", parts: ["DataGrid.FilterControl"] },
+      { id: "data-grid-filter", section: "query", title: "그리드의 상태 열 필터", description: "상태 옆 필터 아이콘을 눌러 UISelect에서 ‘대기’를 선택합니다. 선택을 set-query에 연결하면 해당 행만 남습니다." },
     ],
     title: "작업 상태 그리드 탐색",
     description: "데이터 소스를 그리드의 셀에 연결합니다. 셀을 클릭한 뒤 방향키로 행과 열 사이를 이동해 보세요.",
@@ -471,5 +471,18 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "tags-input-readonly", title: "긴 태그를 읽기 전용으로 표시", description: "긴 태그는 너비에 맞춰 줄바꿈됩니다.", section: "composition" },
       { id: "tags-input-composition", title: "칩에 상태 아이콘 넣기", description: "구성 슬롯에서 승인 칩에 체크를 추가합니다. 크기와 배경은 입력 컨트롤의 공통 토큰을 따릅니다.", section: "composition", parts: ["UITagsInputItem", "UITagsInputItemText", "UITagsInputItemDelete"] },
     ],
+  },
+  "quantity-field": {
+    examples: [
+      { id: "quantity-field-unit-commit", title: "단위와 값을 함께 확정", description: "새 수량을 입력하고 Enter를 눌러 확정된 수량과 단위를 읽습니다." },
+      { id: "quantity-field-unit", title: "표시 단위 환산", description: "UISelect로 표시 단위를 바꿉니다. 입력창이 같은 길이를 선택한 단위로 보여줍니다.", parts: ["createUIStandardQuantityPolicies"] },
+      { id: "quantity-field-readonly", title: "확정된 길이", description: "값이나 단위 변경을 잠급니다." },
+    ],
+    title: "단위가 붙은 길이 입력",
+    description: "길이 정책과 초기 단위가 포함된 값을 지정합니다. 화면의 입력을 수정하면 입력 아래의 수량 표기도 함께 바뀝니다.",
+    api: {
+      policies: "입력 수량에 적용할 단위 체계와 변환 정책입니다.",
+      "default-value": "수치 문자열과 단위로 이루어진 초기 수량입니다.",
+    },
   },
 };
