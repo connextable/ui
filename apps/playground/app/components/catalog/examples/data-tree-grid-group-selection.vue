@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/ui";
 import { ChevronRight } from "@lucide/vue";
+import { onScopeDispose } from "vue";
 
+const groupID = "platform";
 const children = [
   { kind: "leaf", id: "site", cells: { selected: null, service: "웹사이트", team: "프런트엔드" } },
   { kind: "leaf", id: "api", cells: { selected: null, service: "API", team: "백엔드" } },
 ] as const;
 
 const tree = useUIDataTreeGrid({
-  defaultExpansion: ["platform"],
+  defaultExpansion: [groupID],
   source: (request) => {
-    const expanded = request.expansion.includes("platform");
+    const expanded = request.expansion.includes(groupID);
     const group = {
-      kind: "group", id: "platform", parentGroupID: null, depth: 0, expanded,
+      kind: "group", id: groupID, parentGroupID: null, depth: 0, expanded,
       cells: { selected: null, service: "플랫폼", team: "서비스 팀" },
     } as const;
     const rows = expanded ? [group, ...children] : [group];
@@ -31,6 +33,15 @@ const tree = useUIDataTreeGrid({
     };
   },
 });
+onScopeDispose(tree.subscribeCommands((command) => {
+  if (command.type !== "request-bulk-selection" || command.target.kind !== "group-leaves" ||
+      command.target.groupID !== groupID) return;
+
+  tree.dispatch({
+    type: "set-row-selection",
+    selection: { kind: "explicit-rows", rowIDs: children.map(row => row.id) },
+  });
+}));
 const DataTreeGrid = createUIDataTreeGridComponents(tree);
 </script>
 
