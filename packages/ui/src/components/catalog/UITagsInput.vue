@@ -63,9 +63,9 @@ function paste(event: ClipboardEvent, scope: TagsInputRootSlotProps) {
   }
 
   event.preventDefault();
-  if (state.tags !== scope.value) updateValue(state.tags);
   // Leave the active draft intact when all candidates were rejected.
   if (state.tags !== scope.value) {
+    updateValue(state.tags);
     input.value = "";
     input.dispatchEvent(new Event("input", { bubbles: true }));
   }

@@ -111,12 +111,18 @@
 }
 
 .ui-file-input__native,
-:where([data-scope="file-input"] [data-part="input"]):has(~ [data-part="trigger"]) {
+:where([data-scope="file-input"][data-part="input"]):has(~ [data-scope="file-input"][data-part="trigger"]) {
   position: absolute;
   inline-size: 1px;
   block-size: 1px;
   overflow: hidden;
   clip-path: inset(50%);
+}
+
+:where([data-scope="file-input"][data-part="input"]:focus-visible) ~ :where([data-scope="file-input"][data-part="trigger"]),
+.ui-file-input__picker:has(.ui-file-input__native:focus-visible) :where([data-scope="file-input"][data-part="trigger"]) {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+  outline-offset: var(--ui-focus-ring-offset);
 }
 
 @media (prefers-reduced-motion: no-preference) {

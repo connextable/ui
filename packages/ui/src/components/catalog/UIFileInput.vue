@@ -47,10 +47,14 @@ const errors: Partial<Record<FileInputErrorCode, string>> = {
   "dom.file-input-directory-rejected": "폴더 대신 파일을 선택하세요.",
 };
 
-function fileKey(file: File, index: number, files: readonly File[]) {
-  if (!fileKeys.has(file)) fileKeys.set(file, nextFileKey++);
-  const occurrence = files.slice(0, index).filter((item) => item === file).length;
-  return `${fileKeys.get(file)}-${occurrence}`;
+function fileRows(files: readonly File[]) {
+  const occurrences = new Map<File, number>();
+  return files.map((file) => {
+    if (!fileKeys.has(file)) fileKeys.set(file, nextFileKey++);
+    const occurrence = occurrences.get(file) ?? 0;
+    occurrences.set(file, occurrence + 1);
+    return { file, key: `${fileKeys.get(file)}-${occurrence}` };
+  });
 }
 
 function remove(index: number, state: FileInputSlotProps) {
@@ -140,7 +144,7 @@ defineExpose({
         {{ errors[state.error.code] ?? '파일을 선택하지 못했습니다.' }}
       </p>
       <TransitionGroup tag="ul" name="ui-file" class="ui-file-input__files" aria-label="선택한 파일">
-        <li v-for="(file, index) in state.files" :key="fileKey(file, index, state.files)">
+        <li v-for="({ file, key }, index) in fileRows(state.files)" :key="key">
           <UIFileRow :file="file" :preview="preview">
             <template v-if="!state.disabled && !state.readonly" #actions>
               <UIButton size="sm" variant="ghost" icon-only :aria-label="`${file.name} 제거`" @click="remove(index, state)">
