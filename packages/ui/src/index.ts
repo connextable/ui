@@ -44,6 +44,7 @@ export { default as UISelectTrigger } from "./components/select/UISelectTrigger.
 export { default as UISelectValue } from "./components/select/UISelectValue.vue";
 export type { UISelectOption } from "./components/select/select-context";
 export { default as UISwitch } from "./components/selection/UISwitch.vue";
+export { default as UIToggleButton } from "./components/button/UIToggleButton.vue";
 export {
   FormLabel as UIFormLabel,
   FormDescription as UIFormDescription,
