@@ -16,5 +16,6 @@ import "./styles/navigation-menu.css";
 import "./styles/selection-menu.css";
 import "./styles/overlay-surface.css";
 import "./styles/reorder.css";
+import "./styles/sectile-temporal.css";
 
 export * from "./index";

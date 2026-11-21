@@ -1,0 +1,344 @@
+@layer ui.sectile {
+  :where(
+    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"],
+    [data-scope^="month-"][data-scope$="-picker"],
+    [data-scope^="year-"][data-scope$="-picker"]
+  )[data-part="anchor"],
+  [data-scope="time-picker"][data-part="root"] {
+    --ui-picker-padding: var(--ui-space-2xs);
+    --ui-picker-inner-radius: calc(var(--ui-radius-md) - var(--ui-picker-padding) - 1px);
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--ui-picker-padding);
+    box-sizing: border-box;
+    inline-size: min(100%, var(--ui-picker-width, 12rem));
+    min-inline-size: 0;
+    min-block-size: var(--ui-control-height);
+    padding: var(--ui-picker-padding);
+    border: 1px solid var(--ui-color-border);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-surface);
+  }
+
+  :where([data-scope="year-picker"])[data-part="anchor"] {
+    --ui-picker-width: 8rem;
+  }
+
+  [data-scope="month-picker"][data-part="anchor"],
+  [data-scope="time-picker"][data-part="root"] {
+    --ui-picker-width: 10rem;
+  }
+
+  :where([data-scope="date-time"], [data-scope="date-time-range"])[data-part="anchor"] {
+    --ui-picker-width: 16rem;
+  }
+
+  [data-part="anchor"]:where(
+    [data-scope="year-range-picker"], [data-scope="month-range-picker"], [data-scope="date-range"],
+    [data-scope="date-time"]:has(> [data-part="date-input"] + [data-part="time-input"])
+  ) {
+    --ui-picker-width: 18rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  }
+
+  [data-scope="year-range-picker"][data-part="anchor"] {
+    --ui-picker-width: 12rem;
+  }
+
+  [data-scope="month-range-picker"][data-part="anchor"] {
+    --ui-picker-width: 14rem;
+  }
+
+  [data-scope="date-time-range"][data-part="anchor"]:has(> input[data-part="end-date-time-input"]:not([hidden]), > label + label)
+    > [data-part="trigger"] {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: stretch;
+    block-size: auto;
+  }
+
+  [data-scope="date-time-range"][data-part="anchor"]:has(> .ui-date-time-range-value[data-layout="inline"]) {
+    --ui-picker-width: 25rem;
+  }
+
+  [data-scope="date-time-range"][data-part="anchor"]:has(> .ui-date-time-range-value[data-layout="stacked"]) {
+    --ui-picker-width: 16rem;
+  }
+
+  [data-scope="date-time-range"][data-part="anchor"] > label {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 5rem);
+    align-items: center;
+    gap: var(--ui-space-2xs);
+    min-inline-size: 0;
+  }
+
+  [data-scope="date-time-range"][data-part="anchor"] > label > span {
+    grid-column: 1 / -1;
+    padding-inline: var(--ui-space-sm);
+  }
+
+  :where([data-part="anchor"], [data-scope="time-picker"][data-part="root"]):where(
+    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"], [data-scope$="-picker"]
+  )
+    input[data-scope]:not([type="hidden"]) {
+    inline-size: 100%;
+    min-inline-size: 0;
+    min-block-size: calc(var(--ui-control-height) - 2 * var(--ui-picker-padding) - 2px);
+    padding-inline: var(--ui-space-sm);
+    border-color: transparent;
+    border-radius: var(--ui-picker-inner-radius);
+    font-size: var(--ui-font-size-body-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where([data-scope$="-picker"], [data-scope="date-range"], [data-scope="date-time"])[data-part="anchor"] > :where(
+    [data-part^="end-"], [data-part="date-input"] + [data-part="time-input"]
+  ) {
+    box-shadow: -1px 0 0 var(--ui-color-divider);
+  }
+
+  [data-scope="date-time-range"][data-part="anchor"] > :where([data-part^="end-"], label + label) {
+    box-shadow: 0 -1px 0 var(--ui-color-divider);
+  }
+
+  :where([data-part="anchor"], [data-scope="time-picker"][data-part="root"]):where(
+    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"], [data-scope$="-picker"]
+  ) > :where([data-part="trigger"]) {
+    inline-size: var(--ui-control-height-small);
+    min-inline-size: 0;
+    block-size: 100%;
+    padding: 0;
+    border-color: transparent;
+    border-radius: var(--ui-picker-inner-radius);
+    background: var(--ui-color-surface-muted);
+    color: var(--ui-color-text-muted);
+  }
+
+  :where([data-part="anchor"], [data-scope="time-picker"][data-part="root"]):where(
+    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"], [data-scope$="-picker"]
+  ) > :where([data-part="trigger"]):is(:hover:not(:disabled), [aria-expanded="true"]) {
+    background: var(--ui-color-accent-soft);
+    color: var(--ui-color-accent);
+  }
+
+  :where([data-scope="date-field"], [data-scope="time-field"], [data-scope="date-time-field"],
+    [data-scope="date-range-field"], [data-scope="time-range-field"], [data-scope="date-time-range-field"],
+    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"]):where(input:not([type="hidden"])) {
+    min-inline-size: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  input:where([data-scope="date"], [data-scope^="date-"], [data-scope^="time-"])[aria-invalid="true"]:not([type="hidden"]) {
+    border-color: var(--ui-color-danger);
+  }
+
+  :where([data-scope="calendar"], [data-scope="range-calendar"],
+    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"], [data-scope^="month-"][data-scope$="-picker"],
+    [data-scope^="year-"][data-scope$="-picker"]) {
+    &[data-part="content"]:not([hidden]) {
+      display: grid;
+      align-content: start;
+      gap: var(--ui-space-sm);
+      min-inline-size: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    &[data-part="content"] :where(header, div):has(> [data-part^="previous-"]):has(> [data-part^="next-"]):has(> strong),
+    &[data-part="content"]:has(> [data-part^="previous-"]):has(> [data-part^="next-"]):has(> strong) {
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      text-align: center;
+    }
+
+    &[data-part="content"] :where(header, div):has(> [data-part^="previous-"]):has(> [data-part^="next-"]):has(> strong) {
+      display: grid;
+      gap: var(--ui-space-xs);
+    }
+
+    &[data-part="content"] :where([data-part="grid"]) {
+      grid-column: 1 / -1;
+    }
+
+    &[data-part="content"] :where(header, div, nav):not([data-part]):has(> [data-part$="-view-trigger"]) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--ui-space-2xs);
+    }
+
+    &[data-part="grid"] {
+      --ui-calendar-columns: 7;
+
+      display: grid;
+      grid-template-columns: repeat(var(--ui-calendar-columns), minmax(0, 1fr));
+      gap: var(--ui-space-2xs);
+      min-inline-size: 0;
+    }
+
+    &[data-part="grid"]:is([data-view="year"], [data-view="years"], :has(> [data-sectile-picker-month], > [data-sectile-picker-year])) {
+      --ui-calendar-columns: 3;
+    }
+
+    &:where([data-part^="previous-"], [data-part^="next-"], [data-part$="-view-trigger"]) {
+      min-inline-size: var(--ui-control-height-small);
+      padding-inline: var(--ui-space-sm);
+      border-color: transparent;
+    }
+
+    &[data-part^="previous-"] {
+      justify-self: start;
+    }
+
+    &[data-part^="next-"] {
+      justify-self: end;
+    }
+
+    &:where([data-part="cell"], [data-part="month-cell"], [data-part="year-cell"]) {
+      min-inline-size: 0;
+      padding-inline: 0;
+      border-color: transparent;
+      font-variant-numeric: tabular-nums;
+    }
+
+    &:where([data-part="cell"], [data-part="month-cell"], [data-part="year-cell"])[data-current] {
+      box-shadow: inset 0 0 0 1px var(--ui-color-divider);
+    }
+
+    &:where([data-part="cell"], [data-part="month-cell"], [data-part="year-cell"])[data-in-range] {
+      background: var(--ui-color-accent-soft);
+      color: var(--ui-color-accent);
+    }
+
+    &:where([data-part="cell"], [data-part="month-cell"], [data-part="year-cell"])[data-selected] {
+      background: var(--ui-color-accent);
+      color: var(--ui-color-on-accent);
+    }
+
+    &:where([data-part="cell"], [data-part="month-cell"], [data-part="year-cell"])[data-selected]:focus-visible {
+      outline-color: var(--ui-color-on-accent);
+    }
+
+    &:where([data-part="cell"], [data-part="month-cell"], [data-part="year-cell"])[aria-disabled="true"] {
+      background: transparent;
+      color: var(--ui-color-disabled);
+    }
+
+    &:where([data-part="cell"])[data-outside-month]:not([data-in-range], [data-selected], [aria-disabled="true"]) {
+      color: var(--ui-color-text-muted);
+    }
+  }
+
+  :where([data-scope="calendar"], [data-scope="range-calendar"])[data-part="content"] {
+    box-sizing: border-box;
+    inline-size: 20rem;
+    max-inline-size: 100%;
+    padding: var(--ui-space-sm);
+    border: 1px solid var(--ui-color-border);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-surface);
+  }
+
+  :where([data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"], [data-scope^="month-"][data-scope$="-picker"],
+    [data-scope^="year-"][data-scope$="-picker"])[data-part="content"] {
+    inline-size: min(20rem, var(--sectile-position-available-width, calc(100vw - 1rem)));
+    padding: var(--ui-space-sm);
+    border-radius: var(--ui-radius-md);
+
+    &[data-state="closed"] {
+      opacity: 0;
+    }
+  }
+
+  :where([data-scope^="month-"][data-scope$="-picker"], [data-scope^="year-"][data-scope$="-picker"])[data-part="content"] {
+    inline-size: min(16rem, var(--sectile-position-available-width, calc(100vw - 1rem)));
+  }
+
+  @starting-style {
+    :where([data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"], [data-scope^="month-"][data-scope$="-picker"],
+      [data-scope^="year-"][data-scope$="-picker"])[data-part="content"][data-state="open"] {
+      opacity: 0;
+    }
+  }
+
+  :where([data-scope="range-calendar"], [data-scope="date-range"], [data-scope="date-time-range"],
+    [data-scope$="-range-picker"])[data-part="grid"] {
+    column-gap: 0;
+
+    > :where([data-in-range]:not([aria-disabled="true"])) {
+      border-radius: var(--ui-control-radius);
+    }
+
+    > :where([data-in-range]:not([aria-disabled="true"]) + [data-in-range]:not([aria-disabled="true"], :nth-child(7n + 1), [data-sectile-picker-month], [data-sectile-picker-year])),
+    > :where([data-in-range]:not([aria-disabled="true"]) + [data-in-range]:is([data-sectile-picker-month], [data-sectile-picker-year]):not([aria-disabled="true"], :nth-child(3n + 1))) {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
+
+    > :where([data-in-range]:not([aria-disabled="true"], :nth-child(7n), [data-sectile-picker-month], [data-sectile-picker-year]):has(+ [data-in-range]:not([aria-disabled="true"]))),
+    > :where([data-in-range]:is([data-sectile-picker-month], [data-sectile-picker-year]):not([aria-disabled="true"], :nth-child(3n)):has(+ [data-in-range]:not([aria-disabled="true"]))) {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+  }
+
+  [data-scope="popover"][data-part="content"]:has(> [data-time-part]):not([hidden]) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ui-space-xs);
+    inline-size: max-content;
+    padding: var(--ui-space-sm);
+    border-radius: var(--ui-radius-md);
+  }
+
+  [data-scope="popover"][data-part="content"]:has(> [data-time-part]) > header {
+    flex: 1 0 100%;
+  }
+
+  [data-time-part][role="listbox"] {
+    --ui-time-picker-heading-height: 1.75rem;
+
+    display: block;
+    flex: 1 1 0;
+    min-inline-size: 3rem;
+    max-block-size: min(13rem, 48dvh);
+    overflow: auto;
+    overscroll-behavior: contain;
+    scroll-padding-block-start: var(--ui-time-picker-heading-height);
+    scrollbar-width: thin;
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-time-part][role="listbox"]::before {
+    position: sticky;
+    z-index: 1;
+    inset-block-start: 0;
+    display: grid;
+    place-items: center;
+    min-block-size: var(--ui-time-picker-heading-height);
+    background: var(--ui-color-surface);
+    color: var(--ui-color-text-muted);
+    font-size: var(--ui-font-size-metadata);
+    text-align: center;
+    content: attr(aria-label) / "";
+  }
+
+  [data-time-part][role="listbox"] [role="option"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--ui-space-2xs) var(--ui-space-sm);
+    font-size: var(--ui-font-size-body-sm);
+    cursor: pointer;
+  }
+
+  [data-time-part][role="listbox"] [role="option"][aria-disabled="true"] {
+    cursor: default;
+  }
+
+  [data-time-part][role="listbox"] [role="option"]:hover:not([aria-selected="true"], [aria-disabled="true"]) {
+    background: var(--ui-color-surface-hover);
+  }
+}
