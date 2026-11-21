@@ -27,7 +27,7 @@ function formatSize(bytes: number) {
 </script>
 
 <template>
-  <div class="ui-file-row">
+  <div class="ui-file-row" :data-pickable="$slots.picker ? '' : undefined">
     <span class="ui-file-row__preview" aria-hidden="true">
       <img v-if="image" :src="image" alt="" @error="image = ''">
       <FileText v-else :size="18" />
@@ -39,7 +39,10 @@ function formatSize(bytes: number) {
       </div>
       <slot />
     </div>
-    <div v-if="$slots.actions" class="ui-file-row__actions"><slot name="actions" /></div>
+    <div v-if="$slots.actions || $slots.picker" class="ui-file-row__actions">
+      <div v-if="$slots.picker" class="ui-file-row__picker"><slot name="picker" /></div>
+      <slot name="actions" />
+    </div>
   </div>
 </template>
 
@@ -58,6 +61,24 @@ function formatSize(bytes: number) {
   border: 1px solid var(--ui-color-border);
   border-radius: var(--ui-file-row-radius);
   background: var(--ui-color-surface);
+}
+
+.ui-file-row[data-pickable] {
+  position: relative;
+  transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+.ui-file-row:has(.ui-file-row__picker button:enabled:hover) {
+  background: var(--ui-color-surface-hover);
+}
+
+.ui-file-row:has(.ui-file-row__picker button:enabled:active) {
+  background: var(--ui-color-surface-active);
+}
+
+.ui-file-row:has(.ui-file-row__picker button:focus-visible) {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+  outline-offset: var(--ui-focus-ring-offset);
 }
 
 .ui-file-row__preview {
@@ -84,9 +105,8 @@ function formatSize(bytes: number) {
 }
 
 .ui-file-row__details {
-  display: flex;
-  align-items: baseline;
-  gap: 0 var(--ui-space-sm);
+  display: grid;
+  min-inline-size: 0;
   line-height: 1.4;
 }
 
@@ -94,11 +114,12 @@ function formatSize(bytes: number) {
   min-inline-size: 0;
   color: var(--ui-color-text);
   font-size: var(--ui-font-size-body-sm);
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ui-file-row__details small {
-  flex: none;
   color: var(--ui-color-text-muted);
   font-size: var(--ui-font-size-metadata);
   font-variant-numeric: tabular-nums;
@@ -109,6 +130,28 @@ function formatSize(bytes: number) {
   flex-wrap: wrap;
   justify-content: end;
   gap: var(--ui-space-xs);
+}
+
+.ui-file-row__picker :deep(button) {
+  position: static;
+  --ui-button-hover: transparent;
+  --ui-button-pressed: transparent;
+}
+
+.ui-file-row__picker :deep(button:focus-visible) {
+  outline: none;
+}
+
+.ui-file-row__picker :deep(button)::after {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--ui-file-row-radius);
+  content: "";
+}
+
+.ui-file-row[data-pickable] .ui-file-row__actions > :deep(button) {
+  position: relative;
+  z-index: 1;
 }
 
 .ui-file-row__actions :deep(.ui-button[data-ui-control-shape="square"]) {

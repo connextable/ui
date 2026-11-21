@@ -439,9 +439,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "file-upload-cancel", title: "전송 중 취소", description: "준비한 파일의 전송을 시작하고 진행 중에 취소합니다. 파일은 브라우저 밖으로 전송되지 않습니다." },
       { id: "file-upload-retry", title: "실패 후 다시 전송", description: "첫 전송은 실패합니다. 다시 시작하면 같은 파일의 전송을 완료합니다." },
     ],
-    title: "선택한 파일을 전송 어댑터에 연결",
-    description: "파일을 선택하고 Upload를 누르면 전달한 adapter가 실행됩니다. 이 예제의 어댑터는 로컬 파일 읽기 진행률을 보고합니다.",
-    api: { file: "전송할 브라우저 File 객체입니다.", adapter: "진행률과 완료 결과를 연결하는 Sectile 전송 어댑터입니다.", "#status": "현재 업로드 상태를 받아 상태 메시지를 바꿉니다." },
+    title: "파일 선택과 교체",
+    description: "파일 영역을 눌러 파일을 선택하거나 교체하세요. 선택하면 브라우저가 파일을 읽고 결과를 표시합니다.",
+    api: { file: "전송할 브라우저 File 객체입니다.", adapter: "진행률과 완료 결과를 연결하는 Sectile 전송 어댑터입니다.", "auto-start": "파일을 연결하면 어댑터를 바로 실행합니다.", "#picker": "파일 영역 전체를 선택하거나 교체하는 버튼으로 연결합니다.", "#status": "현재 업로드 상태를 받아 상태 메시지를 바꿉니다." },
   },
   "tags-input": {
     title: "태그 입력 및 삭제",
