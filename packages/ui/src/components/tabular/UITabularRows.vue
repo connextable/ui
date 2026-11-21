@@ -1,11 +1,5 @@
-<script setup lang="ts">
-function removeRow(_element: Element, done: () => void) {
-  done();
-}
-</script>
-
 <template>
-  <TransitionGroup name="ui-tabular-rows" @leave="removeRow">
+  <TransitionGroup name="ui-tabular-rows">
     <slot />
   </TransitionGroup>
 </template>
@@ -24,11 +18,9 @@ function removeRow(_element: Element, done: () => void) {
     opacity: 0;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .ui-tabular-rows-move,
-    .ui-tabular-rows-enter-active {
-      transition: none;
-    }
+  /* Remove outgoing rows before measuring the new table layout. */
+  .ui-tabular-rows-leave-active {
+    display: none;
   }
 }
 </style>
