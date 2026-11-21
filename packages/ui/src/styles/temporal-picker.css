@@ -1,0 +1,38 @@
+:where(
+  [data-part="anchor"]:is([data-scope="date"], [data-scope^="date-"], [data-scope$="-picker"]),
+  [data-scope="time-picker"][data-part="root"]
+) {
+  & input[data-scope]:not([type="hidden"]) {
+    background-color: transparent;
+  }
+
+  & > :where([data-part^="end-"], [data-part="date-input"] + [data-part="time-input"], label + label):not(:focus-visible) {
+    box-shadow: none;
+  }
+
+  & > [data-part="trigger"] {
+    box-sizing: border-box;
+    inline-size: var(--ui-control-height-small);
+    block-size: var(--ui-control-height-small);
+    min-inline-size: 0;
+    min-block-size: 0;
+    align-self: center;
+    justify-self: end;
+    background: transparent;
+
+    @media (hover: hover) {
+      &:hover:not(:disabled, [aria-disabled="true"]) {
+        background-color: var(--ui-color-surface-hover);
+      }
+    }
+
+    &:active:not(:disabled, [aria-disabled="true"]) {
+      background: var(--ui-color-surface-active);
+    }
+  }
+}
+
+/* The nested panel shares the calendar's layout while the outer popup stays open. */
+.ui-calendar-period-header__years[data-state="closed"] {
+  display: none;
+}
