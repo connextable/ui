@@ -3,7 +3,8 @@
 
 /* Keep the selected fill visible when a control is hovered or pressed. */
 :where(
-  button[data-scope][data-part]:not(.ui-button, .ui-popup-trigger, .ui-select-trigger, .ui-choice, [data-scope="rating"]),
+  button[data-scope][data-part]:not(.ui-button, .ui-popup-trigger, .ui-select-trigger, .ui-choice,
+    [data-scope="rating"], [data-scope="toggle-group"], [data-scope="spin-button"], [data-scope="tags-input"]),
   [data-scope="editable"][data-part="preview"],
   [data-scope="listbox"][role="option"],
   [data-scope="cascade-list"][role="option"],
@@ -14,8 +15,7 @@
   :is([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-grid"])[role="gridcell"]
 ):active:not(:where(:disabled, [aria-disabled="true"], [aria-readonly="true"], [data-ui-readonly], [data-readonly] *)),
 .ui-choice:enabled:active:not([aria-readonly="true"]) {
-  background-image: linear-gradient(var(--ui-press-shade), var(--ui-press-shade));
-  --ui-press-shade: color-mix(in srgb, var(--ui-color-text) 12%, transparent);
+  background-image: linear-gradient(var(--ui-color-press-shade), var(--ui-color-press-shade));
 }
 
 :where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="root"] {
@@ -175,8 +175,7 @@
     [data-scope="checkbox-tree"][role="treeitem"],
     [data-scope$="-reorder"][data-part="item"]:not(:has([data-sectile-reorder-handle]))
   ):hover:not(:where(:active, :disabled, [aria-disabled="true"], [aria-readonly="true"], [data-readonly] *)) {
-    background-image: linear-gradient(var(--ui-hover-shade), var(--ui-hover-shade));
-    --ui-hover-shade: color-mix(in srgb, var(--ui-color-text) 7%, transparent);
+    background-image: linear-gradient(var(--ui-color-hover-shade), var(--ui-color-hover-shade));
   }
 
   :where(

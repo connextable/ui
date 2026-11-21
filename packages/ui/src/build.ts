@@ -15,7 +15,9 @@ import "./styles/anchor.css";
 import "./styles/navigation-menu.css";
 import "./styles/selection-menu.css";
 import "./styles/overlay-surface.css";
+import "./styles/sectile-controls.css";
 import "./styles/sectile-overlays.css";
+import "./styles/sectile-collections.css";
 import "./styles/reorder.css";
 import "./styles/sectile-temporal.css";
 

@@ -1,0 +1,138 @@
+@layer ui.sectile {
+  :where([data-scope="feed"][data-part="root"]) {
+    display: grid;
+    gap: var(--ui-space-sm);
+    inline-size: 30rem;
+    max-inline-size: 100%;
+  }
+
+  :where([data-scope="tabs"][data-part="content"]) {
+    padding: var(--ui-space-md);
+    color: var(--ui-color-text-muted);
+  }
+
+  :where([data-scope="tabs"][data-part="trigger"]) {
+    border-color: transparent;
+    background: transparent;
+  }
+
+  :where([data-scope="tree-view"][data-part="root"], [data-scope="checkbox-tree"][data-part="root"],
+    [data-scope="transfer"][data-part="root"], [data-scope="cascade-list"][data-part="root"]) {
+    display: grid;
+    gap: var(--ui-space-xs);
+    padding: var(--ui-space-xs);
+    border: 1px solid var(--ui-color-divider);
+    border-radius: var(--ui-control-radius);
+  }
+
+  :where([data-scope="transfer"]):where([data-part="root"], [data-part="content"]) {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+  }
+
+  :where([data-scope="tree-view"],
+    [data-scope="cascade-list"], [data-scope="transfer"], [data-scope="checkbox-tree"]
+  ):where([data-part="item"], [data-part="branch"], [data-part="option"], [role="option"], [role="menuitem"], [role="treeitem"]) {
+    box-sizing: border-box;
+    min-block-size: var(--ui-control-height-small);
+    padding: var(--ui-space-sm) var(--ui-control-padding-inline);
+    border-radius: var(--ui-control-radius);
+    overflow-wrap: anywhere;
+  }
+
+  :where([data-scope][data-part]):where([data-highlighted], [data-state="highlighted"]) {
+    background: var(--ui-color-surface-hover);
+  }
+
+  :where([data-scope="combobox"][data-part="empty"]:not([hidden])) {
+    display: block;
+    padding: var(--ui-space-sm) var(--ui-control-padding-inline);
+    color: var(--ui-color-text-muted);
+    font-size: var(--ui-font-size-body-sm);
+  }
+
+  :where([data-scope="toolbar"][data-part="root"]) {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ui-space-2xs);
+    padding: var(--ui-space-xs);
+    border: 1px solid var(--ui-color-border);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-surface-muted);
+  }
+
+  :where([data-scope="toolbar"][data-part="root"][data-orientation="vertical"]) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  :where([data-scope="toolbar"][data-part="item"]) {
+    padding-inline: var(--ui-space-sm);
+    border-color: transparent;
+    border-radius: var(--ui-radius-sm);
+    background: transparent;
+  }
+
+  :where([data-scope="toolbar"][data-part="item"][aria-pressed="true"]) {
+    background: var(--ui-color-accent-soft);
+    border-color: var(--ui-color-border);
+  }
+
+  :where([data-scope="toolbar"][data-part="item"]):hover:not(:disabled, [aria-disabled="true"]) {
+    background: var(--ui-color-surface);
+  }
+
+  :where([data-scope="toolbar"][data-part="item"]):active:not(:disabled, [aria-disabled="true"]) {
+    background: var(--ui-color-surface-active);
+  }
+
+  :where([data-scope="toolbar"][data-part="separator"]) {
+    flex: none;
+    block-size: 1.125rem;
+    margin: 0 var(--ui-space-xs);
+    padding: 0;
+    border: 0;
+    border-inline-start: 1px solid var(--ui-color-border-hover);
+  }
+
+  :where([data-scope="toolbar"][data-part="separator"][aria-orientation="horizontal"]) {
+    block-size: 0;
+    margin: var(--ui-space-xs) 0;
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--ui-color-border-hover);
+  }
+
+  :where([data-scope="tree-view"], [data-scope="checkbox-tree"]):where([data-part="group"]) {
+    margin-inline-start: var(--ui-space-md);
+    border-inline-start: 1px solid var(--ui-color-divider);
+  }
+
+  :where([data-scope="feed"][data-part="item"]) {
+    min-inline-size: 0;
+    padding: var(--ui-space-md);
+    border: 1px solid var(--ui-color-border);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-surface);
+    overflow-wrap: anywhere;
+  }
+
+  :where([data-scope="feed"][data-part="item"]) :where(h3, h4, p) {
+    margin: 0;
+  }
+
+  :where([data-scope="feed"][data-part="item"]) :where(p, small, time) {
+    color: var(--ui-color-text-muted);
+  }
+
+  :where([data-scope="feed"]):where([data-part="load-earlier"], [data-part="load-newer"]) {
+    justify-self: center;
+  }
+
+  :where([data-scope="chart"][data-part="view-controls"]) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ui-space-xs);
+  }
+
+}

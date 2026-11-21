@@ -14,14 +14,22 @@
   --ui-color-text-muted: #62686c;
   --ui-color-placeholder: #70767a;
   --ui-color-disabled: #90969a;
-  --ui-color-surface: #fff;
+  --ui-color-surface: #F9FAFB;
   --ui-color-surface-muted: #eef1f3;
   --ui-color-surface-readonly: color-mix(in srgb, var(--ui-color-surface-muted) 45%, var(--ui-color-surface));
   --ui-color-surface-hover: #edf1f3;
-  --ui-color-surface-active: #e1e6e9;
+  --ui-color-surface-active: #e8eef1;
+  --ui-color-hover-shade: color-mix(in srgb, var(--ui-color-accent) 5%, transparent);
+  --ui-color-press-shade: color-mix(in srgb, var(--ui-color-accent) 8%, transparent);
+  --ui-color-selected: var(--ui-color-accent-soft);
+  --ui-color-selected-hover: color-mix(in srgb, var(--ui-color-accent) 12%, var(--ui-color-surface));
+  --ui-color-selected-active: color-mix(in srgb, var(--ui-color-accent) 15%, var(--ui-color-surface));
   --ui-color-border: #d8dde1;
   --ui-color-border-hover: #a3abb0;
   --ui-color-border-strong: #7b8287;
+  --ui-scrollbar-thumb: var(--ui-color-border-strong);
+  --ui-scrollbar-track: transparent;
+  --ui-scrollbar-size: 0.375rem;
   --ui-color-divider: var(--ui-color-border);
   --ui-color-focus: #688495;
   --ui-color-danger: #b53a3a;
@@ -46,6 +54,8 @@
   --ui-space-xs: 0.25rem;
   --ui-space-sm: 0.5rem;
   --ui-space-md: 0.75rem;
+  --ui-frame-border-width: 1px;
+  --ui-frame-padding: var(--ui-space-xs);
   --ui-motion-fast: 140ms;
   --ui-motion-standard: 220ms;
   --ui-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -86,6 +96,22 @@
   box-sizing: border-box;
   inline-size: var(--ui-control-size-height);
   aspect-ratio: 1;
+}
+
+/* Resolve on each frame so its children inherit the geometry of their immediate parent. */
+:where(.ui-inset-frame, .ui-tags-input__chip, .ui-number-control, .ui-quantity-control, .ui-color-sample,
+  [data-scope="toggle-group"][data-part="root"], [data-scope="tabs"][data-part="list"],
+  .ui-select-content, .ui-navigation-popover__surface,
+  :is([data-scope="menu-button"], [data-scope="context-menu"], [data-scope="combobox"], [data-scope="tree-select"], [data-scope="cascade-select"])[data-part="content"],
+  :is([data-scope="navigation-menu"], [data-scope="menu"])[data-part="sub-content"],
+  :is([data-scope="listbox"], [data-scope="menu"])[data-part="root"],
+  .ui-tags-input [data-scope="tags-input"][data-part="item"]:not(.ui-tags-input__chip-content),
+  [data-scope="spin-button"][data-part="root"],
+  :is([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="root"]
+) {
+  --ui-inset-distance: calc(var(--ui-frame-padding) + var(--ui-frame-border-width));
+  --ui-inset-size: calc(var(--ui-control-size-height, var(--ui-control-height)) - 2 * var(--ui-inset-distance));
+  --ui-inset-radius: max(0px, calc(var(--ui-frame-radius, var(--ui-control-size-radius, var(--ui-radius-lg))) - var(--ui-inset-distance)));
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,371 @@
+/* Sectile publishes state and part attributes. This layer supplies the visual treatment. */
+@layer ui.sectile {
+  :where([data-scope][data-part])[hidden] {
+    display: none;
+  }
+
+  :where(button[data-scope][data-part], [role="button"][data-scope][data-part]) {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ui-space-xs);
+    min-block-size: var(--ui-control-height-small);
+    min-inline-size: var(--ui-control-height-small);
+    padding: var(--ui-space-xs) var(--ui-control-padding-inline);
+    border: 1px solid var(--ui-color-border);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-surface);
+    color: var(--ui-color-text);
+    font: 600 var(--ui-font-size-body-sm)/1.35 var(--ui-font-sans);
+    cursor: pointer;
+    transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
+  }
+
+  :where(button[data-scope][data-part]):where(:hover:not(:disabled, [aria-disabled="true"])) {
+    background: var(--ui-color-surface-hover);
+  }
+
+  :where([data-scope][data-part]):where(:focus-visible) {
+    outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+    outline-offset: var(--ui-focus-ring-offset);
+  }
+
+  :where([data-scope][data-part]):where(:disabled, [aria-disabled="true"]) {
+    color: var(--ui-color-disabled);
+    cursor: default;
+  }
+
+  :where([data-scope][data-part]):where([aria-selected="true"], [aria-checked="true"], [aria-pressed="true"], [aria-current="page"], [data-state="selected"]) {
+    background: var(--ui-color-accent-soft);
+    color: var(--ui-color-accent);
+  }
+
+  :where(input[data-scope][data-part]:not([type="file"], [type="hidden"], [type="range"]), textarea[data-scope][data-part]) {
+    box-sizing: border-box;
+    min-block-size: var(--ui-control-height);
+    max-inline-size: 100%;
+    padding: var(--ui-space-xs) var(--ui-control-padding-inline);
+    border: 1px solid var(--ui-color-border);
+    border-radius: var(--ui-control-radius);
+    background: var(--ui-color-surface);
+    color: var(--ui-color-text);
+    font: inherit;
+  }
+
+  :where(input[data-scope][data-part], textarea[data-scope][data-part]):where([readonly], [aria-readonly="true"]) {
+    background: var(--ui-color-surface-readonly);
+    caret-color: transparent;
+    cursor: default;
+  }
+
+  :where([data-scope="pin-input"][data-part="root"],
+    [data-scope="toggle-group"][data-part="root"],
+    [data-scope="pagination"][data-part="root"],
+    [data-scope="file-input"][data-part="root"],
+    [data-scope="tags-input"][data-part="root"],
+    [data-scope="stepper"][data-part="root"],
+    [data-scope="carousel"][data-part="root"]
+  ) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ui-space-sm);
+    min-inline-size: 0;
+  }
+
+  :where([data-scope="pin-input"][data-part="input"]) {
+    inline-size: var(--ui-control-height);
+    padding-inline: 0;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where([data-scope="rating"][data-part="root"]) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ui-space-2xs);
+  }
+
+  :where([data-scope="rating"][data-part="item"]) {
+    border-color: transparent;
+    padding-inline: var(--ui-space-xs);
+  }
+
+  :where([data-scope="rating"][data-part="item"][aria-checked="true"], [data-scope="rating"][data-part="item"][data-active]) svg {
+    fill: currentColor;
+  }
+
+  :where([data-scope="checkbox-group"][data-part="root"], [data-scope="color-picker"][data-part="root"]) {
+    display: grid;
+    gap: var(--ui-space-sm);
+  }
+
+  :where([data-scope="color-picker"][data-part="root"]) {
+    inline-size: min(18rem, 100%);
+    min-inline-size: 0;
+  }
+
+  :where([data-scope="color-picker"][data-part="control"]) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ui-space-xs);
+    min-inline-size: 0;
+  }
+
+  :where([data-scope="color-picker"][data-part="coordinate-input"]) {
+    flex: 1 1 4rem;
+    min-inline-size: 0;
+    inline-size: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where([data-scope="color-picker"][data-part="native-input"]) {
+    inline-size: 100%;
+    padding: var(--ui-space-xs);
+    cursor: pointer;
+  }
+
+  :where([data-scope="color-picker"][data-part="area"], [data-scope="color-picker"][data-part="swatch"]) {
+    position: relative;
+    border: 1px solid var(--ui-color-border);
+    border-radius: var(--ui-control-radius);
+  }
+
+  :where([data-scope="color-picker"][data-part="area"]) {
+    aspect-ratio: 4 / 3;
+    background:
+      linear-gradient(to top, black, transparent),
+      linear-gradient(to right, white, var(--sectile-color-area-hue));
+    touch-action: none;
+  }
+
+  :where([data-scope="color-picker"][data-part="swatch"]) {
+    display: block;
+    min-block-size: var(--ui-control-height-small);
+  }
+
+  :where([data-scope="color-picker"][data-part="area-thumb"]) {
+    position: absolute;
+    inset-block-start: var(--sectile-color-area-y);
+    inset-inline-start: var(--sectile-color-area-x);
+    inline-size: var(--ui-space-md);
+    block-size: var(--ui-space-md);
+    transform: translate(-50%, -50%);
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--ui-color-border-strong);
+    pointer-events: none;
+  }
+
+  :where([data-scope="color-picker"][type="range"]) {
+    inline-size: 100%;
+    margin: 0;
+    accent-color: var(--ui-color-accent);
+  }
+
+  :where([data-scope="slider"], [data-scope="multi-thumb-slider"]):where([data-part="root"]) {
+    display: grid;
+    align-content: center;
+    inline-size: min(18rem, calc(100vw - 4rem));
+    min-block-size: var(--ui-control-height);
+  }
+
+  :where([data-scope="slider"], [data-scope="multi-thumb-slider"]):where([data-part="track"]) {
+    position: relative;
+    block-size: var(--ui-space-sm);
+    border-radius: 999px;
+    background: var(--ui-color-accent-soft);
+  }
+
+  :where([data-scope="slider"], [data-scope="multi-thumb-slider"]):where([data-part="range"]) {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: var(--sectile-range-start, 0%);
+    inset-inline-end: calc(100% - var(--sectile-range-end, var(--sectile-slider-percentage, 0%)));
+    border-radius: inherit;
+    background: var(--ui-color-accent);
+  }
+
+  :where([data-scope="slider"], [data-scope="multi-thumb-slider"]):where([data-part="thumb"]) {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: var(--sectile-thumb-percentage, var(--sectile-slider-percentage, 0%));
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    min-inline-size: 0;
+    min-block-size: 0;
+    padding: 0;
+    border: 2px solid var(--ui-color-accent);
+    border-radius: 50%;
+    background: var(--ui-color-surface);
+    transform: translate(-50%, -50%);
+    touch-action: none;
+  }
+
+  :where([data-scope="slider"], [data-scope="multi-thumb-slider"]):where([data-part="thumb"]):dir(rtl) {
+    transform: translate(50%, -50%);
+  }
+
+  :where([data-scope="meter"][data-part="root"], [data-scope="meter-group"][data-part="root"]) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-sm);
+    min-inline-size: 0;
+    inline-size: 26rem;
+    max-inline-size: 100%;
+  }
+
+  :where([data-scope="meter"], [data-scope="meter-group"]):where([data-part="value-text"]) {
+    order: -1;
+    font-size: 1.125rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where([data-scope="meter"], [data-scope="meter-group"]):where([data-part="track"]) {
+    position: relative;
+    overflow: hidden;
+    block-size: 0.625rem;
+    border-radius: var(--ui-radius-sm);
+    background: var(--ui-color-surface-muted);
+  }
+
+  :where([data-scope="meter"][data-part="indicator"]) {
+    display: block;
+    block-size: 100%;
+    inline-size: var(--sectile-meter-percentage, calc(attr(data-percentage type(<number>), 0) * 1%));
+    border-radius: var(--ui-radius-sm);
+    background: var(--ui-meter-fill, var(--ui-color-accent));
+  }
+
+  :where([data-scope="meter"][data-zone="suboptimal"]) {
+    --ui-meter-fill: var(--ui-color-caution, #946221);
+  }
+
+  :where([data-scope="meter"][data-zone="even-less-good"]) {
+    --ui-meter-fill: var(--ui-color-danger);
+  }
+
+  :where([data-scope="meter-group"][data-part="segment"]) {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: var(--sectile-meter-group-start-percentage);
+    inset-inline-end: calc(100% - var(--sectile-meter-group-end-percentage));
+    background: var(--ui-meter-segment-color, var(--ui-color-accent));
+  }
+
+  :where([data-scope="meter-group"][data-part="segment"][data-percentage="0"]) {
+    inline-size: 0;
+  }
+
+  :where([data-scope="meter-group"][data-part="segment"]):dir(rtl) {
+    --ui-meter-group-separator-offset: -1px;
+  }
+
+  :where([data-scope="meter-group"][data-part="segment"]:not([data-percentage="0"]) ~ [data-part="segment"]:not([data-percentage="0"])) {
+    box-shadow: inset var(--ui-meter-group-separator-offset, 1px) 0 var(--ui-color-surface);
+  }
+
+  :where([data-scope="meter-group"]):is([data-part="segment"], [data-part="item"]):where(:nth-child(3n + 2)) {
+    --ui-meter-segment-color: #5979a7;
+  }
+
+  :where([data-scope="meter-group"]):is([data-part="segment"], [data-part="item"]):where(:nth-child(3n + 3)) {
+    --ui-meter-segment-color: #7e6492;
+  }
+
+  :where([data-scope="meter-group"][data-part="list"]) {
+    display: grid;
+    gap: var(--ui-space-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  :where([data-scope="meter-group"][data-part="item"]) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--ui-space-sm);
+    font-size: var(--ui-font-size-body-sm);
+  }
+
+  :where([data-scope="meter-group"][data-part="item-indicator"]) {
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    border-radius: 50%;
+    background: var(--ui-meter-segment-color, var(--ui-color-accent));
+  }
+
+  :where([data-scope="meter-group"][data-part="item-label"]) {
+    overflow-wrap: anywhere;
+  }
+
+  :where([data-scope="meter-group"][data-part="item-value"]) {
+    color: var(--ui-color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where([data-scope="meter-group"][data-part="root"][data-zone="even-less-good"]) > [data-part="value-text"] {
+    color: var(--ui-color-danger);
+  }
+
+  :where([data-scope="timer"][data-part="root"]) {
+    display: grid;
+    justify-items: center;
+    gap: var(--ui-space-md);
+    min-inline-size: 0;
+  }
+
+  :where([data-scope="timer"][data-part="area"]) {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--ui-space-2xs);
+    min-inline-size: 0;
+    color: var(--ui-color-text);
+    font: 650 2rem/1.15 var(--ui-font-sans);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where([data-scope="timer"][data-part="root"][data-state="running"]) [data-part="area"] {
+    color: var(--ui-color-accent);
+  }
+
+  :where([data-scope="timer"][data-part="separator"]) {
+    color: var(--ui-color-text-muted);
+  }
+
+  :where([data-scope="timer"][data-part="control"]) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ui-space-xs);
+  }
+
+  :where(button[data-scope="timer"][data-part="action-trigger"]) {
+    border-color: transparent;
+    border-radius: var(--ui-radius-sm);
+    background: var(--ui-color-accent-soft);
+    color: var(--ui-color-accent);
+  }
+
+  :where(button[data-scope="timer"][data-action="reset"]) {
+    background: transparent;
+    color: var(--ui-color-text-muted);
+  }
+
+  :where(button[data-scope="timer"][data-part="action-trigger"]):is(:disabled, [aria-disabled="true"]) {
+    color: var(--ui-color-disabled);
+  }
+
+  :where(button[data-scope="timer"][data-part="action-trigger"]):hover:not(:disabled, [aria-disabled="true"]) {
+    background: var(--ui-color-surface-hover);
+  }
+
+  :where(button[data-scope="timer"][data-part="action-trigger"]):active:not(:disabled, [aria-disabled="true"]) {
+    background: var(--ui-color-surface-active);
+  }
+}
