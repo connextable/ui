@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/ui";
-import { Check, ChevronRight, Minus } from "@lucide/vue";
+import { ChevronRight } from "@lucide/vue";
 
 const children = [
   { kind: "leaf", id: "site", cells: { selected: null, service: "웹사이트", team: "프런트엔드" } },
@@ -47,10 +47,7 @@ const DataTreeGrid = createUIDataTreeGridComponents(tree);
       <DataTreeGrid.Body v-slot="{ row }">
         <DataTreeGrid.Cell column="selected">
           <DataTreeGrid.BulkSelectionControl v-if="row.kind === 'group'"
-            :target="{ kind: 'group-leaves', groupID: row.id }" aria-label="하위 서비스 모두 선택">
-            <Check :size="14" :stroke-width="3" aria-hidden="true" />
-            <Minus :size="14" :stroke-width="3" aria-hidden="true" />
-          </DataTreeGrid.BulkSelectionControl>
+            :target="{ kind: 'group-leaves', groupID: row.id }" aria-label="하위 서비스 모두 선택" />
           <DataTreeGrid.RowSelectionControl v-else name="service" :value="row.id" :aria-label="`${row.cells.service} 선택`" />
         </DataTreeGrid.Cell>
         <DataTreeGrid.Cell column="service" data-ui-tree-column>

@@ -13,18 +13,20 @@ export { default as UITabularColumnHeading } from "./UITabularColumnHeading.vue"
 export { default as UITabularFilterPopover } from "./UITabularFilterPopover.vue";
 export { default as UITabularEditTrigger } from "./UITabularEditTrigger.vue";
 export {
+  createUIDataTableComponents,
+  createUIDataGridComponents,
+  createUIDataTreeGridComponents,
+} from "./selection-checkbox";
+export {
   useDataTable as useUIDataTable,
-  createDataTableComponents as createUIDataTableComponents,
   useDataTableContext as useUIDataTableContext,
 } from "@sectile/vue/data-table";
 export {
   useDataGrid as useUIDataGrid,
-  createDataGridComponents as createUIDataGridComponents,
   useDataGridContext as useUIDataGridContext,
 } from "@sectile/vue/data-grid";
 export {
   useDataTreeGrid as useUIDataTreeGrid,
-  createDataTreeGridComponents as createUIDataTreeGridComponents,
   useDataTreeGridContext as useUIDataTreeGridContext,
 } from "@sectile/vue/data-tree-grid";
 export {

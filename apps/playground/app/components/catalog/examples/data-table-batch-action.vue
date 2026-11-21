@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { Archive, Check, Minus } from "@lucide/vue";
+import { Archive } from "@lucide/vue";
 import { UIButton, UIDataSurface, UITabularRows, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
 
 const initialRows = ["오류 추적", "검색 리뉴얼", "분석 이벤트", "접근성 점검"].map((name, index) => ({
@@ -53,9 +53,7 @@ function reset() {
         <Table.Header>
           <Table.HeaderRow>
             <Table.ColumnHeader column="select">
-              <Table.BulkSelectionControl :target="{ kind: 'all-matching' }" aria-label="프로젝트 모두 선택">
-                <Check :size="14" aria-hidden="true" /><Minus :size="14" aria-hidden="true" />
-              </Table.BulkSelectionControl>
+              <Table.BulkSelectionControl :target="{ kind: 'all-matching' }" aria-label="프로젝트 모두 선택" />
             </Table.ColumnHeader>
             <Table.ColumnHeader column="name">프로젝트</Table.ColumnHeader>
           </Table.HeaderRow>

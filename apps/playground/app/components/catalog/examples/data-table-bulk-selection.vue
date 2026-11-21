@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Check, Minus } from "@lucide/vue";
 import { createUIDataTableComponents, useUIDataTable, useUIDataTableContext } from "@connextable/ui";
 import { defineComponent, h } from "vue";
 
@@ -40,10 +39,7 @@ const SelectionSummary = defineComponent({
         <DataTable.Header>
           <DataTable.HeaderRow>
             <DataTable.ColumnHeader column="selection">
-              <DataTable.BulkSelectionControl :target="{ kind: 'all-matching' }" aria-label="현재 범위의 행 모두 선택">
-                <Check :size="14" :stroke-width="3" aria-hidden="true" />
-                <Minus :size="14" :stroke-width="3" aria-hidden="true" />
-              </DataTable.BulkSelectionControl>
+              <DataTable.BulkSelectionControl :target="{ kind: 'all-matching' }" aria-label="현재 범위의 행 모두 선택" />
             </DataTable.ColumnHeader>
             <DataTable.ColumnHeader column="name">이름</DataTable.ColumnHeader>
             <DataTable.ColumnHeader column="team">팀</DataTable.ColumnHeader>

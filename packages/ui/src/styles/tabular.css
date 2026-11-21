@@ -324,7 +324,7 @@
   }
 
   :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"]):is(
-    input[data-part="selection-control"], input[data-part="row-selection-control"], button[data-part="bulk-selection-control"]
+    button[data-part="bulk-selection-control"]:not(.ui-checkbox__control)
   ) {
     flex: none;
     inline-size: 1.25rem;
@@ -347,7 +347,7 @@
   }
 
   :where(table[data-scope="data-table"])
-    :where([data-part="column-header"]:has(> [data-part="bulk-selection-control"])) {
+    :where([data-part="column-header"]:has(> [data-part="bulk-selection-control"], > .ui-checkbox__box > [data-part="bulk-selection-control"])) {
     inline-size: 1%;
     white-space: nowrap;
   }
