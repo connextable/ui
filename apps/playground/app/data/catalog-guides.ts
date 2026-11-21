@@ -477,6 +477,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "examples", title: "태그 편집", section: "editing" },
       { id: "tags-input-policies", title: "입력 정책", section: "policies" },
       { id: "tags-input-styles", title: "구성", section: "composition" },
+      { id: "tags-input-forms", title: "폼", section: "form" },
     ],
     examples: [
       { id: "tags-input-paste", title: "여러 태그 붙여넣기", description: "예제 문자열을 복사해 붙여넣으세요. 새 태그는 추가되고, 이미 있는 ‘디자인’은 제외됩니다.", section: "editing" },
@@ -488,6 +489,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "tags-input-limit", title: "태그 개수 제한", description: "새 주제를 두 개까지 등록할 수 있습니다. 입력창 아래에서 현재 개수를 확인하세요.", section: "policies" },
       { id: "tags-input-readonly", title: "긴 태그를 읽기 전용으로 표시", description: "긴 태그는 너비에 맞춰 줄바꿈됩니다.", section: "composition" },
       { id: "tags-input-composition", title: "칩에 상태 아이콘 넣기", description: "구성 슬롯에서 승인 칩에 체크를 추가합니다. 크기와 배경은 입력 컨트롤의 공통 토큰을 따릅니다.", section: "composition", parts: ["UITagsInputItem", "UITagsInputItemText", "UITagsInputItemDelete"] },
+      { id: "tags-input-form", title: "태그 제출과 폼 초기화", description: "태그를 편집해 제출한 뒤 초기화하면 기본 목록으로 돌아갑니다.", section: "form" },
     ],
   },
   "number-field": {

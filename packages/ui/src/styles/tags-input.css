@@ -1,8 +1,7 @@
 .ui-tags-input {
-  --ui-tag-inset: var(--ui-space-xs);
-  --ui-tag-height: calc(var(--ui-control-size-height) - 2 * var(--ui-tag-inset) - 2px);
-  --ui-tag-radius: max(0px, calc(var(--ui-control-size-radius) - var(--ui-tag-inset) - 1px));
-  --ui-tag-action-radius: max(0px, calc(var(--ui-tag-radius) - 2 * var(--ui-space-2xs)));
+  --ui-tag-inset: var(--ui-frame-padding);
+  --ui-tag-height: var(--ui-inset-size);
+  --ui-tag-radius: var(--ui-inset-radius);
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -30,17 +29,20 @@
 
 .ui-tags-input__chip,
 :where(.ui-tags-input [data-scope="tags-input"][data-part="item"]:not(.ui-tags-input__chip-content)) {
+  --ui-control-size-height: var(--ui-tag-height, 2.375rem);
+  --ui-frame-radius: var(--ui-tag-radius, var(--ui-radius-md));
+  --ui-frame-padding: var(--ui-space-2xs);
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   gap: var(--ui-space-xs);
   min-inline-size: 0;
   max-inline-size: 100%;
-  min-block-size: var(--ui-tag-height, 0);
-  padding: var(--ui-space-2xs) var(--ui-space-2xs) var(--ui-space-2xs) var(--ui-space-sm);
-  border: 1px solid var(--ui-color-border);
-  border-radius: var(--ui-tag-radius);
-  background: var(--ui-color-surface-muted);
+  min-block-size: var(--ui-control-size-height);
+  padding: var(--ui-frame-padding);
+  border: var(--ui-frame-border-width) solid var(--ui-color-border);
+  border-radius: var(--ui-frame-radius);
+  background: var(--ui-color-surface);
   font: 600 var(--ui-font-size-body-sm)/1.35 var(--ui-font-sans);
 }
 
@@ -51,6 +53,7 @@
 .ui-tags-input__text,
 :where(.ui-tags-input [data-scope="tags-input"][data-part="item-text"]) {
   min-inline-size: 0;
+  padding-inline: var(--ui-space-xs);
   overflow-wrap: anywhere;
 }
 
@@ -87,11 +90,13 @@
   align-items: center;
   justify-content: center;
   gap: var(--ui-space-xs);
-  min-inline-size: calc(var(--ui-control-size-icon, 1.125rem) + 2 * var(--ui-space-xs));
-  min-block-size: calc(var(--ui-control-size-icon, 1.125rem) + 2 * var(--ui-space-xs));
-  padding: var(--ui-space-xs);
+  inline-size: var(--ui-inset-size);
+  block-size: var(--ui-inset-size);
+  min-inline-size: 0;
+  min-block-size: 0;
+  padding: 0;
   border: 0;
-  border-radius: var(--ui-tag-action-radius);
+  border-radius: var(--ui-inset-radius);
   background: transparent;
   color: var(--ui-color-text-muted);
   font: inherit;
@@ -115,17 +120,17 @@
 }
 
 .ui-tags-input :is([data-part="item-delete"], [data-scope="tags-input"][data-part="clear"]):hover:not(:disabled) {
-  background: color-mix(in srgb, var(--ui-color-danger) 10%, transparent);
-  color: var(--ui-color-danger);
+  background: var(--ui-color-surface-hover);
+  color: var(--ui-color-text);
+}
+
+.ui-tags-input :is([data-part="item-delete"], [data-scope="tags-input"][data-part="clear"]):active:not(:disabled) {
+  background: var(--ui-color-surface-active);
 }
 
 .ui-tags-input :is([data-part="item-delete"], [data-scope="tags-input"][data-part="clear"]):disabled {
   color: var(--ui-color-disabled);
   cursor: default;
-}
-
-.ui-tags-input__chip :is(.ui-tags-input__handle, .ui-reorder-handle-visual) {
-  margin-inline-start: calc(-1 * var(--ui-space-xs));
 }
 
 .ui-tags-input__chip .ui-tags-input__handle:focus-visible {

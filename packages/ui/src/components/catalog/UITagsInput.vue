@@ -84,7 +84,7 @@ function clearFocus(event: MouseEvent) {
   <TagsInputRoot
     v-bind="{ ...rootProps, ...$attrs }"
     v-slot="state"
-    class="ui-field-control ui-tags-input"
+    class="ui-field-control ui-inset-frame ui-tags-input"
     :data-ui-control-size="size"
     :data-variant="variant"
     @update:model-value="updateValue"
