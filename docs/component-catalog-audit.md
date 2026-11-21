@@ -18,6 +18,12 @@
 | 분할 패널 | 좁은 패널의 긴 코드 줄이 문서까지 밀었다. Handle에 넣은 접근성 이름도 기본 영문 이름으로 바뀌었다. | 코드 줄은 패널 안에서 스크롤하고 라벨은 Root에 연결했다. 391px에서 문서 폭 391px, 코드 영역 181px, 코드 내용 282px를 관찰했다. 오른쪽 방향키로 분할 값이 34→35로 변경됐다. |
 | 트리 그리드 그룹 선택 | 그룹 컨트롤은 `request-bulk-selection`을 전달했지만 예제가 명령을 처리하지 않았다. | 로컬 소스의 하위 행 두 개를 선택하도록 명령을 연결했다. 클릭 후 웹사이트와 API 행이 모두 선택됐다. |
 
+### 오버레이 모션·탭·선택 목록 후속 확인
+
+- 트리거 위치에 따른 시작점, 화면 가장자리에서의 방향 전환, 진입·퇴장 타이밍을 조사했다. Sectile이 확정한 방향을 기준으로 패널이 트리거 쪽에서 나타나고, 닫힐 때는 더 짧게 이동하며 사라진다. [Animations.dev](https://animations.dev/vocabulary), [Emil Kowalski의 예제](https://emilkowal.ski/ui/7-practical-animation-tips), [Radix Popover](https://www.radix-ui.com/primitives/docs/components/popover), [Carbon 모션 가이드](https://carbondesignsystem.com/guidelines/motion/overview/)
+- 브라우저에서 Popover의 진입 220ms·퇴장 140ms, 닫히는 중 재열기, 오른쪽 Tooltip의 가로 진입과 페이드 퇴장을 재현했다. Select는 열고 닫을 때 트리거 폭이 약 123px로 같았고, MenuButton과 날짜 선택 창에도 진입 전환이 적용됐다.
+- Combobox의 Production·Stage·Development와 Select·MenuButton의 인접 항목에서 2px 간격을 측정했다. 수동 탭은 391px에서 방향키로 포커스만 이동했고 Enter를 누르면 선택 배경과 본문이 바뀌었다. 전환 중 탭 위치와 문서 너비는 유지됐다.
+
 ### Sectile에 전달할 재현 근거
 
 `/components/data-tree-grid#data-tree-grid-group-selection`에서 ‘하위 서비스 모두 선택’을 누르면 하위 행 두 개는 체크되지만, 그룹 컨트롤의 `aria-checked`는 `false`로 남는다. 현재 설치된 Sectile 그리드 연결은 `group-leaves` 대상의 그룹 체크 상태를 항상 `unchecked`로 설정한다. 소스가 확정한 그룹의 선택 범위로부터 `unchecked`, `mixed`, `checked`를 전달할 수 있는 계약이 필요하다.
