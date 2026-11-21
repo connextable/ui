@@ -10,12 +10,14 @@ definePageMeta({
 </script>
 
 <template>
-  <PlaygroundExample
-    id="progress-example"
-    title="검사 진행률"
-    description="완료 수를 value에, 전체 수를 max에 전달합니다."
-    :source="source"
-  >
-    <ProgressExample />
-  </PlaygroundExample>
+  <div style="--playground-preview-inline-size: 20rem">
+    <PlaygroundExample
+      id="progress-example"
+      title="검사 진행률"
+      description="완료 수를 value에, 전체 수를 max에 전달합니다."
+      :source="source"
+    >
+      <ProgressExample />
+    </PlaygroundExample>
+  </div>
 </template>

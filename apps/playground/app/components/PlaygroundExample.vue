@@ -129,11 +129,13 @@ async function revealSource(open: boolean) {
 .playground-example__preview {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  flex: 1 1 max-content;
+  flex: 1 1 var(--playground-preview-inline-size, max-content);
   grid-column: 2;
   justify-items: center;
   box-sizing: border-box;
+  inline-size: var(--playground-preview-inline-size, auto);
   min-inline-size: 0;
+  max-inline-size: min(100%, var(--playground-preview-inline-size, 100%));
   padding: var(--ui-space-md) clamp(var(--ui-space-xs), 1vw, var(--ui-space-md));
 }
 
