@@ -409,8 +409,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
   },
   "file-input": {
-    title: "문서 하나 첨부하기",
-    description: "선택한 문서의 이름과 용량을 확인하고, 제거하거나 다시 선택합니다.",
+    title: "파일 하나 첨부하기",
+    description: "파일을 고르고 이름과 크기를 확인합니다. 첨부한 파일을 제거하거나 다시 선택할 수 있습니다.",
     api: {
       variant: "compact는 버튼과 상태를 한 줄에 배치하고, dropzone은 끌어 놓을 영역을 제공합니다.",
       policy: "파일 형식, 개수, 개별 용량 및 전체 용량 제한을 지정합니다.",
@@ -440,8 +440,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "file-upload-retry", title: "실패 후 다시 전송", description: "첫 전송은 실패합니다. 다시 시작하면 같은 파일의 전송을 완료합니다." },
     ],
     title: "파일 선택과 교체",
-    description: "파일 영역을 눌러 파일을 선택하거나 교체하세요. 선택하면 브라우저가 파일을 읽고 결과를 표시합니다.",
-    api: { file: "전송할 브라우저 File 객체입니다.", adapter: "진행률과 완료 결과를 연결하는 Sectile 전송 어댑터입니다.", "auto-start": "파일을 연결하면 어댑터를 바로 실행합니다.", "#picker": "파일 영역 전체를 선택하거나 교체하는 버튼으로 연결합니다.", "#status": "현재 업로드 상태를 받아 상태 메시지를 바꿉니다." },
+    description: "빈 업로드 영역에서 파일을 고르세요. 이 예제는 브라우저에서 파일을 읽고 같은 영역에 결과를 표시합니다.",
+    api: { file: "전송할 브라우저 File 객체입니다. 비워 두면 파일 선택 상태를 표시합니다.", adapter: "진행률과 완료 결과를 연결하는 Sectile 전송 어댑터입니다.", "auto-start": "파일을 연결하면 어댑터를 바로 실행합니다.", "#picker": "파일 영역을 선택 및 교체 버튼으로 연결합니다. 선택 전에는 슬롯의 file이 null입니다.", "#status": "현재 업로드 상태를 받아 상태 메시지를 바꿉니다." },
   },
   "tags-input": {
     title: "태그 입력 및 삭제",

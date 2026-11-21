@@ -7,9 +7,7 @@ import {
   UIFileUpload,
   type UIFileUploadAdapter,
 } from "@connextable/ui";
-import { Paperclip } from "@lucide/vue";
-
-const sample = new File(["브라우저에서 읽는 전송 예제입니다."], "배포 메모.txt", { type: "text/plain" });
+import { ChevronRight } from "@lucide/vue";
 
 // The preview reads the selected file locally and reports its progress.
 const upload: UIFileUploadAdapter<File, number> = ({ file, signal, reportProgress }) => {
@@ -31,11 +29,11 @@ const upload: UIFileUploadAdapter<File, number> = ({ file, signal, reportProgres
 <template>
   <UIFileInput v-slot="{ files }">
     <UIFileInputInput class="ui-file-input__native" tabindex="-1" aria-hidden="true" />
-    <UIFileUpload class="upload-preview" :file="files[0] ?? sample" :adapter="upload" :auto-start="files.length > 0">
+    <UIFileUpload :file="files[0]" :adapter="upload" auto-start>
       <template #picker="{ file }">
-        <UIFileInputTrigger as-child :aria-label="files.length ? `${file.name} 교체` : '파일 선택'" :title="file.name">
+        <UIFileInputTrigger as-child :aria-label="file ? `${file.name} 교체` : '파일 선택'" :title="file?.name">
           <UIButton icon-only size="sm" variant="ghost">
-            <template #leading><Paperclip /></template>
+            <template #leading><ChevronRight /></template>
           </UIButton>
         </UIFileInputTrigger>
       </template>
@@ -47,10 +45,3 @@ const upload: UIFileUploadAdapter<File, number> = ({ file, signal, reportProgres
     </UIFileUpload>
   </UIFileInput>
 </template>
-
-<style scoped>
-.upload-preview {
-  inline-size: 22rem;
-  max-inline-size: 100%;
-}
-</style>

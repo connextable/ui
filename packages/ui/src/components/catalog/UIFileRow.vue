@@ -2,7 +2,7 @@
 import { FileText } from "@lucide/vue";
 import { onMounted, ref, watchEffect } from "vue";
 
-const props = defineProps<{ file: File; preview?: boolean }>();
+const props = defineProps<{ file?: File | null; preview?: boolean }>();
 const mounted = ref(false);
 const image = ref("");
 const size = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 1 });
@@ -10,7 +10,7 @@ const size = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 1 });
 onMounted(() => { mounted.value = true; });
 watchEffect((onCleanup) => {
   const file = props.file;
-  if (!mounted.value || !props.preview || !file.type.startsWith("image/")) return;
+  if (!mounted.value || !props.preview || !file?.type.startsWith("image/")) return;
   const url = URL.createObjectURL(file);
   image.value = url;
   onCleanup(() => {
@@ -27,15 +27,15 @@ function formatSize(bytes: number) {
 </script>
 
 <template>
-  <div class="ui-file-row" :data-pickable="$slots.picker ? '' : undefined">
+  <div class="ui-file-row" :data-pickable="$slots.picker ? '' : undefined" :data-empty="!file || undefined">
     <span class="ui-file-row__preview" aria-hidden="true">
       <img v-if="image" :src="image" alt="" @error="image = ''">
-      <FileText v-else :size="18" />
+      <slot v-else name="icon"><FileText :size="18" /></slot>
     </span>
     <div class="ui-file-row__body">
       <div class="ui-file-row__details">
-        <strong :title="file.name"><slot name="name">{{ file.name }}</slot></strong>
-        <small>{{ formatSize(file.size) }}</small>
+        <strong :title="file?.name"><slot name="name">{{ file?.name ?? '파일 선택' }}</slot></strong>
+        <small v-if="file">{{ formatSize(file.size) }}</small>
       </div>
       <slot />
     </div>

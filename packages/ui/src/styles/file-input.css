@@ -71,8 +71,11 @@
   justify-content: center;
 }
 
-.ui-file-input__picker[data-layout="compact"] .ui-button {
-  border-radius: max(0px, calc(var(--ui-radius-lg) - var(--ui-file-picker-inset) - 1px));
+.ui-file-input__picker[data-layout="compact"] {
+  min-block-size: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
 .ui-file-input__status,
