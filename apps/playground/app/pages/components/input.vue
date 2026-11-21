@@ -18,7 +18,7 @@ import formSource from "~/components/form/InputFormExample.vue?example-code&raw"
 
 definePageMeta({
   title: "UIInput",
-  category: "입력",
+  category: "입력·폼",
   description: "텍스트를 입력하고 읽기 전용이나 오류 상태를 표시합니다.",
 });
 </script>

@@ -34,7 +34,7 @@ import summarySource from "~/components/form/FormSummaryExample.vue?example-code
 
 definePageMeta({
   title: "UIForm",
-  category: "폼",
+  category: "입력·폼",
   description: "입력과 동작을 묶어 유효성을 검사하고 값을 제출합니다.",
   componentParts: ["UIFormField", "UIFormFieldGroup", "UIFormActions", "UIFormSubmit", "UIFormReset", "UIFormSummary", "UIFormSelector", "UIFormFieldSelector"],
 });

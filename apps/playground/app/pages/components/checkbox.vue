@@ -16,7 +16,7 @@ import formSource from "~/components/form/CheckboxFormExample.vue?example-code&r
 
 definePageMeta({
   title: "UICheckbox",
-  category: "입력",
+  category: "선택",
   componentParts: ["UICheckboxIndicator"],
   description: "독립 항목을 선택하거나, 일부만 선택된 상태를 표시합니다.",
 });

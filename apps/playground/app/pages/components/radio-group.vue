@@ -14,7 +14,7 @@ import formSource from "~/components/form/RadioGroupFormExample.vue?example-code
 
 definePageMeta({
   title: "UIRadioGroup",
-  category: "입력",
+  category: "선택",
   description: "여러 선택지 중 하나를 선택합니다. 목록과 카드에서 같은 선택 상태를 비교할 수 있습니다.",
 });
 </script>

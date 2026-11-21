@@ -16,7 +16,7 @@ import formSource from "~/components/form/SwitchFormExample.vue?example-code&raw
 
 definePageMeta({
   title: "UISwitch",
-  category: "입력",
+  category: "선택",
   componentParts: ["UISwitchThumb"],
   description: "알림이나 자동 저장처럼 켜고 끄는 설정에 사용합니다.",
 });

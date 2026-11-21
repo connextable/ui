@@ -31,7 +31,7 @@ import { selectParts } from "~/data/select-parts";
 
 definePageMeta({
   title: "UISelect",
-  category: "입력",
+  category: "선택",
   description: "목록에서 항목 하나를 선택합니다. 옵션에 설명과 상태 표시를 조합할 수 있습니다.",
   componentParts: Object.keys(selectParts),
 });

@@ -58,14 +58,14 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "host-provider",
     title: "UIHostProvider",
-    category: "레이아웃",
+    category: "기반",
     description: "하위 오버레이의 기본 포털 위치와 쓰기 방향을 지정합니다.",
     parts: ["UIHostPortal"],
   },
   {
     slug: "primitive",
     title: "UIPrimitive",
-    category: "레이아웃",
+    category: "기반",
     description: "as로 결과 요소를 지정하고 공통 속성을 전달합니다.",
   },
   {
@@ -189,7 +189,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "cascade-list",
     title: "UICascadeList",
-    category: "입력",
+    category: "선택",
     description: "계층별 목록을 나란히 탐색합니다.",
     parts: [
       "UICascadeListValue",
@@ -202,7 +202,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "cascade-select",
     title: "UICascadeSelect",
-    category: "입력",
+    category: "선택",
     description: "계층을 따라 내려가 항목을 선택합니다.",
     parts: [
       "UICascadeSelectTrigger",
@@ -217,7 +217,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "color-picker",
     title: "UIColorPicker",
-    category: "입력",
+    category: "선택",
     description: "색상 채널을 조절해 색을 선택합니다.",
     parts: [
       "UIColorPickerLabel",
@@ -240,13 +240,13 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "number-field",
     title: "UINumberField",
-    category: "입력",
+    category: "입력·폼",
     description: "숫자를 입력하고 증감합니다.",
   },
   {
     slug: "toggle-group",
     title: "UIToggleGroup",
-    category: "입력",
+    category: "선택",
     description: "관련된 토글 버튼을 하나의 그룹으로 다룹니다.",
     parts: [
       "UIToggleGroupItem",
@@ -255,7 +255,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "editable",
     title: "UIEditable",
-    category: "입력",
+    category: "입력·폼",
     description: "내용을 표시하다가 같은 자리에서 편집합니다.",
     parts: [
       "UIEditableArea",
@@ -269,7 +269,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "listbox",
     title: "UIListbox",
-    category: "입력",
+    category: "선택",
     description: "목록의 항목을 키보드 또는 포인터로 선택합니다.",
     parts: [
       "UIListboxItem",
@@ -280,7 +280,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "rating",
     title: "UIRating",
-    category: "입력",
+    category: "선택",
     description: "단계별 평가 값을 선택합니다.",
     parts: [
       "UIRatingItem",
@@ -291,7 +291,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "slider",
     title: "UISlider",
-    category: "입력",
+    category: "입력·폼",
     description: "범위 안에서 하나의 값을 조절합니다.",
     parts: [
       "UISliderTrack",
@@ -302,7 +302,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "spin-button",
     title: "UISpinButton",
-    category: "입력",
+    category: "입력·폼",
     description: "단계에 따라 숫자 값을 증감합니다.",
     parts: [
       "UISpinButtonInput",
@@ -313,7 +313,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "stepper",
     title: "UIStepper",
-    category: "입력",
+    category: "탐색",
     description: "여러 단계로 이루어진 흐름에서 현재 위치를 표시합니다.",
     parts: [
       "UIStepperList",
@@ -327,7 +327,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "combobox",
     title: "UICombobox",
-    category: "입력",
+    category: "선택",
     description: "검색어로 목록을 좁히고 값을 선택합니다.",
     parts: [
       "UIComboboxInput",
@@ -341,7 +341,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "file-input",
     title: "UIFileInput",
-    category: "입력",
+    category: "입력·폼",
     description: "파일을 선택하거나 끌어 놓고 첨부 목록을 관리합니다.",
     parts: [
       "UIFileInputInput",
@@ -353,7 +353,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "file-upload",
     title: "UIFileUpload",
-    category: "입력",
+    category: "입력·폼",
     description: "선택한 파일을 업로드하고 진행 상태를 표시합니다.",
     parts: [
       "useUIFileUpload",
@@ -363,7 +363,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "checkbox-tree",
     title: "UICheckboxTree",
-    category: "입력",
+    category: "선택",
     description: "계층 구조에서 여러 항목을 선택합니다.",
     parts: [
       "UICheckboxTreeGroup",
@@ -374,7 +374,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "transfer",
     title: "UITransfer",
-    category: "입력",
+    category: "선택",
     description: "두 목록 사이로 항목을 이동합니다.",
     wide: true,
     parts: [
@@ -386,7 +386,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "tree-select",
     title: "UITreeSelect",
-    category: "입력",
+    category: "선택",
     description: "계층 구조의 목록에서 값을 선택합니다.",
     parts: [
       "UITreeSelectInput",
@@ -399,7 +399,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "tree-view",
     title: "UITreeView",
-    category: "입력",
+    category: "탐색",
     description: "계층 구조를 접고 펼칩니다.",
     parts: [
       "UITreeViewGroup",
@@ -410,7 +410,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "checkbox-group",
     title: "UICheckboxGroup",
-    category: "입력",
+    category: "선택",
     description: "하나의 선택 상태로 여러 체크박스를 연결합니다.",
     parts: [
       "UICheckboxGroupItem",
@@ -420,7 +420,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "multi-thumb-slider",
     title: "UIMultiThumbSlider",
-    category: "입력",
+    category: "입력·폼",
     description: "두 핸들로 범위의 양 끝을 조절합니다.",
     parts: [
       "UIMultiThumbSliderTrack",
@@ -431,7 +431,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "pin-input",
     title: "UIPinInput",
-    category: "입력",
+    category: "입력·폼",
     description: "한 칸씩 코드를 입력합니다.",
     parts: [
       "UIPinInputInput",
@@ -440,7 +440,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "quantity-field",
     title: "UIQuantityField",
-    category: "입력",
+    category: "입력·폼",
     description: "수량과 단위를 함께 입력합니다.",
     parts: [
       "UIQuantityFieldInput",
@@ -452,7 +452,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "tags-input",
     title: "UITagsInput",
-    category: "입력",
+    category: "입력·폼",
     description: "텍스트를 입력해 여러 태그를 관리합니다.",
     parts: [
       "UITagsInputItem",
@@ -578,7 +578,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "meter",
     title: "UIMeter",
-    category: "레이아웃",
+    category: "상태 표시",
     description: "범위 내에서 현재 값을 표시합니다.",
     parts: [
       "UIMeterTrack",
@@ -589,7 +589,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "meter-group",
     title: "UIMeterGroup",
-    category: "레이아웃",
+    category: "상태 표시",
     description: "하나의 눈금에 여러 값을 표시합니다.",
     wide: true,
     parts: [
@@ -607,7 +607,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "pagination",
     title: "UIPagination",
-    category: "레이아웃",
+    category: "탐색",
     description: "페이지 사이를 이동합니다.",
     parts: [
       "UIPaginationItem",
@@ -620,7 +620,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "timer",
     title: "UITimer",
-    category: "레이아웃",
+    category: "상태 표시",
     description: "경과 시간을 표시합니다.",
     parts: [
       "UITimerArea",
@@ -633,7 +633,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "toolbar",
     title: "UIToolbar",
-    category: "레이아웃",
+    category: "동작",
     description: "관련 동작을 키보드로 탐색할 수 있는 도구 모음에 배치합니다.",
     parts: [
       "UIToolbarItem",
