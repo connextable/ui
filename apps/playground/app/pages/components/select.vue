@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SelectControlledOpenExample from "~/components/examples/SelectControlledOpenExample.vue";
+import SelectControlledOpenExampleSource from "~/components/examples/SelectControlledOpenExample.vue?example-code&raw";
 import SelectBasicExample from "~/components/select/SelectBasicExample.vue";
 import basicSource from "~/components/select/SelectBasicExample.vue?example-code&raw";
 import SelectDisabledOptionExample from "~/components/select/SelectDisabledOptionExample.vue";
@@ -52,6 +54,14 @@ const parts = {
       :source="disabledOptionSource"
     >
       <SelectDisabledOptionExample />
+    </PlaygroundExample>
+    <PlaygroundExample
+      id="select-controlled-open"
+      title="열림 상태 제어"
+      description="외부 버튼의 동작을 v-model:open에 연결합니다."
+      :source="SelectControlledOpenExampleSource"
+    >
+      <SelectControlledOpenExample />
     </PlaygroundExample>
     <section aria-labelledby="select-parts">
       <h2 id="select-parts" class="select-page__parts-heading" data-playground-heading tabindex="-1">구성 컴포넌트</h2>

@@ -112,7 +112,7 @@
     background: var(--ui-color-surface-hover);
   }
 
-  &:is([aria-selected="true"], [aria-current]:not([aria-current="false"]), [aria-expanded="true"]):not([aria-disabled="true"]) {
+  &:is([aria-selected="true"]:not(.ui-select-item), [aria-current]:not([aria-current="false"]), [aria-expanded="true"]):not([aria-disabled="true"]) {
     background: var(--ui-color-accent-soft);
     color: var(--ui-color-accent);
   }
