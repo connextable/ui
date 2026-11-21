@@ -214,6 +214,10 @@
   color: var(--ui-color-accent);
 }
 
+.ui-reorder-group [data-ui-reorder-indent] {
+  margin-inline-start: min(calc(var(--ui-reorder-depth, 0) * var(--ui-space-md)), 25%);
+}
+
 .ui-reorder-move {
   transition: transform var(--ui-motion-standard) var(--ui-ease-out);
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="ID extends string">
+import { getTreeReorderHierarchy, type TreeReorderState } from "@sectile/core/reorder";
 import type { ReorderInteractionSnapshot, ReorderRootSlotProps, TreeReorderRootSlotProps } from "@sectile/vue/reorder";
 import { computed, nextTick, normalizeClass, normalizeStyle, ref, useAttrs, useTemplateRef, watch } from "vue";
 
@@ -11,6 +12,7 @@ const props = withDefaults(defineProps<{
   layout?: "list" | "grid" | "horizontal" | "wrap";
   previewItemClass?: string;
   parentId?: NoInfer<ID> | null;
+  treeNodes?: TreeReorderState<ID>["nodes"];
   framed?: boolean;
   minRows?: number;
   interaction?: ReorderInteractionSnapshot<ID>;
@@ -18,7 +20,7 @@ const props = withDefaults(defineProps<{
 }>(), { as: "div", layout: "list", minRows: 2 });
 
 defineSlots<{
-  default?(): unknown;
+  default?(scope: { items: readonly PreviewItem[] }): unknown;
   preview?(props: PreviewItem): unknown;
   "preview-handle"?(props: PreviewItem): unknown;
 }>();
@@ -76,31 +78,22 @@ const previewState = computed(() => {
   if (result?.ok) return result.value;
 });
 
+function readTreeItems(state: TreeReorderState<ID>): PreviewItem[] {
+  const tree = getTreeReorderHierarchy(state);
+  if (props.parentId !== undefined) {
+    const siblings = props.parentId === null ? tree.roots : tree.childrenOf(props.parentId);
+    return (siblings?.ids ?? []).map((id) => ({ id, level: 1 }));
+  }
+  return tree.preorder().ids.map((id) => ({ id, level: (tree.depthOf(id) ?? 0) + 1 }));
+}
+
+const treeItems = computed(() => props.treeNodes ? readTreeItems({ nodes: props.treeNodes }) : []);
+
 function readPreviewItems(): PreviewItem[] {
   const state = previewState.value;
   if (!state) return [];
   if ("ids" in state) return state.ids.map((id) => ({ id, level: 1 }));
-
-  const children = new Map<ID | null, ID[]>();
-  for (const { id, parentID } of state.nodes) {
-    const siblings = children.get(parentID);
-    if (siblings) siblings.push(id);
-    else children.set(parentID, [id]);
-  }
-
-  if (props.parentId !== undefined) {
-    return (children.get(props.parentId) ?? []).map((id) => ({ id, level: 1 }));
-  }
-
-  const items: PreviewItem[] = [];
-  function append(parentId: ID | null, level: number) {
-    for (const id of children.get(parentId) ?? []) {
-      items.push({ id, level });
-      append(id, level + 1);
-    }
-  }
-  append(null, 1);
-  return items;
+  return readTreeItems(state);
 }
 
 const previewItems = computed<PreviewItem[]>((previous) => {
@@ -125,7 +118,7 @@ const previewItems = computed<PreviewItem[]>((previous) => {
       :data-ui-reorder-parent="parentId === null ? '' : parentId"
       :data-framed="framed || undefined"
     >
-      <slot />
+      <slot :items="treeItems" />
     </TransitionGroup>
     <!-- Updating forwarded slots for pointer-only changes would restart Vue's active move transitions. -->
     <TransitionGroup
@@ -168,6 +161,6 @@ const previewItems = computed<PreviewItem[]>((previous) => {
     :data-ui-reorder-parent="parentId === null ? '' : parentId"
     :data-framed="framed || undefined"
   >
-    <slot />
+    <slot :items="treeItems" />
   </TransitionGroup>
 </template>
