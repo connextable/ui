@@ -30,7 +30,7 @@
 :where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="track"] {
   --ui-slider-rail-thickness: var(--ui-space-sm);
   --ui-slider-rail-inset: calc((var(--ui-control-height) - var(--ui-slider-rail-thickness)) / 2);
-  --ui-slider-rail-edge: calc(-1 * var(--ui-inset-size) / 2);
+  --ui-slider-rail-edge: calc(var(--ui-slider-rail-inset) - var(--ui-slider-edge));
 
   position: relative;
   block-size: var(--ui-control-height);
