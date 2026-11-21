@@ -27,10 +27,6 @@ function read(id: string) {
   return labels.get(id) ?? "";
 }
 
-function update(id: string, value: string) {
-  labels.set(id, value);
-}
-
 function editOwner() {
   highlighted.value = "site-owner";
   editMode.value = "editing";
@@ -40,7 +36,7 @@ function editOwner() {
 <template>
   <div>
     <UITreeGrid v-model:highlighted-value="highlighted" v-model:edit-mode="editMode"
-      :rows="rows" :headers="['서비스', '담당자']" :get-cell-value="read" :set-cell-value="update"
+      :rows="rows" :headers="['서비스', '담당자']" :get-cell-value="read" :set-cell-value="(id, value) => labels.set(id, value)"
       :default-expanded-value="['platform']" aria-label="서비스 담당자">
       <UITreeGridHeader />
       <UITreeGridRow value="platform" :row-index="1" expandable>

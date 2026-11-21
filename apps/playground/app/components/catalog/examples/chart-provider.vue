@@ -39,9 +39,6 @@ const ChannelShare = defineComponent({
   },
 });
 
-function selectChannel(ids: readonly string[]) {
-  dispatch({ type: "set-selection", selection: { type: "points", ids } });
-}
 </script>
 
 <template>
@@ -51,7 +48,7 @@ function selectChannel(ids: readonly string[]) {
         :items="channelIds"
         :model-value="state.selection.type === 'points' ? state.selection.ids : []"
         label="방문 경로"
-        @update:model-value="selectChannel"
+        @update:model-value="ids => dispatch({ type: 'set-selection', selection: { type: 'points', ids } })"
       >
         <UIToggleGroupItem v-for="channel in channels" :key="channel.id" :value="channel.id">{{ channel.label }}</UIToggleGroupItem>
       </UIToggleGroup>
