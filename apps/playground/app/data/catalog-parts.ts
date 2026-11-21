@@ -144,6 +144,7 @@ const partRoles: Readonly<Record<string, string>> = {
   UIQuantityFieldUnitSelect: "같은 수량을 표시할 다른 단위를 선택하는 영역입니다.",
   UIVirtualizerItem: "placement를 받아 항목을 스크롤 영역의 해당 좌표에 배치합니다.",
   UIDrawerHandle: "패널을 끌어 닫는 조작 영역을 표시합니다.",
+  UISheetHandle: "시트를 가장자리 쪽으로 끌어 닫는 조작 영역입니다.",
   UIToastViewport: "현재 표시 중인 알림을 배치합니다.",
   UIStepperIndicator: "완료됨·진행 중 같은 단계 상태를 표시합니다.",
   UICarouselIndicator: "해당 슬라이드로 이동하고 현재 슬라이드를 표시합니다.",

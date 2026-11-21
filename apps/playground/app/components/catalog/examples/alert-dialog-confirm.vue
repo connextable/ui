@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  UIButton,
   UIAlertDialog,
   UIAlertDialogClose,
   UIAlertDialogContent,
@@ -23,8 +24,10 @@ const archived = ref(false);
       <UIAlertDialogDescription>
         이 기록을 활성 목록에서 보관함으로 옮깁니다.
       </UIAlertDialogDescription>
-      <UIAlertDialogClose>취소</UIAlertDialogClose>
-      <UIAlertDialogClose @click="archived = true">보관</UIAlertDialogClose>
+      <template #actions>
+        <UIAlertDialogClose as-child><UIButton size="sm" variant="outline">취소</UIButton></UIAlertDialogClose>
+        <UIAlertDialogClose as-child><UIButton size="sm" @click="archived = true">보관</UIButton></UIAlertDialogClose>
+      </template>
     </UIAlertDialogContent>
   </UIAlertDialog>
   <output>{{ archived ? '보관함에 있습니다.' : '활성 목록에 있습니다.' }}</output>

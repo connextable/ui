@@ -37,6 +37,7 @@ export const catalogNavigation = new Map<string, readonly string[]>([
     "UITooltip",
     "UIPopover",
     "UIDrawer",
+    "UISheet",
     "UIAlertDialog",
   ]],
   ["탐색", [

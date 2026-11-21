@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UIDialog, UIDialogClose, UIDialogContent, UIDialogDescription, UIDialogOverlay, UIDialogTitle } from "@connextable/ui";
+import { UIButton, UIDialog, UIDialogContent, UIDialogDescription, UIDialogOverlay, UIDialogTitle } from "@connextable/ui";
 import { ref, shallowRef } from "vue";
 
 const open = ref(false);
@@ -18,7 +18,6 @@ function showDialog(event: MouseEvent) {
     <UIDialogContent>
       <UIDialogTitle>배송 안내</UIDialogTitle>
       <UIDialogDescription>출고 후 영업일 기준 1~2일 내에 도착합니다.</UIDialogDescription>
-      <UIDialogClose>닫기</UIDialogClose>
     </UIDialogContent>
   </UIDialog>
 </template>

@@ -647,7 +647,7 @@ export const catalog: readonly CatalogEntry[] = [
     slug: "drawer",
     title: "UIDrawer",
     category: "오버레이",
-    description: "화면 가장자리에서 패널을 엽니다.",
+    description: "화면 가장자리에서 탐색이나 설정을 위한 패널을 엽니다.",
     parts: [
       "UIDrawerTrigger",
       "UIDrawerPortal",
@@ -696,6 +696,22 @@ export const catalog: readonly CatalogEntry[] = [
     title: "UIPrimitive",
     category: "레이아웃",
     description: "as로 결과 요소를 지정하고 공통 속성을 전달합니다.",
+  },
+  {
+    slug: "sheet",
+    title: "UISheet",
+    category: "오버레이",
+    description: "정렬이나 작업 선택을 화면 가장자리의 짧은 패널로 표시합니다.",
+    parts: [
+      "UISheetTrigger",
+      "UISheetPortal",
+      "UISheetOverlay",
+      "UISheetContent",
+      "UISheetHandle",
+      "UISheetTitle",
+      "UISheetDescription",
+      "UISheetClose",
+    ],
   },
   {
     slug: "listbox",

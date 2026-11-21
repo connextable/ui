@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import {
   UIDrawer,
-  UIDrawerClose,
   UIDrawerContent,
   UIDrawerDescription,
-  UIDrawerHandle,
   UIDrawerOverlay,
   UIDrawerPortal,
   UIDrawerTitle,
@@ -14,16 +12,14 @@ import {
 </script>
 
 <template>
-  <UIDrawer>
-    <UIDrawerTrigger>Open filters</UIDrawerTrigger>
+  <UIDrawer side="left">
+    <UIDrawerTrigger>배포 조건 보기</UIDrawerTrigger>
     <UIDrawerPortal>
       <UIDrawerOverlay />
-    <UIDrawerContent>
-      <UIDrawerHandle />
-      <UIDrawerTitle>Filters</UIDrawerTitle>
-      <UIDrawerDescription>Refine the deployment list.</UIDrawerDescription>
-      <UIDrawerClose>Apply filters</UIDrawerClose>
-    </UIDrawerContent>
+      <UIDrawerContent>
+        <UIDrawerTitle>배포 조건</UIDrawerTitle>
+        <UIDrawerDescription>서울 리전에서 진행 중인 작업과 실패한 작업을 표시합니다.</UIDrawerDescription>
+      </UIDrawerContent>
     </UIDrawerPortal>
   </UIDrawer>
 </template>

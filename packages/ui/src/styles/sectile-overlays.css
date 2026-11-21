@@ -17,13 +17,12 @@
     padding: 1.25rem;
   }
 
-  :where([data-scope="drawer"][data-part="content"]) {
+  :where([data-scope="drawer"][data-part="content"][data-presentation="overlay"]) {
     inset: auto 0 0;
     translate: none;
     inline-size: auto;
-    max-block-size: min(38rem, 90dvh);
-    border-end-start-radius: 0;
-    border-end-end-radius: 0;
+    max-block-size: min(38rem, 85dvh);
+    overscroll-behavior: contain;
   }
 
   :where([data-scope="drawer"][data-part="content"][data-side="left"]) {
@@ -40,6 +39,14 @@
 
   :where([data-scope="drawer"][data-part="content"][data-side="top"]) {
     inset: 0 0 auto;
+  }
+
+  :where([data-scope="drawer"][data-part="content"][data-presentation="inline"]) {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    translate: none;
+    inline-size: auto;
   }
 
   :where([data-scope="tooltip"][data-part="content"]) {
@@ -67,8 +74,9 @@
     inline-size: 2.5rem;
     block-size: var(--ui-space-xs);
     margin: 0 auto var(--ui-space-md);
-    border-radius: 999px;
+    border-radius: var(--ui-space-2xs);
     background: var(--ui-color-border-strong);
+    touch-action: none;
   }
 
   :where([data-scope="toast"][data-part="viewport"]) {

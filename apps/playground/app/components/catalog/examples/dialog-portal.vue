@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   UIDialog,
-  UIDialogClose,
   UIDialogContent,
   UIDialogOverlay,
   UIDialogPortal,
@@ -19,7 +18,6 @@ import {
         <UIDialogContent>
           <UIDialogTitle>첨부 파일</UIDialogTitle>
           <p>preview.pdf</p>
-          <UIDialogClose>닫기</UIDialogClose>
         </UIDialogContent>
       </UIDialogPortal>
     </UIDialog>

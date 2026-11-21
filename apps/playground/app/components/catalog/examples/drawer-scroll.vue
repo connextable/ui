@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   UIDrawer,
-  UIDrawerClose,
   UIDrawerContent,
   UIDrawerDescription,
   UIDrawerOverlay,
@@ -13,7 +12,7 @@ const recent = Array.from({ length: 36 }, (_, index) => `기록 ${index + 1}`);
 </script>
 
 <template>
-  <UIDrawer>
+  <UIDrawer side="right">
     <UIDrawerTrigger>활동 기록 열기</UIDrawerTrigger>
     <UIDrawerOverlay />
     <UIDrawerContent>
@@ -22,7 +21,6 @@ const recent = Array.from({ length: 36 }, (_, index) => `기록 ${index + 1}`);
       <ol>
         <li v-for="activity in recent" :key="activity">{{ activity }}</li>
       </ol>
-      <UIDrawerClose>닫기</UIDrawerClose>
     </UIDrawerContent>
   </UIDrawer>
 </template>

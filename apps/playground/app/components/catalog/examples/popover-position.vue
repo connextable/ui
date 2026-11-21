@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { UIPopover, UIPopoverArrow, UIPopoverContent, UIPopoverTrigger } from "@connextable/ui";
+import { UIButton, UIPopover, UIPopoverArrow, UIPopoverContent, UIPopoverTitle, UIPopoverDescription, UIPopoverTrigger } from "@connextable/ui";
 </script>
 
 <template>
   <UIPopover side="bottom" align="end">
-    <UIPopoverTrigger>필터 조건 확인</UIPopoverTrigger>
+    <UIPopoverTrigger as-child><UIButton variant="outline">필터 조건 확인</UIButton></UIPopoverTrigger>
     <UIPopoverContent>
       <UIPopoverArrow />
-      <p>처리 상태가 완료인 항목만 표시합니다.</p>
+      <UIPopoverTitle>적용 중인 필터</UIPopoverTitle>
+      <UIPopoverDescription>처리가 끝난 항목만 표시합니다.</UIPopoverDescription>
     </UIPopoverContent>
   </UIPopover>
 </template>
