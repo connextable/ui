@@ -12,22 +12,57 @@ const rail = shallowRef<{ path: string; length: number; segments: Map<string, { 
 const indicator = computed(() => rail.value?.segments.get(activeId.value));
 
 let frame = 0;
+let requestedFragment = "";
 
 function updateActive() {
   frame = 0;
   const first = headings.value[0];
-  if (!first) return;
-  const offset = Number.parseFloat(getComputedStyle(first.element).scrollMarginTop) || 0;
+  const last = headings.value.at(-1);
+  if (!first || !last) return;
+
+  const scrollRoot = document.scrollingElement ?? document.documentElement;
+  const scrollTop = scrollRoot.scrollTop;
+  const maxScroll = Math.max(0, scrollRoot.scrollHeight - scrollRoot.clientHeight);
   const sticky = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-  const atBottom = window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
-  const current = atBottom
-    ? headings.value.at(-1)
-    : headings.value.findLast((heading) => heading.element.getBoundingClientRect().top <= offset + sticky + 4);
+  const offsetFor = (element: HTMLElement) => sticky + (Number.parseFloat(getComputedStyle(element).scrollMarginTop) || 0);
+
+  if (requestedFragment) {
+    const target = headings.value.find(heading => `#${encodeURIComponent(heading.id)}` === requestedFragment);
+    if (target) {
+      const destination = scrollTop + target.element.getBoundingClientRect().top - offsetFor(target.element);
+      const reachable = Math.max(0, Math.min(maxScroll, destination));
+      if (Math.abs(scrollTop - reachable) < 2) {
+        activeId.value = target.id;
+        return;
+      }
+    }
+    requestedFragment = "";
+  }
+
+  const offset = offsetFor(first.element);
+  const remaining = Math.max(0, maxScroll - scrollTop);
+  // Some headings cannot reach the sticky header. Move the reading line toward them near the end.
+  const overflow = Math.max(0, last.element.getBoundingClientRect().top - remaining - offset);
+  const approach = Math.min(maxScroll, overflow);
+  const progress = approach > 0 ? Math.max(0, 1 - remaining / approach) : 0;
+  const readingLine = offset + overflow * progress;
+  const current = headings.value.findLast(heading => heading.element.getBoundingClientRect().top <= readingLine + 4);
   activeId.value = (current ?? first).id;
 }
 
 function onScroll() {
   if (!frame) frame = requestAnimationFrame(updateActive);
+}
+
+function syncFragment() {
+  requestedFragment = window.location.hash;
+  onScroll();
+}
+
+function onOutlineClick(event: MouseEvent, id: string) {
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  requestedFragment = `#${encodeURIComponent(id)}`;
+  onScroll();
 }
 
 watch(() => props.content, (content, _previous, onCleanup) => {
@@ -129,11 +164,14 @@ watch(activeId, () => {
 onMounted(() => {
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll);
+  window.addEventListener("hashchange", syncFragment);
+  syncFragment();
 });
 
 onUnmounted(() => {
   window.removeEventListener("scroll", onScroll);
   window.removeEventListener("resize", onScroll);
+  window.removeEventListener("hashchange", syncFragment);
   if (frame) cancelAnimationFrame(frame);
 });
 </script>
@@ -166,6 +204,7 @@ onUnmounted(() => {
                 :href="`#${heading.id}`"
                 :aria-current="activeId === heading.id ? 'location' : undefined"
                 :title="heading.text"
+                @click="onOutlineClick($event, heading.id)"
               >{{ heading.text }}</a>
             </li>
           </ul>
