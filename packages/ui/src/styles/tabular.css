@@ -113,6 +113,11 @@
     background: var(--ui-color-accent-soft);
   }
 
+  :where([data-scope="data-grid"][data-part="cell"][aria-current="true"]) {
+    box-shadow: inset 0 0 0 1px var(--ui-color-accent);
+    background: var(--ui-color-accent-soft);
+  }
+
   :where([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-grid"], [data-scope="data-tree-grid"])
     :where([data-part="cell"]:has(> [data-part="editor"]:focus-within)) {
     box-shadow: inset 0 0 0 1px var(--ui-color-accent);

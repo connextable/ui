@@ -124,7 +124,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     examples: [
       { id: "data-grid-cursor", section: "navigation", title: "현재 포커스된 셀 읽기", description: "셀을 클릭하고 방향키로 이동하면 그리드 밖의 요약도 갱신됩니다.", parts: ["useUIDataGridContext"] },
       { id: "data-grid-disabled-cell", section: "navigation", title: "이동에서 제외되는 셀", description: "방향키를 움직여 첫 번째 행의 상태 셀을 건너뜁니다." },
-      { id: "data-grid-move-wrap", section: "navigation", title: "행 양끝을 이어서 탐색", description: "외부 버튼으로 다음 열을 여러 번 선택하면 같은 행의 마지막 열에서 첫 열로 이동합니다." },
+      { id: "data-grid-move-wrap", section: "navigation", title: "행 양끝을 이어서 탐색", description: "이전·다음 열 버튼을 누르면 강조 표시가 같은 행의 셀을 따라 이동합니다. 행 끝에 도달하면 반대쪽 끝으로 이어집니다." },
       { id: "data-grid-row-selection", section: "navigation", title: "그리드 행 선택", description: "셀 이동과 별도로 행 전체를 선택합니다.", parts: ["DataGrid.RowSelectionControl"] },
       { id: "data-grid-edit", section: "editing", title: "셀을 눌러 편집하고 확정", description: "상태 값 옆 연필 버튼을 누르세요. Enter로 확정하거나 Escape로 취소합니다.", parts: ["UITabularEditTrigger"] },
       { id: "data-grid-validated-edit", section: "editing", title: "재고 수량 검증", description: "수량을 편집해 -1을 입력하면 저장이 거부됩니다. 0~999 사이의 정수를 입력해 다시 확정하세요.", parts: ["DataGrid.Editor"] },

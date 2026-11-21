@@ -11,6 +11,7 @@ const rows = [
   { kind: "leaf", id: "evening", cells: { web: 30, app: 32, partner: 8 } },
 ] as const;
 const grid = useUIDataGrid({
+  defaultCursor: { current: { rowID: "morning", columnID: "web" } },
   source: request => ({
     ...request, rows, viewRevision: request.requestID,
     matchingLeafCount: { kind: "known", value: rows.length },
@@ -23,8 +24,7 @@ const Grid = createUIDataGridComponents(grid);
 const cursor = computed(() => grid.snapshot.value.cursor.current);
 
 function move(direction: "left" | "right") {
-  if (!cursor.value) grid.dispatch({ type: "focus-cell", cell: { rowID: "morning", columnID: "web" } });
-  else grid.dispatch({ type: "move-cell", direction, boundary: "wrap-axis" });
+  grid.dispatch({ type: "move-cell", direction, boundary: "wrap-axis" });
 }
 </script>
 
@@ -37,7 +37,8 @@ function move(direction: "left" | "right") {
         </Grid.HeaderRow>
       </Grid.Header>
       <Grid.Body v-slot="{ row }">
-        <Grid.Cell v-for="column in columns" :key="column" :column="column" data-ui-tabular-numeric>
+        <Grid.Cell v-for="column in columns" :key="column" :column="column" data-ui-tabular-numeric
+          :aria-current="cursor?.rowID === row.id && cursor.columnID === column ? 'true' : undefined">
           {{ row.cells[column] }}건
         </Grid.Cell>
       </Grid.Body>
