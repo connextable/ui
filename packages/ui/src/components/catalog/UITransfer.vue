@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="ID extends string = string">
-import { ArrowLeft, ArrowRight, ChevronsLeft, ChevronsRight } from "@lucide/vue";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "@lucide/vue";
 import {
   TransferItem,
   TransferList,
@@ -40,8 +40,8 @@ const rootProps = computed(() => {
 const disabledItems = computed(() => new Set(props.disabledItems));
 const sides = ["source", "target"] as const;
 const actions = [
-  { from: "source", label: "선택 항목을 오른쪽으로 이동", icon: ArrowRight },
-  { from: "target", label: "선택 항목을 왼쪽으로 이동", icon: ArrowLeft },
+  { from: "source", label: "선택 항목을 오른쪽으로 이동", icon: ChevronRight },
+  { from: "target", label: "선택 항목을 왼쪽으로 이동", icon: ChevronLeft },
 ] as const;
 const bulkActions = [
   { from: "source", label: "전체 항목을 오른쪽으로 이동", icon: ChevronsRight },
