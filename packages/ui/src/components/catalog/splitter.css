@@ -34,6 +34,9 @@
 }
 
 :where([data-scope="window-splitter"])[data-part="handle"] {
+  --ui-split-line-width: 1px;
+  --ui-split-line-color: var(--ui-color-border-strong);
+
   position: absolute;
   z-index: 1;
   inset-block: 0;
@@ -48,37 +51,58 @@
   touch-action: none;
 
   &::before,
-  &::after {
+  &[data-thumb]::after {
     grid-area: 1 / 1;
     content: "";
     pointer-events: none;
   }
 
   &::before {
-    inline-size: 1px;
+    inline-size: var(--ui-split-line-width);
     block-size: 100%;
-    background: var(--ui-color-border);
+    background: var(--ui-split-line-color);
   }
 
-  &::after {
+  &[data-thumb]::after {
     inline-size: 5px;
     block-size: 1.75rem;
     border-radius: var(--ui-radius-sm);
-    background: var(--ui-color-border-strong);
+    background: var(--ui-split-line-color);
     box-shadow: 0 0 0 3px var(--ui-color-surface);
   }
 
+  > * {
+    grid-area: 1 / 1;
+    z-index: 1;
+  }
+
   &:focus-visible {
+    --ui-split-line-width: 3px;
+    --ui-split-line-color: var(--ui-color-focus);
     outline: none;
   }
 
-  &:focus-visible::after {
-    outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
-    outline-offset: 3px;
+  @media (hover: hover) {
+    &:hover:not([aria-disabled="true"]) { --ui-split-line-color: var(--ui-color-focus); }
+  }
+
+  &:active:not([aria-disabled="true"]) {
+    --ui-split-line-width: 3px;
+    --ui-split-line-color: var(--ui-color-accent);
   }
 
   &[aria-disabled="true"] {
     cursor: default;
+  }
+
+  @media (forced-colors: active) {
+    --ui-split-line-color: ButtonText;
+
+    &::before,
+    &[data-thumb]::after { forced-color-adjust: none; }
+
+    &:is(:focus-visible, :active:not([aria-disabled="true"])) { --ui-split-line-color: Highlight; }
+    &[aria-disabled="true"] { --ui-split-line-color: GrayText; }
   }
 }
 
@@ -91,18 +115,11 @@
 
   &::before {
     inline-size: 100%;
-    block-size: 1px;
+    block-size: var(--ui-split-line-width);
   }
 
-  &::after {
+  &[data-thumb]::after {
     inline-size: 1.75rem;
     block-size: 5px;
-  }
-}
-
-@media (forced-colors: active) {
-  :where([data-scope="window-splitter"])[data-part="handle"]::after {
-    background: ButtonText;
-    forced-color-adjust: none;
   }
 }

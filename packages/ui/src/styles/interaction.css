@@ -168,15 +168,7 @@
   transition: box-shadow var(--ui-motion-fast) var(--ui-ease-out);
 }
 
-:where([data-scope="window-splitter"])[data-part="handle"]::after {
-  transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
-}
-
 @media (hover: hover) {
-  :where([data-scope="window-splitter"])[data-part="handle"]:hover:not([aria-disabled="true"])::after {
-    background-color: var(--ui-color-focus);
-  }
-
   :where([data-scope="color-picker"])[data-part="area"]:hover:not([aria-disabled="true"]) > [data-part="area-thumb"] {
     box-shadow: 0 0 0 3px var(--ui-color-focus);
   }
@@ -208,13 +200,4 @@
 
 :where([data-scope="color-picker"])[data-part="area"]:active:not([aria-disabled="true"]) > [data-part="area-thumb"] {
   box-shadow: 0 0 0 4px var(--ui-color-accent-active);
-}
-
-:where([data-scope="window-splitter"])[data-part="handle"]:active:not([aria-disabled="true"])::after {
-  background-color: var(--ui-color-accent);
-
-  @media (forced-colors: active) {
-    background-color: Highlight;
-    forced-color-adjust: none;
-  }
 }

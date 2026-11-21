@@ -862,16 +862,17 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "window-splitter": {
     examples: [
-      { id: "window-splitter-vertical", title: "위아래 패널", description: "구분선을 위아래로 끌어 두 패널의 높이를 조정합니다." },
+      { id: "window-splitter-vertical", title: "위아래 패널에 기본 그립 표시", description: "thumb을 지정해 기본 그립을 표시합니다. 구분선을 끌거나 위·아래 방향키를 눌러 높이를 조정합니다.", parts: ["UIWindowSplitterHandle"] },
       { id: "window-splitter-keyboard", title: "키보드로 너비 조절", description: "구분선에 포커스를 두고 왼쪽·오른쪽 방향키로 조절합니다." },
-      { id: "window-splitter-value", title: "탐색 영역의 너비를 읽을 수 있게 표시", description: "구분선의 현재값을 format-value로 ‘탐색 영역 40퍼센트’처럼 제공합니다." },
+      { id: "window-splitter-value", title: "그립 아이콘과 값 설명 바꾸기", description: "Handle의 기본 슬롯에 아이콘을 넣고, 현재 너비는 format-value로 ‘탐색 영역 40퍼센트’처럼 제공합니다." },
     ],
     title: "패널 너비 조절",
-    description: "손잡이를 끌거나 방향키를 눌러 before와 after 패널의 너비를 조절합니다. v-model에서 변경된 비율을 확인할 수 있습니다.",
+    description: "구분선을 끌거나 포커스한 뒤 방향키를 눌러 두 패널의 너비를 조절합니다.",
     api: {
       "v-model": "첫 패널이 사용하는 비율을 연결합니다.",
       "min / max": "손잡이가 이동할 수 있는 비율의 경계입니다.",
-      "Pane side": "손잡이 앞과 뒤의 두 패널을 구분합니다.",
+      "Pane side": "구분선 앞과 뒤의 두 패널을 구분합니다.",
+      "Handle thumb / #default": "기본값은 구분선입니다. thumb을 지정하면 그립을 표시하고, 기본 슬롯으로 아이콘이나 다른 표시를 구성할 수 있습니다. 슬롯에서 value와 percentage를 읽을 수 있습니다.",
     },
   },
   "scroll-area": {
