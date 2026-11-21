@@ -55,10 +55,8 @@ export {
   ToolbarItem as UIToolbarItem,
   ToolbarSeparator as UIToolbarSeparator,
 } from "@sectile/vue/toolbar";
-export {
-  WindowSplitterRoot as UIWindowSplitter,
-  WindowSplitterPane as UIWindowSplitterPane,
-} from "@sectile/vue/window-splitter";
+export { WindowSplitterPane as UIWindowSplitterPane } from "@sectile/vue/window-splitter";
+export { UIWindowSplitter } from "./window-splitter";
 export { default as UIWindowSplitterHandle } from "./UIWindowSplitterHandle.vue";
 export { default as UIImage } from "./UIImage.vue";
 export { Primitive as UIPrimitive } from "@sectile/vue/primitive";

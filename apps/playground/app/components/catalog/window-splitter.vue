@@ -26,7 +26,7 @@ const selected = ref<keyof typeof sources>("App.vue");
 </script>
 
 <template>
-  <UIWindowSplitter v-model="size" class="split-example" orientation="horizontal" :min="22" :max="72" :step="1" label="프로젝트와 편집기 너비 조정">
+  <UIWindowSplitter v-model="size" class="split-example" orientation="horizontal" :min="22" :max="72" label="프로젝트와 편집기 너비 조정">
     <UIWindowSplitterPane side="before" class="split-example__pane">
       <header class="split-example__header"><strong>프로젝트</strong></header>
       <div class="split-example__files">

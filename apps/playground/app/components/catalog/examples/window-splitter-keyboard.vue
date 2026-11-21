@@ -3,5 +3,5 @@ import WindowSplitterExample from "../window-splitter.vue";
 </script>
 
 <template>
-  <WindowSplitterExample :page-step="5" />
+  <WindowSplitterExample :page-step="50" />
 </template>

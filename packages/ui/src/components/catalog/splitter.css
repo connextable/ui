@@ -35,7 +35,7 @@
 
 :where([data-scope="window-splitter"])[data-part="handle"] {
   --ui-split-line-width: 1px;
-  --ui-split-line-color: var(--ui-color-border-strong);
+  --ui-split-line-color: var(--ui-color-divider);
 
   position: absolute;
   z-index: 1;
@@ -67,7 +67,7 @@
     inline-size: 5px;
     block-size: 1.75rem;
     border-radius: var(--ui-radius-sm);
-    background: var(--ui-split-line-color);
+    background: var(--ui-color-border-hover);
     box-shadow: 0 0 0 3px var(--ui-color-surface);
   }
 
@@ -83,12 +83,12 @@
   }
 
   @media (hover: hover) {
-    &:hover:not([aria-disabled="true"]) { --ui-split-line-color: var(--ui-color-focus); }
+    &:hover:not(:focus-visible, [aria-disabled="true"]) { --ui-split-line-color: var(--ui-color-border-hover); }
   }
 
   &:active:not([aria-disabled="true"]) {
-    --ui-split-line-width: 3px;
-    --ui-split-line-color: var(--ui-color-accent);
+    --ui-split-line-width: 2px;
+    --ui-split-line-color: var(--ui-color-focus);
   }
 
   &[aria-disabled="true"] {
@@ -99,7 +99,10 @@
     --ui-split-line-color: ButtonText;
 
     &::before,
-    &[data-thumb]::after { forced-color-adjust: none; }
+    &[data-thumb]::after {
+      background: var(--ui-split-line-color);
+      forced-color-adjust: none;
+    }
 
     &:is(:focus-visible, :active:not([aria-disabled="true"])) { --ui-split-line-color: Highlight; }
     &[aria-disabled="true"] { --ui-split-line-color: GrayText; }
