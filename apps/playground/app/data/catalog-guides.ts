@@ -29,18 +29,18 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     examples: [
       { id: "navigation-menu-links", section: "structure", title: "직접 이동과 현재 페이지", description: "current에 현재 링크의 id를 지정하면 해당 링크에 aria-current가 적용됩니다.", parts: ["UINavigationMenuPopover"] },
       { id: "navigation-menu-columns", section: "structure", title: "설명이 있는 링크", description: "메뉴 안에서 각 링크의 이름과 간단한 설명을 함께 보여 줍니다." },
-      { id: "navigation-menu-nested", section: "structure", title: "하위 분류 펼치기", description: "컴포넌트 분류에서 표와 그리드를 열어 한 단계 더 들어갑니다. 각 끝 항목은 해당 페이지로 이동합니다." },
-      { id: "navigation-menu-indicator", section: "behavior", title: "열림 상태를 트리거에 표시", description: "trigger 슬롯의 open으로 화살표 방향을 바꿉니다." },
-      { id: "navigation-menu-keyboard", section: "behavior", title: "키보드로 메뉴 탐색", description: "Enter로 메뉴를 열고 Tab으로 분류와 링크를 탐색합니다. Escape로 닫습니다." },
+      { id: "navigation-menu-nested", section: "structure", title: "하위 분류를 열로 표시", description: "컴포넌트 패널에서 표와 그리드, 입력 분류의 링크를 나란히 탐색합니다." },
+      { id: "navigation-menu-indicator", section: "behavior", title: "분류 아이콘과 열림 표시", description: "label 슬롯으로 분류 이름 옆에 아이콘을 넣습니다. 열린 분류의 화살표가 위를 향합니다." },
+      { id: "navigation-menu-keyboard", section: "behavior", title: "키보드로 메뉴 탐색", description: "Enter 또는 ↓로 분류의 첫 링크에 들어가고 Tab으로 다음 링크로 이동합니다. Escape를 누르면 분류 버튼으로 돌아갑니다." },
       { id: "navigation-menu-disabled", section: "behavior", title: "이동할 수 없는 링크", description: "가상 그리드는 비활성 상태로 표시합니다. 클릭하거나 Enter를 눌러도 페이지가 열리지 않습니다." },
     ],
     title: "사이트 헤더에서 페이지 탐색",
-    description: "메뉴 하나를 열고 그 안에서 컴포넌트나 데이터 표현 분류로 들어갑니다. 상위 버튼을 누르면 이전 목록으로 돌아갑니다.",
+    description: "상위 분류가 헤더에 나란히 표시됩니다. 컴포넌트에서 데이터 표현으로 옮기면 같은 패널이 새 분류의 링크를 표시합니다.",
     api: {
       items: "각 항목의 id, label, href, children을 지정합니다. disabled인 항목은 이동할 수 없습니다.",
       current: "현재 페이지 링크의 id입니다.",
       "v-model:open": "팝오버의 열림 상태를 연결합니다.",
-      "#trigger": "트리거를 바꿀 때 현재 open 상태를 제공합니다.",
+      "#label": "상위 분류의 entry와 open 상태를 받아 버튼의 이름이나 아이콘을 구성합니다.",
     },
   },
   virtualizer: {

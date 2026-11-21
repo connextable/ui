@@ -141,18 +141,69 @@
 
 .ui-navigation-popover {
   box-sizing: border-box;
-  inline-size: min(19rem, calc(100vw - 1.5rem));
-  max-block-size: min(24rem, 75dvh);
+  inline-size: min(26rem, var(--sectile-position-available-width, calc(100vw - 1.5rem)));
+  max-block-size: min(24rem, var(--sectile-position-available-height, 75dvh));
   padding: var(--ui-space-xs);
+  overflow: auto;
 }
 
-.ui-navigation-popover__heading {
+.ui-navigation-rail {
+  max-inline-size: 100%;
+}
+
+.ui-navigation-rail__items {
   display: flex;
   align-items: center;
-  gap: var(--ui-space-xs);
-  margin-block-end: var(--ui-space-xs);
-  padding-block-end: var(--ui-space-xs);
+  gap: var(--ui-space-2xs);
+  margin: 0;
+  padding: var(--ui-space-2xs);
   border-block-end: 1px solid var(--ui-color-divider);
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.ui-navigation-rail__items > li {
+  flex: none;
+  white-space: nowrap;
+}
+
+.ui-navigation-rail__chevron {
+  flex: none;
+  inline-size: 1em;
+  block-size: 1em;
+  transition: rotate var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+[aria-expanded="true"] > .ui-navigation-rail__chevron {
+  rotate: 180deg;
+}
+
+.ui-navigation-popover__groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: var(--ui-space-xs);
+}
+
+.ui-navigation-popover__groups > :only-child > .ui-navigation-popover__links {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+}
+
+.ui-navigation-popover__group-label {
+  display: block;
+  padding: var(--ui-space-xs) var(--ui-space-sm);
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-metadata);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ui-navigation-popover__groups {
+    animation: ui-navigation-panel-in var(--ui-motion-fast) var(--ui-ease-out);
+  }
+}
+
+@keyframes ui-navigation-panel-in {
+  from { opacity: 0.5; }
 }
 
 .ui-navigation-popover__links {
@@ -193,13 +244,17 @@
     outline-offset: var(--ui-focus-ring-offset);
   }
 
-  &[aria-current="page"] {
+  &:is([aria-current="page"], [aria-expanded="true"]) {
     background: var(--ui-color-accent-soft);
     color: var(--ui-color-accent);
   }
 
   &:is(:disabled, [aria-disabled="true"]) {
     color: var(--ui-color-disabled);
+  }
+
+  &:active:not(:disabled, [aria-disabled="true"]) {
+    background: var(--ui-color-surface-active);
   }
 
   small {

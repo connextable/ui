@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ChevronDown, ChevronLeft, ChevronRight } from "@lucide/vue";
-import { PopoverRoot, PopoverContent, PopoverPortal, PopoverTrigger } from "@sectile/vue/popover";
-import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
-import UIButton from "../button/UIButton.vue";
+import { ChevronDown } from "@lucide/vue";
+import { PopoverRoot, PopoverContent, PopoverPortal } from "@sectile/vue/popover";
+import { computed, nextTick, onBeforeUnmount, shallowRef, useId, useTemplateRef, watch } from "vue";
 
 export interface UINavigationMenuEntry {
   id: string;
@@ -13,78 +12,222 @@ export interface UINavigationMenuEntry {
   children?: readonly UINavigationMenuEntry[];
 }
 
+interface LinkGroup {
+  id: string;
+  label?: string;
+  links: readonly UINavigationMenuEntry[];
+}
+
 const props = defineProps<{
   items: readonly UINavigationMenuEntry[];
   label: string;
   current?: string;
 }>();
 const open = defineModel<boolean>("open", { default: false });
-const path = ref<UINavigationMenuEntry[]>([]);
-const menu = useTemplateRef<HTMLElement>("menu");
-const parent = computed(() => path.value.at(-1));
-const entries = computed(() => parent.value?.children ?? props.items);
+defineSlots<{
+  label?(state: { entry: UINavigationMenuEntry; open: boolean }): unknown;
+}>();
 
-defineSlots<{ trigger?(state: { open: boolean }): unknown }>();
+const rail = useTemplateRef<HTMLElement>("rail");
+const panel = useTemplateRef<HTMLElement>("panel");
+const panelID = useId();
+const activeID = shallowRef<string>();
+const anchor = shallowRef<HTMLElement | null>(null);
+let hoverTimer: ReturnType<typeof setTimeout> | undefined;
+let pendingFocus: MutationObserver | undefined;
 
-async function changeLevel(entry?: UINavigationMenuEntry) {
-  const previous = entry ? undefined : path.value.pop();
-  if (entry) path.value.push(entry);
-  await nextTick();
-  const branch = previous && Array.from(menu.value?.querySelectorAll<HTMLButtonElement>("[data-branch]") ?? [])
-    .find(button => button.dataset.branch === previous.id);
-  (branch || menu.value)?.focus({ preventScroll: true });
+const branches = computed(() => props.items.filter(entry => entry.children?.length && !entry.disabled));
+const active = computed(() => branches.value.find(entry => entry.id === activeID.value) ?? branches.value[0]);
+const displayed = computed(() => open.value && !!active.value);
+
+function collectGroups(entry: UINavigationMenuEntry, label?: string): LinkGroup[] {
+  const children = entry.children ?? [];
+  const links = children.filter(child => !child.children?.length);
+  const groups: LinkGroup[] = links.length ? [{ id: entry.id, label, links }] : [];
+  for (const child of children) {
+    if (child.children?.length && !child.disabled) {
+      groups.push(...collectGroups(child, label ? `${label} / ${child.label}` : child.label));
+    }
+  }
+  return groups;
 }
 
-watch(open, value => {
-  if (value) path.value = [];
-}, { flush: "sync" });
-watch(() => props.items, () => { open.value = false; });
+const groups = computed(() => active.value ? collectGroups(active.value) : []);
+
+function cancelHover() {
+  clearTimeout(hoverTimer);
+}
+
+function activate(entry: UINavigationMenuEntry, target: HTMLElement, keyboard = false) {
+  if (!target.isConnected) return;
+  pendingFocus?.disconnect();
+  activeID.value = entry.id;
+  anchor.value = target;
+  open.value = true;
+  if (keyboard) {
+    void nextTick(() => {
+      const links = panel.value;
+      const surface = links?.parentElement;
+      if (!links || !surface || !displayed.value || active.value?.id !== entry.id) return;
+
+      // The positioner keeps the surface invisible until it has placed the panel.
+      const focusWhenVisible = () => {
+        if (surface.hidden || surface.inert || getComputedStyle(surface).visibility === "hidden") return;
+        observer.disconnect();
+        (links.querySelector<HTMLElement>("a[href]") ?? surface).focus({ preventScroll: true });
+      };
+      const observer = new MutationObserver(focusWhenVisible);
+      pendingFocus = observer;
+      observer.observe(surface, { attributeFilter: ["style", "hidden", "inert"] });
+      focusWhenVisible();
+    });
+  }
+}
+
+function hover(entry: UINavigationMenuEntry, event: PointerEvent) {
+  if (event.pointerType !== "mouse") return;
+  cancelHover();
+  if (panel.value?.matches(":focus-within")) return;
+  if (!entry.children?.length || entry.disabled) {
+    open.value = false;
+    return;
+  }
+  const target = event.currentTarget as HTMLElement;
+  if (displayed.value) {
+    if (active.value?.id !== entry.id) activate(entry, target);
+  }
+  else hoverTimer = setTimeout(() => activate(entry, target), 140);
+}
+
+function leave(event: PointerEvent) {
+  if (event.pointerType !== "mouse") return;
+  cancelHover();
+  hoverTimer = setTimeout(() => {
+    if (!panel.value?.matches(":focus-within")) open.value = false;
+  }, 180);
+}
+
+function click(entry: UINavigationMenuEntry, event: MouseEvent) {
+  cancelHover();
+  const keyboard = event.detail === 0;
+  const mouse = !keyboard && (!("pointerType" in event) || event.pointerType === "mouse");
+  if (!mouse && !keyboard && displayed.value && entry.id === active.value?.id) {
+    open.value = false;
+    return;
+  }
+  activate(entry, event.currentTarget as HTMLElement, keyboard);
+}
+
+function focusPanel(entry: UINavigationMenuEntry, event: KeyboardEvent) {
+  cancelHover();
+  activate(entry, event.currentTarget as HTMLElement, true);
+}
+
+function dismiss(reason: string) {
+  cancelHover();
+  if (reason === "escape") {
+    const trigger = anchor.value;
+    void nextTick(() => {
+      if (!displayed.value) trigger?.focus({ preventScroll: true });
+    });
+  }
+}
+
+function leaveFocus(event: FocusEvent) {
+  if (event.relatedTarget instanceof Node && !panel.value?.contains(event.relatedTarget)) {
+    open.value = false;
+  }
+}
+
+watch(
+  () => branches.value.some(entry => entry.id === activeID.value),
+  (available) => {
+    if (available) return;
+    anchor.value = null;
+    activeID.value = undefined;
+    open.value = false;
+  },
+);
+watch(displayed, visible => {
+  if (!visible) pendingFocus?.disconnect();
+});
+onBeforeUnmount(() => {
+  cancelHover();
+  pendingFocus?.disconnect();
+});
 </script>
 
 <template>
-  <PopoverRoot v-model:open="open" :label="label" side="bottom" align="start">
-    <PopoverTrigger as-child>
-      <slot name="trigger" :open="open">
-        <UIButton size="sm" variant="outline">
-          {{ label }}
-          <template #trailing><ChevronDown /></template>
-        </UIButton>
-      </slot>
-    </PopoverTrigger>
+  <PopoverRoot
+    :open="displayed"
+    :anchor="anchor ?? rail"
+    :label="active?.label ?? label"
+    :described-by="null"
+    :auto-focus="false"
+    :restore-focus="false"
+    :interact-outside-exclusions="rail ? [rail] : []"
+    side="bottom"
+    align="start"
+    strategy="fixed"
+    :side-offset="6"
+    close-on-interact-outside
+    @update:open="open = $event"
+    @close-request="dismiss"
+  >
+    <nav ref="rail" class="ui-navigation-rail" :aria-label="label" @pointerenter="cancelHover" @pointerleave="leave">
+      <ul class="ui-navigation-rail__items" @scroll="cancelHover(); open = false">
+        <li v-for="entry in items" :key="entry.id">
+          <button
+            v-if="entry.children?.length"
+            class="ui-navigation-popover__row"
+            type="button"
+            :disabled="entry.disabled"
+            :aria-expanded="displayed && active?.id === entry.id"
+            :aria-controls="panelID"
+            @pointerenter="hover(entry, $event)"
+            @pointerleave="cancelHover"
+            @click="click(entry, $event)"
+            @keydown.down.prevent="focusPanel(entry, $event)"
+          >
+            <slot name="label" :entry="entry" :open="displayed && active?.id === entry.id">{{ entry.label }}</slot>
+            <ChevronDown class="ui-navigation-rail__chevron" aria-hidden="true" />
+          </button>
+          <a
+            v-else
+            class="ui-navigation-popover__row"
+            :href="entry.disabled ? undefined : entry.href"
+            :role="entry.disabled ? 'link' : undefined"
+            :aria-disabled="entry.disabled || undefined"
+            :aria-current="current === entry.id ? 'page' : undefined"
+            @pointerenter="hover(entry, $event)"
+            @click="open = false"
+          >{{ entry.label }}</a>
+        </li>
+      </ul>
+    </nav>
     <PopoverPortal>
-      <PopoverContent class="ui-navigation-popover" :aria-label="label">
-        <nav ref="menu" :aria-label="parent?.label ?? label" tabindex="-1">
-          <header v-if="parent" class="ui-navigation-popover__heading">
-            <UIButton size="sm" variant="ghost" icon-only aria-label="상위 메뉴로" @click="changeLevel()">
-              <template #leading><ChevronLeft /></template>
-            </UIButton>
-            <strong>{{ parent.label }}</strong>
-          </header>
-          <ul class="ui-navigation-popover__links">
-            <li v-for="entry in entries" :key="entry.id">
-              <button
-                v-if="entry.children?.length"
-                type="button"
-                class="ui-navigation-popover__row"
-                :data-branch="entry.id"
-                :disabled="entry.disabled"
-                @click="changeLevel(entry)"
-              >
-                <span>{{ entry.label }}<small v-if="entry.description">{{ entry.description }}</small></span>
-                <ChevronRight :size="16" aria-hidden="true" />
-              </button>
-              <a
-                v-else
-                class="ui-navigation-popover__row"
-                :href="entry.disabled ? undefined : entry.href"
-                :role="entry.disabled ? 'link' : undefined"
-                :aria-disabled="entry.disabled || undefined"
-                :aria-current="current === entry.id ? 'page' : undefined"
-                @click="!entry.disabled && (open = false)"
-              >{{ entry.label }}<small v-if="entry.description">{{ entry.description }}</small></a>
-            </li>
-          </ul>
-        </nav>
+      <PopoverContent class="ui-navigation-popover" tabindex="-1" @pointerenter="cancelHover" @pointerleave="leave">
+        <div :id="panelID" ref="panel" @focusout="leaveFocus">
+          <div :key="active?.id" class="ui-navigation-popover__groups">
+            <div v-for="group in groups" :key="group.id">
+              <b v-if="group.label" class="ui-navigation-popover__group-label">{{ group.label }}</b>
+              <ul class="ui-navigation-popover__links">
+                <li v-for="entry in group.links" :key="entry.id">
+                  <a
+                    class="ui-navigation-popover__row"
+                    :href="entry.disabled ? undefined : entry.href"
+                    :role="entry.disabled ? 'link' : undefined"
+                    :aria-disabled="entry.disabled || undefined"
+                    :aria-current="current === entry.id ? 'page' : undefined"
+                    @click="!entry.disabled && (open = false)"
+                  >
+                    <span>{{ entry.label }}<small v-if="entry.description">{{ entry.description }}</small></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </PopoverContent>
     </PopoverPortal>
   </PopoverRoot>

@@ -12,6 +12,10 @@ const items: readonly UINavigationMenuEntry[] = [
       { id: "select", label: "셀렉트", href: "/components/select" },
     ] },
   ] },
+  { id: "navigation", label: "탐색", children: [
+    { id: "nav-menu", label: "내비게이션 메뉴", href: "/components/navigation-menu" },
+    { id: "tabs", label: "탭", href: "/components/tabs" },
+  ] },
 ];
 </script>
 

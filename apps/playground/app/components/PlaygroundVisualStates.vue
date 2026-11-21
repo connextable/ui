@@ -76,13 +76,13 @@ const calendarContent = ':is([data-scope="calendar"], [data-scope="range-calenda
 const collectionItem = ':is([role="option"], [role="treeitem"], [role="gridcell"]):not([aria-selected="true"], [aria-disabled="true"], [hidden])';
 const groupedControl = [
   ".ui-number-control", ".ui-quantity-control", ".ui-input--with-slots",
-  ".ui-choice", ".ui-checkbox", ".ui-file-input__picker", ".ui-file-row", "[role=tablist]",
+  ".ui-choice", ".ui-checkbox", ".ui-file-input__picker", ".ui-file-row", ".ui-navigation-rail", "[role=tablist]",
   pickerAnchor, calendarContent, '[data-scope="feed"][data-part="item"]',
   "[data-scope][data-part=root]", "[data-ui-tabular-scroll]",
 ].join(",");
 const fillCard = ':is([data-scope="chart"], [data-scope="grid"], [data-scope="tree-grid"], [data-scope="tree-reorder"], [data-scope^="data-"], [data-scope="virtualizer"], [data-scope="window-splitter"])[data-part="root"]';
 const roomyControl = [
-  fillCard, calendarContent, ".ui-file-row[data-pickable]",
+  fillCard, calendarContent, ".ui-file-row[data-pickable]", ".ui-navigation-rail",
   '[data-scope="toggle-group"][data-part="root"]',
   ':is([data-scope="checkbox-tree"], [data-scope="cascade-list"], [data-scope="stepper"])[data-part="root"]',
   '[data-part="anchor"]:is([data-scope="date-range"], [data-scope^="date-time"], [data-scope*="-range-picker"])',
@@ -105,6 +105,7 @@ function findSpecimen(source: HTMLElement) {
   const target = (uploader && targets.find(element => uploader.contains(element)))
     || targets.find(element => element.tabIndex >= 0 && element.matches('[data-part="cell"]') && element.closest(calendarContent))
     || targets.find(element => element.matches('[data-part="trigger"]') && element.closest(pickerAnchor))
+    || targets.find(element => element.matches(".ui-navigation-rail button[aria-controls]"))
     || targets.find(element => element.tabIndex >= 0) || targets[0];
   if (target) {
     const frame = target.closest(groupedControl) ?? target.closest("svg");
