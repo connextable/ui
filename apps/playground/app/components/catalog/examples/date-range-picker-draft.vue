@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  UIDateRangePickerValue,
   UIDateRangePicker,
   UIDateRangePickerAnchor,
   UIDateRangePickerCell,
@@ -15,8 +16,9 @@ import { CalendarDays } from "@lucide/vue";
 <template>
   <UIDateRangePicker :default-highlighted-value="{ year: 2026, month: 8, day: 22 }" v-slot="{ dates, value }">
     <UIDateRangePickerAnchor>
-      <UIDateRangePickerStartInput aria-label="첫날" />
-      <UIDateRangePickerEndInput aria-label="마지막 날" />
+      <UIDateRangePickerStartInput hidden />
+      <UIDateRangePickerEndInput hidden />
+      <UIDateRangePickerValue :value="value" />
       <UIDateRangePickerTrigger aria-label="일정의 날짜 범위 고르기">
         <CalendarDays :size="18" aria-hidden="true" />
       </UIDateRangePickerTrigger>

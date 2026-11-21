@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  UIDateRangePickerValue,
   UICalendarPeriodHeader,
   UIMonthRangePicker,
   UIMonthRangePickerAnchor,
@@ -23,10 +24,11 @@ const highlighted = ref(reportingPeriod.start);
 </script>
 
 <template>
-  <UIMonthRangePicker :default-value="reportingPeriod" v-model:highlighted-value="highlighted" v-slot="{ months, view }">
+  <UIMonthRangePicker :default-value="reportingPeriod" v-model:highlighted-value="highlighted" v-slot="{ value, months, view }">
     <UIMonthRangePickerAnchor>
-      <UIMonthRangePickerStartInput aria-label="시작 월" />
-      <UIMonthRangePickerEndInput aria-label="종료 월" />
+      <UIMonthRangePickerStartInput hidden />
+      <UIMonthRangePickerEndInput hidden />
+      <UIDateRangePickerValue :value="value" granularity="month" start-placeholder="시작 월" end-placeholder="종료 월" />
       <UIMonthRangePickerTrigger aria-label="월 범위 선택 창 열기">
         <CalendarDays :size="18" aria-hidden="true" />
       </UIMonthRangePickerTrigger>

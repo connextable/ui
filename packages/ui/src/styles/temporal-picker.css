@@ -55,6 +55,7 @@
 :where([data-scope="date-range"], [data-scope="month-range-picker"], [data-scope="year-range-picker"])[data-part="anchor"]
   :where(input[data-part="start-input"], input[data-part="end-input"]) {
   padding-inline: var(--ui-space-xs);
+  text-align: center;
 }
 
 :where([data-scope="date-range"], [data-scope="month-range-picker"], [data-scope="year-range-picker"])[data-part="anchor"]:has(
@@ -72,11 +73,181 @@
   }
 }
 
-[data-scope="date-range"][data-part="anchor"]:has(> .ui-picker-range-value) {
+:where([data-scope="date-range"], [data-scope="month-range-picker"], [data-scope="year-range-picker"])[data-part="anchor"]:has(> .ui-picker-range-value) {
   grid-template-columns: minmax(0, 1fr) auto;
+}
+
+[data-scope="date-range"][data-part="anchor"]:has(> .ui-picker-range-value) {
   --ui-picker-width: 22rem;
 }
 
 [data-scope="date-time-range"][data-part="anchor"] > :where(label + label, input[data-part="end-date-time-input"]):not([hidden], :focus-visible) {
   border-block-start: 1px solid var(--ui-color-divider);
+}
+
+:where([data-scope="range-calendar"], [data-scope="date-range"], [data-scope="date-time-range"],
+  [data-scope="month-range-picker"], [data-scope="year-range-picker"])[data-part="content"] {
+  text-align: center;
+
+  > :where(header, nav, p, output) { justify-self: stretch; }
+}
+
+[data-scope="date-time-range"][data-part="anchor"] input[data-scope="date-time-range"] {
+  text-align: center;
+}
+
+[data-scope="popover"][data-part="content"]:has(> .ui-time-picker-column):not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ui-space-xs);
+  inline-size: max-content;
+  max-inline-size: min(calc(100dvw - 1rem), var(--sectile-position-available-width, 100dvw));
+  padding: var(--ui-space-sm);
+  border-radius: var(--ui-radius-md);
+
+  > header {
+    flex: 1 0 100%;
+    min-inline-size: 0;
+  }
+}
+
+.ui-time-picker-column {
+  --ui-frame-radius: var(--ui-radius-sm);
+
+  display: grid;
+  flex: 0 1 auto;
+  grid-template-rows: auto minmax(0, 1fr);
+  box-sizing: border-box;
+  inline-size: 3.875rem;
+  min-inline-size: 0;
+  border: var(--ui-frame-border-width) solid var(--ui-color-border);
+  border-radius: var(--ui-frame-radius);
+  padding: var(--ui-frame-padding);
+  font-variant-numeric: tabular-nums;
+
+  &[data-time-part="millisecond"] { inline-size: 4.5rem; }
+
+  &:has(> [role="listbox"]:focus-visible) {
+    outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+    outline-offset: calc(-1 * var(--ui-focus-ring-width));
+  }
+
+  > [role="listbox"] {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-inline-size: 0;
+    max-block-size: min(10rem, 42dvh);
+    align-content: start;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 0;
+    border-radius: var(--ui-inset-radius);
+    padding-block: 0;
+    padding-inline: var(--ui-space-xs);
+    outline: none;
+
+    & [role="option"] {
+      justify-content: center;
+      min-block-size: 2rem;
+      border-radius: var(--ui-inset-radius);
+      padding: var(--ui-space-2xs);
+    }
+
+    &:not([aria-disabled="true"], [aria-readonly="true"]) > [role="option"][aria-disabled="true"] {
+      display: none;
+    }
+  }
+}
+
+.ui-time-picker-column__label {
+  display: grid;
+  min-block-size: 1.5rem;
+  place-items: center;
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-metadata);
+  line-height: 1.2;
+  text-align: center;
+}
+
+:is([data-scope="date-range-field"], [data-scope="time-range-field"], [data-scope="date-time-range-field"])[data-part="root"]:has(
+  > input[data-part="start-input"] ~ input[data-part="end-input"]
+) {
+  --ui-range-field-inset: calc((var(--ui-control-height) - var(--ui-control-height-small)) / 2);
+  --ui-range-field-width: 15rem;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--ui-space-2xs);
+  row-gap: var(--ui-space-sm);
+  inline-size: min(100%, var(--ui-range-field-width));
+
+  &[data-scope="date-range-field"] { --ui-range-field-width: 21rem; }
+
+  &::before {
+    grid-area: 1 / 1 / 2 / -1;
+    block-size: var(--ui-control-height);
+    box-sizing: border-box;
+    border: 1px solid var(--ui-color-border);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-surface);
+    content: "";
+  }
+
+  &::after {
+    grid-area: 1 / 2;
+    inline-size: var(--ui-space-xs);
+    block-size: 1px;
+    background: var(--ui-color-text-muted);
+    content: "";
+  }
+
+  > input {
+    position: relative;
+    grid-row: 1;
+    inline-size: calc(100% - var(--ui-range-field-inset));
+    min-block-size: var(--ui-control-height-small);
+    padding-inline: var(--ui-space-xs);
+    border-color: transparent;
+    border-radius: calc(var(--ui-radius-md) - var(--ui-range-field-inset));
+    background: transparent;
+    font-size: var(--ui-font-size-body-sm);
+    text-align: center;
+
+    &[data-part="start-input"] { grid-column: 1; justify-self: end; }
+    &[data-part="end-input"] { grid-column: 3; }
+    &[aria-invalid="true"] { border-color: var(--ui-color-danger); }
+  }
+
+  > output { grid-column: 1 / -1; }
+
+  &[data-scope="date-time-range-field"] {
+    --ui-range-field-width: 18rem;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: var(--ui-control-height) 1px var(--ui-control-height);
+    row-gap: 0;
+
+    &::before {
+      grid-area: 1 / 1 / 4 / 2;
+      align-self: stretch;
+      block-size: auto;
+    }
+
+    &::after {
+      grid-area: 2 / 1;
+      justify-self: stretch;
+      inline-size: auto;
+      margin-inline: var(--ui-range-field-inset);
+      background: var(--ui-color-divider);
+    }
+
+    > input[data-part="start-input"],
+    > input[data-part="end-input"] {
+      grid-column: 1;
+      justify-self: center;
+      inline-size: calc(100% - 2 * var(--ui-range-field-inset));
+    }
+
+    > input[data-part="end-input"] { grid-row: 3; }
+  }
 }

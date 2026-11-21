@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  UIDateRangePickerValue,
   UICalendarPeriodHeader,
   UIDateRangePicker,
   UIDateRangePickerAnchor,
@@ -25,10 +26,11 @@ const highlighted = ref<UIDateValue>(initial.start);
 </script>
 
 <template>
-  <UIDateRangePicker :default-value="initial" v-model:highlighted-value="highlighted" v-slot="{ dates, months, view, viewMode }">
+  <UIDateRangePicker :default-value="initial" v-model:highlighted-value="highlighted" v-slot="{ value, dates, months, view, viewMode }">
     <UIDateRangePickerAnchor>
-      <UIDateRangePickerStartInput aria-label="시작" />
-      <UIDateRangePickerEndInput aria-label="종료" />
+      <UIDateRangePickerStartInput hidden />
+      <UIDateRangePickerEndInput hidden />
+      <UIDateRangePickerValue :value="value" />
       <UIDateRangePickerTrigger aria-label="기간 선택 창 열기"><CalendarDays :size="18" /></UIDateRangePickerTrigger>
     </UIDateRangePickerAnchor>
     <UIDateRangePickerContent>

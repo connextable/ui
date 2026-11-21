@@ -224,6 +224,7 @@
     &:where([data-part="cell"], [data-part="month-cell"], [data-part="year-cell"])[aria-disabled="true"] {
       background: transparent;
       color: var(--ui-color-disabled);
+      text-decoration: line-through;
     }
 
     &:where([data-part="cell"])[data-outside-month]:not([data-in-range], [data-selected], [aria-disabled="true"]) {
@@ -282,63 +283,5 @@
       border-start-end-radius: 0;
       border-end-end-radius: 0;
     }
-  }
-
-  [data-scope="popover"][data-part="content"]:has(> [data-time-part]):not([hidden]) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--ui-space-xs);
-    inline-size: max-content;
-    padding: var(--ui-space-sm);
-    border-radius: var(--ui-radius-md);
-  }
-
-  [data-scope="popover"][data-part="content"]:has(> [data-time-part]) > header {
-    flex: 1 0 100%;
-  }
-
-  [data-time-part][role="listbox"] {
-    --ui-time-picker-heading-height: 1.75rem;
-
-    display: block;
-    flex: 1 1 0;
-    min-inline-size: 3rem;
-    max-block-size: min(13rem, 48dvh);
-    overflow: auto;
-    overscroll-behavior: contain;
-    scroll-padding-block-start: var(--ui-time-picker-heading-height);
-    scrollbar-width: thin;
-    font-variant-numeric: tabular-nums;
-  }
-
-  [data-time-part][role="listbox"]::before {
-    position: sticky;
-    z-index: 1;
-    inset-block-start: 0;
-    display: grid;
-    place-items: center;
-    min-block-size: var(--ui-time-picker-heading-height);
-    background: var(--ui-color-surface);
-    color: var(--ui-color-text-muted);
-    font-size: var(--ui-font-size-metadata);
-    text-align: center;
-    content: attr(aria-label) / "";
-  }
-
-  [data-time-part][role="listbox"] [role="option"] {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--ui-space-2xs) var(--ui-space-sm);
-    font-size: var(--ui-font-size-body-sm);
-    cursor: pointer;
-  }
-
-  [data-time-part][role="listbox"] [role="option"][aria-disabled="true"] {
-    cursor: default;
-  }
-
-  [data-time-part][role="listbox"] [role="option"]:hover:not([aria-selected="true"], [aria-disabled="true"]) {
-    background: var(--ui-color-surface-hover);
   }
 }

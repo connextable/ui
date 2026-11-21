@@ -128,7 +128,20 @@ const roles: Readonly<Record<string, string>> = {
 };
 
 const partRoles: Readonly<Record<string, string>> = {
+  UICalendarInput: "선택한 날짜를 제출하는 숨은 폼 입력입니다.",
+  UICalendarPeriodHeader: "달력의 이동 버튼과 제목을 배치하고 월 보기에서 연도 목록을 엽니다.",
+  UIRangeCalendarStartInput: "선택한 시작일을 제출하는 숨은 폼 입력입니다.",
+  UIRangeCalendarEndInput: "선택한 종료일을 제출하는 숨은 폼 입력입니다.",
+  UIDateRangePickerStartInput: "선택한 범위의 시작일을 표시합니다.",
+  UIDateRangePickerEndInput: "선택한 범위의 종료일을 표시합니다.",
   UIDateRangePickerValue: "선택한 날짜 범위를 표시합니다. format이나 TemporalProvider로 날짜 표기를 지정합니다.",
+  UIDateTimeRangePickerStartDateTimeInput: "선택한 범위의 시작 일시를 표시합니다.",
+  UIDateTimeRangePickerEndDateTimeInput: "선택한 범위의 종료 일시를 표시합니다.",
+  UIDateTimeRangePickerValue: "선택한 일시 범위를 한 줄 또는 두 줄로 표시합니다. Provider 서식이 있으면 적용합니다.",
+  UIMonthRangePickerStartInput: "선택한 범위의 시작 월을 표시합니다.",
+  UIMonthRangePickerEndInput: "선택한 범위의 종료 월을 표시합니다.",
+  UIYearRangePickerStartInput: "선택한 범위의 시작 연도를 표시합니다.",
+  UIYearRangePickerEndInput: "선택한 범위의 종료 연도를 표시합니다.",
   UIReorderGroup: "목록과 그리드의 예상 배치를 Vue TransitionGroup으로 표시합니다.",
   UIReorderGridItem: "드래그 중 그리드 셀과 인접 여백을 하나의 드롭 위치로 연결합니다.",
   UIReorderFeedback: "포인터를 따라가는 항목과 이동할 수 없는 위치를 표시합니다.",

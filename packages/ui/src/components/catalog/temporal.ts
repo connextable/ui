@@ -1,15 +1,49 @@
 import { defineComponent, h, mergeProps, nextTick, type Component } from "vue";
+import { TemporalProvider, useTemporalFormatter } from "@sectile/vue/temporal/temporal-provider";
+import { DateField } from "@sectile/vue/temporal/date-field";
+import { DateRangeFieldStartInput, DateRangeFieldEndInput } from "@sectile/vue/temporal/date-range-field";
+import { DatePickerInput } from "@sectile/vue/temporal/date-picker";
+import { DateTimeField } from "@sectile/vue/temporal/date-time-field";
+import { DateTimeRangeFieldStartInput, DateTimeRangeFieldEndInput } from "@sectile/vue/temporal/date-time-range-field";
+import { DateTimePickerDateTimeInput, DateTimePickerDateInput, DateTimePickerTimeInput } from "@sectile/vue/temporal/date-time-picker";
+import { DateTimeRangePickerStartDateInput, DateTimeRangePickerEndDateInput, DateTimeRangePickerStartTimeInput, DateTimeRangePickerEndTimeInput } from "@sectile/vue/temporal/date-time-range-picker";
+import { TimeField } from "@sectile/vue/temporal/time-field";
+import { TimeRangeFieldStartInput, TimeRangeFieldEndInput } from "@sectile/vue/temporal/time-range-field";
 import { DateRangePickerStartInput, DateRangePickerEndInput } from "@sectile/vue/temporal/date-range-picker";
 import { MonthPickerInput } from "@sectile/vue/temporal/month-picker";
 import { MonthRangePickerStartInput, MonthRangePickerEndInput } from "@sectile/vue/temporal/month-range-picker";
 import { RangeCalendarRoot } from "@sectile/vue/temporal/range-calendar";
-import { TimePickerColumn, type TimePickerColumnProps } from "@sectile/vue/temporal/time-picker";
+import {
+  TimePickerColumn, TimePickerContent, TimePickerInput,
+  type TimePickerColumnProps, type TimePickerColumnSlotProps, type TimePickerContentSlotProps,
+} from "@sectile/vue/temporal/time-picker";
 import { YearPickerInput } from "@sectile/vue/temporal/year-picker";
 import { YearRangePickerStartInput, YearRangePickerEndInput } from "@sectile/vue/temporal/year-range-picker";
+import { withTemporalEditing } from "./temporal-input";
 
 export { default as UICalendarPeriodHeader } from "./UICalendarPeriodHeader.vue";
+export { default as UIDatePickerValue } from "./UIDatePickerValue.vue";
 export { default as UIDateRangePickerValue } from "./UIDateRangePickerValue.vue";
 export { default as UIDateTimeRangePickerValue } from "./UIDateTimeRangePickerValue.vue";
+
+export const UIDateField: typeof DateField = withTemporalEditing(DateField, "date");
+export const UIDateRangeFieldStartInput = withTemporalEditing(DateRangeFieldStartInput, "date");
+export const UIDateRangeFieldEndInput = withTemporalEditing(DateRangeFieldEndInput, "date");
+export const UIDatePickerInput = withTemporalEditing(DatePickerInput, "date");
+export const UIDateTimeField: typeof DateTimeField = withTemporalEditing(DateTimeField, "date-time", { precision: "minute" });
+export const UIDateTimeRangeFieldStartInput = withTemporalEditing(DateTimeRangeFieldStartInput, "date-time");
+export const UIDateTimeRangeFieldEndInput = withTemporalEditing(DateTimeRangeFieldEndInput, "date-time");
+export const UIDateTimePickerDateTimeInput = withTemporalEditing(DateTimePickerDateTimeInput, "date-time");
+export const UIDateTimePickerDateInput = withTemporalEditing(DateTimePickerDateInput, "date-time-date");
+export const UIDateTimePickerTimeInput = withTemporalEditing(DateTimePickerTimeInput, "time");
+export const UIDateTimeRangePickerStartDateInput = withTemporalEditing(DateTimeRangePickerStartDateInput, "date");
+export const UIDateTimeRangePickerEndDateInput = withTemporalEditing(DateTimeRangePickerEndDateInput, "date");
+export const UIDateTimeRangePickerStartTimeInput = withTemporalEditing(DateTimeRangePickerStartTimeInput, "time");
+export const UIDateTimeRangePickerEndTimeInput = withTemporalEditing(DateTimeRangePickerEndTimeInput, "time");
+export const UITimeField: typeof TimeField = withTemporalEditing(TimeField, "time", { precision: "minute" });
+export const UITimePickerInput = withTemporalEditing(TimePickerInput, "time");
+export const UITimeRangeFieldStartInput = withTemporalEditing(TimeRangeFieldStartInput, "time");
+export const UITimeRangeFieldEndInput = withTemporalEditing(TimeRangeFieldEndInput, "time");
 
 function withPickerPlaceholder<T extends Component>(part: T, placeholder: string): T {
   return defineComponent({
@@ -31,10 +65,23 @@ export const UIYearRangePickerEndInput = withPickerPlaceholder(YearRangePickerEn
 
 export type { DateValue as UIDateValue } from "@sectile/vue/temporal/calendar";
 export {
-  TemporalProvider as UITemporalProvider,
   useTemporalReferenceDate as useUITemporalReferenceDate,
   useTemporalFormatter as useUITemporalFormatter,
 } from "@sectile/vue/temporal/temporal-provider";
+
+const defaultFormatting = { locale: "ko-KR-u-hc-h23", timeZone: "Asia/Seoul" };
+
+export const UITemporalProvider = defineComponent({
+  name: "UITemporalProvider",
+  inheritAttrs: false,
+  setup(_, { attrs, slots }) {
+    const inherited = useTemporalFormatter();
+    return () => h(TemporalProvider, {
+      formatting: inherited.value ? undefined : defaultFormatting,
+      ...attrs,
+    }, slots);
+  },
+}) as unknown as typeof TemporalProvider;
 
 export {
   CalendarRoot as UICalendar,
@@ -82,12 +129,7 @@ export const UIRangeCalendar = defineComponent({
   },
 }) as typeof RangeCalendarRoot;
 export {
-  DateField as UIDateField,
-} from "@sectile/vue/temporal/date-field";
-export {
   DateRangeFieldRoot as UIDateRangeField,
-  DateRangeFieldStartInput as UIDateRangeFieldStartInput,
-  DateRangeFieldEndInput as UIDateRangeFieldEndInput,
 } from "@sectile/vue/temporal/date-range-field";
 export {
   DatePickerRoot as UIDatePicker,
@@ -98,7 +140,6 @@ export {
   DatePickerGrid as UIDatePickerGrid,
   DatePickerCell as UIDatePickerCell,
   DatePickerMonthCell as UIDatePickerMonthCell,
-  DatePickerInput as UIDatePickerInput,
   DatePickerPreviousWeek as UIDatePickerPreviousWeek,
   DatePickerNextWeek as UIDatePickerNextWeek,
   DatePickerPreviousMonth as UIDatePickerPreviousMonth,
@@ -129,12 +170,7 @@ export {
   DateRangePickerYearViewTrigger as UIDateRangePickerYearViewTrigger,
 } from "@sectile/vue/temporal/date-range-picker";
 export {
-  DateTimeField as UIDateTimeField,
-} from "@sectile/vue/temporal/date-time-field";
-export {
   DateTimeRangeFieldRoot as UIDateTimeRangeField,
-  DateTimeRangeFieldStartInput as UIDateTimeRangeFieldStartInput,
-  DateTimeRangeFieldEndInput as UIDateTimeRangeFieldEndInput,
 } from "@sectile/vue/temporal/date-time-range-field";
 export {
   DateTimePickerRoot as UIDateTimePicker,
@@ -145,9 +181,6 @@ export {
   DateTimePickerGrid as UIDateTimePickerGrid,
   DateTimePickerCell as UIDateTimePickerCell,
   DateTimePickerMonthCell as UIDateTimePickerMonthCell,
-  DateTimePickerDateTimeInput as UIDateTimePickerDateTimeInput,
-  DateTimePickerDateInput as UIDateTimePickerDateInput,
-  DateTimePickerTimeInput as UIDateTimePickerTimeInput,
   DateTimePickerPreviousWeek as UIDateTimePickerPreviousWeek,
   DateTimePickerNextWeek as UIDateTimePickerNextWeek,
   DateTimePickerPreviousMonth as UIDateTimePickerPreviousMonth,
@@ -169,10 +202,6 @@ export {
   DateTimeRangePickerMonthCell as UIDateTimeRangePickerMonthCell,
   DateTimeRangePickerStartDateTimeInput as UIDateTimeRangePickerStartDateTimeInput,
   DateTimeRangePickerEndDateTimeInput as UIDateTimeRangePickerEndDateTimeInput,
-  DateTimeRangePickerStartDateInput as UIDateTimeRangePickerStartDateInput,
-  DateTimeRangePickerEndDateInput as UIDateTimeRangePickerEndDateInput,
-  DateTimeRangePickerStartTimeInput as UIDateTimeRangePickerStartTimeInput,
-  DateTimeRangePickerEndTimeInput as UIDateTimeRangePickerEndTimeInput,
   DateTimeRangePickerPreviousWeek as UIDateTimeRangePickerPreviousWeek,
   DateTimeRangePickerNextWeek as UIDateTimeRangePickerNextWeek,
   DateTimeRangePickerPreviousMonth as UIDateTimeRangePickerPreviousMonth,
@@ -184,12 +213,7 @@ export {
   DateTimeRangePickerYearViewTrigger as UIDateTimeRangePickerYearViewTrigger,
 } from "@sectile/vue/temporal/date-time-range-picker";
 export {
-  TimeField as UITimeField,
-} from "@sectile/vue/temporal/time-field";
-export {
   TimePickerRoot as UITimePicker,
-  TimePickerInput as UITimePickerInput,
-  TimePickerContent as UITimePickerContent,
   TimePickerItem as UITimePickerItem,
   TimePickerTrigger as UITimePickerTrigger,
   TimePickerAnchor as UITimePickerAnchor,
@@ -199,14 +223,27 @@ export {
   TimePickerClose as UITimePickerClose,
 } from "@sectile/vue/temporal/time-picker";
 
+export const UITimePickerContent = defineComponent({
+  name: "UITimePickerContent",
+  inheritAttrs: false,
+  setup(_, { attrs, slots }) {
+    return () => h(TimePickerContent, attrs, {
+      default: (state: TimePickerContentSlotProps) => slots.default?.({
+        ...state,
+        columns: state.columns.map(column => ({ ...column, choices: column.choices.filter(choice => !choice.disabled) })),
+      }),
+    });
+  },
+}) as unknown as typeof TimePickerContent;
+
 function revealTimeChoice(column: HTMLElement, choice: Element | null) {
   if (!choice || !column.contains(choice)) return;
 
-  const padding = Number.parseFloat(getComputedStyle(column).scrollPaddingBlockStart) || 0;
   const viewport = column.getBoundingClientRect();
   const option = choice.getBoundingClientRect();
-  const above = option.top - viewport.top - padding;
-  const below = option.bottom - viewport.bottom;
+  const top = viewport.top + column.clientTop;
+  const above = option.top - top;
+  const below = option.bottom - (top + column.clientHeight);
   column.scrollTop += Math.min(above, 0) + Math.max(below, 0);
 }
 
@@ -214,32 +251,40 @@ export const UITimePickerColumn = defineComponent({
   name: "UITimePickerColumn",
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
-    return () => h(TimePickerColumn, {
-      ...mergeProps(attrs, {
-        onVnodeMounted({ el }: { el: unknown }) {
-          if (el instanceof HTMLElement) {
-            revealTimeChoice(el, el.querySelector('[role="option"][aria-selected="true"]'));
-          }
-        },
-        onKeydown(event: KeyboardEvent) {
-          const column = event.currentTarget;
-          if (!(column instanceof HTMLElement)) return;
-          void nextTick(() => {
-            const active = column.getAttribute("aria-activedescendant");
-            if (active) revealTimeChoice(column, column.ownerDocument.getElementById(active));
-          });
-        },
+    return () => h("div", { class: "ui-time-picker-column ui-inset-frame", "data-time-part": attrs.part }, [
+      attrs.label ? h("span", { class: "ui-time-picker-column__label", "aria-hidden": "true" }, String(attrs.label)) : null,
+      h(TimePickerColumn, {
+        ...mergeProps(attrs, {
+          class: "ui-scrollbar",
+          "data-ui-scrollbar": "centered",
+          onVnodeMounted({ el }: { el: unknown }) {
+            if (el instanceof HTMLElement) {
+              revealTimeChoice(el, el.querySelector('[role="option"][aria-selected="true"]'));
+            }
+          },
+          onKeydown(event: KeyboardEvent) {
+            const column = event.currentTarget;
+            if (!(column instanceof HTMLElement)) return;
+            void nextTick(() => {
+              const active = column.getAttribute("aria-activedescendant");
+              if (active) revealTimeChoice(column, column.ownerDocument.getElementById(active));
+            });
+          },
+        }),
+        part: attrs.part as TimePickerColumnProps["part"],
+        label: attrs.label as TimePickerColumnProps["label"],
+      }, {
+        default: (state: TimePickerColumnSlotProps) => slots.default?.({
+          ...state,
+          choices: state.choices.filter(choice => !choice.disabled),
+        }),
       }),
-      part: attrs.part as TimePickerColumnProps["part"],
-      label: attrs.label as TimePickerColumnProps["label"],
-    }, slots);
+    ]);
   },
 }) as typeof TimePickerColumn;
 
 export {
   TimeRangeFieldRoot as UITimeRangeField,
-  TimeRangeFieldStartInput as UITimeRangeFieldStartInput,
-  TimeRangeFieldEndInput as UITimeRangeFieldEndInput,
 } from "@sectile/vue/temporal/time-range-field";
 export {
   MonthPickerRoot as UIMonthPicker,

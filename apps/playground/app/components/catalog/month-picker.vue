@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  UIDatePickerValue,
   UICalendarPeriodHeader,
   UIMonthPicker,
   UIMonthPickerAnchor,
@@ -19,9 +20,10 @@ const highlighted = ref(billingMonth);
 </script>
 
 <template>
-  <UIMonthPicker :default-value="billingMonth" v-model:highlighted-value="highlighted" v-slot="{ months, view }">
+  <UIMonthPicker :default-value="billingMonth" v-model:highlighted-value="highlighted" v-slot="{ value, months, view }">
     <UIMonthPickerAnchor>
-      <UIMonthPickerInput aria-label="청구 월" />
+      <UIMonthPickerInput hidden />
+      <UIDatePickerValue :value="value" granularity="month" placeholder="월 선택" />
       <UIMonthPickerTrigger aria-label="월 선택 창 열기">
         <CalendarDays :size="18" aria-hidden="true" />
       </UIMonthPickerTrigger>

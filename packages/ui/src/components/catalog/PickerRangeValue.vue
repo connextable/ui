@@ -12,7 +12,7 @@ defineProps<{
 </script>
 
 <template>
-  <span class="ui-picker-range-value" :data-layout="layout ?? 'inline'">
+  <span class="ui-picker-range-value" :data-layout="layout ?? 'inline'" role="status">
     <span v-if="!start && !end && placeholder !== undefined" class="ui-picker-range-value__placeholder" data-whole>
       {{ placeholder }}
     </span>
@@ -38,6 +38,7 @@ defineProps<{
   font-size: var(--ui-font-size-body-sm);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .ui-picker-range-value__separator {

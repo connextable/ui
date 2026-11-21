@@ -24,6 +24,23 @@
   gap: var(--ui-space-md);
 }
 
+:where([data-scope="date-time-range-field"][data-part="root"]:has(> label + label)) {
+  display: grid;
+  gap: var(--ui-space-md);
+  inline-size: min(100%, 17rem);
+
+  > label {
+    display: grid;
+    gap: var(--ui-space-xs);
+    min-inline-size: 0;
+  }
+
+  > label > input {
+    inline-size: 100%;
+    font-size: var(--ui-font-size-body-sm);
+  }
+}
+
 :where(.ui-form__output),
 :where(.ui-field-layout) :where(output:not(p > output), p:has(> output)) {
   display: block;
