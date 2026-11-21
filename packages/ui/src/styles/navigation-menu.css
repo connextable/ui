@@ -12,7 +12,6 @@
       gap: var(--ui-space-xs);
       margin: 0;
       padding: var(--ui-space-xs) 0 var(--ui-space-sm);
-      border-block-end: 1px solid var(--ui-color-divider);
       border-radius: 0;
       background: transparent;
       list-style: none;
@@ -140,11 +139,45 @@
 }
 
 .ui-navigation-popover {
+  --ui-navigation-panel-width: 14rem;
+
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   box-sizing: border-box;
-  inline-size: min(26rem, var(--sectile-position-available-width, calc(100vw - 1.5rem)));
+  inline-size: min(var(--ui-navigation-panel-width), var(--sectile-position-available-width, calc(100vw - 1.5rem)));
+  block-size: var(--ui-navigation-positioner-height, auto);
   max-block-size: min(24rem, var(--sectile-position-available-height, 75dvh));
-  padding: var(--ui-space-xs);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.ui-navigation-popover[data-wide] {
+  --ui-navigation-panel-width: 26rem;
+}
+
+.ui-navigation-popover__surface {
+  inline-size: auto;
+  min-inline-size: 0;
+  max-inline-size: none;
+  min-block-size: 0;
   overflow: auto;
+  box-shadow: var(--ui-shadow-elevated);
+}
+
+.ui-navigation-popover[data-state="open"] > .ui-navigation-popover__surface {
+  pointer-events: auto;
+}
+
+.ui-navigation-popover[data-navigation-moving] > .ui-navigation-popover__surface {
+  overflow: hidden;
+}
+
+.ui-navigation-popover__surface .ui-navigation-popover__row {
+  border-radius: var(--ui-popup-row-radius);
 }
 
 .ui-navigation-rail {
@@ -157,7 +190,6 @@
   gap: var(--ui-space-2xs);
   margin: 0;
   padding: var(--ui-space-2xs);
-  border-block-end: 1px solid var(--ui-color-divider);
   list-style: none;
   overflow-x: auto;
   scrollbar-width: thin;
@@ -194,16 +226,6 @@
   padding: var(--ui-space-xs) var(--ui-space-sm);
   color: var(--ui-color-text-muted);
   font-size: var(--ui-font-size-metadata);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .ui-navigation-popover__groups {
-    animation: ui-navigation-panel-in var(--ui-motion-fast) var(--ui-ease-out);
-  }
-}
-
-@keyframes ui-navigation-panel-in {
-  from { opacity: 0.5; }
 }
 
 .ui-navigation-popover__links {

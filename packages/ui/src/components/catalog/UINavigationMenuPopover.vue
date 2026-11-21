@@ -2,6 +2,7 @@
 import { ChevronDown } from "@lucide/vue";
 import { PopoverRoot, PopoverContent, PopoverPortal } from "@sectile/vue/popover";
 import { computed, nextTick, onBeforeUnmount, shallowRef, useId, useTemplateRef, watch } from "vue";
+import { useNavigationPanelMotion } from "./useNavigationPanelMotion";
 
 export interface UINavigationMenuEntry {
   id: string;
@@ -53,9 +54,25 @@ function collectGroups(entry: UINavigationMenuEntry, label?: string): LinkGroup[
 }
 
 const groups = computed(() => active.value ? collectGroups(active.value) : []);
+const widePanel = computed(() =>
+  groups.value.length > 1 ||
+  groups.value.some(group => group.links.length > 1 && group.links.some(link => link.description)),
+);
+
+const resetPanelMotion = useNavigationPanelMotion(panel, displayed, () => [anchor.value, groups.value]);
 
 function cancelHover() {
   clearTimeout(hoverTimer);
+}
+
+function scrollRail(event: Event) {
+  cancelHover();
+  if (!displayed.value || !anchor.value) return;
+  const railBounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
+  const triggerBounds = anchor.value.getBoundingClientRect();
+  if (triggerBounds.right <= railBounds.left || triggerBounds.left >= railBounds.right) {
+    open.value = false;
+  }
 }
 
 function activate(entry: UINavigationMenuEntry, target: HTMLElement, keyboard = false) {
@@ -173,9 +190,10 @@ onBeforeUnmount(() => {
     close-on-interact-outside
     @update:open="open = $event"
     @close-request="dismiss"
+    @after-close="resetPanelMotion"
   >
     <nav ref="rail" class="ui-navigation-rail" :aria-label="label" @pointerenter="cancelHover" @pointerleave="leave">
-      <ul class="ui-navigation-rail__items" @scroll="cancelHover(); open = false">
+      <ul class="ui-navigation-rail__items" @scroll="scrollRail">
         <li v-for="entry in items" :key="entry.id">
           <button
             v-if="entry.children?.length"
@@ -206,8 +224,14 @@ onBeforeUnmount(() => {
       </ul>
     </nav>
     <PopoverPortal>
-      <PopoverContent class="ui-navigation-popover" tabindex="-1" @pointerenter="cancelHover" @pointerleave="leave">
-        <div :id="panelID" ref="panel" @focusout="leaveFocus">
+      <PopoverContent
+        class="ui-navigation-popover"
+        :data-wide="widePanel || undefined"
+        tabindex="-1"
+        @pointerenter="cancelHover"
+        @pointerleave="leave"
+      >
+        <div :id="panelID" ref="panel" class="ui-navigation-popover__surface" @focusout="leaveFocus">
           <div :key="active?.id" class="ui-navigation-popover__groups">
             <div v-for="group in groups" :key="group.id">
               <b v-if="group.label" class="ui-navigation-popover__group-label">{{ group.label }}</b>

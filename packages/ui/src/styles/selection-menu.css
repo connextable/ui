@@ -1,4 +1,4 @@
-:where(.ui-select-content,
+:where(.ui-select-content, .ui-navigation-popover__surface,
   [data-scope="menu-button"][data-part="content"],
   [data-scope="context-menu"][data-part="content"],
   [data-scope="combobox"][data-part="content"],
