@@ -706,6 +706,14 @@ export const catalog: readonly CatalogEntry[] = [
     description: "as로 결과 요소를 지정하고 공통 속성을 전달합니다.",
   },
   {
+    slug: "tree-reorder",
+    title: "UITreeReorder",
+    category: "데이터",
+    description: "계층의 항목을 이동해 순서나 상위 항목을 바꿉니다.",
+    wide: true,
+    parts: ["UITreeReorderItem", "UITreeReorderHandle", "UITreeReorderDropTarget", "UIReorderGroup", "UIReorderFeedback"],
+  },
+  {
     slug: "sheet",
     title: "UISheet",
     category: "오버레이",
@@ -864,6 +872,24 @@ export const catalog: readonly CatalogEntry[] = [
     parts: [
       "UIToolbarItem",
       "UIToolbarSeparator",
+    ],
+  },
+  {
+    slug: "reorder",
+    title: "UISequenceReorder",
+    category: "데이터",
+    description: "키보드나 포인터로 항목의 순서를 바꿉니다.",
+    wide: true,
+    parts: [
+      "UISequenceReorderItem",
+      "UITreeReorder",
+      "UITreeReorderItem",
+      "UITreeReorderDropTarget",
+      "UISequenceReorderHandle",
+      "UITreeReorderHandle",
+      "UIReorderGridItem",
+      "UIReorderGroup",
+      "UIReorderFeedback",
     ],
   },
   {

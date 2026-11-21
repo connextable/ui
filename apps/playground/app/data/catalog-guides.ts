@@ -20,6 +20,12 @@ interface CatalogGuide {
   examples?: readonly CatalogExample[];
 }
 
+const treeReorderBoardExamples = [
+  { id: "reorder-columns", title: "그룹 간 이동", description: "‘할 일’의 카드를 ‘진행 중’이나 비어 있는 ‘완료’로 옮겨 보세요. 키보드에서는 ←·→로 인접한 그룹을 선택합니다.", parts: ["UITreeReorderDropTarget"] },
+  { id: "reorder-capacity", title: "정원이 찬 그룹", description: "‘검토 중’에는 두 장까지 둘 수 있습니다. 한 장을 ‘대기’로 빼면 다른 카드를 넣을 수 있고, 정원이 찬 상태에서도 열 안의 순서는 바꿀 수 있습니다." },
+  { id: "reorder-restricted", title: "항목 유형에 따른 이동 제한", description: "스타일 가이드는 ‘문서’로, 표지 그림과 미리보기는 ‘이미지’로 옮길 수 있습니다. 다른 유형의 섹션으로 옮기면 금지 표시가 나오고 원래 위치에 남습니다." },
+] satisfies readonly CatalogExample[];
+
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "navigation-menu": {
     sections: [
@@ -921,6 +927,20 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "as에 abbr을 전달합니다. title 같은 HTML 속성은 선택한 요소에 전달됩니다.",
     api: { as: "렌더링할 HTML 요소 이름 또는 Vue 컴포넌트입니다.", "as-child": "슬롯에 전달한 단일 자식에 루트의 속성을 적용합니다." },
   },
+  "tree-reorder": {
+    examples: [
+      { id: "tree-reorder-handle", title: "트리 전용 손잡이", description: "카드 안의 손잡이에서만 포인터 이동을 시작합니다.", parts: ["UITreeReorderHandle"] },
+      { id: "tree-reorder-nested-cancel", title: "계층 변경 미리보기 취소", description: "색상 항목을 Space로 든 뒤 왼쪽 방향키로 한 단계 옮겨 보세요. Escape로 취소하면 기존 폴더가 유지됩니다." },
+      ...treeReorderBoardExamples,
+      { id: "tree-reorder-readonly", title: "읽기 전용 계층", description: "계층은 표시하고 드래그와 키보드 순서 변경은 잠급니다." },
+    ],
+    title: "트리의 항목 이동",
+    description: "항목을 직접 잡아 옮깁니다. 키보드에서는 항목에 포커스를 두고 스페이스로 들어 올린 뒤, ←·→로 계층을 바꾸고 Enter로 확정합니다. ‘토큰’을 옮기면 하위 항목인 ‘테마’도 함께 움직입니다.",
+    api: {
+      "v-model:nodes": "id와 parentID를 가진 노드 배열을 연결합니다. 이동 결과가 배열에 반영됩니다.",
+      "handle-only": "포인터 드래그를 UITreeReorderHandle에서만 시작하도록 제한합니다.",
+    },
+  },
   sheet: {
     title: "아래에서 열리는 정렬 시트",
     description: "시트에서 정렬 기준을 선택하면 선택한 값이 버튼에 반영되고 시트가 닫힙니다.",
@@ -1168,6 +1188,33 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "useUIInfiniteScroll(scroll, options)": "edge, distance, hasMore, auto로 자동 요청을 제어하고 loading, failure, loadMore, reset으로 대기·오류·재시도를 처리합니다. 요청의 signal을 데이터 로더에 전달할 수 있습니다.",
       "--ui-scroll-area-max-height": "헤더·푸터를 포함한 스크롤 영역의 최대 높이입니다. 기본값은 20rem입니다.",
     },
+  },
+  reorder: {
+    title: "작업 목록의 순서 변경",
+    description: "카드 전체를 잡아 옮기세요. 놓일 위치에는 반투명 카드가 나타납니다. 키보드에서는 항목에 포커스를 두고 스페이스로 들어 올린 뒤, 방향키로 이동하고 Enter로 확정하거나 Esc로 취소합니다.",
+    api: {
+      "v-model:items": "표시 순서대로 나열한 항목 id 배열입니다.",
+      "handle-only": "포인터 드래그를 UISequenceReorderHandle에서만 시작하도록 제한합니다.",
+      "keyboard-mode": "preview 모드에서 이동 후보를 확인하고 확정하거나 취소할 수 있습니다.",
+      "UIReorderGroup": "예상 배치를 TransitionGroup으로 그립니다. layout으로 목록, 가로 목록, 그리드를 선택하고 min-rows로 프레임의 최소 높이를 지정합니다.",
+      "UIReorderFeedback": "루트 슬롯의 interaction을 받아 포인터를 따라가는 항목과 이동이 제한된 영역을 표시합니다.",
+      "#preview-handle / #lift-handle": "손잡이가 있는 구성에서 놓일 위치와 떠 있는 카드에도 손잡이 모양을 표시합니다.",
+    },
+    examples: [
+      { id: "reorder-cancel", title: "미리보기 도중 취소", description: "Space와 방향키로 옮긴 뒤 Esc로 기존 순서를 복원합니다." },
+      { id: "reorder-nested-action", title: "클릭 버튼과 정렬 영역", description: "카드 본문은 끌어 옮기고 내부 버튼은 즐겨찾기 상태를 바꿉니다." },
+      { id: "reorder-disabled", title: "목록 전체 이동 잠금", description: "잠금이 켜져 있으면 어떤 카드도 들어 올릴 수 없습니다. 잠금을 해제하면 같은 목록을 정렬할 수 있습니다." },
+      { id: "reorder-handle-icon", title: "아이콘 손잡이", description: "손잡이 아이콘을 잡아 옮기세요. 화면 낭독기에서 각 손잡이를 구분할 수 있도록 label을 지정합니다.", parts: ["UISequenceReorderHandle"] },
+      { id: "reorder-handle-button", title: "텍스트 버튼 손잡이", description: "as-child로 UIButton에 손잡이 동작을 연결합니다. 각 항목의 ‘이동’ 버튼을 잡아 순서를 바꿔 보세요." },
+      { id: "reorder-handle-title", title: "제목 영역 손잡이", description: "위젯의 제목 영역을 잡아 옮깁니다. 설명 영역에서는 텍스트를 선택할 수 있습니다." },
+      { id: "reorder-horizontal", title: "가로 탭 순서", description: "탭을 잡고 좌우로 움직이세요. 키보드에서는 스페이스로 들어 올리고 ←·→로 이동합니다." },
+      { id: "reorder-grid", title: "여러 줄 그리드 정렬", description: "카드를 옮길 셀 위에 놓으세요. 키보드에서는 위·아래 방향키로 읽기 순서대로 움직입니다.", parts: ["UIReorderGridItem"] },
+      { id: "reorder-actions", title: "버튼으로 위치 변경", description: "블록을 선택하고 ‘위로’ 또는 ‘아래로’를 누릅니다." },
+      ...treeReorderBoardExamples,
+      { id: "reorder-locked", title: "이동이 잠긴 항목", description: "‘시스템 블록’의 이동은 잠겨 있습니다. 다른 블록의 순서는 바꿀 수 있습니다." },
+      { id: "reorder-sorted", title: "자동 정렬과 수동 순서", description: "이름순 정렬을 켜면 수동 이동이 잠깁니다. 스위치를 끄면 이전에 배치한 수동 순서를 다시 볼 수 있습니다." },
+      { id: "reorder-save", title: "저장 실패 시 순서 복원", description: "이동하면 새 순서를 바로 보여 줍니다. 첫 저장은 실패를 재현해 이전 순서로 복원합니다. 다시 옮기면 저장에 성공합니다." },
+    ],
   },
   calendar: {
     title: "월간 달력에서 날짜 선택",

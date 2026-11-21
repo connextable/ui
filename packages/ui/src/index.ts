@@ -36,6 +36,7 @@ export { default as UIFormSummary } from "./components/form/UIFormSummary.vue";
 export { default as UIInput } from "./components/text-input/UIInput.vue";
 export { default as UIProgress } from "./components/progress/UIProgress.vue";
 export { default as UIRadioGroup, type UIRadioGroupOption } from "./components/selection/UIRadioGroup.vue";
+export { default as UIReorderGridItem } from "./components/reorder/UIReorderGridItem.vue";
 export { default as UISelect } from "./components/select/UISelect.vue";
 export { default as UISelectContent } from "./components/select/UISelectContent.vue";
 export { default as UISelectItem } from "./components/select/UISelectItem.vue";
