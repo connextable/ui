@@ -10,6 +10,22 @@ interface CatalogEntry {
 
 export const catalog: readonly CatalogEntry[] = [
   {
+    slug: "navigation-menu",
+    title: "UINavigationMenu",
+    category: "탐색",
+    description: "사이트 헤더에 바로 이동하는 링크와 펼쳐서 찾는 링크 그룹을 배치합니다.",
+    wide: true,
+    parts: [
+      "UINavigationMenuLink",
+      "UINavigationMenuTrigger",
+      "UINavigationMenuContent",
+      "UINavigationMenuList",
+      "UINavigationMenuItem",
+      "UINavigationMenuViewport",
+      "UINavigationMenuIndicator",
+    ],
+  },
+  {
     slug: "virtualizer",
     title: "UIVirtualizer",
     category: "가상화",

@@ -21,6 +21,30 @@ interface CatalogGuide {
 }
 
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
+  "navigation-menu": {
+    sections: [
+      { id: "examples", title: "메뉴 구성", section: "structure" },
+      { id: "navigation-menu-behavior", title: "탐색 동작", section: "behavior" },
+    ],
+    examples: [
+      { id: "navigation-menu-links", section: "structure", title: "직접 이동과 현재 페이지", description: "NuxtLink를 as-child로 연결합니다. 현재 페이지에 해당하는 링크에는 aria-current가 적용됩니다.", parts: ["UINavigationMenuLink"] },
+      { id: "navigation-menu-columns", section: "structure", title: "두 열의 탐색 패널", description: "도구 메뉴에 아이콘, 설명, 링크를 함께 배치합니다. 좁은 화면에서는 한 열로 보입니다.", parts: ["UINavigationMenuContent", "UINavigationMenuViewport"] },
+      { id: "navigation-menu-nested", section: "structure", title: "하위 분류 펼치기", description: "컴포넌트 분류에서 표와 그리드를 열어 한 단계 더 들어갑니다. 각 끝 항목은 해당 페이지로 이동합니다." },
+      { id: "navigation-menu-indicator", section: "behavior", title: "열린 그룹 표시", description: "폼과 그리드를 번갈아 열면 열린 트리거 아래에서 인디케이터를 확인할 수 있습니다.", parts: ["UINavigationMenuIndicator"] },
+      { id: "navigation-menu-keyboard", section: "behavior", title: "키보드로 메뉴 탐색", description: "Tab으로 메뉴에 진입합니다. 좌우 방향키로 상위 그룹을 이동하고, 아래 방향키로 열어서 링크를 탐색합니다. Escape로 닫습니다." },
+      { id: "navigation-menu-disabled", section: "behavior", title: "이동할 수 없는 링크", description: "가상 그리드는 비활성 상태로 표시합니다. 클릭하거나 Enter를 눌러도 페이지가 열리지 않습니다." },
+    ],
+    title: "사이트 헤더에서 페이지 탐색",
+    description: "디자인 시스템으로 바로 이동하거나, 컴포넌트와 데이터 표현 메뉴를 열어 원하는 페이지를 찾아갑니다.",
+    api: {
+      items: "상위 메뉴와 하위 항목의 관계를 지정합니다.",
+      "disabled-items": "이동할 수 없는 항목의 id를 지정합니다.",
+      "#default": "현재 열려 있는 메뉴 경로를 openPath로 받습니다.",
+      "Trigger value": "트리거에 연결할 상위 메뉴 id입니다.",
+      "Content for": "패널을 열 트리거의 id입니다.",
+      "Content data-layout": "columns를 지정하면 넓은 패널에서 링크가 여러 열에 배치됩니다.",
+    },
+  },
   virtualizer: {
     sections: [
       { id: "examples", title: "레이아웃 구성", section: "layout" },
