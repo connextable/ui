@@ -128,6 +128,7 @@ const roles: Readonly<Record<string, string>> = {
 };
 
 const partRoles: Readonly<Record<string, string>> = {
+  UIDateRangePickerValue: "선택한 날짜 범위를 표시합니다. format이나 TemporalProvider로 날짜 표기를 지정합니다.",
   UIReorderGroup: "목록과 그리드의 예상 배치를 Vue TransitionGroup으로 표시합니다.",
   UIReorderGridItem: "드래그 중 그리드 셀과 인접 여백을 하나의 드롭 위치로 연결합니다.",
   UIReorderFeedback: "포인터를 따라가는 항목과 이동할 수 없는 위치를 표시합니다.",

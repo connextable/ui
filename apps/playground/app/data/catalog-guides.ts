@@ -583,4 +583,10 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "Pane side": "손잡이 앞과 뒤의 두 패널을 구분합니다.",
     },
   },
+  "date-range-picker": {
+    examples: [
+      { id: "date-range-picker-draft", title: "두 끝점을 선택해야 범위 확정", description: "첫 날짜를 고른 후에는 확정한 범위가 없습니다. 마지막 날짜를 고르면 아래에 범위가 표시됩니다." },
+      { id: "date-range-picker-formatting", title: "날짜 범위의 표기 변경", description: "UITemporalProvider로 언어를 지정하고, 영문 날짜 버튼을 눌러 같은 값을 format 함수로 표시해 보세요.", parts: ["UIDateRangePickerValue"] },
+    ],
+  },
 };

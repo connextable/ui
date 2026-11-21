@@ -407,6 +407,33 @@ export const catalog: readonly CatalogEntry[] = [
       "UIWindowSplitterHandle",
     ],
   },
+  {
+    slug: "date-range-picker",
+    title: "UIDateRangePicker",
+    category: "날짜·시간",
+    description: "달력에서 시작일과 종료일을 골라 날짜 범위를 정합니다.",
+    parts: [
+      "UIDateRangePickerTrigger",
+      "UIDateRangePickerAnchor",
+      "UIDateRangePickerValue",
+      "UIDateRangePickerPortal",
+      "UIDateRangePickerContent",
+      "UIDateRangePickerGrid",
+      "UIDateRangePickerCell",
+      "UIDateRangePickerMonthCell",
+      "UIDateRangePickerStartInput",
+      "UIDateRangePickerEndInput",
+      "UIDateRangePickerPreviousWeek",
+      "UIDateRangePickerNextWeek",
+      "UIDateRangePickerPreviousMonth",
+      "UIDateRangePickerNextMonth",
+      "UIDateRangePickerPreviousYear",
+      "UIDateRangePickerNextYear",
+      "UIDateRangePickerWeekViewTrigger",
+      "UIDateRangePickerMonthViewTrigger",
+      "UIDateRangePickerYearViewTrigger",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));
