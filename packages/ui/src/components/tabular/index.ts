@@ -3,6 +3,7 @@ export {
   GridRow as UIGridRow,
   GridCell as UIGridCell,
 } from "@sectile/vue/grid";
+export { default as UIGridEditor } from "./UIGridEditor.vue";
 export { default as UIDataActions } from "../data/UIDataActions.vue";
 export { default as UIDataLabel } from "../data/UIDataLabel.vue";
 export { default as UIDataSurface } from "../data/UIDataSurface.vue";

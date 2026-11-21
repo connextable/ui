@@ -48,6 +48,7 @@ export const catalog: readonly CatalogEntry[] = [
     parts: [
       "UIGridRow",
       "UIGridCell",
+      "UIGridEditor",
     ],
   },
   {

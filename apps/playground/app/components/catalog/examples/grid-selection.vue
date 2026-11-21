@@ -8,7 +8,7 @@ import {
 import { ref } from "vue";
 
 const selected = ref<string | null>(null);
-const rows = [['name', 'status'], ['Sectile', 'Ready']]
+const rows = [['name', 'status'], ['Sectile', '준비됨']]
 
 </script>
 

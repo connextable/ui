@@ -61,9 +61,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   grid: {
     examples: [
-      { id: "grid-disabled", title: "특정 셀 건너뛰기", description: "방향키로 상태 열을 지나갈 때 Ready 셀은 비활성입니다." },
+      { id: "grid-disabled", title: "특정 셀 건너뛰기", description: "방향키로 상태 열을 지나갈 때 준비됨 셀은 비활성입니다." },
       { id: "grid-selection", title: "선택한 셀 알리기", description: "이동한 후 선택하면 외부 출력에 셀 값이 표시됩니다." },
-      { id: "grid-edit-mode", title: "셀의 편집 모드 진입과 종료", description: "셀에서 F2를 눌러 편집 모드에 진입하거나 Enter와 Escape로 탐색 모드에 돌아갑니다." },
+      { id: "grid-edit-mode", title: "셀의 제목과 상태 편집", description: "셀에 포커스한 뒤 F2 또는 Enter를 눌러 값을 수정합니다. Enter로 저장하고 Escape로 취소합니다.", parts: ["UIGridEditor"] },
       { id: "grid-reservation", title: "예약된 시간을 건너뛰기", description: "키보드로 셀을 이동하거나 가능한 시간을 클릭합니다. 이미 예약된 시간은 탐색과 선택에서 제외됩니다." },
     ],
     title: "그리드 셀 사이를 키보드로 이동",
@@ -71,6 +71,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       rows: "행별로 셀 식별자를 묶은 배열입니다.",
       "Cell value": "화면의 셀을 rows에 등록한 식별자와 연결합니다.",
+      "edit-start / edit-commit / edit-cancel": "편집 시작, 저장, 취소 시 해당 셀의 식별자를 전달합니다.",
     },
   },
   "data-table": {

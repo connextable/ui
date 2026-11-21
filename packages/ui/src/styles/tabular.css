@@ -86,7 +86,7 @@
     background: var(--ui-color-surface);
     transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
 
-    &:where(:hover, :focus-within) {
+    &:where(:not([data-scope="grid"]):is(:hover, :focus-within)) {
       background: var(--ui-color-surface-hover);
     }
 
@@ -95,8 +95,9 @@
     }
   }
 
-  :where([data-ui-tabular-striped]) :where([data-part="row"]:nth-child(even):not(:hover, :focus-within,
-    [aria-selected="true"], :has(input:checked[data-part$="selection-control"]))) {
+  :where([data-ui-tabular-striped]) :where([data-part="row"]:nth-child(even):not(
+    [aria-selected="true"], :has(input:checked[data-part$="selection-control"])
+  ):is([data-scope="grid"], :not(:hover, :focus-within))) {
     background: var(--ui-color-surface-readonly);
   }
 
@@ -105,23 +106,37 @@
     font-weight: 650;
   }
 
+  :where([data-scope="grid"][data-part="cell"]) {
+    &:where(:hover:not([aria-disabled="true"])) {
+      background: var(--ui-color-surface-hover);
+    }
+
+    &:where([aria-selected="true"]) {
+      background: var(--ui-color-selected);
+      color: var(--ui-color-accent);
+    }
+  }
+
   :where([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-grid"], [data-scope="data-tree-grid"])
-    :where([data-part="cell"]:focus-visible) {
-    z-index: 1;
-    outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
-    outline-offset: var(--ui-focus-ring-offset);
-    background: var(--ui-color-accent-soft);
+    :where([data-part="cell"]:is(:focus, :has(> [data-part="editor"]:focus-within))) {
+    position: relative;
+    outline: none;
+
+    &::after {
+      position: absolute;
+      inset: var(--ui-space-xs);
+      border: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+      border-radius: max(0px, calc(var(--ui-tabular-radius) - var(--ui-space-xs)));
+      pointer-events: none;
+      content: "";
+
+      @media (forced-colors: active) { border-color: Highlight; }
+    }
   }
 
   :where([data-scope="data-grid"][data-part="cell"][aria-current="true"]) {
     box-shadow: inset 0 0 0 1px var(--ui-color-accent);
     background: var(--ui-color-accent-soft);
-  }
-
-  :where([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-grid"], [data-scope="data-tree-grid"])
-    :where([data-part="cell"]:has(> [data-part="editor"]:focus-within)) {
-    box-shadow: inset 0 0 0 1px var(--ui-color-accent);
-    background: var(--ui-color-surface);
   }
 
   :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"],

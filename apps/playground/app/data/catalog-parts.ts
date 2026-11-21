@@ -180,6 +180,7 @@ const partRoles: Readonly<Record<string, string>> = {
   useUIScrollArea: "원하는 DOM 요소의 스크롤 위치, 크기, 가장자리까지의 거리를 읽고 위치를 이동합니다.",
   UIScrollFade: "기존 스크롤 영역에 페이드를 적용합니다. overflow를 지정하고 useUIScrollArea의 state를 전달합니다. edges로 페이드를 적용할 가장자리를 제한할 수 있습니다.",
   useUIInfiniteScroll: "지정한 가장자리에 접근할 때 추가 콘텐츠를 불러오고 요청 상태를 제공합니다.",
+  UIGridEditor: "편집 모드에서 입력에 포커스하고, 입력 중인 값을 v-model로 연결합니다.",
   createUniformExtentIndex: "크기 규칙이 같은 행이나 열의 위치를 계산합니다.",
   createDenseTrackGridLayout: "행과 열의 위치 인덱스를 조합해 그리드 배치를 구성합니다.",
   trackGridLayoutStrategy: "행과 열을 기준으로 현재 뷰포트의 항목 배치를 계산합니다.",
