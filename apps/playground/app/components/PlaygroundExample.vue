@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { UIDisclosure, UIDisclosureContent, UIDisclosureTrigger } from "@connextable/ui";
-import { computed, ref } from "vue";
+import { computed, inject, onBeforeUnmount, onMounted, ref } from "vue";
+import { playgroundVisualStatesKey } from "~/utils/playground-visual-states";
 import PlaygroundCodeBlock from "./PlaygroundCodeBlock.vue";
 
 const props = defineProps<{
@@ -11,6 +12,18 @@ const props = defineProps<{
   wide?: boolean;
   headingLevel?: 2 | 3;
 }>();
+
+const visualStates = inject(playgroundVisualStatesKey, undefined);
+const previewTarget = computed(() => visualStates?.activeId.value === props.id ? visualStates.target.value : null);
+let unregisterVisualExample: (() => void) | undefined;
+onMounted(() => {
+  unregisterVisualExample = visualStates?.register({
+    id: props.id,
+    title: props.title,
+    description: props.description,
+  });
+});
+onBeforeUnmount(() => unregisterVisualExample?.());
 
 const hasOpenedCode = ref(false);
 const loadedSource = ref<string>();
@@ -52,9 +65,12 @@ async function revealSource(open: boolean) {
       v-slot="{ open }"
     >
       <div class="playground-example__demo">
-        <div class="playground-example__preview ui-field-layout" :class="{ 'playground-example__preview--wide': wide }">
-          <slot />
-        </div>
+        <Teleport :to="previewTarget ?? undefined" :disabled="!previewTarget">
+          <div class="playground-example__preview ui-field-layout" :class="{ 'playground-example__preview--wide': wide }">
+            <slot />
+          </div>
+        </Teleport>
+        <a v-if="previewTarget" class="playground-example__state-link" href="#visual-states">시각 상태에서 보는 중</a>
         <UIDisclosureTrigger
           class="playground-example__toggle"
           size="sm"
@@ -153,6 +169,14 @@ async function revealSource(open: boolean) {
   grid-column: 3;
   justify-self: end;
   white-space: nowrap;
+}
+
+.playground-example__state-link {
+  grid-column: 2;
+  margin-inline: auto;
+  padding: var(--ui-space-md);
+  color: var(--ui-color-accent);
+  font-size: var(--ui-font-size-body-sm);
 }
 
 @container playground-example (inline-size >= 36rem) {
