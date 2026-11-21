@@ -17,9 +17,9 @@
     overscroll-behavior: contain;
   }
 
-  :where([data-ui-virtual-scrollport], [data-scope="virtualizer"][data-part="root"]):where(:focus-visible) {
+  :where([data-ui-virtual-scrollport], [data-scope="virtualizer"][data-part="root"]):focus-visible {
     outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
-    outline-offset: var(--ui-focus-ring-offset);
+    outline-offset: var(--ui-space-2xs);
   }
 
   :where([data-ui-virtual-scrollport] > [data-scope="virtualizer"][data-part="root"]) {

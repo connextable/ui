@@ -44,6 +44,7 @@ const specimen = shallowRef<{
   root: Element;
   target?: Element;
   pointer?: Element;
+  keyboardScroll?: boolean;
   states: readonly Variant[];
 }>();
 const equivalentStates = shallowRef(new Map<Variant, Variant>());
@@ -69,6 +70,7 @@ const displayedVariants = computed(() => {
 });
 
 const focusable = "button, input:not([type=hidden]), select, textarea, a[href], [tabindex], [contenteditable=true]";
+const virtualScrollport = '[data-ui-virtual-scrollport], [data-scope="virtualizer"][data-part="root"]';
 const pickerAnchor = ':is([data-part="anchor"]:is([data-scope^="date"], [data-scope$="-picker"]), [data-scope="time-picker"][data-part="root"])';
 const calendarContent = ':is([data-scope="calendar"], [data-scope="range-calendar"])[data-part="content"]';
 const collectionItem = ':is([role="option"], [role="treeitem"], [role="gridcell"]):not([aria-selected="true"], [aria-disabled="true"], [hidden])';
@@ -94,6 +96,7 @@ function findSpecimen(source: HTMLElement) {
   const targets = Array.from(source.querySelectorAll<HTMLElement | SVGElement>(focusable)).filter(element =>
     !element.closest("[hidden], [inert], [aria-hidden=true], [aria-disabled=true]")
       && !element.matches(":disabled")
+      && !element.matches(virtualScrollport)
       && element.getBoundingClientRect().width > 1,
   );
   const uploader = source.querySelector(".ui-file-row");
@@ -116,9 +119,9 @@ function findSpecimen(source: HTMLElement) {
   const row = table?.querySelector('[data-part="row"]');
   if (table && row) return { root: table, target: row, states: ["default", "hover"] } as const;
 
-  const scrollport = source.querySelector('[data-ui-virtual-scrollport], [data-scope="virtualizer"][data-part="root"]');
+  const scrollport = source.querySelector(virtualScrollport);
   if (scrollport && (scrollport.scrollHeight > scrollport.clientHeight || scrollport.scrollWidth > scrollport.clientWidth)) {
-    return { root: scrollport, target: scrollport, states: ["default", "focus"] } as const;
+    return { root: scrollport, keyboardScroll: true, states: [] } as const;
   }
 
   return { root: first, states: ["default"] } as const;
@@ -242,8 +245,9 @@ watch([board, styles, specimen], ([container, library, sample]) => {
 
 <template>
   <section class="playground-visual-states" aria-labelledby="visual-states">
-    <h3 id="visual-states" data-playground-heading tabindex="-1">인터랙션 스타일</h3>
-    <div ref="board" class="playground-visual-states__grid" :data-roomy="specimen?.root.matches(roomyControl) || undefined"
+    <h3 id="visual-states" data-playground-heading tabindex="-1">{{ specimen?.keyboardScroll ? "키보드 스크롤" : "인터랙션 스타일" }}</h3>
+    <p v-if="specimen?.keyboardScroll">Tab으로 위 예제의 스크롤 영역에 들어간 뒤 방향키로 내용을 탐색할 수 있습니다.</p>
+    <div v-else ref="board" class="playground-visual-states__grid" :data-roomy="specimen?.root.matches(roomyControl) || undefined"
       :data-count="displayedVariants.length">
       <figure v-for="variant in displayedVariants" :key="variant.key" class="playground-visual-states__card">
         <div class="playground-visual-states__sample" :data-interaction="variant.key"
@@ -251,7 +255,7 @@ watch([board, styles, specimen], ([container, library, sample]) => {
         <figcaption>{{ variant.label }}</figcaption>
       </figure>
     </div>
-    <p v-if="specimen && !specimen.target">기본 예제에는 비교할 인터랙션 스타일이 없습니다.</p>
+    <p v-if="specimen && !specimen.target && !specimen.keyboardScroll">기본 예제에는 비교할 인터랙션 스타일이 없습니다.</p>
   </section>
 </template>
 

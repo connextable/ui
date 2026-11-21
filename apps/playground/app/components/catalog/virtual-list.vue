@@ -22,6 +22,8 @@ const changes = [
       :get-i-d="id => id"
       :size-policy="{ kind: 'fixed', extent: 48 }"
       :overscan="84"
+      role="region"
+      tabindex="0"
       aria-label="변경 기록 5만 건"
       @plan-change="plan => {
         const onScreen = plan.placements.filter(item => item.visible)

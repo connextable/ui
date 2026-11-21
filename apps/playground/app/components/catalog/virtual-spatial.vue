@@ -20,6 +20,8 @@ const nodes = Array.from({ length: 1000 }, (_, index) => ({
       :get-i-d="(node: typeof nodes[number]) => node.id"
       :get-rect="node => node"
       size-ownership="declared"
+      role="region"
+      tabindex="0"
       aria-label="좌표로 배치된 지점"
     >
       <template #item="{ value: node }">

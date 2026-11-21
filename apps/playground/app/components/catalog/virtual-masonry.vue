@@ -21,6 +21,8 @@ const cards = Array.from({ length: 1000 }, (_, index) => ({ id: index + 1, ...no
       :lane-policy="{ kind: 'responsive', minExtent: 174, maxCount: 4, gap: 8 }"
       :size-policy="{ kind: 'measured' }"
       :item-gap="8"
+      role="region"
+      tabindex="0"
       aria-label="가상 메이슨리"
     >
       <template #item="{ value: card }">

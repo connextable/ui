@@ -19,6 +19,8 @@ const items = Array.from({ length: 1000 }, (_, index) => ({
       :lane-policy="{ kind: 'responsive', minExtent: 146, maxCount: 4, gap: 8 }"
       :size-policy="{ kind: 'fixed', extent: 93 }"
       :row-gap="8"
+      role="region"
+      tabindex="0"
       aria-label="품목별 재고"
     >
       <template #item="{ value }">

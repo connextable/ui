@@ -46,9 +46,9 @@
     overflow: visible;
   }
 
-  :where([data-ui-tabular-scroll][tabindex]:focus-visible) {
+  :where([data-ui-tabular-scroll][tabindex]):focus-visible {
     outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
-    outline-offset: var(--ui-focus-ring-offset);
+    outline-offset: var(--ui-space-2xs);
   }
 
   :where([data-ui-tabular-scroll]) [data-part="header"] {
