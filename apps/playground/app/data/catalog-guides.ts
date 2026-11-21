@@ -412,7 +412,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "파일 하나 첨부하기",
     description: "파일을 고르고 이름과 크기를 확인합니다. 첨부한 파일을 제거하거나 다시 선택할 수 있습니다.",
     api: {
-      variant: "compact는 버튼과 상태를 한 줄에 배치하고, dropzone은 끌어 놓을 영역을 제공합니다.",
+      variant: "compact는 일반 입력 높이를 쓰며, dropzone은 파일을 끌어 놓을 넓은 영역을 제공합니다.",
+      size: "다른 입력과 같은 sm, md, lg 크기를 지정합니다. 기본값은 md입니다.",
       policy: "파일 형식, 개수, 개별 용량 및 전체 용량 제한을 지정합니다.",
       preview: "선택한 이미지의 썸네일을 표시합니다.",
       "#default": "파일 목록과 거절 상태를 받아 선택 영역과 목록을 직접 구성합니다.",
@@ -435,13 +436,20 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "file-upload": {
     examples: [
-      { id: "file-upload-group", title: "여러 파일의 전송 대기열", description: "동시 전송 수를 하나로 제한하면 나머지 파일은 차례를 기다립니다." },
-      { id: "file-upload-cancel", title: "전송 중 취소", description: "준비한 파일의 전송을 시작하고 진행 중에 취소합니다. 파일은 브라우저 밖으로 전송되지 않습니다." },
-      { id: "file-upload-retry", title: "실패 후 다시 전송", description: "첫 전송은 실패합니다. 다시 시작하면 같은 파일의 전송을 완료합니다." },
+      { id: "file-upload-group", title: "여러 파일의 전송 대기열", description: "세 파일을 차례로 전송하고 각 파일의 진행 상태를 확인합니다." },
+      { id: "file-upload-cancel", title: "전송 중 취소", description: "회의록의 전송을 시작한 다음 진행 중에 취소하세요. 이 예제는 브라우저에서 전송을 모의 실행합니다." },
+      { id: "file-upload-retry", title: "실패 후 다시 전송", description: "첫 시도는 실패합니다. 다시 시도하면 같은 파일의 전송을 완료합니다." },
     ],
     title: "파일 선택과 교체",
-    description: "빈 업로드 영역에서 파일을 고르세요. 이 예제는 브라우저에서 파일을 읽고 같은 영역에 결과를 표시합니다.",
-    api: { file: "전송할 브라우저 File 객체입니다. 비워 두면 파일 선택 상태를 표시합니다.", adapter: "진행률과 완료 결과를 연결하는 Sectile 전송 어댑터입니다.", "auto-start": "파일을 연결하면 어댑터를 바로 실행합니다.", "#picker": "파일 영역을 선택 및 교체 버튼으로 연결합니다. 선택 전에는 슬롯의 file이 null입니다.", "#status": "현재 업로드 상태를 받아 상태 메시지를 바꿉니다." },
+    description: "FileInput에서 고른 파일을 업로드 어댑터에 연결합니다. 이 예제의 어댑터는 브라우저 안에서 파일을 읽습니다.",
+    api: {
+      file: "전송할 브라우저 File 객체입니다. 비워 두면 파일 선택 상태를 표시합니다.",
+      adapter: "진행률과 완료 결과를 연결하는 Sectile 전송 어댑터입니다.",
+      size: "다른 입력과 같은 sm, md, lg 크기를 지정합니다. 기본값은 md입니다.",
+      "auto-start": "파일을 연결하면 어댑터를 바로 실행합니다.",
+      "#picker": "파일 영역을 선택 및 교체 버튼으로 연결합니다. 선택 전에는 슬롯의 file이 null입니다.",
+      "#status": "현재 업로드 상태에 맞춰 행 안에 짧은 상태 문구를 표시합니다.",
+    },
   },
   "tags-input": {
     title: "태그 입력 및 삭제",
