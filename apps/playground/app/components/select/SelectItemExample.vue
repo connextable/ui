@@ -9,7 +9,7 @@ const options = [
 </script>
 
 <template>
-  <UISelect :options="options" label="상태" default-value="review">
+  <UISelect :options="options" aria-label="상태" default-value="review">
     <UISelectTrigger />
     <UISelectContent>
       <UISelectItem v-for="option in options" :key="option.value" v-bind="option" />

@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { SelectItem, SelectItemIndicator, SelectItemText } from "@sectile/vue/select";
+import { Check } from "@lucide/vue";
+import { SelectItem, SelectItemIndicator, SelectItemText, type SelectItemSlotProps } from "@sectile/vue/select";
 import { useId } from "vue";
 
 defineProps<{ value: string; label: string; description?: string; disabled?: boolean }>();
+defineSlots<{
+  default?(state: SelectItemSlotProps): unknown;
+  leading?(state: SelectItemSlotProps): unknown;
+  indicator?(state: SelectItemSlotProps): unknown;
+}>();
 const id = useId();
 </script>
 
 <template>
   <SelectItem
+    v-slot="state"
     class="ui-select-item"
     :value="value"
     :disabled="disabled"
@@ -15,14 +22,14 @@ const id = useId();
     :aria-describedby="description ? id : undefined"
   >
     <span v-if="$slots.leading" class="ui-select-item__leading" aria-hidden="true">
-      <slot name="leading" />
+      <slot name="leading" v-bind="state" />
     </span>
     <span class="ui-select-item__copy">
-      <SelectItemText class="ui-select-item__label"><slot>{{ label }}</slot></SelectItemText>
+      <SelectItemText class="ui-select-item__label"><slot v-bind="state">{{ label }}</slot></SelectItemText>
       <span v-if="description" :id="id" class="ui-select-item__description">{{ description }}</span>
     </span>
     <SelectItemIndicator class="ui-select-item__indicator" force-present>
-      <slot name="indicator"><span class="ui-select-item__check"></span></slot>
+      <slot name="indicator" v-bind="state"><Check class="ui-select-item__check" aria-hidden="true" /></slot>
     </SelectItemIndicator>
   </SelectItem>
 </template>
@@ -73,10 +80,7 @@ const id = useId();
 }
 
 .ui-select-item__check {
-  inline-size: 0.3125rem;
-  block-size: 0.5625rem;
-  border: solid currentColor;
-  border-width: 0 0.125rem 0.125rem 0;
-  transform: translateY(-0.0625rem) rotate(45deg);
+  inline-size: 100%;
+  block-size: auto;
 }
 </style>

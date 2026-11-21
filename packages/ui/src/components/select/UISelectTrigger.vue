@@ -1,39 +1,56 @@
 <script setup lang="ts">
-import { SelectTrigger } from "@sectile/vue/select";
-import { useTemplateRef, watchEffect } from "vue";
+import { SelectTrigger, type SelectRootSlotProps } from "@sectile/vue/select";
 import UIPopupTriggerContent from "../catalog/UIPopupTriggerContent.vue";
+import { definedControlAttrs } from "../control-attrs";
 import UISelectValue from "./UISelectValue.vue";
-import { useSelectContext } from "./select-context";
+import { useSelectContext, type UISelectOption } from "./select-context";
 
 defineOptions({ inheritAttrs: false });
 defineProps<{ variant?: "outline" | "soft" }>();
+defineSlots<{
+  default?(state: SelectRootSlotProps): unknown;
+  leading?(): unknown;
+  trailing?(): unknown;
+  value?(scope: { value: string | null; option: UISelectOption | undefined }): unknown;
+}>();
 
-const { uid, triggerId, trigger, label, readonly, required, error, size } = useSelectContext();
-const part = useTemplateRef<InstanceType<typeof SelectTrigger>>("part");
+const { uid, triggerId, readonly, size, aria } = useSelectContext();
+const valueId = `${uid}-value`;
 
-watchEffect(() => {
-  const element = part.value?.$el;
-  trigger.value = element?.tagName === "BUTTON" ? element : null;
-});
+function triggerBindings(attrs: Record<string, unknown>) {
+  return definedControlAttrs({
+    ...attrs,
+    id: triggerId.value ?? attrs.id,
+    "aria-labelledby": aria.value.labelledby ? `${aria.value.labelledby} ${valueId}` : attrs["aria-labelledby"],
+    "aria-describedby": [
+      aria.value.describedby,
+      attrs["aria-describedby"],
+      aria.value.label && !aria.value.labelledby && valueId,
+    ].filter(Boolean).join(" ") || undefined,
+    "aria-invalid": aria.value.invalid ?? attrs["aria-invalid"],
+  });
+}
 </script>
 
 <template>
   <SelectTrigger
-    v-bind="{ ...$attrs, ...(error ? { 'aria-invalid': 'true' } : {}) }"
-    :id="triggerId"
-    ref="part"
+    v-bind="triggerBindings($attrs)"
+    v-slot="state"
     class="ui-field-control ui-popup-trigger ui-select-trigger"
     :data-size="size"
     :data-ui-control-size="size"
     :data-ui-readonly="readonly || undefined"
     :data-variant="variant ?? 'outline'"
-    :aria-labelledby="label ? `${uid}-label ${uid}-value` : undefined"
-    :aria-required="required || undefined"
-    :aria-describedby="[$attrs['aria-describedby'], error && `${uid}-error`].filter(Boolean).join(' ') || undefined"
   >
     <UIPopupTriggerContent :hide-indicator="readonly">
       <template v-if="$slots.leading" #leading><slot name="leading" /></template>
-      <slot><UISelectValue /></slot>
+      <slot v-bind="state">
+        <UISelectValue>
+          <template v-if="$slots.value" #default="scope">
+            <slot name="value" v-bind="scope" />
+          </template>
+        </UISelectValue>
+      </slot>
       <template v-if="$slots.trailing" #trailing><slot name="trailing" /></template>
     </UIPopupTriggerContent>
   </SelectTrigger>

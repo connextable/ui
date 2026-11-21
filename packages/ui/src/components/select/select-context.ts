@@ -1,20 +1,21 @@
-import { inject, type InjectionKey, type Ref, type ShallowRef } from "vue";
-
+import { inject, type AriaAttributes, type InjectionKey, type Ref } from "vue";
 import type { SelectionOption } from "../selection/selection-options";
 
 export interface UISelectOption extends SelectionOption {}
 
 export interface SelectContext {
   uid: string;
-  triggerId: Readonly<Ref<string>>;
-  trigger: ShallowRef<HTMLButtonElement | null>;
+  triggerId: Readonly<Ref<string | undefined>>;
   options: Readonly<Ref<readonly UISelectOption[]>>;
-  label: Readonly<Ref<string>>;
+  aria: Readonly<Ref<{
+    label?: string;
+    labelledby?: string;
+    describedby?: string;
+    invalid?: AriaAttributes["aria-invalid"];
+  }>>;
   size: Readonly<Ref<"sm" | "md" | "lg">>;
   placeholder: Readonly<Ref<string>>;
   readonly: Readonly<Ref<boolean>>;
-  required: Readonly<Ref<boolean>>;
-  error: Readonly<Ref<string>>;
 }
 
 export const selectKey: InjectionKey<SelectContext> = Symbol("UISelect");

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { SelectValue } from "@sectile/vue/select";
-import { useSelectContext } from "./select-context";
+import { useSelectContext, type UISelectOption } from "./select-context";
+
+defineSlots<{ default?(state: { value: string | null; option: UISelectOption | undefined }): unknown }>();
 
 const { uid, options, placeholder } = useSelectContext();
 </script>

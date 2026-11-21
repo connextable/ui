@@ -9,5 +9,5 @@ const options = [
 </script>
 
 <template>
-  <UISelect label="상태" :options="options" default-value="draft" />
+  <UISelect aria-label="상태" :options="options" default-value="draft" />
 </template>

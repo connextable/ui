@@ -8,7 +8,7 @@ const options = [
 </script>
 
 <template>
-  <UISelect :options="options" label="상태" default-value="review">
+  <UISelect :options="options" aria-label="상태" default-value="review">
     <UISelectTrigger />
     <UISelectContent>
       <UISelectItem

@@ -12,7 +12,7 @@ const soft = ref(false);
 
 <template>
   <div class="select-trigger-example">
-    <UISelect v-model="order" label="정렬 기준" :options="options">
+    <UISelect v-model="order" aria-label="정렬 기준" :options="options">
       <UISelectTrigger :variant="soft ? 'soft' : 'outline'" />
       <UISelectContent />
     </UISelect>

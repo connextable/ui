@@ -18,7 +18,7 @@ function clearSelection() {
 
 <template>
   <div class="select-value-example">
-    <UISelect :id="triggerId" v-model="interval" label="새로고침 주기" :options="options">
+    <UISelect :id="triggerId" v-model="interval" aria-label="새로고침 주기" :options="options">
       <UISelectTrigger>
         <UISelectValue v-slot="{ option }">
           <span v-if="option">매 <strong>{{ option.label }}</strong>마다</span>

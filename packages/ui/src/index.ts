@@ -39,7 +39,7 @@ export { default as UIRadioGroup, type UIRadioGroupOption } from "./components/s
 export { default as UISelect } from "./components/select/UISelect.vue";
 export { default as UISelectContent } from "./components/select/UISelectContent.vue";
 export { default as UISelectItem } from "./components/select/UISelectItem.vue";
-export { default as UISelectLabel } from "./components/select/UISelectLabel.vue";
+export { SelectPortal as UISelectPortal } from "@sectile/vue/select";
 export { default as UISelectTrigger } from "./components/select/UISelectTrigger.vue";
 export { default as UISelectValue } from "./components/select/UISelectValue.vue";
 export type { UISelectOption } from "./components/select/select-context";

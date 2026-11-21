@@ -13,7 +13,7 @@ const matchTrigger = ref(false);
 
 <template>
   <div class="select-content-example">
-    <UISelect v-model="city" label="기준 도시" :options="options">
+    <UISelect v-model="city" aria-label="기준 도시" :options="options">
       <UISelectTrigger />
       <UISelectContent :width="matchTrigger ? 'trigger' : 'fit'" />
     </UISelect>

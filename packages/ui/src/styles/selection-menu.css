@@ -12,15 +12,16 @@
   --ui-popup-anchor-width: min(var(--sectile-position-anchor-width, 9rem), var(--ui-popup-available-width));
   --ui-popup-max-height: min(18rem, var(--sectile-position-available-height, 70dvh));
   --ui-popup-radius: var(--ui-radius-lg);
-  --ui-popup-padding: var(--ui-space-xs);
-  --ui-popup-row-radius: calc(var(--ui-popup-radius) - var(--ui-popup-padding) - 1px);
+  --ui-frame-radius: var(--ui-popup-radius);
+  --ui-popup-padding: var(--ui-frame-padding);
+  --ui-popup-row-radius: var(--ui-inset-radius);
 
   box-sizing: border-box;
   inline-size: var(--ui-popup-width, max-content);
   min-inline-size: var(--ui-popup-min-width, var(--ui-popup-anchor-width));
   max-inline-size: min(var(--ui-popup-available-width), var(--ui-popup-max-width, 25rem));
   padding: var(--ui-popup-padding);
-  border: 1px solid var(--ui-color-border);
+  border: var(--ui-frame-border-width) solid var(--ui-color-border);
   border-radius: var(--ui-popup-radius);
   background: var(--ui-color-surface);
   color: var(--ui-color-text);

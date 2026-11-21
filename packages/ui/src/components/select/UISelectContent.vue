@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { SelectContent, SelectViewport } from "@sectile/vue/select";
+import { SelectContent, SelectViewport, type SelectRootSlotProps } from "@sectile/vue/select";
 import UISelectItem from "./UISelectItem.vue";
 import { useSelectContext } from "./select-context";
 
 defineProps<{ width?: "fit" | "trigger" }>();
+defineSlots<{ default?(state: SelectRootSlotProps): unknown }>();
 
 const { options } = useSelectContext();
 </script>
 
 <template>
-  <SelectContent class="ui-select-content" :data-width="width ?? 'fit'">
-    <SelectViewport class="ui-select-content__viewport">
-      <slot>
+  <SelectContent v-slot="state" class="ui-select-content" :data-width="width ?? 'fit'">
+    <SelectViewport class="ui-select-content__viewport ui-scrollbar">
+      <slot v-bind="state">
         <UISelectItem v-for="option in options" :key="option.value" v-bind="option" />
       </slot>
     </SelectViewport>
