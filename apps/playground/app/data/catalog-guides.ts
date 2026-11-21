@@ -583,14 +583,16 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "multi-thumb-slider": {
     examples: [
       { id: "multi-thumb-slider-gap", title: "손잡이 최소 간격", description: "두 경계 사이에 최소 세 스텝을 유지합니다." },
-      { id: "multi-thumb-slider-labels", title: "손잡이의 접근성 이름", description: "Tab으로 최소 금액과 최대 금액 손잡이를 찾아 각각 변경합니다." },
-      { id: "multi-thumb-slider-vertical", title: "세로 범위 조절", description: "두 경계값을 위아래로 조절합니다." },
+      { id: "multi-thumb-slider-labels", title: "상품 가격 범위 조절", description: "최소·최대 금액 손잡이를 끌면 아래에 선택한 가격이 원 단위로 표시됩니다. Tab으로 손잡이를 선택한 뒤 방향키로도 금액을 바꿀 수 있습니다." },
+      { id: "multi-thumb-slider-vertical", title: "세로 범위 조절", description: "두 경계값을 위아래로 조절합니다. 같은 끝점에 모인 손잡이를 안쪽으로 끌어 범위를 다시 넓힐 수 있습니다." },
     ],
     title: "범위의 시작값과 끝값 지정",
-    description: "두 손잡이를 움직여 범위의 양 끝을 설정합니다. thumbs의 순서대로 현재 값이 모델에 들어갑니다.",
+    description: "두 손잡이를 움직여 범위의 양 끝을 정합니다. 손잡이 사이에 선택한 구간이 표시됩니다.",
     api: {
       thumbs: "각 손잡이의 식별자를 값 배열과 같은 순서로 등록합니다.",
       "v-model": "손잡이별 현재 값을 배열로 연결합니다.",
+      "get-thumb-label": "스크린 리더가 각 손잡이를 ‘최소 금액’, ‘최대 금액’처럼 구분해 읽을 이름을 제공합니다.",
+      "--ui-slider-height": "세로 트랙의 전체 높이를 CSS에서 지정합니다.",
       "Thumb value": "이 손잡이가 대응하는 식별자입니다.",
     },
   },

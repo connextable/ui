@@ -31,7 +31,6 @@
   --ui-slider-rail-thickness: var(--ui-space-sm);
   --ui-slider-rail-inset: calc((var(--ui-control-height) - var(--ui-slider-rail-thickness)) / 2);
   --ui-slider-rail-edge: calc(-1 * var(--ui-inset-size) / 2);
-  --ui-slider-range-origin: var(--sectile-range-start, var(--ui-slider-rail-edge));
 
   position: relative;
   block-size: var(--ui-control-height);
@@ -59,6 +58,8 @@
   }
 
   > [data-part="range"] {
+    --ui-slider-range-origin: var(--sectile-range-start, var(--ui-slider-rail-edge));
+
     position: absolute;
     z-index: 1;
     inset-block: var(--ui-slider-rail-inset);
@@ -121,6 +122,14 @@
   }
 }
 
+:where([data-scope="multi-thumb-slider"])[data-part="thumb"][data-ui-thumb-at-shared-edge] {
+  z-index: 4;
+}
+
+:where([data-scope="multi-thumb-slider"])[data-part="root"] {
+  --ui-slider-default-height: 16rem;
+}
+
 :where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="root"][data-orientation="vertical"] {
   justify-items: center;
   gap: var(--ui-space-sm);
@@ -130,7 +139,7 @@
 
 :where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="track"][data-orientation="vertical"] {
   inline-size: var(--ui-control-height);
-  block-size: calc(9rem - 2 * var(--ui-slider-edge));
+  block-size: calc(var(--ui-slider-height, var(--ui-slider-default-height, 9rem)) - 2 * var(--ui-slider-edge));
   margin-inline: 0;
   margin-block: var(--ui-slider-edge);
 

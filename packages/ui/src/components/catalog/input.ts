@@ -99,11 +99,11 @@ export {
 } from "@sectile/vue/checkbox-group";
 export { default as UICheckboxGroupIndicator } from "../selection/UICheckboxGroupIndicator.vue";
 export {
-  MultiThumbSliderRoot as UIMultiThumbSlider,
   MultiThumbSliderTrack as UIMultiThumbSliderTrack,
   MultiThumbSliderRange as UIMultiThumbSliderRange,
-  MultiThumbSliderThumb as UIMultiThumbSliderThumb,
 } from "@sectile/vue/multi-thumb-slider";
+export { UIMultiThumbSlider } from "./multi-thumb-slider";
+export { default as UIMultiThumbSliderThumb } from "./UIMultiThumbSliderThumb.vue";
 export {
   PinInputRoot as UIPinInput,
   PinInputInput as UIPinInputInput,
