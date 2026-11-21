@@ -856,6 +856,60 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       revision: "목록 요청을 처리한 뒤 갱신합니다. 실패 후 동일한 목록으로 돌아갈 때도 대기 상태를 해제할 수 있습니다.",
     },
   },
+  meter: {
+    examples: [
+      { id: "meter-threshold", title: "임계 구간", description: "같은 센서 범위에서 경계가 표현되는 상태를 확인합니다." },
+      { id: "meter-unit", title: "측정 단위", description: "값 텍스트에 밀리초 단위를 표시합니다." },
+      { id: "meter-optimum", title: "권장 구간에서 벗어난 측정값", description: "optimum에 가까운 측정값과 권장 범위를 벗어난 값에서 상태가 달라집니다." },
+    ],
+    title: "측정값을 구간 안에서 표시",
+    description: "value를 min과 max 사이의 측정값으로 지정합니다.",
+    api: {
+      value: "구간 안에서 나타낼 측정값입니다.",
+      "min / max": "값을 표시할 구간의 두 경계입니다.",
+      "low / high / optimum": "값의 구간과 바람직한 수준을 표현합니다.",
+    },
+  },
+  "meter-group": {
+    examples: [
+      { id: "meter-group-format", title: "항목과 합계의 단위", description: "각 값과 합계를 GB로 표시합니다." },
+      { id: "meter-group-zero", title: "사용량이 없는 항목", description: "목록에 빈 항목을 표시하고 해당 세그먼트에는 너비를 할당하지 않습니다." },
+      { id: "meter-group-threshold", title: "항목의 합계가 임계값을 넘을 때", description: "미디어 사용량을 늘려 전체 사용량 표시와 임계 상태를 확인합니다." },
+    ],
+    title: "저장 용량을 항목별로 표시",
+    description: "max로 전체 용량을, items로 각 항목의 사용량을 전달합니다. 같은 id를 막대 구간과 범례에 연결합니다.",
+    api: {
+      items: "구간별 id, 이름, 값의 배열을 전달합니다.",
+      max: "전체 눈금의 크기입니다.",
+      "Segment / Item id": "막대 구간과 범례를 같은 항목에 연결합니다.",
+    },
+  },
+  timer: {
+    examples: [
+      { id: "timer-countdown", title: "카운트다운", description: "시간을 줄여 0에 도달하는 동작을 확인합니다.", parts: ["UITimerControl"] },
+      { id: "timer-auto-start", title: "자동 시작", description: "버튼을 누르기 전부터 시간이 흐릅니다." },
+      { id: "timer-reset", title: "진행된 시간을 0초로 초기화", description: "타이머를 시작하고 초기화 버튼을 누르면 0초로 돌아옵니다." },
+    ],
+    title: "타이머 시작과 정지",
+    description: "경과 시간을 분과 초로 표시합니다. 같은 버튼에서 시작, 일시 정지, 계속을 실행하고 초기화로 0에 돌아갑니다.",
+    api: {
+      "#default": "실행 상태인 running과 시간인 valueMs를 받습니다.",
+      "Item type": "분 또는 초처럼 표시할 시간 단위를 지정합니다.",
+    },
+  },
+  toolbar: {
+    examples: [
+      { id: "toolbar-vertical", title: "세로 도구 모음", description: "툴바 내부에서 위·아래 방향키로 이동합니다." },
+      { id: "toolbar-disabled", title: "사용하지 못하는 도구", description: "기울임을 비활성화해 탐색에서 건너뜁니다." },
+      { id: "toolbar-toggle", title: "토글 도구와 실행 도구", description: "굵게는 상태를 유지하고 복제는 한 번의 동작을 실행합니다." },
+    ],
+    title: "문단의 서식과 정렬 바꾸기",
+    description: "글자 서식과 문단 정렬을 구분선으로 나눕니다. 방향키로 도구를 이동하고 Enter를 눌러 문단에 적용해 보세요.",
+    api: {
+      items: "도구에 연결할 값의 순서입니다.",
+      "@invoke": "사용자가 실행한 도구 항목의 id를 받습니다.",
+    },
+  },
   "scroll-area": {
     title: "변경 기록과 처음·끝 이동",
     description: "변경 기록에 포커스하면 방향키나 Page Down으로 이동할 수 있습니다. 바깥 버튼으로 처음과 끝으로 이동합니다.",

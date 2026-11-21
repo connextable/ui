@@ -695,6 +695,58 @@ export const catalog: readonly CatalogEntry[] = [
       "UIFeedLoadNewer",
     ],
   },
+  {
+    slug: "meter",
+    title: "UIMeter",
+    category: "레이아웃",
+    description: "범위 내에서 현재 값을 표시합니다.",
+    parts: [
+      "UIMeterTrack",
+      "UIMeterIndicator",
+      "UIMeterValueText",
+    ],
+  },
+  {
+    slug: "meter-group",
+    title: "UIMeterGroup",
+    category: "레이아웃",
+    description: "하나의 눈금에 여러 값을 표시합니다.",
+    wide: true,
+    parts: [
+      "UIMeterGroupTrack",
+      "UIMeterGroupSegment",
+      "UIMeterGroupIndicator",
+      "UIMeterGroupValueText",
+      "UIMeterGroupList",
+      "UIMeterGroupItem",
+      "UIMeterGroupItemIndicator",
+      "UIMeterGroupItemLabel",
+      "UIMeterGroupItemValue",
+    ],
+  },
+  {
+    slug: "timer",
+    title: "UITimer",
+    category: "레이아웃",
+    description: "경과 시간을 표시합니다.",
+    parts: [
+      "UITimerArea",
+      "UITimerSeparator",
+      "UITimerControl",
+      "UITimerItem",
+      "UITimerActionTrigger",
+    ],
+  },
+  {
+    slug: "toolbar",
+    title: "UIToolbar",
+    category: "레이아웃",
+    description: "관련 동작을 키보드로 탐색할 수 있는 도구 모음에 배치합니다.",
+    parts: [
+      "UIToolbarItem",
+      "UIToolbarSeparator",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));
