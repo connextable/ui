@@ -390,4 +390,41 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "#default": "열별 항목을 렌더링할 수 있도록 columns를 제공합니다.",
     },
   },
+  "file-input": {
+    title: "문서 하나 첨부하기",
+    description: "선택한 문서의 이름과 용량을 확인하고, 제거하거나 다시 선택합니다.",
+    api: {
+      variant: "compact는 버튼과 상태를 한 줄에 배치하고, dropzone은 끌어 놓을 영역을 제공합니다.",
+      policy: "파일 형식, 개수, 개별 용량 및 전체 용량 제한을 지정합니다.",
+      preview: "선택한 이미지의 썸네일을 표시합니다.",
+      "#default": "파일 목록과 거절 상태를 받아 선택 영역과 목록을 직접 구성합니다.",
+    },
+    sections: [
+      { id: "examples", title: "선택과 첨부 관리", section: "picking" },
+      { id: "file-input-policies", title: "파일 제한", section: "policies" },
+      { id: "file-input-form", title: "폼", section: "form" },
+    ],
+    examples: [
+      { id: "file-input-dropzone", title: "파일 끌어 놓기", description: "파일을 점선 영역 위로 가져오면 놓을 곳이 강조됩니다.", section: "picking", parts: ["UIFileInputDropzone"] },
+      { id: "file-input-multiple", title: "파일 여러 개 관리", description: "예제 파일 세 개를 선택하고, 하나씩 제거하거나 모두 지워 보세요.", section: "picking" },
+      { id: "file-input-preview", title: "이미지 미리 보기", description: "이미지를 선택하거나 붙여넣으면 파일 이름 옆에서 썸네일을 확인할 수 있습니다.", section: "picking" },
+      { id: "file-input-clear", title: "비운 뒤 같은 파일 다시 선택", description: "검토 메모를 선택하고 카드에서 제거한 뒤 같은 파일을 다시 선택해 보세요.", section: "picking", parts: ["UIFileInputClear"] },
+      { id: "file-input-readonly", title: "확정된 첨부 파일", description: "읽기 전용에서는 이미 선택한 파일의 이름과 용량을 확인할 수 있습니다.", section: "picking" },
+      { id: "file-input-accept", title: "CSV만 받기", description: "CSV를 선택한 뒤 TXT를 선택하면 형식에 대한 안내가 표시됩니다.", section: "policies" },
+      { id: "file-input-reject", title: "개별 파일 용량 제한", description: "600 B와 2 KB 파일을 차례대로 선택해 파일 하나에 적용되는 제한을 확인합니다.", section: "policies" },
+      { id: "file-input-count", title: "첨부 파일 개수 제한", description: "두 개는 선택할 수 있고, 세 개를 한 번에 선택하면 거절됩니다.", section: "policies" },
+      { id: "file-input-total", title: "전체 파일 용량 제한", description: "각 파일의 크기가 작더라도 합계가 2 KB를 넘으면 선택이 거절됩니다.", section: "policies" },
+      { id: "file-input-submit", title: "선택한 파일 제출", description: "샘플 파일을 선택하고 제출한 뒤 FormData에서 첨부된 파일 이름을 읽습니다.", section: "form" },
+    ],
+  },
+  "file-upload": {
+    examples: [
+      { id: "file-upload-group", title: "여러 파일의 전송 대기열", description: "동시 전송 수를 하나로 제한하면 나머지 파일은 차례를 기다립니다." },
+      { id: "file-upload-cancel", title: "전송 중 취소", description: "준비한 파일의 전송을 시작하고 진행 중에 취소합니다. 파일은 브라우저 밖으로 전송되지 않습니다." },
+      { id: "file-upload-retry", title: "실패 후 다시 전송", description: "첫 전송은 실패합니다. 다시 시작하면 같은 파일의 전송을 완료합니다." },
+    ],
+    title: "선택한 파일을 전송 어댑터에 연결",
+    description: "파일을 선택하고 Upload를 누르면 전달한 adapter가 실행됩니다. 이 예제의 어댑터는 로컬 파일 읽기 진행률을 보고합니다.",
+    api: { file: "전송할 브라우저 File 객체입니다.", adapter: "진행률과 완료 결과를 연결하는 Sectile 전송 어댑터입니다.", "#status": "현재 업로드 상태를 받아 상태 메시지를 바꿉니다." },
+  },
 };

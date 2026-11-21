@@ -279,6 +279,28 @@ export const catalog: readonly CatalogEntry[] = [
       "UICascadeSelectItemChevron",
     ],
   },
+  {
+    slug: "file-input",
+    title: "UIFileInput",
+    category: "입력",
+    description: "파일을 선택하거나 끌어 놓고 첨부 목록을 관리합니다.",
+    parts: [
+      "UIFileInputInput",
+      "UIFileInputTrigger",
+      "UIFileInputClear",
+      "UIFileInputDropzone",
+    ],
+  },
+  {
+    slug: "file-upload",
+    title: "UIFileUpload",
+    category: "입력",
+    description: "선택한 파일을 업로드하고 진행 상태를 표시합니다.",
+    parts: [
+      "useUIFileUpload",
+      "useUIFileUploadGroup",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));

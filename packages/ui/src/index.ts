@@ -5,6 +5,7 @@ export * from "./components/catalog/navigation-menu";
 export { UIAnchor } from "./components/catalog/anchor";
 export * from "./components/catalog/menu";
 export * from "./components/catalog/cascade-select";
+export * from "./components/catalog/file-input";
 export { default as UISpinner } from "./components/progress/UISpinner.vue";
 export { ToggleGroupRoot as UIToggleGroup, ToggleGroupItem as UIToggleGroupItem } from "@sectile/vue/toggle-group";
 export { default as UIButton } from "./components/button/UIButton.vue";
