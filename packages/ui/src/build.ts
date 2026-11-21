@@ -3,6 +3,7 @@ import "./styles/tabular.css";
 import "./components/catalog/splitter.css";
 import "./styles/virtual.css";
 import "./styles/tokens.css";
+import "./styles/interaction.css";
 import "./styles/choice.css";
 import "./styles/field-control.css";
 import "./styles/field-layout.css";

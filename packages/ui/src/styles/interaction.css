@@ -1,0 +1,132 @@
+/* Keep the selected fill visible when a control is hovered or pressed. */
+:where(
+  button[data-scope][data-part]:not(.ui-button, .ui-popup-trigger, .ui-select-trigger, .ui-choice),
+  [data-scope="editable"][data-part="preview"],
+  [data-scope="listbox"][role="option"],
+  [data-scope="cascade-list"][role="option"],
+  [data-scope="transfer"][role="option"],
+  [data-scope="tree-view"][role="treeitem"],
+  [data-scope="checkbox-tree"][role="treeitem"],
+  [data-scope$="-reorder"][data-part="item"]:not(:has([data-sectile-reorder-handle])),
+  :is([data-scope="grid"], [data-scope="tree-grid"], [data-scope="data-grid"])[role="gridcell"]
+):active:not(:where(:disabled, [aria-disabled="true"], [aria-readonly="true"], [data-ui-readonly], [data-readonly] *)),
+.ui-choice:enabled:active:not([aria-readonly="true"]) {
+  background-image: linear-gradient(var(--ui-press-shade), var(--ui-press-shade));
+  --ui-press-shade: color-mix(in srgb, var(--ui-color-text) 12%, transparent);
+}
+
+:where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="thumb"] {
+  transition: background-color var(--ui-motion-fast) var(--ui-ease-out),
+    box-shadow var(--ui-motion-fast) var(--ui-ease-out);
+
+  &:not(:where([aria-disabled="true"], [aria-readonly="true"], [data-disabled] *, [data-readonly] *)) {
+    cursor: grab;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--ui-color-accent-soft);
+        box-shadow: 0 0 0 4px var(--ui-color-accent-soft);
+      }
+    }
+
+    &:active {
+      background-color: var(--ui-color-accent);
+      box-shadow: 0 0 0 4px var(--ui-color-accent-soft);
+      cursor: grabbing;
+
+      @media (forced-colors: active) {
+        background-color: Highlight;
+        forced-color-adjust: none;
+      }
+    }
+  }
+}
+
+:where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="root"][data-orientation="vertical"] {
+  justify-items: center;
+  gap: var(--ui-space-sm);
+  inline-size: max-content;
+  min-inline-size: var(--ui-control-height);
+}
+
+:where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="track"][data-orientation="vertical"] {
+  inline-size: var(--ui-space-sm);
+  block-size: 9rem;
+
+  & [data-part="range"] {
+    inset-inline: 0;
+    inset-block-start: calc(100% - var(--sectile-range-end, var(--sectile-slider-percentage, 0%)));
+    inset-block-end: var(--sectile-range-start, 0%);
+  }
+
+  & [data-part="thumb"] {
+    inset-inline-start: 50%;
+    inset-block-start: calc(100% - var(--sectile-thumb-percentage, var(--sectile-slider-percentage, 0%)));
+
+    &[role="separator"] {
+      inset-block-start: var(--sectile-slider-percentage, 0%);
+    }
+  }
+
+  &:has([role="separator"]) [data-part="range"] {
+    inset-block-start: 0;
+    inset-block-end: calc(100% - var(--sectile-slider-percentage, 0%));
+  }
+}
+
+:where([data-scope="color-picker"])[data-part="area-thumb"] {
+  transition: box-shadow var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+:where([data-scope="window-splitter"])[data-part="handle"] {
+  transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+@media (hover: hover) {
+  :where([data-scope="window-splitter"])[data-part="handle"]:hover:not([aria-disabled="true"]) {
+    background-color: var(--ui-color-focus);
+  }
+
+  :where([data-scope="color-picker"])[data-part="area"]:hover:not([aria-disabled="true"]) > [data-part="area-thumb"] {
+    box-shadow: 0 0 0 3px var(--ui-color-focus);
+  }
+
+  :where(
+    [data-scope="calendar"][data-part="cell"],
+    [data-scope="range-calendar"][data-part="cell"],
+    [data-scope="tabs"][data-part="trigger"],
+    [data-scope="toggle-group"][data-part="item"],
+    [data-scope="stepper"][data-part="step"],
+    [data-scope="rating"][data-part="item"],
+    [data-scope="editable"][data-part="preview"],
+    [data-scope="listbox"][role="option"],
+    [data-scope="cascade-list"][role="option"],
+    [data-scope="transfer"][role="option"],
+    [data-scope="tree-view"][role="treeitem"],
+    [data-scope="checkbox-tree"][role="treeitem"],
+    [data-scope$="-reorder"][data-part="item"]:not(:has([data-sectile-reorder-handle]))
+  ):hover:not(:where(:active, :disabled, [aria-disabled="true"], [aria-readonly="true"], [data-readonly] *)) {
+    background-image: linear-gradient(var(--ui-hover-shade), var(--ui-hover-shade));
+    --ui-hover-shade: color-mix(in srgb, var(--ui-color-text) 7%, transparent);
+  }
+
+  :where(
+    input:is([data-scope="pin-input"], [data-scope$="-field"]):not(.ui-field-control, .ui-input, [type="hidden"]),
+    :is(.ui-number-control, .ui-quantity-control):has(> input:hover:not(:disabled, :focus, [readonly]))
+  ):hover:not(:where(:disabled, :focus, [readonly], [data-ui-readonly], [aria-disabled="true"], [aria-readonly="true"], [aria-invalid="true"])) {
+    border-color: var(--ui-color-border-hover);
+  }
+}
+
+:where([data-scope="color-picker"])[data-part="area"]:active:not([aria-disabled="true"]) > [data-part="area-thumb"] {
+  box-shadow: 0 0 0 4px var(--ui-color-accent-active);
+}
+
+:where([data-scope="window-splitter"])[data-part="handle"]:active:not([aria-disabled="true"]) {
+  background-color: var(--ui-color-accent);
+
+  @media (forced-colors: active) {
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+}
