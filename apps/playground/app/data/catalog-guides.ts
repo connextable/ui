@@ -485,4 +485,19 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "default-value": "수치 문자열과 단위로 이루어진 초기 수량입니다.",
     },
   },
+  accordion: {
+    title: "한 섹션씩 펼치기",
+    description: "type을 single로 설정해 한 번에 한 섹션만 표시합니다. collapsible을 지정하면 열린 섹션을 다시 눌러 모두 접을 수 있습니다.",
+    api: {
+      type: "single은 한 섹션, multiple은 여러 섹션을 펼칠 수 있습니다.",
+      collapsible: "열린 섹션을 닫아 선택이 없는 상태를 허용합니다.",
+      "Item value": "이 섹션에 연결할 items의 식별자입니다.",
+    },
+    examples: [
+      { id: "accordion-controlled", title: "외부 버튼으로 섹션 열기", description: "같은 값에 연결된 외부 버튼에서 설정 섹션을 엽니다." },
+      { id: "accordion-collapse", title: "현재 항목도 닫기", description: "열린 항목을 다시 눌러 목록을 모두 닫을 수 있습니다." },
+      { id: "accordion-disabled", title: "비활성 항목", description: "danger 항목을 disabled-items에 지정합니다." },
+      { id: "accordion-multiple", title: "여러 섹션 함께 열기", description: "type을 multiple로 지정하고 각각의 헤더를 눌러 동시에 펼칩니다." },
+    ],
+  },
 };

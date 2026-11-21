@@ -338,6 +338,18 @@ export const catalog: readonly CatalogEntry[] = [
       "createUIStandardQuantityPolicies",
     ],
   },
+  {
+    slug: "accordion",
+    title: "UIAccordion",
+    category: "레이아웃",
+    description: "여러 콘텐츠 영역을 접고 펼칩니다.",
+    parts: [
+      "UIAccordionItem",
+      "UIAccordionHeader",
+      "UIAccordionTrigger",
+      "UIAccordionContent",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));

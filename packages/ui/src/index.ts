@@ -38,3 +38,4 @@ export { default as UISelectValue } from "./components/select/UISelectValue.vue"
 export type { UISelectOption } from "./components/select/select-context";
 export { default as UISwitch } from "./components/selection/UISwitch.vue";
 export * from "./components/catalog/input";
+export * from "./components/catalog/layout";
