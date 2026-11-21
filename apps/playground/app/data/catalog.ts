@@ -327,6 +327,17 @@ export const catalog: readonly CatalogEntry[] = [
     ],
   },
   {
+    slug: "spin-button",
+    title: "UISpinButton",
+    category: "입력",
+    description: "단계에 따라 숫자 값을 증감합니다.",
+    parts: [
+      "UISpinButtonInput",
+      "UISpinButtonIncrement",
+      "UISpinButtonDecrement",
+    ],
+  },
+  {
     slug: "quantity-field",
     title: "UIQuantityField",
     category: "입력",

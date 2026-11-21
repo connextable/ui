@@ -1,14 +1,18 @@
 :is(.ui-field-control, :where(
   input[data-scope="combobox"][data-part="input"],
-  input[data-scope="tree-select"][data-part="input"]
+  input[data-scope="tree-select"][data-part="input"],
+  input:is([data-scope="number-field"], [data-scope="quantity-field"], [data-scope="spin-button"])[data-part="input"]:not(
+    .ui-quantity-control input,
+    [data-scope="spin-button"][data-part="root"]:has(> [data-part="increment"], > [data-part="decrement"]) input
+  )
 )) {
   box-sizing: border-box;
-  min-block-size: var(--ui-control-size-height);
+  min-block-size: var(--ui-control-size-height, var(--ui-control-height));
   border: 1px solid var(--ui-color-border);
-  border-radius: var(--ui-control-size-radius);
+  border-radius: var(--ui-control-size-radius, var(--ui-control-radius));
   background: var(--ui-color-surface);
   color: var(--ui-color-text);
-  font: 500 var(--ui-control-size-font)/1.35 var(--ui-font-sans);
+  font: 500 var(--ui-control-size-font, var(--ui-font-size-body))/1.35 var(--ui-font-sans);
   transition:
     background-color var(--ui-motion-fast) var(--ui-ease-out),
     border-color var(--ui-motion-fast) var(--ui-ease-out),
@@ -67,4 +71,186 @@
       outline-color: Highlight;
     }
   }
+}
+
+:where(input:is([data-scope="number-field"], [data-scope="quantity-field"], [data-scope="spin-button"])[data-part="input"]) {
+  inline-size: min(100%, 14rem);
+  padding-inline: var(--ui-control-size-padding-inline, var(--ui-control-padding-inline));
+  font-variant-numeric: tabular-nums;
+}
+
+:where(
+  [data-scope="spin-button"][data-part="root"]:has(> [data-part="increment"], > [data-part="decrement"]),
+  .ui-quantity-control
+) {
+  --ui-number-extent: var(--ui-control-size-height, var(--ui-control-height));
+  --ui-number-inset: var(--ui-control-size-padding-inline, var(--ui-control-padding-inline));
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: stretch;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  min-block-size: var(--ui-number-extent);
+  padding: 0;
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-control-size-radius, var(--ui-control-radius));
+  background: var(--ui-color-surface);
+  color: var(--ui-color-text);
+  font: 500 var(--ui-control-size-font, var(--ui-font-size-body))/1.35 var(--ui-font-sans);
+  transition: border-color var(--ui-motion-fast) var(--ui-ease-out);
+
+  &:has(:focus-visible) {
+    border-color: var(--ui-color-focus);
+  }
+
+  &:has([aria-invalid="true"]) {
+    border-color: var(--ui-color-danger);
+  }
+
+  &:is([data-readonly], :has(input[readonly])) {
+    background: var(--ui-color-surface-readonly);
+  }
+
+  &:is([data-disabled], :has(input:disabled)) {
+    background: var(--ui-color-surface-muted);
+    color: var(--ui-color-disabled);
+  }
+
+  :where(input, button[data-part="increment"], button[data-part="decrement"], .ui-select-trigger) {
+    box-sizing: border-box;
+    min-inline-size: 0;
+    min-block-size: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+  }
+
+  :where(input) {
+    flex: 1 1 auto;
+    inline-size: 6ch;
+    padding: 0 var(--ui-number-inset);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where(input:focus-visible, button:focus-visible, .ui-select-trigger:focus-visible) {
+    outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+    outline-offset: var(--ui-focus-ring-offset);
+    box-shadow: none;
+  }
+}
+
+:where([data-scope="spin-button"][data-part="root"]) {
+  &:has(> [data-part="increment"], > [data-part="decrement"]) {
+    overflow: clip;
+  }
+
+  :where(.ui-numeric-value) {
+    display: flex;
+    align-items: stretch;
+    min-inline-size: 0;
+  }
+
+  :where(input) {
+    text-align: center;
+  }
+
+  :where(button[data-part="increment"], button[data-part="decrement"]) {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: calc(var(--ui-number-extent) - 2px);
+    min-block-size: 0;
+    padding: 0;
+    transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
+
+    &:disabled {
+      color: var(--ui-color-disabled);
+    }
+
+    &:hover:enabled {
+      background: var(--ui-color-surface-hover);
+    }
+
+    &:active:enabled {
+      background: var(--ui-color-surface-active);
+    }
+  }
+
+  &[data-layout="field"]:has(> [data-part="increment"], > [data-part="decrement"]) {
+    display: inline-grid;
+    grid-template-columns: minmax(0, 1fr) var(--ui-control-height-small);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+
+    > :where(input, .ui-numeric-value) {
+      grid-column: 1;
+      grid-row: 1 / -1;
+    }
+
+    :where(input) {
+      inline-size: 100%;
+      text-align: start;
+    }
+
+    > :where([data-part="increment"], [data-part="decrement"]) {
+      grid-column: 2;
+      inline-size: 100%;
+      border-inline-start: 1px solid var(--ui-color-divider);
+    }
+
+    > [data-part="increment"] {
+      grid-row: 1;
+      border-block-end: 1px solid var(--ui-color-divider);
+    }
+
+    > [data-part="decrement"] {
+      grid-row: 2;
+    }
+  }
+}
+
+:where([data-scope="quantity-field"][data-part="root"]) {
+  display: inline-grid;
+  gap: var(--ui-space-xs);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+:where(.ui-numeric-unit) {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  padding-inline: var(--ui-space-sm) var(--ui-number-inset);
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-body-sm);
+  white-space: nowrap;
+}
+
+.ui-quantity-control > :where(.ui-select) {
+  flex: none;
+  border-inline-start: 1px solid var(--ui-color-divider);
+}
+
+.ui-quantity-control .ui-select-trigger {
+  block-size: 100%;
+  min-inline-size: 4rem;
+  min-block-size: 100%;
+  padding-inline: var(--ui-space-md);
+  border: 0;
+  border-radius: 0;
+  border-start-end-radius: var(--ui-radius-sm);
+  border-end-end-radius: var(--ui-radius-sm);
+  background: transparent;
+  box-shadow: none;
+}
+
+.ui-quantity-control .ui-select-trigger:focus-visible {
+  outline-color: var(--ui-color-focus);
+}
+
+:where([data-scope="quantity-field"][data-part="value"]) {
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-metadata);
 }

@@ -472,10 +472,26 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "tags-input-composition", title: "칩에 상태 아이콘 넣기", description: "구성 슬롯에서 승인 칩에 체크를 추가합니다. 크기와 배경은 입력 컨트롤의 공통 토큰을 따릅니다.", section: "composition", parts: ["UITagsInputItem", "UITagsInputItemText", "UITagsInputItemDelete"] },
     ],
   },
+  "spin-button": {
+    examples: [
+      { id: "spin-button-page-step", title: "큰 단위 증감", description: "Page Up과 Page Down으로 한 번에 다섯 단위를 움직입니다." },
+      { id: "spin-button-boundary", title: "최소·최대 경계", description: "4와 6에서 더 이상 범위를 벗어나지 않습니다." },
+      { id: "spin-button-readonly", title: "읽기 전용 수량", description: "확정된 수량을 읽고 값 변경은 제한합니다." },
+      { id: "spin-button-draft", title: "스핀 값을 직접 입력", description: "텍스트로 시간을 바꾸고 Enter로 확정한 값이 갱신되는지 확인합니다." },
+    ],
+    title: "주문 수량과 제작 치수",
+    description: "주문 수량은 좌우 버튼으로 한 개씩 바꿉니다. 제작 길이는 오른쪽의 위아래 버튼으로 0.5mm씩 조절합니다.",
+    api: {
+      "v-model": "증감 버튼과 입력이 공유하는 값입니다.",
+      "min / max": "값이 움직일 수 있는 범위를 지정합니다.",
+      step: "한 번의 증가 또는 감소에 적용하는 값입니다.",
+      "data-layout": "field를 지정하면 증감 버튼을 입력 오른쪽에 세로로 배치합니다.",
+    },
+  },
   "quantity-field": {
     examples: [
       { id: "quantity-field-unit-commit", title: "단위와 값을 함께 확정", description: "새 수량을 입력하고 Enter를 눌러 확정된 수량과 단위를 읽습니다." },
-      { id: "quantity-field-unit", title: "표시 단위 환산", description: "UISelect로 표시 단위를 바꿉니다. 입력창이 같은 길이를 선택한 단위로 보여줍니다.", parts: ["createUIStandardQuantityPolicies"] },
+      { id: "quantity-field-unit", title: "표시 단위 환산", description: "포장 길이와 배송 무게의 표시 단위를 바꿔 보세요. 입력 숫자가 환산되고 아래의 기준값은 유지됩니다.", parts: ["createUIStandardQuantityPolicies"] },
       { id: "quantity-field-readonly", title: "확정된 길이", description: "값이나 단위 변경을 잠급니다." },
     ],
     title: "단위가 붙은 길이 입력",

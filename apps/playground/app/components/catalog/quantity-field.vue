@@ -11,7 +11,12 @@ const policies = createUIStandardQuantityPolicies("metre", "metric");
 
 <template>
   <UIQuantityField :policies="policies" :default-value="{ value: '1.25', unit: 'metre' }" label="길이">
-    <UIQuantityFieldInput />
-    <UIQuantityFieldValue />
+    <div class="ui-quantity-control">
+      <UIQuantityFieldInput />
+      <span class="ui-numeric-unit" aria-hidden="true">m</span>
+    </div>
+    <UIQuantityFieldValue v-slot="{ value }">
+      <output>확정한 길이 {{ value?.value ?? "—" }} m</output>
+    </UIQuantityFieldValue>
   </UIQuantityField>
 </template>
