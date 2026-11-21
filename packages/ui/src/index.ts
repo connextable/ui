@@ -2,6 +2,7 @@ export * from "./components/chart";
 export * from "./components/tabular";
 export * from "./components/virtual";
 export * from "./components/catalog/navigation-menu";
+export { UIAnchor } from "./components/catalog/anchor";
 export { default as UISpinner } from "./components/progress/UISpinner.vue";
 export { ToggleGroupRoot as UIToggleGroup, ToggleGroupItem as UIToggleGroupItem } from "@sectile/vue/toggle-group";
 export { default as UIButton } from "./components/button/UIButton.vue";

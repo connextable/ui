@@ -1,0 +1,30 @@
+.ui-anchor {
+  border-radius: var(--ui-space-2xs);
+  color: var(--ui-color-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 48%, transparent);
+  text-underline-offset: 0.2em;
+  transition: color var(--ui-motion-fast) var(--ui-ease-out),
+    text-decoration-color var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+.ui-anchor:is(:hover, :focus-visible):not([aria-disabled="true"]) {
+  color: var(--ui-color-accent-hover);
+  text-decoration-color: currentColor;
+}
+
+.ui-anchor[aria-current]:not([aria-current="false"], [aria-disabled="true"]) {
+  font-weight: 650;
+  text-decoration-color: currentColor;
+}
+
+.ui-anchor:focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+.ui-anchor[aria-disabled="true"] {
+  color: var(--ui-color-disabled);
+  text-decoration: none;
+  cursor: default;
+}
