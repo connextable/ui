@@ -38,9 +38,8 @@ const upload: UIFileUploadAdapter<File, number> = ({ file, signal, reportProgres
         </UIFileInputTrigger>
       </template>
       <template #status="{ status }">
-        <span v-if="status === 'succeeded'" role="status">파일을 읽었습니다.</span>
-        <span v-else-if="status === 'failed'" role="alert">파일을 읽지 못했습니다.</span>
-        <span v-else-if="status === 'canceled'" role="status">파일 읽기를 취소했습니다.</span>
+        <span v-if="status === 'failed'" role="alert">파일 읽기 실패</span>
+        <span v-else-if="status === 'canceled'" role="status">읽기 취소됨</span>
       </template>
     </UIFileUpload>
   </UIFileInput>

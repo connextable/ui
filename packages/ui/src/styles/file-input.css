@@ -5,6 +5,12 @@
   min-inline-size: 0;
 }
 
+.ui-file-input[data-inline-file] {
+  position: relative;
+  inline-size: 22rem;
+  max-inline-size: 100%;
+}
+
 .ui-file-input__picker,
 :where([data-scope="file-input"][data-part="dropzone"]:not(.ui-file-input__picker)) {
   position: relative;

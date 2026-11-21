@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Paperclip, X } from "@lucide/vue";
+import { ChevronRight, Paperclip, X } from "@lucide/vue";
 import {
   FileInputClear,
   FileInputDropzone,
@@ -23,7 +23,8 @@ const props = withDefaults(defineProps<FileInputRootProps & {
   pickerLabel?: string;
   variant?: "compact" | "dropzone";
   preview?: boolean;
-}>(), { disabled: undefined, readonly: undefined, required: undefined, variant: "compact" });
+  size?: "sm" | "md" | "lg";
+}>(), { disabled: undefined, readonly: undefined, required: undefined, variant: "compact", size: "md" });
 
 defineSlots<{
   default?(state: FileInputSlotProps): unknown;
@@ -31,11 +32,12 @@ defineSlots<{
 
 const picker = useTemplateRef<InstanceType<typeof FileInputRoot>>("picker");
 const rootProps = computed(() => {
-  const { label, hint, pickerLabel, variant, preview, ...nativeProps } = props;
+  const { label, hint, pickerLabel, variant, preview, size, ...nativeProps } = props;
   return definedControlAttrs(nativeProps);
 });
 const id = useId();
 const dragging = ref(false);
+const inlineFile = computed(() => props.variant === "compact" && !props.policy?.multiple);
 const fileKeys = new WeakMap<File, number>();
 let nextFileKey = 0;
 
@@ -100,11 +102,46 @@ defineExpose({
 <template>
   <FileInputRoot ref="picker" v-bind="{ ...rootProps, ...$attrs }" v-slot="state">
     <slot v-if="$slots.default" v-bind="state" />
-    <div v-else class="ui-file-input">
+    <div v-else class="ui-file-input" :data-inline-file="inlineFile || undefined">
+      <template v-if="inlineFile">
+        <FileInputInput class="ui-file-input__native" tabindex="-1" :aria-label="label" />
+        <UIFileRow
+          :file="state.files[0]"
+          :size="size"
+          :preview="preview"
+          :data-ui-readonly="state.readonly || undefined"
+          :data-disabled="state.disabled || undefined"
+          :aria-invalid="state.error ? 'true' : undefined"
+          @paste="paste($event, state)"
+        >
+          <template v-if="!state.files.length" #icon><Paperclip :size="18" /></template>
+          <template v-if="!state.files.length" #name>{{ pickerLabel ?? '파일 선택' }}</template>
+          <template #picker>
+            <FileInputTrigger
+              ref="trigger"
+              as-child
+              :aria-label="state.files[0] ? `${state.files[0].name} 교체` : pickerLabel ?? '파일 선택'"
+              :title="state.files[0]?.name"
+              :aria-describedby="[hint && `${id}-hint`, state.error && `${id}-error`].filter(Boolean).join(' ') || undefined"
+            >
+              <UIButton size="sm" variant="ghost" icon-only>
+                <template #leading><ChevronRight /></template>
+              </UIButton>
+            </FileInputTrigger>
+          </template>
+          <template v-if="state.files[0] && !state.disabled && !state.readonly" #actions>
+            <UIButton size="sm" variant="ghost" icon-only :aria-label="`${state.files[0].name} 제거`" @click="remove(0, state)">
+              <template #leading><X /></template>
+            </UIButton>
+          </template>
+        </UIFileRow>
+        <small v-if="hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>
+      </template>
       <component
+        v-else
         :is="variant === 'dropzone' ? FileInputDropzone : 'div'"
         class="ui-field-control ui-file-input__picker"
-        data-ui-control-size="md"
+        :data-ui-control-size="size"
         :data-layout="variant"
         :data-dragging="dragging && !state.disabled && !state.readonly || undefined"
         :data-ui-readonly="state.readonly || undefined"
@@ -126,7 +163,7 @@ defineExpose({
             as-child
             :aria-describedby="[hint && `${id}-hint`, state.error && `${id}-error`].filter(Boolean).join(' ') || undefined"
           >
-            <UIButton size="sm" variant="outline">
+            <UIButton :size="size" variant="outline">
               <template v-if="variant === 'compact'" #leading><Paperclip /></template>
               {{ pickerLabel ?? (state.files.length ? '다시 선택' : '파일 선택') }}
             </UIButton>
@@ -143,9 +180,9 @@ defineExpose({
       <p v-if="state.error" :id="`${id}-error`" class="ui-file-input__error" role="alert">
         {{ errors[state.error.code] ?? '파일을 선택하지 못했습니다.' }}
       </p>
-      <TransitionGroup tag="ul" name="ui-file" class="ui-file-input__files" aria-label="선택한 파일">
+      <TransitionGroup v-if="!inlineFile" tag="ul" name="ui-file" class="ui-file-input__files" aria-label="선택한 파일">
         <li v-for="({ file, key }, index) in fileRows(state.files)" :key="key">
-          <UIFileRow :file="file" :preview="preview">
+          <UIFileRow :file="file" :size="size" :preview="preview">
             <template v-if="!state.disabled && !state.readonly" #actions>
               <UIButton size="sm" variant="ghost" icon-only :aria-label="`${file.name} 제거`" @click="remove(index, state)">
                 <template #leading><X /></template>
