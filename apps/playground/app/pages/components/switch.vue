@@ -9,7 +9,7 @@ import switchReadonlyExampleSource from "~/components/examples/SwitchReadonlyExa
 definePageMeta({
   title: "UISwitch",
   category: "입력",
-  description: "미리보기처럼 즉시 반영되는 설정을 켜고 끕니다.",
+  description: "알림이나 자동 저장처럼 켜고 끄는 설정에 사용합니다.",
 });
 </script>
 
@@ -17,8 +17,8 @@ definePageMeta({
   <div>
     <PlaygroundExample
       id="switch-example"
-      title="즉시 반영"
-      description="스위치를 끄면 미리보기 설명이 접힙니다."
+      title="댓글 알림 설정"
+      description="v-model에 알림 수신 여부를 연결합니다. 스위치를 누르면 설정이 즉시 바뀝니다."
       :source="switchExampleSource"
     >
       <SwitchExample />
