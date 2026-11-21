@@ -116,6 +116,7 @@ const previewItems = computed<PreviewItem[]>((previous) => {
       :style="{ '--ui-reorder-min-rows': minRows }"
       :data-layout="layout"
       :data-ui-reorder-parent="parentId === null ? '' : parentId"
+      :data-ui-reorder-hierarchy="treeNodes ? '' : undefined"
       :data-framed="framed || undefined"
     >
       <slot :items="treeItems" />
@@ -123,7 +124,7 @@ const previewItems = computed<PreviewItem[]>((previous) => {
     <!-- Updating forwarded slots for pointer-only changes would restart Vue's active move transitions. -->
     <TransitionGroup
       v-if="showPreview"
-      v-memo="[previewItems, ghostId, as, layout, framed, previewItemClass, projectionClass, projectionStyle, !!$slots.preview, !!$slots['preview-handle']]"
+      v-memo="[previewItems, ghostId, as, layout, framed, !!treeNodes, previewItemClass, projectionClass, projectionStyle, !!$slots.preview, !!$slots['preview-handle']]"
       ref="projection"
       :tag="as"
       name="ui-reorder"
@@ -132,6 +133,7 @@ const previewItems = computed<PreviewItem[]>((previous) => {
       :style="projectionStyle"
       :data-layout="layout"
       :data-framed="framed || undefined"
+      :data-ui-reorder-hierarchy="treeNodes ? '' : undefined"
       aria-hidden="true"
       inert
     >
@@ -142,6 +144,7 @@ const previewItems = computed<PreviewItem[]>((previous) => {
         class="ui-reorder-projected-item"
         :class="previewItemClass"
         :data-ui-reorder-ghost="item.id === ghostId || undefined"
+        :data-ui-reorder-level="treeNodes ? item.level : undefined"
       >
         <span v-if="$slots['preview-handle']" class="ui-reorder-handle-visual">
           <slot name="preview-handle" v-bind="item" />
@@ -159,6 +162,7 @@ const previewItems = computed<PreviewItem[]>((previous) => {
     :style="{ '--ui-reorder-min-rows': minRows }"
     :data-layout="layout"
     :data-ui-reorder-parent="parentId === null ? '' : parentId"
+    :data-ui-reorder-hierarchy="treeNodes ? '' : undefined"
     :data-framed="framed || undefined"
   >
     <slot :items="treeItems" />

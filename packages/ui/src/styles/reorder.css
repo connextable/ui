@@ -215,7 +215,29 @@
 }
 
 .ui-reorder-group [data-ui-reorder-indent] {
-  margin-inline-start: min(calc(var(--ui-reorder-depth, 0) * var(--ui-space-md)), 25%);
+  position: relative;
+  min-inline-size: 0;
+  margin-inline-start: min(calc(var(--ui-reorder-depth, 0) * var(--ui-space-md) * 2), 30%);
+  word-break: keep-all;
+}
+
+:where(.ui-reorder-group[data-ui-reorder-hierarchy]) > :where([aria-level="1"], [data-ui-reorder-level="1"]) {
+  font-weight: 650;
+}
+
+:where(.ui-reorder-group[data-ui-reorder-hierarchy]) > :where([aria-level]:not([aria-level="1"]), [data-ui-reorder-level]:not([data-ui-reorder-level="1"])) {
+  background-color: var(--ui-color-surface-readonly);
+}
+
+:where(.ui-reorder-group[data-ui-reorder-hierarchy]) > :where([aria-level]:not([aria-level="1"]), [data-ui-reorder-level]:not([data-ui-reorder-level="1"])) > [data-ui-reorder-indent]::before {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: calc(100% + var(--ui-space-xs));
+  inline-size: var(--ui-space-sm);
+  block-size: 0.65em;
+  border-block-end: 1px solid var(--ui-color-border-hover);
+  border-inline-start: 1px solid var(--ui-color-border-hover);
+  content: "";
 }
 
 .ui-reorder-move {

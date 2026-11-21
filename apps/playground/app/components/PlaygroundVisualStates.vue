@@ -80,7 +80,7 @@ const groupedControl = [
   pickerAnchor, calendarContent, '[data-scope="feed"][data-part="item"]',
   "[data-scope][data-part=root]", "[data-ui-tabular-scroll]",
 ].join(",");
-const fillCard = ':is([data-scope="chart"], [data-scope="grid"], [data-scope="tree-grid"], [data-scope^="data-"], [data-scope="virtualizer"], [data-scope="window-splitter"])[data-part="root"]';
+const fillCard = ':is([data-scope="chart"], [data-scope="grid"], [data-scope="tree-grid"], [data-scope="tree-reorder"], [data-scope^="data-"], [data-scope="virtualizer"], [data-scope="window-splitter"])[data-part="root"]';
 const roomyControl = [
   fillCard, calendarContent,
   '[data-part="anchor"]:is([data-scope="date-range"], [data-scope^="date-time"], [data-scope*="-range-picker"])',
