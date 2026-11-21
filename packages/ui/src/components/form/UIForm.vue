@@ -10,6 +10,7 @@
 <style scoped>
 .ui-form {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: var(--ui-space-md);
   inline-size: 100%;
