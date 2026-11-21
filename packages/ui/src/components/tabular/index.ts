@@ -8,6 +8,9 @@ export { default as UIDataLabel } from "../data/UIDataLabel.vue";
 export { default as UIDataSurface } from "../data/UIDataSurface.vue";
 export { default as UIDataStatus } from "../data/UIDataStatus.vue";
 export { default as UITabularRows } from "./UITabularRows.vue";
+export { default as UITabularColumnAction } from "./UITabularColumnAction.vue";
+export { default as UITabularColumnHeading } from "./UITabularColumnHeading.vue";
+export { default as UITabularFilterPopover } from "./UITabularFilterPopover.vue";
 export { default as UITabularEditTrigger } from "./UITabularEditTrigger.vue";
 export {
   useDataTable as useUIDataTable,

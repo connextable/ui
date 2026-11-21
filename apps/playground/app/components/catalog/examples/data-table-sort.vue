@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ArrowDown, ArrowUp, ArrowUpDown } from "@lucide/vue";
-import { UITabularRows, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UITabularColumnAction, UITabularColumnHeading, UITabularRows, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
 
 const users = [
   { kind: "leaf", id: "1", cells: { name: "서준", team: "플랫폼" } },
@@ -38,12 +37,14 @@ const DataTable = createUIDataTableComponents(table);
       <DataTable.Header>
         <DataTable.HeaderRow>
           <DataTable.ColumnHeader column="name">
-            <DataTable.SortTrigger column="name" aria-label="이름 정렬">
+            <UITabularColumnHeading>
               이름
-              <ArrowUpDown :size="14" aria-hidden="true" />
-              <ArrowUp :size="14" aria-hidden="true" />
-              <ArrowDown :size="14" aria-hidden="true" />
-            </DataTable.SortTrigger>
+              <template #actions>
+                <DataTable.SortTrigger column="name" as-child>
+                  <UITabularColumnAction kind="sort" label="이름 정렬" />
+                </DataTable.SortTrigger>
+              </template>
+            </UITabularColumnHeading>
           </DataTable.ColumnHeader>
           <DataTable.ColumnHeader column="team">팀</DataTable.ColumnHeader>
         </DataTable.HeaderRow>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ArrowDown, ArrowUp, ArrowUpDown } from "@lucide/vue";
-import { createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
+import { createUIDataGridComponents, UITabularColumnAction, UITabularColumnHeading, useUIDataGrid } from "@connextable/ui";
 
 const tasks = [
   { kind: "leaf", id: "1", cells: { task: "시안 검토", status: "완료" } },
@@ -35,12 +34,14 @@ const DataGrid = createUIDataGridComponents(grid);
       <DataGrid.Header>
         <DataGrid.HeaderRow>
           <DataGrid.ColumnHeader column="task">
-            <DataGrid.SortTrigger column="task" aria-label="작업 정렬">
+            <UITabularColumnHeading>
               작업
-              <ArrowUpDown :size="14" aria-hidden="true" />
-              <ArrowUp :size="14" aria-hidden="true" />
-              <ArrowDown :size="14" aria-hidden="true" />
-            </DataGrid.SortTrigger>
+              <template #actions>
+                <DataGrid.SortTrigger column="task" as-child>
+                  <UITabularColumnAction kind="sort" label="작업 정렬" />
+                </DataGrid.SortTrigger>
+              </template>
+            </UITabularColumnHeading>
           </DataGrid.ColumnHeader>
           <DataGrid.ColumnHeader column="status">상태</DataGrid.ColumnHeader>
         </DataGrid.HeaderRow>

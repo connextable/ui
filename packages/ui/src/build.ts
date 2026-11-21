@@ -11,6 +11,7 @@ import "./styles/tags-input.css";
 import "./styles/anchor.css";
 import "./styles/navigation-menu.css";
 import "./styles/selection-menu.css";
+import "./styles/overlay-surface.css";
 import "./styles/reorder.css";
 
 export * from "./index";

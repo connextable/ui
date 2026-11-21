@@ -1,0 +1,25 @@
+@layer ui.sectile {
+  :where([data-scope="popover"], [data-scope="tooltip"], [data-scope$="-picker"],
+    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"]
+  ):where([data-part="content"], [data-part="popup"]) {
+    z-index: calc(var(--ui-layer-floating) + 2);
+    max-inline-size: calc(100vw - 2rem);
+    max-block-size: min(25rem, 70dvh);
+    padding: var(--ui-space-md);
+  }
+
+  :where([data-scope="dialog"], [data-scope="alert-dialog"], [data-scope="drawer"], [data-scope="popover"],
+    [data-scope="tooltip"], [data-scope$="-picker"],
+    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"]
+  ):where([data-part="content"], [data-part="popup"]),
+  :where([data-scope="toast"][data-part="root"]) {
+    box-sizing: border-box;
+    overflow: auto;
+    border: 1px solid var(--ui-color-border);
+    border-radius: var(--ui-panel-radius);
+    background: var(--ui-color-surface);
+    color: var(--ui-color-text);
+    box-shadow: var(--ui-shadow-elevated);
+    transition: opacity var(--ui-motion-standard) var(--ui-ease-out), scale var(--ui-motion-standard) var(--ui-ease-out);
+  }
+}

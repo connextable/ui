@@ -379,4 +379,16 @@
       display: block;
     }
   }
+
+  .ui-tabular-column-action__ascending,
+  .ui-tabular-column-action__descending,
+  :where([data-part="column-header"][aria-sort="ascending"], [data-part="column-header"][aria-sort="descending"])
+    .ui-tabular-column-action__unsorted {
+    display: none;
+  }
+
+  :where([data-part="column-header"][aria-sort="ascending"]) .ui-tabular-column-action__ascending,
+  :where([data-part="column-header"][aria-sort="descending"]) .ui-tabular-column-action__descending {
+    display: block;
+  }
 }

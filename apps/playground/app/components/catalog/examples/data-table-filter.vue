@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { createUIDataTableComponents, UITabularColumnHeading, UITabularFilterPopover, useUIDataTable } from "@connextable/ui";
 
 const users = [
   { kind: "leaf", id: "1", cells: { name: "민지", team: "디자인" } },
@@ -30,9 +30,29 @@ const DataTable = createUIDataTableComponents(table);
       <DataTable.Caption>사용자</DataTable.Caption>
       <DataTable.Header>
         <DataTable.HeaderRow>
-          <DataTable.ColumnHeader column="name">
-            이름
-            <DataTable.FilterControl scope="column" column="name" id="name-search" predicate="contains" aria-label="이름 필터" />
+          <DataTable.ColumnHeader column="name" v-slot="{ query }">
+            <UITabularColumnHeading>
+              이름
+              <template #actions>
+                <UITabularFilterPopover
+                  label="이름 필터"
+                  :value="String(query.filters.find(filter => filter.id === 'name-search')?.value ?? '')"
+                  v-slot="{ value }"
+                >
+                  <DataTable.FilterControl
+                    scope="column"
+                    column="name"
+                    id="name-search"
+                    predicate="contains"
+                    aria-label="이름 검색"
+                    placeholder="이름 입력"
+                    class="ui-field-control"
+                    data-ui-control-size="sm"
+                    :value="value"
+                  />
+                </UITabularFilterPopover>
+              </template>
+            </UITabularColumnHeading>
           </DataTable.ColumnHeader>
           <DataTable.ColumnHeader column="team">팀</DataTable.ColumnHeader>
         </DataTable.HeaderRow>
