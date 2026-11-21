@@ -10,6 +10,11 @@ import {
 import { ref } from 'vue'
 
 const lastAction = ref('')
+const labels: Record<string, string> = {
+  'new-file': '새 파일',
+  'new-folder': '새 폴더',
+  'import': '가져오기…',
+}
 const items = [
   { id: 'new-file', parentID: null },
   { id: 'new-folder', parentID: null },
@@ -20,13 +25,13 @@ const items = [
 
 <template>
   <UIMenuButton :disabled-items="['import']" :items="items" @invoke="lastAction = $event">
-    <UIMenuButtonTrigger>Create</UIMenuButtonTrigger>
+    <UIMenuButtonTrigger>만들기</UIMenuButtonTrigger>
     <UIMenuButtonContent>
-      <UIMenuItem value="new-file">New file <kbd>⌘ N</kbd></UIMenuItem>
-      <UIMenuItem value="new-folder">New folder <kbd>⇧ ⌘ N</kbd></UIMenuItem>
+      <UIMenuItem value="new-file">새 파일 <kbd>⌘ N</kbd></UIMenuItem>
+      <UIMenuItem value="new-folder">새 폴더 <kbd>⇧ ⌘ N</kbd></UIMenuItem>
       <UIMenuSeparator />
-      <UIMenuItem value="import">Import…</UIMenuItem>
+      <UIMenuItem value="import">가져오기…</UIMenuItem>
     </UIMenuButtonContent>
   </UIMenuButton>
-  <p v-if="lastAction" role="status">{{ lastAction }} invoked</p>
+  <p v-if="lastAction" role="status">{{ labels[lastAction] }} 실행</p>
 </template>

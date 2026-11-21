@@ -61,5 +61,6 @@ export {
   FormFieldSelector as UIFormFieldSelector,
 } from "@sectile/vue/form";
 export * from "./components/catalog/input";
+export * from "./components/catalog/navigation";
 export * from "./components/catalog/layout";
 export * from "./components/catalog/temporal";

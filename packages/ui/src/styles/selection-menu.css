@@ -250,10 +250,14 @@
   background: var(--ui-color-surface-muted);
 }
 
-:where([data-scope="toggle-group"][data-part="root"]) {
+:where([data-scope="toggle-group"][data-part="root"], [data-scope="tabs"][data-part="list"]) {
+  --ui-frame-radius: var(--ui-segmented-radius);
+  --ui-segmented-padding: var(--ui-frame-padding);
   box-sizing: border-box;
   inline-size: fit-content;
   max-inline-size: 100%;
+  border: var(--ui-frame-border-width) solid var(--ui-color-border);
+  background: var(--ui-color-surface);
 
   &[data-orientation="vertical"] {
     flex-direction: column;
@@ -348,10 +352,21 @@
 }
 
 @media (forced-colors: none) {
-  :where([data-scope="toggle-group"][data-part="item"]):not(:disabled, [aria-disabled="true"]) {
+  :where([data-scope="toggle-group"][data-part="item"], [data-scope="tabs"][data-part="trigger"]) {
+    border-radius: var(--ui-inset-radius);
+    transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
+
+    &:is([aria-pressed="true"], [aria-selected="true"]) {
+      background: var(--ui-color-selected);
+      color: var(--ui-color-accent);
+      outline-color: var(--ui-color-focus);
+    }
+  }
+
+  :where([data-scope="toggle-group"][data-part="item"], [data-scope="tabs"][data-part="trigger"]):not(:disabled, [aria-disabled="true"]) {
     @media (hover: hover) {
-      &[aria-pressed="true"]:hover {
-        background: var(--ui-color-accent-hover);
+      &:is([aria-pressed="true"], [aria-selected="true"]):hover {
+        background: var(--ui-color-selected-hover);
       }
     }
 
@@ -359,8 +374,8 @@
       background: var(--ui-color-surface-active);
     }
 
-    &[aria-pressed="true"]:active {
-      background: var(--ui-color-accent-active);
+    &:is([aria-pressed="true"], [aria-selected="true"]):active {
+      background: var(--ui-color-selected-active);
     }
   }
 }

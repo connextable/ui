@@ -862,6 +862,21 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "as에 abbr을 전달합니다. title 같은 HTML 속성은 선택한 요소에 전달됩니다.",
     api: { as: "렌더링할 HTML 요소 이름 또는 Vue 컴포넌트입니다.", "as-child": "슬롯에 전달한 단일 자식에 루트의 속성을 적용합니다." },
   },
+  "toggle-group": {
+    examples: [
+      { id: "toggle-group-multiple", title: "여러 항목 선택", description: "multiple을 켜서 여러 버튼을 선택합니다." },
+      { id: "toggle-group-deselect", title: "다시 눌러 선택 해제", description: "선택한 버튼을 다시 누르면 선택이 해제됩니다." },
+      { id: "toggle-group-vertical", title: "세로 탐색", description: "위·아래 방향키로 버튼을 탐색합니다." },
+      { id: "toggle-group-disabled", title: "특정 항목 비활성", description: "가운데 정렬 버튼을 비활성화합니다." },
+    ],
+    title: "버튼 그룹에서 옵션 선택",
+    description: "items에 항목의 식별자를 전달하고 v-model로 눌린 항목을 읽습니다. 버튼의 value는 식별자와 일치해야 합니다.",
+    api: {
+      items: "토글 그룹이 관리하는 항목의 식별자입니다.",
+      "v-model": "그룹이 채택한 선택값을 연결합니다.",
+      "Item value": "이 토글 버튼에 해당하는 항목의 id입니다.",
+    },
+  },
   listbox: {
     title: "열린 목록에서 하나 선택",
     description: "목록에 포커스를 두고 방향키로 항목을 탐색합니다. selection-mode를 single로 지정하면 한 번에 한 값만 선택할 수 있습니다.",
@@ -926,6 +941,47 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       length: "입력할 코드 자리 수를 지정합니다.",
       "Input index": "이 입력 칸이 맡는 0부터 시작하는 인덱스입니다.",
+    },
+  },
+  tabs: {
+    title: "선택한 탭의 내용 표시",
+    description: "탭 버튼과 콘텐츠의 value를 같은 items 배열에서 가져옵니다. 탭을 바꾸면 그 value에 해당하는 콘텐츠가 열립니다.",
+    api: {
+      items: "탭 버튼과 콘텐츠에 사용할 식별자입니다.",
+      "default-value": "처음 활성화할 탭의 식별자입니다.",
+      "activation-mode": "포커스만으로 탭을 활성화할지, 키로 확정할지 지정합니다.",
+    },
+    examples: [
+      { id: "tabs-vertical", title: "세로 탭", description: "위와 아래 방향키로 탭 사이를 이동합니다." },
+      { id: "tabs-disabled", title: "비활성 탭", description: "activity를 비활성화하면 방향키 탐색에서 건너뜁니다." },
+      { id: "tabs-external", title: "선택을 외부에서 제어", description: "외부 버튼을 누르면 설정 탭과 패널이 함께 활성화됩니다." },
+      { id: "tabs-manual", title: "키보드로 수동 활성화", description: "activation-mode를 manual로 지정합니다. 방향키는 포커스만 이동하고 Enter 또는 Space로 탭을 엽니다." },
+    ],
+  },
+  menu: {
+    examples: [
+      { id: "menu-submenu", title: "하위 메뉴에서 돌아오기", description: "하위 명령을 열고 Esc를 눌러 상위 항목으로 돌아옵니다.", parts: ["UIMenuSubContent"] },
+      { id: "menu-unavailable", title: "비활성 명령", description: "저장 명령은 입력으로 실행되지 않습니다." },
+      { id: "menu-separator", title: "성격이 다른 명령을 구분", description: "문서 편집 동작과 다운로드 사이에 구분선을 넣습니다.", parts: ["UIMenuSeparator"] },
+    ],
+    title: "명령의 실행 값 받기",
+    description: "항목을 누르거나 키보드로 실행해 보세요. invoke 이벤트에서 항목의 id를 받아 원하는 동작에 연결합니다.",
+    api: {
+      items: "실행할 명령 id와 계층형 메뉴의 부모 id입니다.",
+      "@invoke": "실행한 명령의 id를 반환합니다.",
+    },
+  },
+  menubar: {
+    examples: [
+      { id: "menubar-disabled", title: "비활성 편집 명령", description: "Redo를 비활성화하면 편집 메뉴에서 선택되지 않습니다." },
+      { id: "menubar-typeahead", title: "메뉴 이름으로 탐색", description: "편집 메뉴를 열고 U를 눌러 실행 취소로 이동합니다." },
+    ],
+    title: "메뉴 모음에 명령 배치",
+    description: "최상위 메뉴와 그 하위 명령을 parentID로 연결합니다. File, Edit, Help 사이를 이동한 뒤 원하는 명령을 실행합니다.",
+    api: {
+      items: "최상위 메뉴와 하위 명령의 id 및 부모 관계입니다.",
+      "text-value": "각 id의 이름을 키보드 탐색에 사용할 텍스트로 변환합니다.",
+      "Content for": "이 콘텐츠가 속한 상위 메뉴 id입니다.",
     },
   },
   feed: {

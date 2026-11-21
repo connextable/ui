@@ -33,7 +33,7 @@ function invoke(command: string) {
       as="div"
       tabindex="0"
       :style="{ fontWeight: bold ? 700 : undefined, fontStyle: italic ? 'italic' : undefined }"
-    >Build once, share everywhere.</UIContextMenuTrigger>
+    >한 번 준비한 문서를 여러 곳에서 공유하세요.</UIContextMenuTrigger>
     <UIContextMenuContent>
       <UIContextMenuItem value="bold" :icon="Bold">{{ bold ? "굵게 해제" : "굵게" }}</UIContextMenuItem>
       <UIContextMenuItem value="italic" :icon="Italic">{{ italic ? "기울임 해제" : "기울임" }}</UIContextMenuItem>

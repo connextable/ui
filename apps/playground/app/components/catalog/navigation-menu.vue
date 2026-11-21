@@ -21,5 +21,5 @@ const items: readonly UINavigationMenuEntry[] = [
 </script>
 
 <template>
-  <UINavigationMenuPopover :items="items" label="Playground 탐색" />
+  <UINavigationMenuPopover :items="items" label="플레이그라운드 탐색" />
 </template>

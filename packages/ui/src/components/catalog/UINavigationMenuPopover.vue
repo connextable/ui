@@ -193,7 +193,7 @@ onBeforeUnmount(() => {
     @after-close="resetPanelMotion"
   >
     <nav ref="rail" class="ui-navigation-rail" :aria-label="label" @pointerenter="cancelHover" @pointerleave="leave">
-      <ul class="ui-navigation-rail__items" @scroll="scrollRail">
+      <ul class="ui-navigation-rail__items ui-scrollbar" @scroll="scrollRail">
         <li v-for="entry in items" :key="entry.id">
           <button
             v-if="entry.children?.length"
