@@ -28,48 +28,8 @@ const id = useId();
 </template>
 
 <style scoped>
-.ui-select-item {
-  display: flex;
-  box-sizing: border-box;
-  align-items: center;
-  gap: var(--ui-space-md);
-  min-block-size: 2.75rem;
-  padding: 0.625rem var(--ui-space-md);
-  border-radius: calc(var(--ui-select-content-radius) - var(--ui-select-content-padding) - 1px);
-  font-size: var(--ui-font-size-body-sm);
-  font-weight: 500;
-  line-height: 1.35;
-  cursor: pointer;
-  transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
-}
-
 .ui-select-item:has(.ui-select-item__description) {
   min-block-size: 4rem;
-  padding-block: var(--ui-space-md);
-}
-
-.ui-select-item:focus-visible {
-  outline: 1px solid var(--ui-color-focus);
-  outline-offset: -1px;
-}
-
-.ui-select-item[data-highlighted]:not([aria-selected="true"], [aria-disabled="true"]) {
-  background: var(--ui-color-surface-hover);
-}
-
-.ui-select-item:active:not([aria-selected="true"], [aria-disabled="true"]) {
-  background: var(--ui-color-surface-active);
-}
-
-@media (hover: hover) {
-  .ui-select-item:hover:not(:active, [aria-selected="true"], [aria-disabled="true"]) {
-    background: var(--ui-color-surface-hover);
-  }
-}
-
-.ui-select-item[aria-disabled="true"] {
-  color: var(--ui-color-disabled);
-  cursor: not-allowed;
 }
 
 .ui-select-item__copy {

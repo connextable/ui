@@ -87,24 +87,8 @@
     }
 
     &[data-part="sub-content"] {
-      --ui-navigation-menu-panel-padding: var(--ui-space-xs);
-      --ui-navigation-menu-panel-radius: var(--ui-radius-md);
-
-      z-index: var(--ui-layer-floating);
-      box-sizing: border-box;
-      inline-size: var(--ui-navigation-menu-panel-width, 14rem);
-      max-inline-size: min(calc(100vw - 1rem), var(--sectile-position-available-width, 100vw));
-      max-block-size: min(60dvh, var(--sectile-position-available-height, 60dvh));
-      padding: var(--ui-navigation-menu-panel-padding);
-      overflow: auto;
-      border: 1px solid var(--ui-color-border);
-      border-radius: var(--ui-navigation-menu-panel-radius);
-      background: var(--ui-color-surface);
-      color: var(--ui-color-text);
-      box-shadow: var(--ui-shadow-elevated);
-      transition:
-        opacity var(--ui-motion-fast) var(--ui-ease-out),
-        translate var(--ui-motion-fast) var(--ui-ease-out);
+      --ui-popup-width: var(--ui-navigation-menu-panel-width, 14rem);
+      --ui-popup-min-width: 0px;
     }
 
     &[data-part="sub-content"]:not([hidden]) {
@@ -115,21 +99,10 @@
 
     &[data-part="sub-content"][data-layout="columns"] {
       --ui-navigation-menu-panel-width: 30rem;
+      --ui-popup-max-width: var(--ui-navigation-menu-panel-width);
 
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
       gap: var(--ui-space-xs);
-    }
-
-    &[data-part="sub-content"][data-state="closed"] {
-      pointer-events: none;
-      opacity: 0;
-      translate: 0 calc(-1 * var(--ui-space-xs));
-    }
-
-    &[data-part="sub-content"] > :where([data-part="item"]) {
-      min-block-size: var(--ui-control-height-small);
-      padding: var(--ui-space-sm);
-      border-radius: calc(var(--ui-navigation-menu-panel-radius) - var(--ui-navigation-menu-panel-padding) - 1px);
     }
 
     &[data-part="sub-content"][hidden],
@@ -160,11 +133,6 @@
   }
 
   @starting-style {
-    :where([data-scope="navigation-menu"][data-part="sub-content"][data-state="open"]) {
-      opacity: 0;
-      translate: 0 calc(-1 * var(--ui-space-xs));
-    }
-
     :where([data-scope="navigation-menu"][data-part="indicator"][data-state="visible"]) {
       opacity: 0;
     }

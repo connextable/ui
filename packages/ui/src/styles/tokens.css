@@ -51,7 +51,10 @@
   --ui-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-:where([data-ui-control-size]) {
+:where([data-ui-control-size],
+  input[data-scope="combobox"][data-part="input"],
+  input[data-scope="tree-select"][data-part="input"]
+) {
   --ui-control-size-height: var(--ui-control-height);
   --ui-control-size-padding-block: 0.375rem;
   --ui-control-size-padding-inline: 1.125rem;

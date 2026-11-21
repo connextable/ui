@@ -1,4 +1,7 @@
-.ui-field-control {
+:is(.ui-field-control, :where(
+  input[data-scope="combobox"][data-part="input"],
+  input[data-scope="tree-select"][data-part="input"]
+)) {
   box-sizing: border-box;
   min-block-size: var(--ui-control-size-height);
   border: 1px solid var(--ui-color-border);
@@ -10,57 +13,57 @@
     background-color var(--ui-motion-fast) var(--ui-ease-out),
     border-color var(--ui-motion-fast) var(--ui-ease-out),
     box-shadow var(--ui-motion-fast) var(--ui-ease-out);
-}
 
-.ui-field-control[data-variant="soft"] {
-  border-color: transparent;
-  background: var(--ui-color-surface-muted);
-}
+  &[data-variant="soft"] {
+    border-color: transparent;
+    background: var(--ui-color-surface-muted);
+  }
 
-.ui-field-control::placeholder,
-.ui-field-control > :is(input, textarea)::placeholder {
-  color: var(--ui-color-placeholder);
-  opacity: 1;
-}
+  &::placeholder,
+  & > :is(input, textarea)::placeholder {
+    color: var(--ui-color-placeholder);
+    opacity: 1;
+  }
 
-.ui-field-control:is([data-ui-readonly], [readonly], :has(> [readonly])) {
-  border-color: var(--ui-color-border);
-  background: var(--ui-color-surface-readonly);
-  caret-color: transparent;
-  cursor: default;
-}
+  &:is([data-ui-readonly], [readonly], :has(> [readonly])) {
+    border-color: var(--ui-color-border);
+    background: var(--ui-color-surface-readonly);
+    caret-color: transparent;
+    cursor: default;
+  }
 
-.ui-field-control:hover:where(:not(:disabled, :focus, [data-ui-readonly], [readonly], :has(> :is(:disabled, :focus, [readonly])))) {
-  border-color: var(--ui-color-border-hover);
-}
+  &:hover:where(:not(:disabled, :focus, [data-ui-readonly], [readonly], :has(> :is(:disabled, :focus, [readonly])))) {
+    border-color: var(--ui-color-border-hover);
+  }
 
-.ui-field-control:is(:disabled, :has(> :disabled)) {
-  border-color: var(--ui-color-border);
-  background: var(--ui-color-surface-muted);
-  color: var(--ui-color-disabled);
-  cursor: default;
-}
+  &:is(:disabled, :has(> :disabled)) {
+    border-color: var(--ui-color-border);
+    background: var(--ui-color-surface-muted);
+    color: var(--ui-color-disabled);
+    cursor: default;
+  }
 
-.ui-field-control:is(:focus-visible, :has(> :focus-visible), [data-state="open"]) {
-  border-color: var(--ui-color-focus);
-}
+  &:is(:focus-visible, :has(> :focus-visible), [data-state="open"], [aria-expanded="true"]) {
+    border-color: var(--ui-color-focus);
+  }
 
-.ui-field-control:is(:focus-visible, :has(> :focus-visible)) {
-  outline: var(--ui-focus-ring-width) solid transparent;
-  outline-offset: var(--ui-focus-ring-offset);
-  box-shadow: var(--ui-focus-ring);
-}
+  &:is(:focus-visible, :has(> :focus-visible)) {
+    outline: var(--ui-focus-ring-width) solid transparent;
+    outline-offset: var(--ui-focus-ring-offset);
+    box-shadow: var(--ui-focus-ring);
+  }
 
-.ui-field-control:is([aria-invalid="true"], :has(> [aria-invalid="true"])) {
-  border-color: var(--ui-color-danger);
-}
+  &:is([aria-invalid="true"], :has(> [aria-invalid="true"])) {
+    border-color: var(--ui-color-danger);
+  }
 
-.ui-field-control:is([aria-invalid="true"], :has(> [aria-invalid="true"])):is(:focus-visible, :has(> :focus-visible)) {
-  box-shadow: var(--ui-focus-ring-danger);
-}
+  &:is([aria-invalid="true"], :has(> [aria-invalid="true"])):is(:focus-visible, :has(> :focus-visible)) {
+    box-shadow: var(--ui-focus-ring-danger);
+  }
 
-@media (forced-colors: active) {
-  .ui-field-control:is(:focus-visible, :has(> :focus-visible)) {
-    outline-color: Highlight;
+  @media (forced-colors: active) {
+    &:is(:focus-visible, :has(> :focus-visible)) {
+      outline-color: Highlight;
+    }
   }
 }
