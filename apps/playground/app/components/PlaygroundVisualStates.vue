@@ -40,7 +40,13 @@ import { computed, onMounted, shallowRef, useTemplateRef, watch } from "vue";
 const { source } = defineProps<{ source: HTMLElement | null }>();
 const board = useTemplateRef<HTMLElement>("board");
 const styles = shallowRef<Awaited<ReturnType<typeof getStylesheet>>>();
-const specimen = shallowRef<{ root: Element; target?: Element; states: readonly Variant[] }>();
+const specimen = shallowRef<{
+  root: Element;
+  target?: Element;
+  pointer?: Element;
+  states: readonly Variant[];
+}>();
+const equivalentStates = shallowRef(new Map<Variant, Variant>());
 
 const variants = [
   { key: "default", label: "기본" },
@@ -50,11 +56,22 @@ const variants = [
 ] as const;
 type Variant = typeof variants[number]["key"];
 
-const displayedVariants = computed(() => variants.filter(variant => !specimen.value || specimen.value.states.includes(variant.key)));
+const displayedVariants = computed(() => {
+  const cards = new Map<Variant, string[]>();
+  for (const variant of variants) {
+    if (specimen.value && !specimen.value.states.includes(variant.key)) continue;
+    const key = equivalentStates.value.get(variant.key) ?? variant.key;
+    const labels = cards.get(key) ?? [];
+    labels.push(variant.label);
+    cards.set(key, labels);
+  }
+  return Array.from(cards, ([key, labels]) => ({ key, label: labels.join(" · ") }));
+});
 
 const focusable = "button, input:not([type=hidden]), select, textarea, a[href], [tabindex], [contenteditable=true]";
 const pickerAnchor = ':is([data-part="anchor"]:is([data-scope^="date"], [data-scope$="-picker"]), [data-scope="time-picker"][data-part="root"])';
 const calendarContent = ':is([data-scope="calendar"], [data-scope="range-calendar"])[data-part="content"]';
+const collectionItem = ':is([role="option"], [role="treeitem"], [role="gridcell"]):not([aria-selected="true"], [aria-disabled="true"], [hidden])';
 const groupedControl = [
   ".ui-number-control", ".ui-quantity-control", ".ui-input--with-slots",
   ".ui-choice", ".ui-checkbox", ".ui-file-input__picker", ".ui-file-row", "[role=tablist]",
@@ -90,7 +107,9 @@ function findSpecimen(source: HTMLElement) {
     if (target.matches('[data-scope="chart"][data-part="root"]')) {
       return { root, target, states: ["default", "focus"] } as const;
     }
-    return { root, target, states: ["default", "hover", "active", "focus"] } as const;
+    const collection = target.matches('[role="listbox"], [role="tree"], [role="grid"], [role="treegrid"]');
+    const pointer = collection ? target.querySelector(collectionItem) ?? target : target;
+    return { root, target, pointer, states: ["default", "hover", "active", "focus"] } as const;
   }
 
   const table = source.querySelector('[data-scope="data-table"][data-part="root"]');
@@ -138,6 +157,36 @@ function copySpecimen(root: Element, target: Element | undefined, state: Variant
   return clone;
 }
 
+const paintProperties = [
+  "backgroundColor", "backgroundImage", "boxShadow", "color", "opacity", "filter",
+  "transform", "translate", "rotate", "scale", "fontWeight", "fontSize", "textDecorationLine",
+  "textDecorationColor", "fill", "stroke", "strokeWidth", "clipPath",
+] as const;
+const borderSides = ["top", "right", "bottom", "left"] as const;
+
+function paintStyle(style: CSSStyleDeclaration) {
+  return [
+    ...paintProperties.map(property => style[property]),
+    ...borderSides.map(side => style.getPropertyValue(`border-${side}-style`) === "none"
+      ? "" : style.getPropertyValue(`border-${side}`)),
+    style.outlineStyle === "none" ? "" : `${style.outline} ${style.outlineOffset}`,
+  ];
+}
+
+function appearance(root: Element) {
+  const frame = root.getBoundingClientRect();
+  return JSON.stringify([root, ...root.querySelectorAll("*")].flatMap((element, index) => {
+    const style = getComputedStyle(element);
+    if (style.visibility !== "visible" || style.opacity === "0" || !element.getClientRects().length) return [];
+    const { x, y, width, height } = element.getBoundingClientRect();
+    const geometry = [x - frame.x, y - frame.y, width, height].map(Math.round);
+    const generated = ["::before", "::after"].map(pseudo => getComputedStyle(element, pseudo));
+    return [[index, geometry, paintStyle(style), ...generated.map(pseudo =>
+      pseudo.content === "none" || pseudo.content === "normal" ? "" : [pseudo.content, paintStyle(pseudo)],
+    )]];
+  }));
+}
+
 onMounted(() => {
   void getStylesheet().then(value => { styles.value = value; });
 });
@@ -167,18 +216,35 @@ watch(() => source, (element, _, onCleanup) => {
 watch([board, styles, specimen], ([container, library, sample]) => {
   if (!container || !library || !sample) return;
   const sheets = [library.sheet, ...getExampleStyles(sample.root, library.scopes)];
+  const clones = new Map<Variant, Element>();
   for (const host of container.querySelectorAll<HTMLElement>("[data-interaction]")) {
+    const state = host.dataset.interaction as Variant;
+    const target = state === "hover" || state === "active" ? sample.pointer ?? sample.target : sample.target;
+    const clone = copySpecimen(sample.root, target, state);
     const root = host.shadowRoot ?? host.attachShadow({ mode: "open" });
     root.adoptedStyleSheets = sheets;
-    root.replaceChildren(copySpecimen(sample.root, sample.target, host.dataset.interaction as Variant));
+    root.replaceChildren(clone);
+    clones.set(state, clone);
   }
+  const measured = new Map<string, Variant>();
+  const same = new Map<Variant, Variant>();
+  if (clones.size > 1) {
+    for (const [state, clone] of clones) {
+      const signature = appearance(clone);
+      const representative = measured.get(signature);
+      if (representative) same.set(state, representative);
+      else measured.set(signature, state);
+    }
+  }
+  equivalentStates.value = same;
 }, { flush: "post" });
 </script>
 
 <template>
   <section class="playground-visual-states" aria-labelledby="visual-states">
     <h3 id="visual-states" data-playground-heading tabindex="-1">인터랙션 스타일</h3>
-    <div ref="board" class="playground-visual-states__grid" :data-roomy="specimen?.root.matches(roomyControl) || undefined">
+    <div ref="board" class="playground-visual-states__grid" :data-roomy="specimen?.root.matches(roomyControl) || undefined"
+      :data-count="displayedVariants.length">
       <figure v-for="variant in displayedVariants" :key="variant.key" class="playground-visual-states__card">
         <div class="playground-visual-states__sample" :data-interaction="variant.key"
           :data-fill="specimen?.root.matches(fillCard) || undefined" inert aria-hidden="true" />
@@ -203,33 +269,38 @@ watch([board, styles, specimen], ([container, library, sample]) => {
 }
 
 .playground-visual-states__grid {
+  --columns: 4;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
   grid-auto-rows: 1fr;
   gap: var(--ui-space-sm);
 }
 
-.playground-visual-states__grid:where([data-roomy], :has(> :nth-child(2):last-child)) {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.playground-visual-states__grid:where([data-count="3"]) {
+  --columns: 3;
 }
 
-.playground-visual-states__grid:where(:has(> :only-child)) {
-  grid-template-columns: minmax(0, 1fr);
+.playground-visual-states__grid:where([data-roomy], [data-count="2"]) {
+  --columns: 2;
+}
+
+.playground-visual-states__grid:where([data-count="1"]) {
+  --columns: 1;
 }
 
 @container (width < 42rem) {
-  .playground-visual-states__grid:where(:has(> :nth-child(4)):not([data-roomy])) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .playground-visual-states__grid:where([data-count="3"], [data-count="4"]) {
+    --columns: 2;
   }
 
-  .playground-visual-states__grid:where([data-roomy], :has(> :nth-child(2):last-child)) {
-    grid-template-columns: minmax(0, 1fr);
+  .playground-visual-states__grid:where([data-roomy], [data-count="2"]) {
+    --columns: 1;
   }
 }
 
 @container (width < 19rem) {
-  .playground-visual-states__grid:where(:has(> :nth-child(4))) {
-    grid-template-columns: minmax(0, 1fr);
+  .playground-visual-states__grid {
+    --columns: 1;
   }
 }
 
