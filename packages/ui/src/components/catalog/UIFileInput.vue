@@ -63,11 +63,15 @@ function remove(index: number, state: FileInputSlotProps) {
   if (state.disabled || state.readonly) return;
   const next = state.files.filter((_, position) => position !== index);
   const changed = next.length ? picker.value?.selectFiles(next) : picker.value?.clear();
-  const button = trigger.value?.element;
-  if (changed && button instanceof HTMLElement) button.focus();
+  if (changed) focusTrigger();
 }
 
 const trigger = useTemplateRef<InstanceType<typeof FileInputTrigger>>("trigger");
+
+function focusTrigger() {
+  const button = trigger.value?.element;
+  if (button instanceof HTMLElement) button.focus();
+}
 
 function enter(event: DragEvent, state: FileInputSlotProps) {
   if (!state.disabled && !state.readonly && event.dataTransfer?.types.includes("Files")) dragging.value = true;
@@ -102,9 +106,9 @@ defineExpose({
 <template>
   <FileInputRoot ref="picker" v-bind="{ ...rootProps, ...$attrs }" v-slot="state">
     <slot v-if="$slots.default" v-bind="state" />
-    <div v-else class="ui-file-input" :data-inline-file="inlineFile || undefined">
+    <div v-else class="ui-file-input" :data-inline-file="inlineFile || undefined" @paste="paste($event, state)">
+      <FileInputInput class="ui-file-input__native" tabindex="-1" :aria-label="label" />
       <template v-if="inlineFile">
-        <FileInputInput class="ui-file-input__native" tabindex="-1" :aria-label="label" />
         <UIFileRow
           :file="state.files[0]"
           :size="size"
@@ -112,7 +116,6 @@ defineExpose({
           :data-ui-readonly="state.readonly || undefined"
           :data-disabled="state.disabled || undefined"
           :aria-invalid="state.error ? 'true' : undefined"
-          @paste="paste($event, state)"
         >
           <template v-if="!state.files.length" #icon><Paperclip :size="18" /></template>
           <template v-if="!state.files.length" #name>{{ pickerLabel ?? '파일 선택' }}</template>
@@ -137,46 +140,58 @@ defineExpose({
         </UIFileRow>
         <small v-if="hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>
       </template>
-      <component
-        v-else
-        :is="variant === 'dropzone' ? FileInputDropzone : 'div'"
-        class="ui-field-control ui-file-input__picker"
-        :data-ui-control-size="size"
-        :data-layout="variant"
-        :data-dragging="dragging && !state.disabled && !state.readonly || undefined"
-        :data-ui-readonly="state.readonly || undefined"
-        :aria-invalid="state.error ? 'true' : undefined"
-        @dragenter="variant === 'dropzone' && enter($event, state)"
-        @dragleave="leave"
-        @dragend="dragging = false"
-        @drop="dragging = false"
-        @paste="paste($event, state)"
-      >
-        <FileInputInput class="ui-file-input__native" tabindex="-1" :aria-label="label" />
-        <div v-if="variant === 'dropzone'" class="ui-file-input__description">
-          <span class="ui-file-input__mark" aria-hidden="true"><Paperclip :size="20" /></span>
-          <strong>{{ dragging ? '파일을 놓으세요' : '파일을 끌어 놓거나 붙여넣으세요' }}</strong>
-        </div>
-        <div class="ui-file-input__controls">
+      <template v-else>
+        <FileInputDropzone v-if="variant === 'dropzone'" as-child>
           <FileInputTrigger
             ref="trigger"
-            as-child
-            :aria-describedby="[hint && `${id}-hint`, state.error && `${id}-error`].filter(Boolean).join(' ') || undefined"
+            class="ui-field-control ui-file-input__picker"
+            data-layout="dropzone"
+            :data-ui-control-size="size"
+            :data-dragging="dragging && !state.disabled && !state.readonly || undefined"
+            :data-ui-readonly="state.readonly || undefined"
+            :aria-label="pickerLabel ?? (state.files.length ? '다시 선택' : '파일 선택')"
+            :aria-describedby="[`${id}-instructions`, hint && `${id}-hint`, state.error && `${id}-error`].filter(Boolean).join(' ')"
+            :aria-invalid="state.error ? 'true' : undefined"
+            @dragenter="enter($event, state)"
+            @dragleave="leave"
+            @dragend="dragging = false"
+            @drop="dragging = false"
           >
-            <UIButton :size="size" variant="outline">
-              <template v-if="variant === 'compact'" #leading><Paperclip /></template>
-              {{ pickerLabel ?? (state.files.length ? '다시 선택' : '파일 선택') }}
-            </UIButton>
+            <span class="ui-file-input__mark" aria-hidden="true"><Paperclip :size="20" /></span>
+            <strong>{{ dragging ? '파일을 놓으세요' : pickerLabel ?? (state.files.length ? '다시 선택' : '파일 선택') }}</strong>
+            <span :id="`${id}-instructions`" class="ui-file-input__hint">파일을 끌어 놓거나 붙여넣을 수 있어요.</span>
+            <small v-if="hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>
           </FileInputTrigger>
-          <span v-if="variant === 'compact'" class="ui-file-input__status" role="status">
-            {{ state.files.length ? `${state.files.length}개 선택됨` : '선택한 파일 없음' }}
-          </span>
-          <FileInputClear v-if="state.files.length > 1 && !state.readonly && !state.disabled" as-child>
-            <UIButton size="sm" variant="ghost">모두 지우기</UIButton>
-          </FileInputClear>
+        </FileInputDropzone>
+        <div
+          v-if="variant === 'compact' || state.files.length > 1 && !state.readonly && !state.disabled"
+          class="ui-file-input__options"
+          :data-layout="variant"
+        >
+          <div class="ui-file-input__controls">
+            <template v-if="variant === 'compact'">
+              <FileInputTrigger
+                ref="trigger"
+                as-child
+                :aria-describedby="[hint && `${id}-hint`, state.error && `${id}-error`].filter(Boolean).join(' ') || undefined"
+                :aria-invalid="state.error ? 'true' : undefined"
+              >
+                <UIButton :size="size" variant="outline">
+                  <template #leading><Paperclip /></template>
+                  {{ pickerLabel ?? (state.files.length ? '다시 선택' : '파일 선택') }}
+                </UIButton>
+              </FileInputTrigger>
+              <span class="ui-file-input__status" role="status">
+                {{ state.files.length ? `${state.files.length}개 선택됨` : '선택한 파일 없음' }}
+              </span>
+            </template>
+            <FileInputClear v-if="state.files.length > 1 && !state.readonly && !state.disabled" as-child>
+              <UIButton size="sm" variant="ghost" @click="focusTrigger">모두 지우기</UIButton>
+            </FileInputClear>
+          </div>
+          <small v-if="variant === 'compact' && hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>
         </div>
-        <small v-if="hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>
-      </component>
+      </template>
       <p v-if="state.error" :id="`${id}-error`" class="ui-file-input__error" role="alert">
         {{ errors[state.error.code] ?? '파일을 선택하지 못했습니다.' }}
       </p>

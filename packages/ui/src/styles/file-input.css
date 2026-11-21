@@ -1,4 +1,5 @@
 .ui-file-input {
+  position: relative;
   display: grid;
   gap: var(--ui-space-sm);
   inline-size: 100%;
@@ -6,29 +7,23 @@
 }
 
 .ui-file-input[data-inline-file] {
-  position: relative;
   inline-size: 22rem;
   max-inline-size: 100%;
 }
 
-.ui-file-input__picker,
-:where([data-scope="file-input"][data-part="dropzone"]:not(.ui-file-input__picker)) {
-  position: relative;
+.ui-file-input__options {
   display: grid;
   gap: var(--ui-space-sm);
   min-inline-size: 0;
 }
 
-.ui-file-input__picker {
-  --ui-file-picker-inset: var(--ui-space-sm);
-  padding: var(--ui-file-picker-inset);
-}
-
 .ui-file-input__picker[data-layout="dropzone"],
 :where([data-scope="file-input"][data-part="dropzone"]:not(.ui-file-input__picker)) {
   box-sizing: border-box;
+  position: relative;
+  display: grid;
   justify-items: center;
-  gap: var(--ui-space-md);
+  gap: var(--ui-space-sm);
   min-inline-size: min(100%, 22rem);
   padding: calc(2 * var(--ui-space-md));
   border: 1px dashed var(--ui-color-border-strong);
@@ -37,23 +32,22 @@
   text-align: center;
 }
 
+.ui-file-input__picker:enabled {
+  cursor: pointer;
+}
+
+.ui-file-input__picker:enabled:hover,
 .ui-file-input__picker[data-dragging] {
   border-color: var(--ui-color-accent);
   background: var(--ui-color-accent-soft);
 }
 
-.ui-file-input__picker:has(:focus-visible) {
-  border-color: var(--ui-color-focus);
+.ui-file-input__picker > * {
+  pointer-events: none;
 }
 
 .ui-file-input__picker[aria-invalid="true"] {
   border-color: var(--ui-color-danger);
-}
-
-.ui-file-input__description {
-  display: grid;
-  justify-items: center;
-  gap: var(--ui-space-sm);
 }
 
 .ui-file-input__mark {
@@ -73,15 +67,8 @@
   gap: var(--ui-space-sm);
 }
 
-.ui-file-input__picker[data-layout="dropzone"] .ui-file-input__controls {
-  justify-content: center;
-}
-
-.ui-file-input__picker[data-layout="compact"] {
-  min-block-size: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
+.ui-file-input__options[data-layout="dropzone"] {
+  justify-items: end;
 }
 
 .ui-file-input__status,
@@ -129,7 +116,7 @@
 }
 
 :where([data-scope="file-input"][data-part="input"]:focus-visible) ~ :where([data-scope="file-input"][data-part="trigger"]),
-.ui-file-input__picker:has(.ui-file-input__native:focus-visible) :where([data-scope="file-input"][data-part="trigger"]) {
+.ui-file-input:has(> .ui-file-input__native:focus-visible) .ui-file-input__options :where([data-scope="file-input"][data-part="trigger"]) {
   outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
   outline-offset: var(--ui-focus-ring-offset);
 }

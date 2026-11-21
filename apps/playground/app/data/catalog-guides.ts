@@ -410,7 +410,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "파일 하나 첨부하기",
     description: "파일을 고르고 이름과 크기를 확인합니다. 첨부한 파일을 제거하거나 다시 선택할 수 있습니다.",
     api: {
-      variant: "compact는 일반 입력 높이를 쓰며, dropzone은 파일을 끌어 놓을 넓은 영역을 제공합니다.",
+      variant: "compact는 일반 입력 높이를 씁니다. dropzone은 카드 전체에서 파일 선택, 드롭, 붙여넣기를 받습니다.",
       size: "다른 입력과 같은 sm, md, lg 크기를 지정합니다. 기본값은 md입니다.",
       policy: "파일 형식, 개수, 개별 용량 및 전체 용량 제한을 지정합니다.",
       preview: "선택한 이미지의 썸네일을 표시합니다.",
@@ -421,8 +421,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "file-input-policies", title: "파일 제한", section: "policies" },
     ],
     examples: [
-      { id: "file-input-dropzone", title: "파일 끌어 놓기", description: "파일을 점선 영역 위로 가져오면 놓을 곳이 강조됩니다.", section: "picking", parts: ["UIFileInputDropzone"] },
-      { id: "file-input-multiple", title: "파일 여러 개 관리", description: "예제 파일 세 개를 선택하고, 하나씩 제거하거나 모두 지워 보세요.", section: "picking" },
+      { id: "file-input-dropzone", title: "파일 선택·드롭·붙여넣기", description: "카드를 누르거나 파일을 끌어 놓으세요. 카드에 포커스한 뒤 파일이나 이미지를 붙여넣을 수도 있습니다.", section: "picking", parts: ["UIFileInputDropzone"] },
+      { id: "file-input-multiple", title: "파일 여러 개 관리", description: "카드에 파일 여러 개를 놓거나 한 번에 고른 뒤, 하나씩 제거하거나 모두 지워 보세요.", section: "picking" },
       { id: "file-input-preview", title: "이미지 미리 보기", description: "이미지를 선택하거나 붙여넣으면 파일 이름 옆에서 썸네일을 확인할 수 있습니다.", section: "picking" },
       { id: "file-input-clear", title: "비운 뒤 같은 파일 다시 선택", description: "검토 메모를 선택하고 카드에서 제거한 뒤 같은 파일을 다시 선택해 보세요.", section: "picking", parts: ["UIFileInputClear"] },
       { id: "file-input-readonly", title: "확정된 첨부 파일", description: "읽기 전용에서는 이미 선택한 파일의 이름과 용량을 확인할 수 있습니다.", section: "picking" },
