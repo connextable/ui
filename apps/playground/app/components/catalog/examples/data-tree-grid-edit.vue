@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/ui";
+import { UITabularEditTrigger, createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/ui";
 import { ChevronRight } from "@lucide/vue";
 import { onScopeDispose, ref } from "vue";
 
@@ -13,7 +13,7 @@ const tree = useUIDataTreeGrid({
       kind: "group", id: "platform", parentGroupID: null, depth: 0, expanded,
       cells: { service: "플랫폼", owner: "제품 팀" },
     } as const;
-    const child = { kind: "leaf", id: "site", cells: { service: "웹사이트", owner } } as const;
+    const child = { kind: "leaf", id: "site", parentGroupID: "platform", depth: 1, cells: { service: "웹사이트", owner } } as const;
     const rows = expanded ? [group, child] : [group];
     return {
       ...request,
@@ -58,9 +58,12 @@ const DataTreeGrid = createUIDataTreeGridComponents(tree);
           </DataTreeGrid.Cell>
           <DataTreeGrid.Cell column="owner">
             <DataTreeGrid.Editor v-if="row.kind === 'leaf'" column="owner" :value="row.cells.owner" aria-label="새 담당자" />
-            <template v-if="editState.kind !== 'editing' || editState.cell.rowID !== row.id || editState.cell.columnID !== 'owner'">
+            <UITabularEditTrigger v-if="row.kind === 'leaf' && (editState.kind !== 'editing' || editState.cell.rowID !== row.id)"
+              :aria-label="`${row.cells.service} 담당자 편집, 현재 ${row.cells.owner}`"
+              @click="tree.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'owner' } })">
               {{ row.cells.owner }}
-            </template>
+            </UITabularEditTrigger>
+            <template v-if="row.kind === 'group'">{{ row.cells.owner }}</template>
           </DataTreeGrid.Cell>
         </DataTreeGrid.Body>
       </DataTreeGrid.Root>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIDataActions, createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
+import { UIDataActions, UITabularEditTrigger, createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
 
 import { onScopeDispose, ref } from "vue";
 
@@ -49,9 +49,11 @@ const DataGrid = createUIDataGridComponents(grid);
         <DataGrid.Cell column="task">{{ row.cells.task }}</DataGrid.Cell>
         <DataGrid.Cell column="status">
           <DataGrid.Editor column="status" :value="row.cells.status" aria-label="새 상태" />
-          <template v-if="editState.kind !== 'editing' || editState.cell.rowID !== row.id || editState.cell.columnID !== 'status'">
+          <UITabularEditTrigger v-if="editState.kind !== 'editing' || editState.cell.rowID !== row.id"
+            :aria-label="`${row.cells.task} 상태 편집, 현재 ${row.cells.status}`"
+            @click="grid.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'status' } })">
             {{ row.cells.status }}
-          </template>
+          </UITabularEditTrigger>
         </DataGrid.Cell>
       </DataGrid.Body>
     </DataGrid.Root>

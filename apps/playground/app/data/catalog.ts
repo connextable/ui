@@ -89,6 +89,7 @@ export const catalog: readonly CatalogEntry[] = [
       "DataGrid.RowSelectionControl",
       "DataGrid.BulkSelectionControl",
       "DataGrid.Editor",
+      "UITabularEditTrigger",
     ],
   },
   {
@@ -116,6 +117,7 @@ export const catalog: readonly CatalogEntry[] = [
       "DataTreeGrid.RowSelectionControl",
       "DataTreeGrid.BulkSelectionControl",
       "DataTreeGrid.Editor",
+      "UITabularEditTrigger",
     ],
   },
   {
@@ -132,6 +134,7 @@ export const catalog: readonly CatalogEntry[] = [
       "UITreeGridCell",
       "UITreeGridDisclosure",
       "UITreeGridEditor",
+      "UITabularEditTrigger",
     ],
   },
   {

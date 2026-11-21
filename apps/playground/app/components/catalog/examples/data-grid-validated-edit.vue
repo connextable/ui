@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onScopeDispose, ref } from "vue";
-import { UIDataActions, createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
+import { UIDataActions, UITabularEditTrigger, createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
 
-const message = ref("수량 셀에서 F2를 누르세요.");
+const message = ref("수량 옆 편집 버튼을 누르세요.");
 let rows = [
   { kind: "leaf" as const, id: "cable", cells: { name: "충전 케이블", quantity: 18 } },
   { kind: "leaf" as const, id: "adapter", cells: { name: "전원 어댑터", quantity: 24 } },
@@ -48,7 +48,11 @@ function parseQuantity(input: string) {
       <Grid.Cell column="name">{{ row.cells.name }}</Grid.Cell>
       <Grid.Cell column="quantity" data-ui-tabular-numeric>
         <Grid.Editor column="quantity" inputmode="numeric" :value="row.cells.quantity" :parse-value="parseQuantity" :aria-label="`${row.cells.name} 수량`" />
-        <span v-if="editState.kind !== 'editing' || editState.cell.rowID !== row.id">{{ row.cells.quantity }}개</span>
+        <UITabularEditTrigger v-if="editState.kind !== 'editing' || editState.cell.rowID !== row.id"
+          :aria-label="`${row.cells.name} 수량 편집, 현재 ${row.cells.quantity}개`"
+          @click="grid.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'quantity' } })">
+          {{ row.cells.quantity }}개
+        </UITabularEditTrigger>
       </Grid.Cell>
     </Grid.Body>
   </Grid.Root>
