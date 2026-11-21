@@ -1,45 +1,35 @@
 <script setup lang="ts">
-import { computed, useId } from "vue";
+import { FormDescription, FormField, FormLabel, FormMessage, type FormFieldProps, type FormFieldSlotProps } from "@sectile/vue/form";
 
-const props = defineProps<{
-  id?: string;
-  label: string;
+const { label, description, ...fieldProps } = defineProps<FormFieldProps & {
+  label?: string;
   description?: string;
-  error?: string;
 }>();
 
-const uid = useId();
-const controlId = computed(() => props.id ?? `${uid}-control`);
-const descriptionId = `${uid}-description`;
-const errorId = `${uid}-error`;
-const control = computed(() => ({
-  id: controlId.value,
-  "aria-describedby": [props.description && descriptionId, props.error && errorId].filter(Boolean).join(" ") || undefined,
-  "aria-invalid": props.error ? true : undefined,
-}));
+defineSlots<{
+  default?(state: FormFieldSlotProps): unknown;
+  label?(state: FormFieldSlotProps): unknown;
+  description?(state: FormFieldSlotProps): unknown;
+  message?(state: FormFieldSlotProps): unknown;
+}>();
 </script>
 
 <template>
-  <div class="ui-form-field">
-    <label :for="controlId" class="ui-form-field__label">{{ label }}</label>
-    <slot :control="control" />
-    <p v-if="description" :id="descriptionId" class="ui-form-field__description">{{ description }}</p>
-    <p v-if="error" :id="errorId" class="ui-form-field__error" role="alert">{{ error }}</p>
-  </div>
+  <FormField v-bind="fieldProps" v-slot="state" class="ui-field ui-form-field" @invalid.capture.prevent>
+    <FormLabel v-if="label || $slots.label" class="ui-field-label ui-form-field__label">
+      <slot name="label" v-bind="state">{{ label }}</slot>
+    </FormLabel>
+    <slot v-bind="state" />
+    <FormDescription v-if="description || $slots.description" class="ui-form-field__description">
+      <slot name="description" v-bind="state">{{ description }}</slot>
+    </FormDescription>
+    <FormMessage class="ui-form-field__error">
+      <template v-if="$slots.message" #default="messageState"><slot name="message" v-bind="messageState" /></template>
+    </FormMessage>
+  </FormField>
 </template>
 
 <style scoped>
-.ui-form-field {
-  display: grid;
-  gap: var(--ui-space-xs);
-  min-inline-size: 0;
-}
-
-.ui-form-field__label {
-  font-size: var(--ui-font-size-body-sm);
-  font-weight: 600;
-}
-
 .ui-form-field__description,
 .ui-form-field__error {
   margin: 0;

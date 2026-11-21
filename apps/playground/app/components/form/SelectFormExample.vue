@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UIForm, UIFormActions, UISelect } from "@connextable/ui";
+import { UIButton, UIForm, UIFormActions, UIFormField, UISelect } from "@connextable/ui";
 import { ref } from "vue";
 
 const options = [
@@ -10,20 +10,16 @@ const options = [
 const density = ref<string | null>("standard");
 const submitted = ref("");
 
-function submit(event: SubmitEvent) {
-  if (!(event.currentTarget instanceof HTMLFormElement)) return;
-  submitted.value = String(new FormData(event.currentTarget).get("density") ?? "");
+function submit(formData: FormData) {
+  submitted.value = String(formData.get("density") ?? "");
 }
 </script>
 
 <template>
-  <UIForm @submit.prevent="submit">
-    <UISelect
-      v-model="density"
-      :options="options"
-      label="화면 밀도"
-      name="density"
-    />
+  <UIForm @submit="({ formData }) => submit(formData)">
+    <UIFormField label="화면 밀도" name="density">
+      <UISelect v-model="density" :options="options" />
+    </UIFormField>
     <UIFormActions>
       <UIButton type="submit" size="sm">제출</UIButton>
     </UIFormActions>

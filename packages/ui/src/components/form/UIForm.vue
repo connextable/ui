@@ -1,10 +1,23 @@
+<script setup lang="ts" generic="Input extends object = Record<string, unknown>, Output extends object = Input">
+import { FormRoot, type FormRootProps, type FormRootSlotProps } from "@sectile/vue/form";
+import { useTemplateRef } from "vue";
+
+const props = defineProps<FormRootProps<Input, Output>>();
+const root = useTemplateRef<InstanceType<typeof FormRoot>>("root");
+defineExpose({ root });
+defineSlots<{
+  default?(state: FormRootSlotProps): unknown;
+  output?(state: FormRootSlotProps): unknown;
+}>();
+</script>
+
 <template>
-  <form class="ui-form">
-    <slot />
+  <FormRoot ref="root" v-bind="props" v-slot="state" class="ui-form">
+    <slot v-bind="state" />
     <output v-if="$slots.output" class="ui-form__output">
-      <slot name="output" />
+      <slot name="output" v-bind="state" />
     </output>
-  </form>
+  </FormRoot>
 </template>
 
 <style scoped>
@@ -13,17 +26,14 @@
   grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: var(--ui-space-md);
-  inline-size: 100%;
-  max-inline-size: var(--ui-form-max-inline-size, none);
+  inline-size: var(--ui-form-max-inline-size, 100%);
+  max-inline-size: 100%;
   min-inline-size: 0;
   margin: 0;
 }
 
 .ui-form__output {
+  box-sizing: content-box;
   min-block-size: 1lh;
-  color: var(--ui-color-text-muted);
-  font-size: var(--ui-font-size-body-sm);
-  line-height: var(--ui-line-height-body);
-  overflow-wrap: anywhere;
 }
 </style>

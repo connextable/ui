@@ -14,17 +14,16 @@ function removeItem(id: number) {
   items.value = items.value.filter((item) => item.id !== id);
 }
 
-function submit(event: SubmitEvent) {
-  if (!(event.currentTarget instanceof HTMLFormElement)) return;
-  submittedItems.value = new FormData(event.currentTarget).getAll("items").map(String);
+function submit(formData: FormData) {
+  submittedItems.value = formData.getAll("items").map(String);
 }
 </script>
 
 <template>
-  <UIForm @submit.prevent="submit">
+  <UIForm @submit="({ formData }) => submit(formData)">
     <div v-for="(item, index) in items" :key="item.id" class="dynamic-fields__row">
-      <UIFormField v-slot="{ control }" :label="`항목 ${index + 1}`">
-        <UIInput v-bind="control" v-model="item.value" name="items" required />
+      <UIFormField :label="`항목 ${index + 1}`" name="items" required>
+        <UIInput v-model="item.value" />
       </UIFormField>
       <UIButton
         type="button"

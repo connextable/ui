@@ -29,6 +29,10 @@ export { default as UIDisclosureTrigger } from "./components/disclosure/UIDisclo
 export { default as UIForm } from "./components/form/UIForm.vue";
 export { default as UIFormActions } from "./components/form/UIFormActions.vue";
 export { default as UIFormField } from "./components/form/UIFormField.vue";
+export { default as UIFormFieldGroup } from "./components/form/UIFormFieldGroup.vue";
+export { default as UIFormReset } from "./components/form/UIFormReset.vue";
+export { default as UIFormSubmit } from "./components/form/UIFormSubmit.vue";
+export { default as UIFormSummary } from "./components/form/UIFormSummary.vue";
 export { default as UIInput } from "./components/text-input/UIInput.vue";
 export { default as UIProgress } from "./components/progress/UIProgress.vue";
 export { default as UIRadioGroup, type UIRadioGroupOption } from "./components/selection/UIRadioGroup.vue";
@@ -40,6 +44,13 @@ export { default as UISelectTrigger } from "./components/select/UISelectTrigger.
 export { default as UISelectValue } from "./components/select/UISelectValue.vue";
 export type { UISelectOption } from "./components/select/select-context";
 export { default as UISwitch } from "./components/selection/UISwitch.vue";
+export {
+  FormLabel as UIFormLabel,
+  FormDescription as UIFormDescription,
+  FormMessage as UIFormMessage,
+  FormSelector as UIFormSelector,
+  FormFieldSelector as UIFormFieldSelector,
+} from "@sectile/vue/form";
 export * from "./components/catalog/input";
 export * from "./components/catalog/layout";
 export * from "./components/catalog/temporal";
