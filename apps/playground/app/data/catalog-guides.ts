@@ -429,6 +429,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     sections: [
       { id: "examples", title: "선택과 첨부 관리", section: "picking" },
       { id: "file-input-policies", title: "파일 제한", section: "policies" },
+      { id: "file-input-form", title: "폼", section: "form" },
     ],
     examples: [
       { id: "file-input-dropzone", title: "파일 선택·드롭·붙여넣기", description: "카드를 누르거나 파일을 끌어 놓으세요. 카드에 포커스한 뒤 파일이나 이미지를 붙여넣을 수도 있습니다.", section: "picking", parts: ["UIFileInputDropzone"] },
@@ -440,6 +441,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "file-input-reject", title: "개별 파일 용량 제한", description: "600 B와 2 KB 파일을 차례대로 선택해 파일 하나에 적용되는 제한을 확인합니다.", section: "policies" },
       { id: "file-input-count", title: "첨부 파일 개수 제한", description: "두 개는 선택할 수 있고, 세 개를 한 번에 선택하면 거절됩니다.", section: "policies" },
       { id: "file-input-total", title: "전체 파일 용량 제한", description: "각 파일의 크기가 작더라도 합계가 2 KB를 넘으면 선택이 거절됩니다.", section: "policies" },
+      { id: "file-input-submit", title: "선택한 파일 제출", description: "샘플 파일을 선택하고 제출한 뒤 FormData에서 첨부된 파일 이름을 읽습니다.", section: "form" },
     ],
   },
   "file-upload": {

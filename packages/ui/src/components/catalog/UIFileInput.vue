@@ -127,8 +127,8 @@ defineExpose({
               :title="state.files[0]?.name"
               :aria-describedby="[hint && `${id}-hint`, state.error && `${id}-error`].filter(Boolean).join(' ') || undefined"
             >
-              <UIButton size="sm" variant="ghost" icon-only>
-                <template #leading><ChevronRight /></template>
+              <UIButton size="sm" variant="ghost" icon-only :class="{ 'ui-file-input__replace': state.files[0] }">
+                <template v-if="!state.files[0]" #leading><ChevronRight /></template>
               </UIButton>
             </FileInputTrigger>
           </template>
@@ -157,7 +157,7 @@ defineExpose({
             @dragend="dragging = false"
             @drop="dragging = false"
           >
-            <span class="ui-file-input__mark" aria-hidden="true"><Paperclip :size="20" /></span>
+            <Paperclip class="ui-file-input__mark" aria-hidden="true" />
             <strong>{{ dragging ? '파일을 놓으세요' : pickerLabel ?? (state.files.length ? '다시 선택' : '파일 선택') }}</strong>
             <span :id="`${id}-instructions`" class="ui-file-input__hint">파일을 끌어 놓거나 붙여넣을 수 있어요.</span>
             <small v-if="hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>

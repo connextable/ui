@@ -28,7 +28,7 @@ function formatSize(bytes: number) {
 
 <template>
   <div
-    class="ui-field-control ui-file-row"
+    class="ui-field-control ui-inset-frame ui-file-row"
     :data-ui-control-size="size ?? 'md'"
     :data-pickable="$slots.picker ? '' : undefined"
     :data-empty="!file || undefined"
@@ -52,7 +52,6 @@ function formatSize(bytes: number) {
 
 <style scoped>
 .ui-file-row {
-  --ui-file-row-action-size: min(var(--ui-control-height-small), calc(var(--ui-control-size-height) - 6px));
   position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -60,8 +59,7 @@ function formatSize(bytes: number) {
   column-gap: var(--ui-space-sm);
   min-inline-size: 0;
   block-size: var(--ui-control-size-height);
-  padding-block: 0;
-  padding-inline: var(--ui-space-sm) var(--ui-space-2xs);
+  padding: var(--ui-frame-padding);
 }
 
 .ui-file-row:has(.ui-file-row__picker button:enabled:not([aria-disabled="true"]):hover) {
@@ -88,10 +86,10 @@ function formatSize(bytes: number) {
 .ui-file-row__preview {
   display: grid;
   place-items: center;
-  inline-size: calc(var(--ui-control-size-icon) + var(--ui-space-xs));
+  inline-size: var(--ui-inset-size);
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: var(--ui-radius-sm);
+  border-radius: var(--ui-inset-radius);
   color: var(--ui-color-text-muted);
 }
 
@@ -99,6 +97,11 @@ function formatSize(bytes: number) {
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
+}
+
+.ui-file-row__preview :deep(svg) {
+  inline-size: var(--ui-control-size-icon);
+  block-size: var(--ui-control-size-icon);
 }
 
 .ui-file-row__details {
@@ -160,12 +163,13 @@ function formatSize(bytes: number) {
 
 .ui-file-row__actions :deep(.ui-button) {
   min-block-size: 0;
-  block-size: var(--ui-file-row-action-size);
+  block-size: var(--ui-inset-size);
+  border-radius: var(--ui-inset-radius);
   white-space: nowrap;
 }
 
 .ui-file-row__actions :deep(.ui-button[data-ui-control-shape="square"]) {
-  inline-size: var(--ui-file-row-action-size);
+  inline-size: var(--ui-inset-size);
   min-inline-size: 0;
 }
 </style>

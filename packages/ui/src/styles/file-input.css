@@ -11,6 +11,20 @@
   max-inline-size: 100%;
 }
 
+.ui-file-input .ui-file-row__picker:has(> .ui-file-input__replace) {
+  display: contents;
+}
+
+.ui-file-input[data-inline-file] .ui-file-row__picker > button.ui-file-input__replace {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
 .ui-file-input__options {
   display: grid;
   gap: var(--ui-space-sm);
@@ -26,17 +40,24 @@
   gap: var(--ui-space-sm);
   min-inline-size: min(100%, 22rem);
   padding: calc(2 * var(--ui-space-md));
-  border: 1px dashed var(--ui-color-border-strong);
+  border: 1px solid var(--ui-color-border);
   border-radius: var(--ui-control-size-radius, var(--ui-radius-lg));
-  background: var(--ui-color-surface-muted);
+  background: transparent;
   text-align: center;
 }
 
-.ui-file-input__picker:enabled {
+.ui-file-input__picker:enabled:not([aria-disabled="true"], [data-ui-readonly]) {
   cursor: pointer;
 }
 
-.ui-file-input__picker:enabled:hover,
+.ui-file-input__picker:enabled:not([aria-disabled="true"], [data-ui-readonly], [data-dragging]):hover {
+  background: var(--ui-color-surface-hover);
+}
+
+.ui-file-input__picker:enabled:not([aria-disabled="true"], [data-ui-readonly], [data-dragging]):active {
+  background: var(--ui-color-surface-active);
+}
+
 .ui-file-input__picker[data-dragging] {
   border-color: var(--ui-color-accent);
   background: var(--ui-color-accent-soft);
@@ -51,13 +72,9 @@
 }
 
 .ui-file-input__mark {
-  display: grid;
-  place-items: center;
-  inline-size: var(--ui-control-height);
-  aspect-ratio: 1;
-  border-radius: var(--ui-radius-md);
-  background: var(--ui-color-accent-soft);
-  color: var(--ui-color-accent);
+  inline-size: var(--ui-control-size-icon);
+  block-size: var(--ui-control-size-icon);
+  color: var(--ui-color-text-muted);
 }
 
 .ui-file-input__controls {
@@ -102,7 +119,11 @@
   list-style: none;
 }
 
-.ui-file-input__files:empty {
+.ui-file-input__files:not(:has(> li:not(.ui-file-leave-active))) {
+  display: none;
+}
+
+.ui-file-leave-active {
   display: none;
 }
 
@@ -123,15 +144,11 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ui-file-enter-active,
-  .ui-file-leave-active,
   .ui-file-move {
-    transition: opacity var(--ui-motion-fast) var(--ui-ease-out),
-      transform var(--ui-motion-standard) var(--ui-ease-out);
+    transition: transform var(--ui-motion-standard) var(--ui-ease-out);
   }
 
-  .ui-file-enter-from,
-  .ui-file-leave-to {
-    opacity: 0;
+  .ui-file-enter-from {
     transform: translateY(calc(-1 * var(--ui-space-xs)));
   }
 }
