@@ -55,8 +55,19 @@
   --ui-popup-min-width: min(12rem, var(--ui-popup-available-width));
 }
 
-:where([data-scope="menu"][data-part="root"], [data-scope="listbox"][data-part="root"]):not([hidden]) {
+:where(
+  .ui-select-content__viewport,
+  [data-scope="combobox"][data-part="content"],
+  [data-scope="tree-select"]:is([data-part="content"], [data-part="group"]),
+  [data-scope="cascade-select"][data-part="column"],
+  [data-scope="context-menu"][data-part="content"],
+  [data-scope="menu-button"][data-part="content"],
+  [data-scope="listbox"][data-part="root"],
+  [data-scope="menu"]:is([data-part="root"], [data-part="sub-content"]),
+  [data-scope="menubar"]:is([data-part="content"], [data-part="sub-content"])
+):not([hidden]) {
   display: grid;
+  align-content: start;
   gap: var(--ui-space-2xs);
 }
 
