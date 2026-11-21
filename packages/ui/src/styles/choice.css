@@ -66,3 +66,56 @@
   color: var(--ui-color-text-muted);
   font-size: 0.875em;
 }
+
+:where([data-scope="checkbox-group"][data-part="root"]) {
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--ui-space-2xs);
+  inline-size: 14rem;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  margin: 0;
+  padding: var(--ui-space-xs);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-md);
+
+  > legend {
+    margin-inline-start: var(--ui-space-xs);
+    padding-inline: var(--ui-space-xs);
+    font-size: var(--ui-font-size-body-sm);
+    font-weight: 600;
+  }
+}
+
+:where([data-scope="checkbox-group"][data-part="item"]) {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: var(--ui-space-sm);
+  min-inline-size: 0;
+  min-block-size: var(--ui-control-height-small);
+  padding: var(--ui-space-xs) var(--ui-space-sm);
+  border: 0;
+  border-radius: var(--ui-radius-sm);
+  background: transparent;
+  color: var(--ui-color-text);
+  text-align: start;
+
+  &:hover:not(:disabled, [aria-disabled="true"], [aria-readonly="true"]) {
+    background: var(--ui-color-surface-hover);
+  }
+
+  &:active:not(:disabled, [aria-disabled="true"], [aria-readonly="true"]) {
+    background: var(--ui-color-surface-active);
+  }
+
+  &:is(:disabled, [aria-disabled="true"]) {
+    color: var(--ui-color-disabled);
+  }
+
+  > :where([data-part="indicator"]:not([hidden])) {
+    display: flex;
+    flex: none;
+  }
+}

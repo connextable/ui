@@ -12,3 +12,8 @@ export {
   SpinButtonIncrement as UISpinButtonIncrement,
   SpinButtonDecrement as UISpinButtonDecrement,
 } from "@sectile/vue/spin-button";
+export {
+  CheckboxGroupRoot as UICheckboxGroup,
+  CheckboxGroupItem as UICheckboxGroupItem,
+} from "@sectile/vue/checkbox-group";
+export { default as UICheckboxGroupIndicator } from "../selection/UICheckboxGroupIndicator.vue";

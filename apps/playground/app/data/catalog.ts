@@ -434,6 +434,25 @@ export const catalog: readonly CatalogEntry[] = [
       "UIDateRangePickerYearViewTrigger",
     ],
   },
+  {
+    slug: "toggle-group",
+    title: "UIToggleGroup",
+    category: "입력",
+    description: "관련된 토글 버튼을 하나의 그룹으로 다룹니다.",
+    parts: [
+      "UIToggleGroupItem",
+    ],
+  },
+  {
+    slug: "checkbox-group",
+    title: "UICheckboxGroup",
+    category: "입력",
+    description: "하나의 선택 상태로 여러 체크박스를 연결합니다.",
+    parts: [
+      "UICheckboxGroupItem",
+      "UICheckboxGroupIndicator",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));

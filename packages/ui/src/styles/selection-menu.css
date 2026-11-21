@@ -182,7 +182,7 @@
 }
 
 :where([data-scope="menubar"][data-part="root"], [data-scope="tabs"][data-part="list"],
-  [data-scope="stepper"][data-part="list"]
+  [data-scope="stepper"][data-part="list"], [data-scope="toggle-group"][data-part="root"]
 ) {
   --ui-segmented-radius: var(--ui-radius-md);
   --ui-segmented-padding: var(--ui-space-xs);
@@ -193,6 +193,17 @@
   padding: var(--ui-segmented-padding);
   border-radius: var(--ui-segmented-radius);
   background: var(--ui-color-surface-muted);
+}
+
+:where([data-scope="toggle-group"][data-part="root"]) {
+  box-sizing: border-box;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+
+  &[data-orientation="vertical"] {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 :where([data-scope="stepper"][data-part="list"] [data-part="trigger"],
@@ -231,7 +242,7 @@
   }
 }
 
-:where([data-scope="tabs"][data-part="trigger"]) {
+:where([data-scope="tabs"][data-part="trigger"], [data-scope="toggle-group"][data-part="item"]) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -248,7 +259,7 @@
   cursor: pointer;
   transition: none;
 
-  &[aria-selected="true"] {
+  &:is([aria-selected="true"], [aria-pressed="true"]) {
     background: var(--ui-color-accent);
     color: var(--ui-color-on-accent);
   }
@@ -258,27 +269,45 @@
     outline-offset: var(--ui-focus-ring-offset);
   }
 
-  &[aria-selected="true"]:focus-visible {
+  &:is([aria-selected="true"], [aria-pressed="true"]):focus-visible {
     outline-color: var(--ui-color-on-accent);
   }
 
-  &:is(:disabled, [aria-disabled="true"]):not([aria-selected="true"]) {
+  &:is(:disabled, [aria-disabled="true"]):not([aria-selected="true"], [aria-pressed="true"]) {
     color: var(--ui-color-disabled);
     cursor: default;
   }
 
   @media (hover: hover) {
-    &:hover:not([aria-selected="true"], :disabled, [aria-disabled="true"]) {
+    &:hover:not([aria-selected="true"], [aria-pressed="true"], :disabled, [aria-disabled="true"]) {
       background: var(--ui-color-surface-hover);
     }
   }
 
   @media (forced-colors: active) {
-    &[aria-selected="true"] {
+    &:is([aria-selected="true"], [aria-pressed="true"]) {
       forced-color-adjust: none;
       background: Highlight;
       color: HighlightText;
       outline-color: HighlightText;
+    }
+  }
+}
+
+@media (forced-colors: none) {
+  :where([data-scope="toggle-group"][data-part="item"]):not(:disabled, [aria-disabled="true"]) {
+    @media (hover: hover) {
+      &[aria-pressed="true"]:hover {
+        background: var(--ui-color-accent-hover);
+      }
+    }
+
+    &:active {
+      background: var(--ui-color-surface-active);
+    }
+
+    &[aria-pressed="true"]:active {
+      background: var(--ui-color-accent-active);
     }
   }
 }
