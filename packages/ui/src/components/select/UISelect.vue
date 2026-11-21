@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SelectRoot } from "@sectile/vue/select";
+import { SelectRoot, type SelectRootProps } from "@sectile/vue/select";
 import { computed, nextTick, provide, ref, shallowRef, useId, watch } from "vue";
 import { useSelectionOptions } from "../selection/selection-options";
 import UISelectContent from "./UISelectContent.vue";
@@ -8,6 +8,11 @@ import UISelectTrigger from "./UISelectTrigger.vue";
 import { selectKey, type UISelectOption } from "./select-context";
 
 defineOptions({ inheritAttrs: false });
+
+type SelectPosition = Pick<SelectRootProps,
+  "side" | "align" | "sideOffset" | "collisionPadding" | "collisionBoundary" | "avoidCollisions" |
+  "flip" | "shift" | "hideWhenDetached" | "strategy" | "tracking"
+> & { offset?: number };
 
 const props = withDefaults(defineProps<{
   id?: string;
@@ -24,8 +29,8 @@ const props = withDefaults(defineProps<{
   required?: boolean;
   name?: string;
   form?: string;
-  position?: { side?: "top" | "bottom"; align?: "start" | "center" | "end"; offset?: number };
-}>(), { size: "md", placeholder: "선택", open: undefined });
+  position?: SelectPosition | boolean;
+}>(), { size: "md", placeholder: "선택", open: undefined, position: true });
 
 const emit = defineEmits<{
   "update:modelValue": [value: string | null];
@@ -41,6 +46,11 @@ const { values, disabledValues } = useSelectionOptions(() => props.options);
 const textValue = computed(() => {
   const labels = new Map(props.options.map(({ value, label }) => [value, label]));
   return (value: string) => labels.get(value) ?? value;
+});
+
+const positioning = computed(() => {
+  const { offset, ...options } = typeof props.position === "object" ? props.position : {};
+  return { strategy: "fixed" as const, ...options, sideOffset: options.sideOffset ?? offset ?? 6, position: props.position !== false };
 });
 
 provide(selectKey, {
@@ -105,6 +115,7 @@ function onInvalid(event: Event) {
   <div class="ui-select" @focusout="onFocusOut" @invalid.capture="onInvalid">
     <slot name="label"><UISelectLabel v-if="label" /></slot>
     <SelectRoot
+      v-bind="positioning"
       :label="label ?? (typeof $attrs['aria-label'] === 'string' ? $attrs['aria-label'] : undefined)"
       :items="values"
       :disabled-items="disabledValues"
@@ -117,10 +128,6 @@ function onInvalid(event: Event) {
       :required="required"
       :name="name"
       :form="form"
-      strategy="fixed"
-      :side="position?.side"
-      :align="position?.align"
-      :side-offset="position?.offset ?? 6"
       @update:model-value="onValueChange"
       @update:open="onOpenChange"
     >

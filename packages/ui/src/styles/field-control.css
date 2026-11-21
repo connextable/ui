@@ -43,7 +43,8 @@
     cursor: default;
   }
 
-  &:is(:focus-visible, :has(> :focus-visible), [data-state="open"], [aria-expanded="true"]) {
+  &:is(:focus-visible, :has(> :focus-visible)),
+  &:is([data-state="open"], [aria-expanded="true"]):where(:not(.ui-select-trigger)) {
     border-color: var(--ui-color-focus);
   }
 
