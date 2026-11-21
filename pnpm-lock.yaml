@@ -186,6 +186,9 @@ catalogs:
       specifier: 3.3.14
       version: 3.3.14
 
+patchedDependencies:
+  '@sectile/dom@0.21.0': 0af3a0d1f82745113517bd6bd5e7039b9613785d60ce0dfeeb66f37345b79839
+
 importers:
 
   .: {}
@@ -4423,7 +4426,7 @@ snapshots:
 
   '@sectile/core@0.16.0': {}
 
-  '@sectile/dom@0.21.0(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.15.1)(@sectile/virtual@0.16.1)':
+  '@sectile/dom@0.21.0(patch_hash=0af3a0d1f82745113517bd6bd5e7039b9613785d60ce0dfeeb66f37345b79839)(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.15.1)(@sectile/virtual@0.16.1)':
     dependencies:
       '@sectile/core': 0.16.0
     optionalDependencies:
@@ -4454,7 +4457,7 @@ snapshots:
   '@sectile/vue@0.21.0(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.15.1)(@sectile/virtual@0.16.1)(vue@3.5.45(typescript@6.0.3))':
     dependencies:
       '@sectile/core': 0.16.0
-      '@sectile/dom': 0.21.0(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.15.1)(@sectile/virtual@0.16.1)
+      '@sectile/dom': 0.21.0(patch_hash=0af3a0d1f82745113517bd6bd5e7039b9613785d60ce0dfeeb66f37345b79839)(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.15.1)(@sectile/virtual@0.16.1)
       vue: 3.5.45(typescript@6.0.3)
     optionalDependencies:
       '@sectile/chart': 0.16.1

@@ -10,3 +10,6 @@ catalog:
 
 allowBuilds:
   esbuild@0.28.2: true
+
+patchedDependencies:
+  '@sectile/dom@0.21.0': patches/@sectile__dom@0.21.0.patch
