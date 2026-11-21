@@ -5,6 +5,7 @@ export * from "./components/catalog/navigation-menu";
 export { UIAnchor } from "./components/catalog/anchor";
 export * from "./components/catalog/menu";
 export * from "./components/catalog/cascade-select";
+export * from "./components/catalog/transfer";
 export * from "./components/catalog/file-input";
 export * from "./components/catalog/tags-input";
 export * from "./components/reorder";

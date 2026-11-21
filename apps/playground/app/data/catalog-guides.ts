@@ -376,6 +376,24 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "@invoke": "사용자가 실행한 명령의 id를 받습니다.",
     },
   },
+  transfer: {
+    examples: [
+      { id: "transfer-controlled", title: "외부에서 이동 승인", description: "목록의 이동 요청을 받은 뒤 승인해야 새 위치가 반영됩니다." },
+      { id: "transfer-disabled", title: "비활성 항목을 남겨두고 전체 이동", description: "오른쪽 겹화살표를 누르면 메시지만 이동하고 비활성 상태인 이메일은 왼쪽에 남습니다." },
+      { id: "transfer-selection", title: "여러 항목을 골라 한 번에 이동", description: "이메일과 메시지를 선택한 뒤 오른쪽 화살표를 누르면 두 항목이 함께 옮겨집니다. 웹 푸시는 왼쪽에 남습니다." },
+      { id: "transfer-policy", title: "선택할 수 있지만 옮길 수 없는 항목", description: "보관용 사본을 선택한 다음 이동하려 하면 정책에 따라 현재 목록에 남습니다." },
+      { id: "transfer-typeahead", title: "이름의 첫 글자로 항목 찾기", description: "왼쪽 목록에서 R을 입력해 Reports로 포커스를 옮깁니다." },
+    ],
+    title: "두 목록 사이에서 채널을 이동",
+    description: "가운데 화살표로 선택한 항목을 옮깁니다. 겹화살표를 누르면 해당 목록의 활성 항목을 한 번에 옮길 수 있습니다.",
+    api: {
+      nodes: "두 목록의 부모 노드와 이동할 항목을 포함하는 계층 데이터입니다.",
+      "source-id / target-id": "두 목록이 각각 참조하는 부모 노드의 id입니다.",
+      "source-label / target-label": "목록 제목과 접근성 이름을 지정합니다.",
+      "#default": "직접 구성할 때 sourceItems와 targetItems로 각 목록의 현재 항목을 받습니다.",
+      "#item": "기본 목록에서 id와 side를 받아 항목에 표시할 내용을 바꿉니다.",
+    },
+  },
   "cascade-select": {
     examples: [
       { id: "cascade-select-disabled", title: "선택할 수 없는 경로", description: "서울 옵션을 비활성화한 상태에서 지역을 탐색합니다." },

@@ -265,6 +265,18 @@ export const catalog: readonly CatalogEntry[] = [
     ],
   },
   {
+    slug: "transfer",
+    title: "UITransfer",
+    category: "입력",
+    description: "두 목록 사이로 항목을 이동합니다.",
+    wide: true,
+    parts: [
+      "UITransferList",
+      "UITransferItem",
+      "UITransferMove",
+    ],
+  },
+  {
     slug: "cascade-select",
     title: "UICascadeSelect",
     category: "입력",
