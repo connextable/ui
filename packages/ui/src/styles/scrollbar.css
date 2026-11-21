@@ -1,0 +1,29 @@
+:where(.ui-scrollbar) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ui-scrollbar-thumb) var(--ui-scrollbar-track);
+  scrollbar-gutter: stable;
+
+  &[data-ui-scrollbar="centered"] {
+    scrollbar-gutter: stable both-edges;
+  }
+}
+
+@supports not (scrollbar-color: auto) {
+  :where(.ui-scrollbar)::-webkit-scrollbar {
+    width: var(--ui-scrollbar-size);
+    height: var(--ui-scrollbar-size);
+  }
+
+  :where(.ui-scrollbar)::-webkit-scrollbar-thumb {
+    border-radius: var(--ui-scrollbar-size);
+    background: var(--ui-scrollbar-thumb);
+  }
+
+  :where(.ui-scrollbar)::-webkit-scrollbar-track {
+    background: var(--ui-scrollbar-track);
+  }
+}
+
+@media (forced-colors: active) {
+  :where(.ui-scrollbar) { scrollbar-color: auto; }
+}

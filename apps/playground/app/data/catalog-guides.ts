@@ -840,4 +840,27 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "popover-position", title: "트리거 끝에 정렬", description: "side와 align을 함께 지정해 팝오버를 트리거의 아래쪽 끝에 맞춥니다." },
     ],
   },
+  "scroll-area": {
+    title: "변경 기록과 처음·끝 이동",
+    description: "변경 기록에 포커스하면 방향키나 Page Down으로 이동할 수 있습니다. 바깥 버튼으로 처음과 끝으로 이동합니다.",
+    examples: [
+      { id: "scroll-area-horizontal", title: "가로 일정과 가장자리 페이드", description: "스크롤바를 숨긴 예약 목록입니다. fade에 left와 right를 전달해 더 볼 일정이 있는 쪽을 투명하게 표시합니다. 앞·뒤 일정 버튼이나 방향키로 이동할 수 있습니다." },
+      { id: "scroll-area-sticky", title: "높이가 바뀌는 헤더와 푸터", description: "검토 요청을 스크롤하다가 필터와 선택 요약을 펼쳐 보세요. 두 영역은 제자리에 있고 콘텐츠의 페이드는 화면에 보이는 목록의 가장자리로 이동합니다." },
+      { id: "scroll-area-both", title: "공간별 예약표를 두 방향으로 탐색", description: "첫 열의 시간과 상단의 회의실 이름이 제자리에 남습니다. 안쪽에 더 볼 내용이 있으면 고정 행과 열 바로 뒤에서 페이드가 시작됩니다." },
+      { id: "scroll-area-progress", title: "읽기 위치를 푸터에 표시", description: "가이드를 읽는 위치에 따라 고정 푸터의 진행률이 갱신됩니다. 처음으로 버튼으로 스크롤 위치를 되돌릴 수 있습니다." },
+      { id: "scroll-area-infinite", title: "활동 240건 추가 로드와 재시도", description: "처음 24건을 표시하고 목록 끝에 다가갈 때마다 24건씩 더 읽습니다. 자동 로드를 끄고 직접 요청하거나 다음 요청을 실패시켜 재시도할 수 있습니다.", parts: ["UIScrollFade", "useUIScrollArea", "useUIInfiniteScroll"] },
+    ],
+    api: {
+      "axis / scrollbar": "세로, 가로, 양축을 선택하고 스크롤바를 thin, native, hidden 중 하나로 지정합니다.",
+      "fade / #fade": "기본값은 false입니다. fade를 켜면 스크롤할 수 있는 쪽의 콘텐츠가 투명해집니다. 방향 배열로 가장자리를 지정하고, #fade 슬롯에서 edge와 visible로 효과를 직접 구성할 수 있습니다.",
+      "#header / #footer": "스크롤하는 동안 상단과 하단에 보이는 영역입니다. 슬롯의 높이가 바뀌면 뷰포트와 페이드 위치도 함께 갱신됩니다.",
+      sticky: "뷰포트 안에 있는 position: sticky 요소를 전달합니다. 고정 방향과 요소 크기를 읽어 페이드를 고정 영역 안쪽으로 옮깁니다.",
+      "--ui-scroll-fade-size": "콘텐츠가 투명해지는 길이입니다. --ui-scroll-fade-top, --ui-scroll-fade-right, --ui-scroll-fade-bottom, --ui-scroll-fade-left로 방향별 길이를 지정할 수 있습니다.",
+      "#controls / state": "viewportId와 스크롤 위치, 크기, 가장자리까지의 거리, 이동 메서드를 외부 조작 버튼에 전달합니다. 가로 좌표는 쓰기 방향과 관계없이 왼쪽에서 시작합니다.",
+      "scrollTo / scrollBy / scrollToEdge": "절대 위치, 상대 위치, 지정한 가장자리로 스크롤합니다. 모션 줄이기가 켜져 있으면 즉시 이동합니다.",
+      "useUIScrollArea(target, { content })": "기존 스크롤 요소를 연결합니다. 크기가 바뀌는 콘텐츠 요소를 함께 넘기거나 refresh()로 직접 새로 측정할 수 있습니다.",
+      "useUIInfiniteScroll(scroll, options)": "edge, distance, hasMore, auto로 자동 요청을 제어하고 loading, failure, loadMore, reset으로 대기·오류·재시도를 처리합니다. 요청의 signal을 데이터 로더에 전달할 수 있습니다.",
+      "--ui-scroll-area-max-height": "헤더·푸터를 포함한 스크롤 영역의 최대 높이입니다. 기본값은 20rem입니다.",
+    },
+  },
 };

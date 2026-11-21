@@ -4,6 +4,7 @@ interface CatalogEntry {
   category: string;
   description: string;
   wide?: boolean;
+  visualStates?: boolean;
   deferPreviews?: boolean;
   parts?: readonly string[];
 }
@@ -673,6 +674,15 @@ export const catalog: readonly CatalogEntry[] = [
       "UIPopoverClose",
       "UIPopoverArrow",
     ],
+  },
+  {
+    slug: "scroll-area",
+    title: "UIScrollArea",
+    category: "레이아웃",
+    description: "스크롤 위치를 읽고 이동 버튼과 가장자리 페이드를 설정합니다.",
+    wide: true,
+    visualStates: false,
+    parts: ["UIScrollFade", "useUIScrollArea", "useUIInfiniteScroll"],
   },
 ];
 

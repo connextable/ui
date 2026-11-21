@@ -61,6 +61,7 @@ export const catalogNavigation = new Map<string, readonly string[]>([
     "UIMeterGroup",
     "UITimer",
     "UIWindowSplitter",
+    "UIScrollArea",
     "UIHostProvider",
     "UIPrimitive",
   ]],

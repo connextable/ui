@@ -1,5 +1,6 @@
 export * from "./components/chart";
 export * from "./components/tabular";
+export * from "./components/scroll";
 export * from "./components/virtual";
 export * from "./components/catalog/navigation-menu";
 export * from "./components/catalog/overlay";
