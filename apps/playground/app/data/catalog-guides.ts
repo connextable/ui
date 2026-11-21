@@ -339,4 +339,55 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "#item": "항목의 값과 배치 정보, 겹침 순서를 받습니다.",
     },
   },
+  anchor: {
+    examples: [
+      { id: "anchor-current", title: "현재 위치 표시", description: "선택된 링크의 현재 위치를 접근성 트리에 알립니다." },
+      { id: "anchor-disabled", title: "이동할 수 없는 링크", description: "비활성 링크를 클릭해도 페이지는 바뀌지 않습니다." },
+      { id: "anchor-nuxt", title: "라우터 링크에 연결", description: "NuxtLink의 custom 슬롯으로 받은 주소와 탐색 함수를 UIAnchor의 실제 링크에 연결합니다." },
+    ],
+    title: "디자인 토큰 페이지로 이동",
+    description: "href에 경로와 섹션 ID를 함께 전달하면 지정한 문서의 섹션으로 이동합니다.",
+    api: { href: "링크의 목적지입니다.", current: "현재 위치를 접근성 트리에 전달합니다.", disabled: "링크의 활성화를 막습니다." },
+  },
+  "menu-button": {
+    examples: [
+      { id: "menu-button-submenu", title: "하위 명령", description: "내보내기에서 하위 메뉴를 열어 파일 형식을 선택합니다.", parts: ["UIMenuSubContent"] },
+      { id: "menu-button-disabled", title: "실행할 수 없는 명령", description: "Import 명령을 비활성으로 표시합니다." },
+      { id: "menu-button-focus", title: "메뉴가 닫힐 때 트리거로 돌아가기", description: "메뉴에서 Escape를 누르거나 명령을 실행한 뒤 포커스가 트리거로 돌아오는지 확인합니다." },
+    ],
+    title: "버튼에 작업 목록 연결",
+    description: "Create 버튼을 열고 명령을 골라 보세요. 명령 항목의 value가 invoke 이벤트에 전달됩니다.",
+    api: {
+      items: "버튼에서 열리는 메뉴의 명령입니다.",
+      "@invoke": "누른 메뉴 항목의 id를 받습니다.",
+    },
+  },
+  "context-menu": {
+    examples: [
+      { id: "context-menu-keyboard", title: "키보드로 메뉴 열기", description: "영역에 포커스를 두고 Shift+F10으로 메뉴를 엽니다." },
+      { id: "context-menu-submenu", title: "우클릭 메뉴의 하위 항목", description: "영역에서 메뉴를 열고 내보낼 형식을 선택합니다.", parts: ["UIContextMenuSubContent"] },
+      { id: "context-menu-separator", title: "문서 작업과 다운로드 구분", description: "컨텍스트 메뉴의 작업 그룹을 구분선으로 나눕니다.", parts: ["UIContextMenuSeparator"] },
+      { id: "context-menu-disabled", title: "컨텍스트 메뉴에서 삭제 잠금", description: "복제는 실행할 수 있고 삭제는 방향키 탐색에서 건너뜁니다." },
+    ],
+    title: "우클릭으로 명령 메뉴 열기",
+    description: "트리거 위에서 우클릭한 뒤 명령을 선택합니다. 메뉴를 열기 위한 트리거와 선택 결과를 처리할 invoke를 연결합니다.",
+    api: {
+      items: "우클릭 메뉴에 표시할 명령을 지정합니다.",
+      "@invoke": "사용자가 실행한 명령의 id를 받습니다.",
+    },
+  },
+  "cascade-select": {
+    examples: [
+      { id: "cascade-select-disabled", title: "선택할 수 없는 경로", description: "서울 옵션을 비활성화한 상태에서 지역을 탐색합니다." },
+      { id: "cascade-select-markers", title: "선택과 하위 계층 표시", description: "체크는 선택값, 꺾쇠는 다음 단계가 있는 항목을 표시합니다.", parts: ["UICascadeSelectItemIndicator", "UICascadeSelectItemChevron"] },
+      { id: "cascade-select-controlled", title: "별도 버튼으로 지역 선택 열기", description: "바깥 버튼에서 선택 창의 열림 상태를 제어합니다." },
+    ],
+    title: "목록을 열어 계층 안에서 선택",
+    description: "트리거에서 지역 목록을 열고 각 열의 항목을 선택합니다. 다음 열에는 선택한 항목의 하위 항목이 나타납니다.",
+    api: {
+      nodes: "각 선택 항목의 식별자와 그 부모 관계입니다.",
+      "default-value": "처음 선택해 둘 노드의 id입니다.",
+      "#default": "열별 항목을 렌더링할 수 있도록 columns를 제공합니다.",
+    },
+  },
 };

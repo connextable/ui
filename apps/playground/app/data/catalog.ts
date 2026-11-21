@@ -232,6 +232,53 @@ export const catalog: readonly CatalogEntry[] = [
     wide: true,
     deferPreviews: true,
   },
+  {
+    slug: "anchor",
+    title: "UIAnchor",
+    category: "탐색",
+    description: "링크를 구성하고 현재 위치나 비활성 상태를 표현합니다.",
+  },
+  {
+    slug: "menu-button",
+    title: "UIMenuButton",
+    category: "탐색",
+    description: "버튼으로 명령 메뉴를 엽니다.",
+    parts: [
+      "UIMenuButtonContent",
+      "UIMenuButtonTrigger",
+      "UIMenuItem",
+      "UIMenuSeparator",
+      "UIMenuSubContent",
+    ],
+  },
+  {
+    slug: "context-menu",
+    title: "UIContextMenu",
+    category: "탐색",
+    description: "항목을 우클릭하거나 키보드로 맥락 메뉴를 엽니다.",
+    parts: [
+      "UIContextMenuTrigger",
+      "UIContextMenuContent",
+      "UIContextMenuItem",
+      "UIContextMenuSubContent",
+      "UIContextMenuSeparator",
+    ],
+  },
+  {
+    slug: "cascade-select",
+    title: "UICascadeSelect",
+    category: "입력",
+    description: "계층을 따라 내려가 항목을 선택합니다.",
+    parts: [
+      "UICascadeSelectTrigger",
+      "UICascadeSelectValue",
+      "UICascadeSelectContent",
+      "UICascadeSelectColumn",
+      "UICascadeSelectItem",
+      "UICascadeSelectItemIndicator",
+      "UICascadeSelectItemChevron",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));
