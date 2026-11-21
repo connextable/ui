@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ChevronDown } from "@lucide/vue";
 import { MenuButtonTrigger, type MenuPartProps, type MenuRootSlotProps } from "@sectile/vue/menu";
+import UIPopupTriggerContent from "./UIPopupTriggerContent.vue";
 
 defineOptions({ inheritAttrs: false });
 const { as, asChild, size = "md", variant = "outline" } = defineProps<MenuPartProps & {
@@ -25,12 +25,10 @@ defineSlots<{
     :data-variant="asChild ? undefined : variant"
   >
     <slot v-if="asChild" v-bind="state" />
-    <template v-else>
-      <span v-if="$slots.leading" class="ui-popup-trigger__leading" aria-hidden="true"><slot name="leading" /></span>
+    <UIPopupTriggerContent v-else>
+      <template v-if="$slots.leading" #leading><slot name="leading" /></template>
       <slot v-bind="state" />
-      <span class="ui-popup-trigger__indicator" aria-hidden="true">
-        <slot name="trailing"><ChevronDown class="ui-popup-trigger__chevron" /></slot>
-      </span>
-    </template>
+      <template v-if="$slots.trailing" #trailing><slot name="trailing" /></template>
+    </UIPopupTriggerContent>
   </MenuButtonTrigger>
 </template>

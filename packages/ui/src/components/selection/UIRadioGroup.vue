@@ -2,13 +2,9 @@
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from "@sectile/vue/radio-group";
 import { computed, useId } from "vue";
 
-export interface UIRadioGroupOption {
-  /** Unique, non-empty value within the group. */
-  value: string;
-  label: string;
-  description?: string;
-  disabled?: boolean;
-}
+import { useSelectionOptions, type SelectionOption } from "./selection-options";
+
+export interface UIRadioGroupOption extends SelectionOption {}
 
 defineOptions({ inheritAttrs: false });
 
@@ -36,10 +32,7 @@ const {
 
 const emit = defineEmits<{ "update:modelValue": [value: string] }>();
 const id = useId();
-const values = computed(() => options.map(({ value }) => value));
-const disabledValues = computed(() =>
-  options.filter(({ disabled }) => disabled).map(({ value }) => value),
-);
+const { values, disabledValues } = useSelectionOptions(() => options);
 const formRequired = computed(() => Boolean(required && controlProps.name));
 </script>
 

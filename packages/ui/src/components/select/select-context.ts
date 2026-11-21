@@ -1,12 +1,8 @@
 import { inject, type InjectionKey, type Ref, type ShallowRef } from "vue";
 
-export interface UISelectOption {
-  /** Unique, non-empty value within the select. */
-  value: string;
-  label: string;
-  description?: string;
-  disabled?: boolean;
-}
+import type { SelectionOption } from "../selection/selection-options";
+
+export interface UISelectOption extends SelectionOption {}
 
 export interface SelectContext {
   uid: string;

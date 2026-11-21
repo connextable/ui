@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ChevronDown } from "@lucide/vue";
 import { CascadeSelectTrigger } from "@sectile/vue/cascade-select";
 import type { MenuPartProps } from "@sectile/vue/menu";
+import UIPopupTriggerContent from "./UIPopupTriggerContent.vue";
 
 defineOptions({ inheritAttrs: false });
 const { as, asChild, size = "md", variant = "outline" } = defineProps<MenuPartProps & {
@@ -20,9 +20,11 @@ const { as, asChild, size = "md", variant = "outline" } = defineProps<MenuPartPr
     :data-ui-control-size="asChild ? undefined : size"
     :data-variant="asChild ? undefined : variant"
   >
-    <slot v-bind="state" />
-    <span v-if="!asChild" class="ui-popup-trigger__indicator" aria-hidden="true">
-      <slot name="trailing"><ChevronDown class="ui-popup-trigger__chevron" /></slot>
-    </span>
+    <slot v-if="asChild" v-bind="state" />
+    <UIPopupTriggerContent v-else>
+      <template v-if="$slots.leading" #leading><slot name="leading" /></template>
+      <slot v-bind="state" />
+      <template v-if="$slots.trailing" #trailing><slot name="trailing" /></template>
+    </UIPopupTriggerContent>
   </CascadeSelectTrigger>
 </template>

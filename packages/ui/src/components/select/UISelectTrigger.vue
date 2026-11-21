@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ChevronDown } from "@lucide/vue";
 import { SelectTrigger } from "@sectile/vue/select";
 import { useTemplateRef, watchEffect } from "vue";
+import UIPopupTriggerContent from "../catalog/UIPopupTriggerContent.vue";
 import UISelectValue from "./UISelectValue.vue";
 import { useSelectContext } from "./select-context";
 
@@ -31,13 +31,11 @@ watchEffect(() => {
     :aria-required="required || undefined"
     :aria-describedby="[$attrs['aria-describedby'], error && `${uid}-error`].filter(Boolean).join(' ') || undefined"
   >
-    <span v-if="$slots.leading" class="ui-popup-trigger__leading" aria-hidden="true">
-      <slot name="leading" />
-    </span>
-    <slot><UISelectValue /></slot>
-    <span v-if="!readonly || $slots.trailing" class="ui-popup-trigger__indicator" aria-hidden="true">
-      <slot name="trailing"><ChevronDown class="ui-popup-trigger__chevron" /></slot>
-    </span>
+    <UIPopupTriggerContent :hide-indicator="readonly">
+      <template v-if="$slots.leading" #leading><slot name="leading" /></template>
+      <slot><UISelectValue /></slot>
+      <template v-if="$slots.trailing" #trailing><slot name="trailing" /></template>
+    </UIPopupTriggerContent>
   </SelectTrigger>
 </template>
 

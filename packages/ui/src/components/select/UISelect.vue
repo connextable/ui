@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { SelectRoot } from "@sectile/vue/select";
 import { computed, nextTick, provide, ref, shallowRef, useId, watch } from "vue";
+import { useSelectionOptions } from "../selection/selection-options";
 import UISelectContent from "./UISelectContent.vue";
 import UISelectLabel from "./UISelectLabel.vue";
 import UISelectTrigger from "./UISelectTrigger.vue";
@@ -36,10 +37,7 @@ const trigger = shallowRef<HTMLButtonElement | null>(null);
 const error = ref("");
 const localOpen = ref(props.defaultOpen ?? false);
 const isOpen = computed(() => props.open ?? localOpen.value);
-const values = computed(() => props.options.map(({ value }) => value));
-const disabledValues = computed(() =>
-  props.options.filter(({ disabled }) => disabled).map(({ value }) => value),
-);
+const { values, disabledValues } = useSelectionOptions(() => props.options);
 const textValue = computed(() => {
   const labels = new Map(props.options.map(({ value, label }) => [value, label]));
   return (value: string) => labels.get(value) ?? value;
