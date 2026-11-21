@@ -119,15 +119,12 @@ watch([sidebar, navbar], ([sidebarComponent, navbarComponent], _, onCleanup) => 
   onCleanup(() => observer.disconnect());
 }, { flush: "post" });
 
-watch([() => route.path, selectedPart], ([path, part]) => {
-  if (groups.some(group => group.items.some(item => item.path === path && item.parts.includes(part)))) {
-    expandedItems.value[path] = true;
-    expandedSearchItems.value[path] = true;
+function isExpanded({ path, title }: CatalogItem) {
+  if (query.value) {
+    return expandedSearchItems.value[path] ?? !normalizeSearch(title).includes(query.value);
   }
-});
 
-function isExpanded(path: string) {
-  return query.value ? expandedSearchItems.value[path] ?? true : expandedItems.value[path] ?? path === route.path;
+  return expandedItems.value[path] ?? false;
 }
 
 function setExpanded(path: string, expanded: boolean) {
@@ -209,14 +206,14 @@ onMounted(() => { mounted.value = true; });
             :key="item.path"
             :class="{ 'playground-sidebar-item--leaf': !item.parts.length }"
             :disclosure-label="item.parts.length ? `${item.title} 구성 항목` : undefined"
-            :expanded="isExpanded(item.path)"
+            :expanded="isExpanded(item)"
             @update:expanded="setExpanded(item.path, $event)"
           >
             <NuxtLink
               class="playground-sidebar-link"
               :to="item.path"
               :title="item.title"
-              :aria-current-value="route.path === item.path && isExpanded(item.path) && item.parts.includes(selectedPart) ? 'false' : 'page'"
+              :aria-current-value="route.path === item.path && isExpanded(item) && item.parts.includes(selectedPart) ? 'false' : 'page'"
             >
               <span>{{ item.title }}</span>
             </NuxtLink>
