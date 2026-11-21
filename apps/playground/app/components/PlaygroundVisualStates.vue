@@ -80,9 +80,10 @@ const groupedControl = [
   pickerAnchor, calendarContent, '[data-scope="feed"][data-part="item"]',
   "[data-scope][data-part=root]", "[data-ui-tabular-scroll]",
 ].join(",");
+const measurement = ':is([data-scope="meter"], [data-scope="meter-group"])[data-part="root"]';
 const fillCard = ':is([data-scope="chart"], [data-scope="grid"], [data-scope="tree-grid"], [data-scope="tree-reorder"], [data-scope^="data-"], [data-scope="virtualizer"], [data-scope="window-splitter"])[data-part="root"]';
 const roomyControl = [
-  fillCard, calendarContent, ".ui-file-row[data-pickable]", ".ui-navigation-rail",
+  fillCard, calendarContent, ".ui-file-row[data-pickable]", ".ui-navigation-rail", ".ui-switch:has(.ui-choice__description)",
   '[data-scope="toggle-group"][data-part="root"]',
   ':is([data-scope="checkbox-tree"], [data-scope="cascade-list"], [data-scope="stepper"])[data-part="root"]',
   '[data-part="anchor"]:is([data-scope="date-range"], [data-scope^="date-time"], [data-scope*="-range-picker"])',
@@ -94,6 +95,8 @@ function findSpecimen(source: HTMLElement) {
   if (!first) return;
   const progress = source.querySelector('[role="progressbar"]');
   if (progress) return { root: progress, states: ["default"] } as const;
+  const meter = source.querySelector(measurement);
+  if (meter) return { root: meter, states: ["default"] } as const;
 
   const targets = Array.from(source.querySelectorAll<HTMLElement | SVGElement>(focusable)).filter(element =>
     !element.closest("[hidden], [inert], [aria-hidden=true], [aria-disabled=true]")
@@ -106,11 +109,12 @@ function findSpecimen(source: HTMLElement) {
     || targets.find(element => element.tabIndex >= 0 && element.matches('[data-part="cell"]') && element.closest(calendarContent))
     || targets.find(element => element.matches('[data-part="trigger"]') && element.closest(pickerAnchor))
     || targets.find(element => element.matches(".ui-navigation-rail button[aria-controls]"))
+    || targets.find(element => element.matches('[data-scope="window-splitter"][data-part="handle"]'))
     || targets.find(element => element.tabIndex >= 0) || targets[0];
   if (target) {
     const frame = target.closest(groupedControl) ?? target.closest("svg");
     const root = frame && source.contains(frame) ? frame : target;
-    if (target.matches('[data-scope="chart"][data-part="root"]')) {
+    if (target.matches('[data-scope="chart"][data-part="root"], [data-scope="feed"][data-part="item"]')) {
       return { root, target, states: ["default", "focus"] } as const;
     }
     const collection = target.matches('[role="listbox"], [role="tree"], [role="grid"], [role="treegrid"]');
@@ -248,7 +252,7 @@ watch([board, styles, specimen], ([container, library, sample]) => {
 
 <template>
   <section class="playground-visual-states" aria-labelledby="visual-states">
-    <h3 id="visual-states" data-playground-heading tabindex="-1">{{ specimen?.keyboardScroll ? "키보드 스크롤" : "인터랙션 스타일" }}</h3>
+    <h3 id="visual-states" data-playground-heading tabindex="-1">{{ specimen?.keyboardScroll ? "키보드 스크롤" : specimen?.root.matches(measurement) ? "표시 스타일" : "인터랙션 스타일" }}</h3>
     <p v-if="specimen?.keyboardScroll">Tab으로 위 예제의 스크롤 영역에 들어간 뒤 방향키로 내용을 탐색할 수 있습니다.</p>
     <div v-else ref="board" class="playground-visual-states__grid" :data-roomy="specimen?.root.matches(roomyControl) || undefined"
       :data-count="displayedVariants.length">
@@ -258,7 +262,7 @@ watch([board, styles, specimen], ([container, library, sample]) => {
         <figcaption>{{ variant.label }}</figcaption>
       </figure>
     </div>
-    <p v-if="specimen && !specimen.target && !specimen.keyboardScroll">기본 예제에는 비교할 인터랙션 스타일이 없습니다.</p>
+    <p v-if="specimen && !specimen.target && !specimen.keyboardScroll && !specimen.root.matches(measurement)">기본 예제에는 비교할 인터랙션 스타일이 없습니다.</p>
   </section>
 </template>
 

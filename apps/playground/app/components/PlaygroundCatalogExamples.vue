@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, type Component } from "vue";
+import type { Component } from "vue";
 import type { CatalogExample, CatalogExampleSection } from "~/data/catalog-guides";
 
 const { examples, groups, wide, deferPreviews } = defineProps<{
@@ -22,9 +22,16 @@ const sections = (groups ?? defaults).map((group) => ({
   examples: examples.filter((example) => example.section === group.section).map((example) => {
     const path = `./catalog/examples/${example.id}.vue`;
     const loadPreview = previews[path]!;
-    return { ...example, loadPreview, preview: deferPreviews ? undefined : defineAsyncComponent(loadPreview), source: sources[path]! };
+    return { ...example, loadPreview, source: sources[path]! };
   }),
 })).filter((group) => group.examples.length);
+
+// Resolve preview modules before rendering so their teleports hydrate in document order.
+const loadedPreviews = deferPreviews ? undefined : new Map(await Promise.all(
+  sections.flatMap((section) => section.examples.map(async ({ id, loadPreview }) =>
+    [id, await loadPreview()] as const,
+  )),
+));
 </script>
 
 <template>
@@ -40,7 +47,7 @@ const sections = (groups ?? defaults).map((group) => ({
       :heading-level="3"
     >
       <PlaygroundDeferredPreview v-if="deferPreviews" :load="example.loadPreview" />
-      <component :is="example.preview" v-else />
+      <component :is="loadedPreviews?.get(example.id)" v-else />
     </PlaygroundExample>
   </PlaygroundExampleSection>
 </template>

@@ -19,19 +19,19 @@ const statuses = [
       <div>
         <h3>입력 상태</h3>
         <div class="design-states__samples">
-          <div class="design-states__field">
+          <div class="ui-field design-states__field">
             <label for="design-state-focus">기본과 포커스</label>
             <UIInput id="design-state-focus" v-model="normal" size="sm" placeholder="Tab 키로 포커스" />
           </div>
-          <div class="design-states__field">
+          <div class="ui-field design-states__field">
             <label for="design-state-readonly">읽기 전용</label>
             <UIInput id="design-state-readonly" model-value="이름" size="sm" readonly />
           </div>
-          <div class="design-states__field">
+          <div class="ui-field design-states__field">
             <label for="design-state-disabled">비활성</label>
             <UIInput id="design-state-disabled" model-value="이름" size="sm" disabled />
           </div>
-          <div class="design-states__field">
+          <div class="ui-field design-states__field">
             <label for="design-state-invalid">오류</label>
             <UIInput
               id="design-state-invalid"
@@ -49,7 +49,7 @@ const statuses = [
       <div>
         <h3>떠 있는 목록</h3>
         <p class="design-states__note">목록을 열면 그림자와 레이어가 적용된 표면을 볼 수 있습니다.</p>
-        <UISelect label="진행 상태" :options="statuses" default-value="active" size="sm" />
+        <UISelect aria-label="진행 상태" :options="statuses" default-value="active" size="sm" />
       </div>
     </div>
   </section>
@@ -76,18 +76,6 @@ const statuses = [
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
   gap: var(--ui-space-md) var(--ui-space-sm);
-}
-
-.design-states__field {
-  display: grid;
-  align-content: start;
-  gap: var(--ui-space-xs);
-  min-inline-size: 0;
-}
-
-.design-states__field label {
-  font-size: var(--ui-font-size-metadata);
-  font-weight: 600;
 }
 
 .design-states__field p,

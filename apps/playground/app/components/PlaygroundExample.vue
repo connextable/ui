@@ -98,14 +98,14 @@ async function revealSource(open: boolean) {
   margin: 0;
 }
 
-.playground-example :is(h2, h3) {
+.playground-example > :is(h2, h3) {
   font-size: clamp(1.25rem, 2.5vw, 1.625rem);
   font-weight: 680;
   letter-spacing: -0.025em;
   overflow-wrap: anywhere;
 }
 
-.playground-example h3 {
+.playground-example > h3 {
   font-size: clamp(1.125rem, 2vw, 1.375rem);
 }
 
@@ -129,29 +129,25 @@ async function revealSource(open: boolean) {
 .playground-example__demo {
   --ui-form-max-inline-size: 26rem;
 
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
-  justify-content: flex-end;
-  gap: var(--ui-space-xs) var(--ui-space-md);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ui-space-xs);
   padding: var(--ui-space-sm);
 }
 
 .playground-example__preview {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  flex: 1 1 var(--playground-preview-inline-size, max-content);
-  grid-column: 2;
   justify-items: center;
+  justify-self: center;
   box-sizing: border-box;
-  inline-size: var(--playground-preview-inline-size, auto);
+  inline-size: 100%;
   min-inline-size: 0;
   max-inline-size: min(100%, var(--playground-preview-inline-size, 100%));
   padding: var(--ui-space-md) clamp(var(--ui-space-xs), 1vw, var(--ui-space-md));
 }
 
 .playground-example__preview--wide {
-  flex-basis: min(100%, 42rem);
   justify-items: stretch;
 }
 
@@ -160,16 +156,8 @@ async function revealSource(open: boolean) {
 }
 
 .playground-example__toggle {
-  flex: none;
-  grid-column: 3;
   justify-self: end;
   white-space: nowrap;
 }
 
-@container playground-example (inline-size >= 36rem) {
-  .playground-example__demo:not(:has(.playground-example__preview--wide)) {
-    display: grid;
-    grid-template-columns: 1fr minmax(0, max-content) minmax(max-content, 1fr);
-  }
-}
 </style>

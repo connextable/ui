@@ -3,14 +3,12 @@ export * from "./components/tabular";
 export * from "./components/scroll";
 export * from "./components/virtual";
 export * from "./components/catalog/navigation-menu";
-export * from "./components/catalog/overlay";
 export { UIAnchor } from "./components/catalog/anchor";
 export * from "./components/catalog/menu";
 export * from "./components/catalog/cascade-select";
 export * from "./components/catalog/transfer";
 export * from "./components/catalog/file-input";
 export * from "./components/catalog/tags-input";
-export * from "./components/reorder";
 export { default as UISpinner } from "./components/progress/UISpinner.vue";
 export { ToggleGroupRoot as UIToggleGroup, ToggleGroupItem as UIToggleGroupItem } from "@sectile/vue/toggle-group";
 export { default as UIButton } from "./components/button/UIButton.vue";
@@ -36,6 +34,7 @@ export { default as UIFormSummary } from "./components/form/UIFormSummary.vue";
 export { default as UIInput } from "./components/text-input/UIInput.vue";
 export { default as UIProgress } from "./components/progress/UIProgress.vue";
 export { default as UIRadioGroup, type UIRadioGroupOption } from "./components/selection/UIRadioGroup.vue";
+export * from "./components/reorder";
 export { default as UIReorderGridItem } from "./components/reorder/UIReorderGridItem.vue";
 export { default as UISelect } from "./components/select/UISelect.vue";
 export { default as UISelectContent } from "./components/select/UISelectContent.vue";
@@ -61,6 +60,7 @@ export {
   FormSelector as UIFormSelector,
   FormFieldSelector as UIFormFieldSelector,
 } from "@sectile/vue/form";
+export * from "./components/catalog/overlay";
 export * from "./components/catalog/input";
 export * from "./components/catalog/navigation";
 export * from "./components/catalog/layout";

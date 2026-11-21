@@ -19,6 +19,7 @@ const corners = [
 <template>
   <section aria-labelledby="design-geometry">
     <h2 id="design-geometry" data-playground-heading tabindex="-1">간격과 모서리</h2>
+    <p>프레임 안쪽 요소는 맞닿는 가장자리에서 같은 간격을 유지합니다. 안쪽 반경은 바깥 반경에서 테두리 두께와 안쪽 여백을 뺀 값입니다.</p>
     <div class="design-geometry">
       <div>
         <h3>간격</h3>

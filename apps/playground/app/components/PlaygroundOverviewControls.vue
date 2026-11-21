@@ -21,9 +21,9 @@ function reset(size: Size) {
 onMounted(() => {
   const nextMetrics: typeof metrics.value = {};
   for (const size of sizes) {
-    const row = samples.value?.querySelector(`[data-overview-size="${size}"]`);
-    if (!row) continue;
-    const style = getComputedStyle(row);
+    const control = samples.value?.querySelector(`[data-overview-size="${size}"] [data-ui-control-size="${size}"]`);
+    if (!control) continue;
+    const style = getComputedStyle(control);
     nextMetrics[size] = {
       height: style.getPropertyValue("--ui-control-size-height").trim(),
       radius: style.getPropertyValue("--ui-control-size-radius").trim(),
@@ -42,7 +42,6 @@ onMounted(() => {
         :key="size"
         class="design-controls__row"
         :data-overview-size="size"
-        :data-ui-control-size="size"
         role="group"
         :aria-labelledby="`design-size-${size}`"
       >
@@ -123,7 +122,7 @@ onMounted(() => {
 @media (width > 22rem) {
   .design-controls__sample {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 6.75rem 5.25rem;
+    grid-template-columns: minmax(0, 1fr) max-content max-content;
   }
 
   .design-controls__sample > :last-child {
