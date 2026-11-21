@@ -1,12 +1,36 @@
 <script lang="ts">
-let stylesheet: Promise<CSSStyleSheet> | undefined;
+const scopedAttribute = /data-v-[\da-f]{8}/g;
+let stylesheet: Promise<{ sheet: CSSStyleSheet; scopes: Set<string> }> | undefined;
 
 function getStylesheet() {
   return stylesheet ??= import("virtual:playground-interaction-styles").then(({ default: css }) => {
     const sheet = new CSSStyleSheet();
-    sheet.replaceSync(css);
-    return sheet;
+    sheet.replaceSync(`${css}\n:host > * { box-sizing: border-box; min-inline-size: 0; max-inline-size: 100%; }
+      :host([data-fill]) > * { inline-size: 100%; }
+      :host > :is([role="progressbar"], [data-scope][data-part="content"]) { inline-size: min(100%, 20rem); }
+      :host > [data-ui-chart-themed] > svg:has(> [data-chart-overlay]) { inline-size: 100% !important; block-size: auto !important; }`);
+    return { sheet, scopes: new Set(css.match(scopedAttribute)) };
   });
+}
+
+function getExampleStyles(root: Element, libraryScopes: Set<string>) {
+  const scopes = new Set(
+    [root, ...root.querySelectorAll("*")].flatMap(element => element.getAttributeNames())
+      .filter(name => name.startsWith("data-v-") && !libraryScopes.has(name)),
+  );
+  const css: string[] = [];
+  for (const sheet of root.ownerDocument.styleSheets) {
+    if (sheet.href && new URL(sheet.href).origin !== location.origin) continue;
+    for (const rule of sheet.cssRules) {
+      if (rule instanceof CSSStyleRule && rule.selectorText.match(scopedAttribute)?.some(scope => scopes.has(scope))) {
+        css.push(rule.cssText);
+      }
+    }
+  }
+  if (!css.length) return [];
+  const sheet = new CSSStyleSheet();
+  sheet.replaceSync(css.join("\n"));
+  return [sheet];
 }
 </script>
 
@@ -15,7 +39,7 @@ import { computed, onMounted, shallowRef, useTemplateRef, watch } from "vue";
 
 const { source } = defineProps<{ source: HTMLElement | null }>();
 const board = useTemplateRef<HTMLElement>("board");
-const sheet = shallowRef<CSSStyleSheet>();
+const styles = shallowRef<Awaited<ReturnType<typeof getStylesheet>>>();
 const specimen = shallowRef<{ root: Element; target?: Element; states: readonly Variant[] }>();
 
 const variants = [
@@ -29,24 +53,43 @@ type Variant = typeof variants[number]["key"];
 const displayedVariants = computed(() => variants.filter(variant => !specimen.value || specimen.value.states.includes(variant.key)));
 
 const focusable = "button, input:not([type=hidden]), select, textarea, a[href], [tabindex], [contenteditable=true]";
+const pickerAnchor = ':is([data-part="anchor"]:is([data-scope^="date"], [data-scope$="-picker"]), [data-scope="time-picker"][data-part="root"])';
+const calendarContent = ':is([data-scope="calendar"], [data-scope="range-calendar"])[data-part="content"]';
 const groupedControl = [
   ".ui-number-control", ".ui-quantity-control", ".ui-input--with-slots",
-  ".ui-choice", ".ui-checkbox", ".ui-file-input__picker", "[role=tablist]",
+  ".ui-choice", ".ui-checkbox", ".ui-file-input__picker", ".ui-file-row", "[role=tablist]",
+  pickerAnchor, calendarContent, '[data-scope="feed"][data-part="item"]',
   "[data-scope][data-part=root]", "[data-ui-tabular-scroll]",
+].join(",");
+const fillCard = ':is([data-scope="chart"], [data-scope="grid"], [data-scope="tree-grid"], [data-scope^="data-"], [data-scope="virtualizer"], [data-scope="window-splitter"])[data-part="root"]';
+const roomyControl = [
+  fillCard, calendarContent,
+  '[data-part="anchor"]:is([data-scope="date-range"], [data-scope^="date-time"], [data-scope*="-range-picker"])',
+  ':is([data-scope="transfer"], [data-scope="tree-view"], [data-scope="carousel"], [data-scope="navigation-menu"], [data-scope="tree-reorder"], [data-scope="color-picker"])[data-part="root"]',
 ].join(",");
 
 function findSpecimen(source: HTMLElement) {
   const first = [...source.children].find(element => element.getClientRects().length > 0);
   if (!first) return;
+  const progress = source.querySelector('[role="progressbar"]');
+  if (progress) return { root: progress, states: ["default"] } as const;
+
   const targets = Array.from(source.querySelectorAll<HTMLElement | SVGElement>(focusable)).filter(element =>
     !element.closest("[hidden], [inert], [aria-hidden=true], [aria-disabled=true]")
       && !element.matches(":disabled")
       && element.getBoundingClientRect().width > 1,
   );
-  const target = targets.find(element => element.tabIndex >= 0) ?? targets[0];
+  const uploader = source.querySelector(".ui-file-row");
+  const target = (uploader && targets.find(element => uploader.contains(element)))
+    || targets.find(element => element.tabIndex >= 0 && element.matches('[data-part="cell"]') && element.closest(calendarContent))
+    || targets.find(element => element.matches('[data-part="trigger"]') && element.closest(pickerAnchor))
+    || targets.find(element => element.tabIndex >= 0) || targets[0];
   if (target) {
     const frame = target.closest(groupedControl) ?? target.closest("svg");
     const root = frame && source.contains(frame) ? frame : target;
+    if (target.matches('[data-scope="chart"][data-part="root"]')) {
+      return { root, target, states: ["default", "focus"] } as const;
+    }
     return { root, target, states: ["default", "hover", "active", "focus"] } as const;
   }
 
@@ -85,13 +128,18 @@ function copySpecimen(root: Element, target: Element | undefined, state: Variant
     if (original instanceof HTMLCanvasElement && original.width && original.height) {
       const bitmap = clonedNodes[index] as HTMLCanvasElement;
       bitmap.getContext("2d")?.drawImage(original, 0, 0);
+      const stage = bitmap.closest<HTMLElement>(".ui-chart-plot__stage");
+      if (stage) {
+        stage.style.blockSize = "auto";
+        stage.style.aspectRatio = `${original.width} / ${original.height}`;
+      }
     }
   }
   return clone;
 }
 
 onMounted(() => {
-  void getStylesheet().then(value => { sheet.value = value; });
+  void getStylesheet().then(value => { styles.value = value; });
 });
 
 watch(() => source, (element, _, onCleanup) => {
@@ -116,11 +164,12 @@ watch(() => source, (element, _, onCleanup) => {
   });
 }, { immediate: true, flush: "post" });
 
-watch([board, sheet, specimen], ([container, styles, sample]) => {
-  if (!container || !styles || !sample) return;
+watch([board, styles, specimen], ([container, library, sample]) => {
+  if (!container || !library || !sample) return;
+  const sheets = [library.sheet, ...getExampleStyles(sample.root, library.scopes)];
   for (const host of container.querySelectorAll<HTMLElement>("[data-interaction]")) {
     const root = host.shadowRoot ?? host.attachShadow({ mode: "open" });
-    root.adoptedStyleSheets = [styles];
+    root.adoptedStyleSheets = sheets;
     root.replaceChildren(copySpecimen(sample.root, sample.target, host.dataset.interaction as Variant));
   }
 }, { flush: "post" });
@@ -129,9 +178,10 @@ watch([board, sheet, specimen], ([container, styles, sample]) => {
 <template>
   <section class="playground-visual-states" aria-labelledby="visual-states">
     <h3 id="visual-states" data-playground-heading tabindex="-1">인터랙션 스타일</h3>
-    <div ref="board" class="playground-visual-states__grid">
+    <div ref="board" class="playground-visual-states__grid" :data-roomy="specimen?.root.matches(roomyControl) || undefined">
       <figure v-for="variant in displayedVariants" :key="variant.key" class="playground-visual-states__card">
-        <div class="playground-visual-states__sample" :data-interaction="variant.key" inert aria-hidden="true" />
+        <div class="playground-visual-states__sample" :data-interaction="variant.key"
+          :data-fill="specimen?.root.matches(fillCard) || undefined" inert aria-hidden="true" />
         <figcaption>{{ variant.label }}</figcaption>
       </figure>
     </div>
@@ -159,26 +209,26 @@ watch([board, sheet, specimen], ([container, styles, sample]) => {
   gap: var(--ui-space-sm);
 }
 
-.playground-visual-states__grid:has(> :nth-child(2):last-child) {
+.playground-visual-states__grid:where([data-roomy], :has(> :nth-child(2):last-child)) {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.playground-visual-states__grid:has(> :only-child) {
+.playground-visual-states__grid:where(:has(> :only-child)) {
   grid-template-columns: minmax(0, 1fr);
 }
 
 @container (width < 42rem) {
-  .playground-visual-states__grid:has(> :nth-child(4)) {
+  .playground-visual-states__grid:where(:has(> :nth-child(4)):not([data-roomy])) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .playground-visual-states__grid:has(> :nth-child(2):last-child) {
+  .playground-visual-states__grid:where([data-roomy], :has(> :nth-child(2):last-child)) {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
 @container (width < 19rem) {
-  .playground-visual-states__grid:has(> :nth-child(4)) {
+  .playground-visual-states__grid:where(:has(> :nth-child(4))) {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -198,9 +248,8 @@ watch([board, sheet, specimen], ([container, styles, sample]) => {
   place-items: center;
   box-sizing: border-box;
   min-block-size: 5.5rem;
-  max-block-size: 13rem;
   padding: var(--ui-space-md);
-  overflow: clip;
+  overflow: hidden;
 }
 
 .playground-visual-states figcaption {
