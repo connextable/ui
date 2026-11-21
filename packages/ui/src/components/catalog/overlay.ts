@@ -2,6 +2,7 @@ export { default as UIAlertDialogContent } from "./UIAlertDialogContent.vue";
 export { default as UIDialogContent } from "./UIDialogContent.vue";
 export { default as UIDrawerContent } from "./UIDrawerContent.vue";
 export { default as UISheetContent } from "./UISheetContent.vue";
+export { UITooltip } from "./tooltip";
 export {
   AlertDialogRoot as UIAlertDialog,
   AlertDialogTrigger as UIAlertDialogTrigger,
@@ -61,7 +62,7 @@ export {
   ToastClose as UIToastClose,
 } from "@sectile/vue/toast";
 export {
-  TooltipRoot as UITooltip,
+  createTooltipGroup as createUITooltipGroup,
   TooltipTrigger as UITooltipTrigger,
   TooltipPortal as UITooltipPortal,
   TooltipContent as UITooltipContent,

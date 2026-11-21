@@ -778,12 +778,13 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       side: "트리거를 기준으로 도움말이 표시되는 방향입니다.",
       "open-delay": "포인터를 올렸을 때 표시까지 기다리는 시간입니다. 밀리초 단위입니다.",
+      group: "같은 createUITooltipGroup 결과를 전달하면 첫 도구에서만 대기하고, 그룹 안에서 이어서 이동할 때는 즉시 표시합니다.",
       "default-open": "초기 표시 상태를 지정합니다.",
     },
     examples: [
       { id: "tooltip-position", title: "옆으로 배치", description: "트리거의 오른쪽에 화살표가 있는 도움말을 표시합니다." },
       { id: "tooltip-portal", title: "포털에 도움말 출력", description: "도움말의 위치는 트리거를 기준으로 잡고 콘텐츠는 포털로 보냅니다.", parts: ["UITooltipPortal"] },
-      { id: "tooltip-delay", title: "잠시 머물렀을 때 표시", description: "open-delay에 650ms를 지정합니다. 포인터를 버튼 위에 잠시 머물러 보세요." },
+      { id: "tooltip-delay", title: "도구 사이 이동 시 지연 건너뛰기", description: "첫 도구 위에 650ms 동안 머문 뒤 옆 도구로 이동하면 도움말이 즉시 표시됩니다. 그룹을 벗어난 뒤 300ms가 지나면 첫 대기가 다시 적용됩니다." },
     ],
   },
   dialog: {
