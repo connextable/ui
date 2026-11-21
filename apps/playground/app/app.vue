@@ -320,8 +320,7 @@ body {
 }
 
 .playground-sidebar-item--leaf > a {
-  margin-inline-start: calc(var(--ui-control-height-small) + var(--ui-space-xs));
-  padding-inline-start: var(--ui-space-xs);
+  padding-inline-start: calc(var(--ui-control-height-small) + 2 * var(--ui-space-xs));
 }
 
 .playground-dashboard {
