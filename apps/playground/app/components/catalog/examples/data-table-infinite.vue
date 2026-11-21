@@ -49,7 +49,7 @@ watchPostEffect(onCleanup => {
   if (!scrollport.value || !tail.value) return;
   const observer = new IntersectionObserver(([entry]) => {
     if (entry?.isIntersecting && status.value !== "error") loadMore();
-  }, { root: scrollport.value });
+  }, { root: scrollport.value, rootMargin: "0px 0px 384px 0px" });
   observer.observe(tail.value);
   onCleanup(() => observer.disconnect());
 });

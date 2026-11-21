@@ -70,7 +70,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "data-table-batch-action", section: "selection", title: "선택한 행 일괄 보관", description: "프로젝트를 하나 이상 선택하고 보관하세요. 표에서 해당 행이 사라지고 보관 수가 갱신됩니다." },
       { id: "data-table-pages", section: "source", title: "2만 5천 건의 페이지 탐색", description: "이전·다음 페이지를 누르면 소스가 요청받은 여섯 행을 반환합니다.", parts: ["DataTable.Body", "DataTable.Cell", "UIDataActions"] },
       { id: "data-table-page-size", section: "source", title: "페이지 크기를 바꿔도 보고 있던 행 유지", description: "페이지당 표시 개수를 바꾸면 기존 첫 행이 포함된 페이지를 요청합니다." },
-      { id: "data-table-infinite", section: "source", title: "끝까지 스크롤해 다음 기록 불러오기", description: "표 안에서 아래로 스크롤하면 24건씩 이어 붙습니다. 아래 버튼으로도 다음 기록을 불러올 수 있습니다." },
+      { id: "data-table-infinite", section: "source", title: "다음 기록 미리 불러오기", description: "표의 끝에 가까워지면 다음 24건을 미리 불러옵니다. 아래 버튼으로도 다음 기록을 불러올 수 있습니다." },
       { id: "data-table-virtual", section: "source", title: "2만 행 중 필요한 범위만 렌더링", description: "스크롤하거나 15,000번째 기록으로 이동해 보세요. 열 제목과 스크롤 길이를 유지하면서 뷰포트 주변 행만 요청하고 그립니다." },
       { id: "data-table-reload", section: "source", title: "지연되는 데이터 로드", description: "새로 고침으로 소스를 다시 요청하고 완료되면 같은 표를 표시합니다." },
       { id: "data-table-retry", section: "source", title: "요청 실패 후 다시 시도", description: "오류를 재현하면 마지막으로 성공한 결과를 계속 읽을 수 있습니다. 다시 시도하면 상태가 복구됩니다." },
