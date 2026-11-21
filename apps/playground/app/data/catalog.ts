@@ -363,6 +363,22 @@ export const catalog: readonly CatalogEntry[] = [
       "UIPaginationLast",
     ],
   },
+  {
+    slug: "carousel",
+    title: "UICarousel",
+    category: "레이아웃",
+    description: "여러 슬라이드를 순서대로 탐색합니다.",
+    parts: [
+      "UICarouselViewport",
+      "UICarouselTrack",
+      "UICarouselIndicatorGroup",
+      "UICarouselPrevious",
+      "UICarouselNext",
+      "UICarouselPause",
+      "UICarouselSlide",
+      "UICarouselIndicator",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));

@@ -518,4 +518,20 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "pagination-controlled", title: "현재 페이지를 외부에서 읽기", description: "v-model과 items-per-page를 함께 지정합니다. 다음·이전 버튼을 누르면 바깥의 페이지 표시도 바뀝니다." },
     ],
   },
+  carousel: {
+    title: "슬라이드 전환",
+    description: "slides의 각 id를 슬라이드에 연결합니다. 이전과 다음 버튼으로 한 장씩 이동합니다.",
+    api: {
+      slides: "슬라이드와 이동 표시에서 공유할 식별자입니다.",
+      "default-value": "처음 표시할 슬라이드의 id입니다.",
+      "v-model": "현재 슬라이드 id를 외부 상태에 연결합니다.",
+      "Slide / Indicator value": "슬라이드와 이동 표시를 같은 항목에 연결합니다.",
+    },
+    examples: [
+      { id: "carousel-autoplay", title: "자동 전환과 일시 정지", description: "슬라이드 전환을 기다린 뒤 일시 정지 버튼을 누릅니다. 같은 자리에서 자동 재생을 다시 시작할 수 있습니다." },
+      { id: "carousel-indicators", title: "인디케이터로 바로 이동", description: "점 버튼을 눌러 해당 슬라이드로 이동합니다. 채워진 점이 현재 슬라이드를 나타냅니다." },
+      { id: "carousel-viewport", title: "보이는 슬라이드 영역", description: "Viewport로 Track의 넘침을 제한합니다.", parts: ["UICarouselViewport"] },
+      { id: "carousel-controlled", title: "외부 버튼에서 슬라이드 이동", description: "v-model에 새로운 슬라이드 id를 지정해 캐러셀 바깥에서 현재 슬라이드를 변경합니다." },
+    ],
+  },
 };
