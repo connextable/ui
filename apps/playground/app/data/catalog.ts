@@ -698,6 +698,15 @@ export const catalog: readonly CatalogEntry[] = [
     description: "as로 결과 요소를 지정하고 공통 속성을 전달합니다.",
   },
   {
+    slug: "pin-input",
+    title: "UIPinInput",
+    category: "입력",
+    description: "한 칸씩 코드를 입력합니다.",
+    parts: [
+      "UIPinInputInput",
+    ],
+  },
+  {
     slug: "feed",
     title: "UIFeed",
     category: "레이아웃",

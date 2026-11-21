@@ -874,6 +874,20 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "checkbox-group-required", title: "알림 채널을 하나 이상 선택", description: "폼 스키마에서 최소 선택 개수를 지정합니다. 비워서 제출한 뒤 채널 하나를 선택하고 다시 제출합니다.", section: "form" },
     ],
   },
+  "pin-input": {
+    examples: [
+      { id: "pin-input-complete", title: "입력 완료 이벤트", description: "네 자리 입력을 마치면 완료 메시지가 나타납니다." },
+      { id: "pin-input-masked", title: "코드 가리기", description: "mask를 지정하면 입력한 코드가 가려집니다." },
+      { id: "pin-input-paste", title: "코드 붙여넣기", description: "첫 칸에 2846을 붙여넣으면 네 칸을 채웁니다." },
+      { id: "pin-input-correct", title: "코드의 한 자리만 수정", description: "세 번째 칸에서 Backspace를 누르고 새 숫자를 입력합니다." },
+    ],
+    title: "여섯 자리 인증 코드 입력",
+    description: "length만큼 Input을 만들고 0부터 시작하는 index를 전달합니다. 숫자를 입력하면 다음 칸으로 이동합니다.",
+    api: {
+      length: "입력할 코드 자리 수를 지정합니다.",
+      "Input index": "이 입력 칸이 맡는 0부터 시작하는 인덱스입니다.",
+    },
+  },
   feed: {
     examples: [
       { id: "feed-earlier", title: "고객 상담의 이전 기록 불러오기", description: "최근 상담 기록에서 시작해 이전 기록을 두 건씩 위에 추가합니다. 두 번째 요청에서는 예제 오류가 발생하며 다시 시도하면 전체 기록을 볼 수 있습니다.", parts: ["UIFeedLoadEarlier"] },

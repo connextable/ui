@@ -19,9 +19,7 @@
 }
 
 :where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="root"] {
-  --ui-thumb-width: 0.875rem;
-  --ui-thumb-height: 1.875rem;
-  --ui-slider-edge: calc(var(--ui-thumb-width) / 2 + var(--ui-space-xs));
+  --ui-slider-edge: calc(var(--ui-inset-size) / 2 + var(--ui-inset-distance));
   display: grid;
   align-content: center;
   gap: var(--ui-space-sm);
@@ -30,28 +28,44 @@
 }
 
 :where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="track"] {
+  --ui-slider-rail-thickness: var(--ui-space-sm);
+  --ui-slider-rail-inset: calc((var(--ui-control-height) - var(--ui-slider-rail-thickness)) / 2);
+  --ui-slider-rail-edge: calc(-1 * var(--ui-inset-size) / 2);
+  --ui-slider-range-origin: var(--sectile-range-start, var(--ui-slider-rail-edge));
+
   position: relative;
   block-size: var(--ui-control-height);
   margin-inline: var(--ui-slider-edge);
-  border-radius: var(--ui-control-radius);
+  border-radius: var(--ui-radius-lg);
   background: transparent;
 
   &::before {
     position: absolute;
     inset: 0 calc(-1 * var(--ui-slider-edge));
-    border: 1px solid var(--ui-color-border);
+    border: var(--ui-frame-border-width) solid var(--ui-color-border);
     border-radius: inherit;
+    background: var(--ui-color-surface);
+    content: "";
+  }
+
+  &::after {
+    position: absolute;
+    inset-block: var(--ui-slider-rail-inset);
+    inset-inline: var(--ui-slider-rail-edge);
+    border-radius: var(--ui-slider-rail-thickness);
     background: var(--ui-color-surface-muted);
+    pointer-events: none;
     content: "";
   }
 
   > [data-part="range"] {
     position: absolute;
-    inset-block: var(--ui-space-xs);
-    inset-inline-start: var(--sectile-range-start, 0%);
+    z-index: 1;
+    inset-block: var(--ui-slider-rail-inset);
+    inset-inline-start: var(--ui-slider-range-origin);
     inset-inline-end: calc(100% - var(--sectile-range-end, var(--sectile-slider-percentage, 0%)));
-    border-radius: var(--ui-radius-sm);
-    background: var(--ui-color-accent-soft);
+    border-radius: var(--ui-slider-rail-thickness);
+    background: color-mix(in srgb, var(--ui-color-accent) 38%, var(--ui-color-surface));
     pointer-events: none;
   }
 }
@@ -59,12 +73,13 @@
 :where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="thumb"] {
   box-sizing: border-box;
   position: absolute;
+  z-index: 2;
   inset-block-start: 50%;
   inset-inline-start: var(--sectile-thumb-percentage, var(--sectile-slider-percentage, 0%));
-  inline-size: var(--ui-thumb-width);
-  block-size: var(--ui-thumb-height);
+  inline-size: var(--ui-inset-size);
+  block-size: var(--ui-inset-size);
   border: 1px solid var(--ui-color-accent);
-  border-radius: var(--ui-space-xs);
+  border-radius: var(--ui-inset-radius);
   background: var(--ui-color-surface);
   transform: translate(-50%, -50%);
   touch-action: none;
@@ -74,8 +89,9 @@
   }
 
   &:focus-visible {
+    z-index: 3;
     outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
-    outline-offset: 1px;
+    outline-offset: var(--ui-focus-ring-offset);
   }
 
   transition: background-color var(--ui-motion-fast) var(--ui-ease-out),
@@ -92,8 +108,9 @@
     }
 
     &:active {
-      background-color: var(--ui-color-accent);
-      box-shadow: none;
+      z-index: 3;
+      background-color: var(--ui-color-selected-active);
+      box-shadow: inset 0 0 0 1px var(--ui-color-accent);
       cursor: grabbing;
 
       @media (forced-colors: active) {
@@ -121,15 +138,18 @@
     inset: calc(-1 * var(--ui-slider-edge)) 0;
   }
 
+  &::after {
+    inset-block: var(--ui-slider-rail-edge);
+    inset-inline: var(--ui-slider-rail-inset);
+  }
+
   & [data-part="range"] {
-    inset-inline: var(--ui-space-xs);
+    inset-inline: var(--ui-slider-rail-inset);
     inset-block-start: calc(100% - var(--sectile-range-end, var(--sectile-slider-percentage, 0%)));
-    inset-block-end: var(--sectile-range-start, 0%);
+    inset-block-end: var(--ui-slider-range-origin);
   }
 
   & [data-part="thumb"] {
-    inline-size: var(--ui-thumb-height);
-    block-size: var(--ui-thumb-width);
     inset-inline-start: 50%;
     inset-block-start: calc(100% - var(--sectile-thumb-percentage, var(--sectile-slider-percentage, 0%)));
 

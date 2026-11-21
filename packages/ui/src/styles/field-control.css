@@ -9,7 +9,7 @@
 )) {
   box-sizing: border-box;
   min-block-size: var(--ui-control-size-height, var(--ui-control-height));
-  border: 1px solid var(--ui-color-border);
+  border: var(--ui-frame-border-width) solid var(--ui-color-border);
   border-radius: var(--ui-control-size-radius, var(--ui-control-radius));
   background: var(--ui-color-surface);
   color: var(--ui-color-text);
@@ -86,7 +86,7 @@
   .ui-quantity-control
 ) {
   --ui-number-extent: var(--ui-control-size-height, var(--ui-control-height));
-  --ui-number-inset: var(--ui-control-size-padding-inline, var(--ui-control-padding-inline));
+  --ui-number-inset: var(--ui-control-size-padding-inline, 1.125rem);
 
   box-sizing: border-box;
   display: inline-flex;
@@ -95,8 +95,8 @@
   max-inline-size: 100%;
   min-block-size: var(--ui-number-extent);
   padding: 0;
-  border: 1px solid var(--ui-color-border);
-  border-radius: var(--ui-control-size-radius, var(--ui-control-radius));
+  border: var(--ui-frame-border-width) solid var(--ui-color-border);
+  border-radius: var(--ui-control-size-radius, var(--ui-radius-lg));
   background: var(--ui-color-surface);
   color: var(--ui-color-text);
   font: 500 var(--ui-control-size-font, var(--ui-font-size-body))/1.35 var(--ui-font-sans);
@@ -184,9 +184,8 @@
 
 :where([data-scope="spin-button"][data-part="root"]) {
   &:has(> [data-part="increment"], > [data-part="decrement"]) {
-    --ui-spin-action-size: min(var(--ui-control-height-small), calc(var(--ui-number-extent) - 10px));
-    gap: var(--ui-space-2xs);
-    padding: var(--ui-space-2xs);
+    gap: var(--ui-frame-padding);
+    padding: var(--ui-frame-padding);
   }
 
   :where(.ui-numeric-value) {
@@ -204,11 +203,11 @@
     place-items: center;
     align-self: center;
     flex: none;
-    inline-size: var(--ui-spin-action-size);
-    block-size: var(--ui-spin-action-size);
+    inline-size: var(--ui-inset-size);
+    block-size: var(--ui-inset-size);
     min-block-size: 0;
     padding: 0;
-    border-radius: var(--ui-radius-sm);
+    border-radius: var(--ui-inset-radius);
     transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
 
     &:disabled {
@@ -226,8 +225,10 @@
 
   &[data-layout="field"]:has(> [data-part="increment"], > [data-part="decrement"]) {
     display: inline-grid;
-    grid-template-columns: minmax(0, 1fr) var(--ui-spin-action-size);
+    block-size: var(--ui-number-extent);
+    grid-template-columns: minmax(0, 1fr) var(--ui-inset-size);
     grid-template-rows: repeat(2, minmax(0, 1fr));
+    row-gap: var(--ui-space-2xs);
 
     > :where(input, .ui-numeric-value) {
       grid-column: 1;
@@ -243,14 +244,22 @@
       grid-column: 2;
       inline-size: 100%;
       block-size: 100%;
+
+      > svg {
+        max-block-size: 100%;
+      }
     }
 
     > [data-part="increment"] {
       grid-row: 1;
+      border-end-start-radius: var(--ui-space-xs);
+      border-end-end-radius: var(--ui-space-xs);
     }
 
     > [data-part="decrement"] {
       grid-row: 2;
+      border-start-start-radius: var(--ui-space-xs);
+      border-start-end-radius: var(--ui-space-xs);
     }
   }
 }
@@ -258,6 +267,7 @@
 :where([data-scope="quantity-field"][data-part="root"]) {
   display: inline-grid;
   gap: var(--ui-space-xs);
+  inline-size: 16rem;
   min-inline-size: 0;
   max-inline-size: 100%;
 }
@@ -272,22 +282,33 @@
   white-space: nowrap;
 }
 
+.ui-quantity-control {
+  inline-size: 100%;
+}
+
 .ui-quantity-control > :where(.ui-select) {
   flex: none;
-  border-inline-start: 1px solid var(--ui-color-divider);
+  align-self: center;
+  margin-inline-end: var(--ui-frame-padding);
 }
 
 .ui-quantity-control .ui-select-trigger {
-  block-size: 100%;
+  block-size: var(--ui-inset-size);
   min-inline-size: 4rem;
-  min-block-size: 100%;
+  min-block-size: 0;
   padding-inline: var(--ui-space-md);
   border: 0;
-  border-radius: 0;
-  border-start-end-radius: var(--ui-radius-sm);
-  border-end-end-radius: var(--ui-radius-sm);
-  background: transparent;
+  border-radius: var(--ui-inset-radius);
+  background: var(--ui-color-surface-muted);
   box-shadow: none;
+}
+
+.ui-quantity-control .ui-select-trigger:hover:enabled:not([data-ui-readonly]) {
+  background: var(--ui-color-surface-hover);
+}
+
+.ui-quantity-control .ui-select-trigger:active:enabled:not([data-ui-readonly]) {
+  background: var(--ui-color-surface-active);
 }
 
 .ui-quantity-control .ui-select-trigger:focus-visible {

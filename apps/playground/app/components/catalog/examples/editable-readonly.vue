@@ -8,7 +8,7 @@ import {
 
 </script>
 <template>
-  <UIEditable readonly default-value="release-candidate" v-slot="{ value }">
+  <UIEditable readonly default-value="11월 정산 배포" v-slot="{ value }">
     <UIEditableArea><UIEditablePreview>{{ value }}</UIEditablePreview><UIEditableInput />
     </UIEditableArea>
   </UIEditable>

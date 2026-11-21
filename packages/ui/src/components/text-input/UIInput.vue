@@ -53,7 +53,7 @@ function focusFromFrame(event: MouseEvent) {
 <template>
   <div
     v-if="$slots.leading || $slots.trailing"
-    class="ui-field-control ui-input ui-input--with-slots"
+    class="ui-field-control ui-inset-frame ui-input ui-input--with-slots"
     :class="$attrs.class"
     :style="$attrs.style"
     :data-size="size"
@@ -61,9 +61,9 @@ function focusFromFrame(event: MouseEvent) {
     :data-variant="variant"
     @click="focusFromFrame"
   >
-    <div v-if="$slots.leading" class="ui-input__slot"><slot name="leading" /></div>
+    <div v-if="$slots.leading" class="ui-input__slot ui-input__slot--leading"><slot name="leading" /></div>
     <TextField ref="control" v-bind="inputBindings($attrs)" class="ui-input__control" />
-    <div v-if="$slots.trailing" class="ui-input__slot"><slot name="trailing" /></div>
+    <div v-if="$slots.trailing" class="ui-input__slot ui-input__slot--trailing"><slot name="trailing" /></div>
   </div>
   <TextField
     v-else
@@ -87,11 +87,19 @@ function focusFromFrame(event: MouseEvent) {
   display: flex;
   align-items: center;
   gap: var(--ui-space-sm);
-  padding-block: var(--ui-space-xs);
+  padding-block: var(--ui-frame-padding);
 }
 
 .ui-input--with-slots[data-size="sm"] {
   padding-inline: var(--ui-space-sm);
+}
+
+.ui-input--with-slots:has(> .ui-input__slot--leading > button) {
+  padding-inline-start: var(--ui-frame-padding);
+}
+
+.ui-input--with-slots:has(> .ui-input__slot--trailing > button) {
+  padding-inline-end: var(--ui-frame-padding);
 }
 
 .ui-input__control {
@@ -128,12 +136,14 @@ function focusFromFrame(event: MouseEvent) {
   block-size: var(--ui-control-size-icon);
 }
 
-.ui-input__slot > :slotted([data-ui-control-shape="square"]) {
-  --ui-control-size-height: calc(var(--ui-control-size-icon) + 2 * var(--ui-space-xs));
-  --ui-control-size-padding-block: var(--ui-space-2xs);
-  --ui-control-size-radius: var(--ui-radius-sm);
+.ui-input__slot > :slotted(button) {
+  --ui-control-size-height: var(--ui-inset-size);
+  --ui-control-size-padding-block: 0px;
+  --ui-control-size-radius: var(--ui-inset-radius);
 
+  box-sizing: border-box;
   flex: none;
-  margin-inline: calc(-1 * var(--ui-space-xs));
+  min-block-size: var(--ui-inset-size);
+  border-radius: var(--ui-inset-radius);
 }
 </style>

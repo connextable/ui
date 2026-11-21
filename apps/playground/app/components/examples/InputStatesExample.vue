@@ -9,7 +9,7 @@ const hasEmailError = computed(
 </script>
 
 <template>
-  <div class="input-error">
+  <div class="ui-field input-error">
     <label for="workspace-email">팀 이메일</label>
     <UIInput
       id="workspace-email"
@@ -26,18 +26,11 @@ const hasEmailError = computed(
 
 <style scoped>
 .input-error {
-  display: grid;
   inline-size: min(100%, 26rem);
-  gap: 0.5rem;
-}
-
-.input-error label {
-  font-size: 0.875rem;
-  font-weight: 600;
 }
 
 .input-error__hint {
   color: var(--ui-color-text-muted);
-  font-size: 0.8125rem;
+  font-size: var(--ui-font-size-metadata);
 }
 </style>
