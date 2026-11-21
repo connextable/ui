@@ -35,6 +35,19 @@ function focus(options?: FocusOptions) {
   const element = control.value?.$el;
   if (element instanceof HTMLElement) element.focus(options);
 }
+
+function focusFromFrame(event: MouseEvent) {
+  if (disabled || event.defaultPrevented) return;
+
+  for (const target of event.composedPath()) {
+    if (target === event.currentTarget) break;
+    if (target instanceof Element && target.matches(
+      "input, textarea, select, button, a[href], label, summary, audio[controls], video[controls], [tabindex], [contenteditable]:not([contenteditable='false']), [role='button'], [role='link']",
+    )) return;
+  }
+
+  focus();
+}
 </script>
 
 <template>
@@ -46,7 +59,7 @@ function focus(options?: FocusOptions) {
     :data-size="size"
     :data-ui-control-size="size"
     :data-variant="variant"
-    @click.self="focus()"
+    @click="focusFromFrame"
   >
     <div v-if="$slots.leading" class="ui-input__slot"><slot name="leading" /></div>
     <TextField ref="control" v-bind="inputBindings($attrs)" class="ui-input__control" />
