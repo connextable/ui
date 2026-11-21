@@ -157,6 +157,11 @@
   }
 }
 
+:where([data-scope="menu-button"][data-part="content"]:not(:focus-within))
+  [role="menuitem"][data-highlighted]:not(:hover, :active, [aria-expanded="true"], [aria-selected="true"]) {
+  background: transparent;
+}
+
 :where([data-scope="tree-select"][data-part="group"]) {
   margin-inline-start: var(--ui-space-md);
   padding-inline-start: var(--ui-space-xs);
