@@ -8,9 +8,9 @@ import {
 } from "@connextable/ui";
 
 const items = [
-  { id: "general", title: "기본 설정", description: "프로젝트 이름과 기본 언어를 관리합니다." },
-  { id: "deployments", title: "배포 설정", description: "기본 브랜치와 검토 후 배포 규칙을 설정합니다." },
-  { id: "danger", title: "프로젝트 삭제", description: "프로젝트와 연결된 배포 기록을 삭제합니다." },
+  { id: "general", title: "기본 설정", label: "기본 언어", value: "한국어" },
+  { id: "deployments", title: "배포 설정", label: "배포 브랜치", value: "main" },
+  { id: "retention", title: "보관 설정", label: "활동 기록 보관 기간", value: "90일" },
 ];
 </script>
 
@@ -22,7 +22,27 @@ const items = [
   >
     <UIAccordionItem v-for="item in items" :key="item.id" :value="item.id">
       <UIAccordionHeader><UIAccordionTrigger>{{ item.title }}</UIAccordionTrigger></UIAccordionHeader>
-      <UIAccordionContent>{{ item.description }}</UIAccordionContent>
+      <UIAccordionContent>
+        <dl class="settings-preview"><dt>{{ item.label }}</dt><dd>{{ item.value }}</dd></dl>
+      </UIAccordionContent>
     </UIAccordionItem>
   </UIAccordion>
 </template>
+
+<style scoped>
+.settings-preview {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--ui-space-sm);
+  margin: 0;
+  font-size: var(--ui-font-size-body-sm);
+}
+
+.settings-preview dd {
+  margin: 0;
+  color: var(--ui-color-text);
+  font-weight: 550;
+}
+</style>

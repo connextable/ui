@@ -11,8 +11,11 @@ const nodes = [
 ] as const;
 
 const typeahead = { textValue: (id: string) => id };
+const labels: Record<string, string> = { Calendar: "일정", Documents: "문서", Reports: "보고서", Settings: "설정" };
 </script>
 
 <template>
-  <UITransfer :nodes="nodes" source-id="available" target-id="selected" :typeahead="typeahead" />
+  <UITransfer :nodes="nodes" source-id="available" target-id="selected" :typeahead="typeahead">
+    <template #item="{ id }">{{ labels[id] }}</template>
+  </UITransfer>
 </template>

@@ -167,6 +167,37 @@
   border-inline-start: 1px solid var(--ui-color-divider);
 }
 
+[data-ui-tree-select-positioned] {
+  position: relative;
+}
+
+:where([data-ui-tree-select-positioned]) > [data-scope="tree-select"][data-part="content"] {
+  --ui-popup-width: 100%;
+  --ui-popup-min-width: 0px;
+  position: absolute;
+  inset-block-start: calc(100% + var(--ui-space-xs));
+  inset-inline-start: 0;
+}
+
+@supports (anchor-scope: --ui-tree-select) and (inset-block-start: anchor(end)) {
+  [data-ui-tree-select-positioned] {
+    anchor-scope: --ui-tree-select;
+  }
+
+  :where([data-ui-tree-select-positioned]) [data-scope="tree-select"][data-part="input"] {
+    anchor-name: --ui-tree-select;
+  }
+
+  :where([data-ui-tree-select-positioned]) [data-scope="tree-select"][data-part="content"] {
+    --ui-popup-width: anchor-size(width);
+    position: fixed;
+    inset-block-start: calc(anchor(end) + var(--ui-space-xs));
+    inset-inline-start: anchor(start);
+    position-anchor: --ui-tree-select;
+    position-try-fallbacks: flip-block;
+  }
+}
+
 .ui-menu-item__chevron {
   inline-size: 1em;
   block-size: 1em;

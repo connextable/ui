@@ -698,6 +698,31 @@ export const catalog: readonly CatalogEntry[] = [
     description: "as로 결과 요소를 지정하고 공통 속성을 전달합니다.",
   },
   {
+    slug: "listbox",
+    title: "UIListbox",
+    category: "입력",
+    description: "목록의 항목을 키보드 또는 포인터로 선택합니다.",
+    parts: [
+      "UIListboxItem",
+      "UIListboxItemText",
+      "UIListboxItemIndicator",
+    ],
+  },
+  {
+    slug: "combobox",
+    title: "UICombobox",
+    category: "입력",
+    description: "검색어로 목록을 좁히고 값을 선택합니다.",
+    parts: [
+      "UIComboboxInput",
+      "UIComboboxContent",
+      "UIComboboxResults",
+      "UIComboboxItem",
+      "UIComboboxEmpty",
+      "UIComboboxEditor",
+    ],
+  },
+  {
     slug: "pin-input",
     title: "UIPinInput",
     category: "입력",

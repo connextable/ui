@@ -18,6 +18,8 @@ const open = ref(false);
 <style scoped>
 .example {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
   gap: var(--ui-space-sm);
 }
 </style>

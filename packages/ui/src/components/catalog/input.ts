@@ -35,6 +35,12 @@ export {
   EditableCancelTrigger as UIEditableCancelTrigger,
 } from "@sectile/vue/editable";
 export {
+  ListboxRoot as UIListbox,
+  ListboxItem as UIListboxItem,
+  ListboxItemText as UIListboxItemText,
+  ListboxItemIndicator as UIListboxItemIndicator,
+} from "@sectile/vue/listbox";
+export {
   RatingRoot as UIRating,
   RatingItem as UIRatingItem,
   RatingIndicator as UIRatingIndicator,
@@ -61,25 +67,32 @@ export {
   StepperNext as UIStepperNext,
 } from "@sectile/vue/stepper";
 export {
+  ComboboxRoot as UICombobox,
+  ComboboxResults as UIComboboxResults,
+  ComboboxEditor as UIComboboxEditor,
+  ComboboxInput as UIComboboxInput,
+  ComboboxContent as UIComboboxContent,
+  ComboboxItem as UIComboboxItem,
+  ComboboxEmpty as UIComboboxEmpty,
+} from "@sectile/vue/combobox";
+export {
   CheckboxTreeRoot as UICheckboxTree,
-  CheckboxTreeGroup as UICheckboxTreeGroup,
   CheckboxTreeItem as UICheckboxTreeItem,
   CheckboxTreeDisclosure as UICheckboxTreeDisclosure,
 } from "@sectile/vue/checkbox-tree";
+export { default as UITreeSelect } from "./UITreeSelect.vue";
 export {
-  TreeSelectRoot as UITreeSelect,
   TreeSelectInput as UITreeSelectInput,
   TreeSelectContent as UITreeSelectContent,
   TreeSelectItem as UITreeSelectItem,
-  TreeSelectGroup as UITreeSelectGroup,
   TreeSelectDisclosure as UITreeSelectDisclosure,
 } from "@sectile/vue/tree-select";
 export {
   TreeViewRoot as UITreeView,
-  TreeViewGroup as UITreeViewGroup,
   TreeViewItem as UITreeViewItem,
   TreeViewDisclosure as UITreeViewDisclosure,
 } from "@sectile/vue/tree-view";
+export { UICheckboxTreeGroup, UITreeSelectGroup, UITreeViewGroup } from "./tree-groups";
 export {
   CheckboxGroupRoot as UICheckboxGroup,
   CheckboxGroupItem as UICheckboxGroupItem,

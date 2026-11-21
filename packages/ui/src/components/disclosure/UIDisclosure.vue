@@ -24,12 +24,15 @@ defineSlots<{ default?(state: DisclosureSlotProps): unknown }>();
 
 <style scoped>
 .ui-disclosure[data-variant="outline"] {
-  border: 1px solid var(--ui-color-divider);
-  border-radius: var(--ui-control-radius);
+  --ui-expandable-radius: var(--ui-radius-md);
+
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-expandable-radius);
 }
 
 .ui-disclosure[data-variant="outline"]:has(> :deep(.ui-disclosure-trigger)) {
-  inline-size: min(100%, 26rem);
+  inline-size: 26rem;
+  max-inline-size: 100%;
   min-inline-size: 0;
 }
 </style>

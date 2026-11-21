@@ -1,0 +1,20 @@
+<script setup lang="ts">
+import { UIListbox, UIListboxItem, UIListboxItemIndicator, UIListboxItemText } from "@connextable/ui";
+import { Check } from "@lucide/vue";
+import { ref } from "vue";
+
+const channels = ["이메일", "문자", "푸시"];
+const selected = ref<string | readonly string[]>([]);
+</script>
+
+<template>
+  <div>
+    <UIListbox v-model="selected" :items="channels" selection-mode="multiple" aria-label="알림 수단">
+      <UIListboxItem v-for="channel in channels" :key="channel" :value="channel">
+        <UIListboxItemText>{{ channel }}</UIListboxItemText>
+        <UIListboxItemIndicator><Check :size="16" aria-hidden="true" /></UIListboxItemIndicator>
+      </UIListboxItem>
+    </UIListbox>
+    <p>선택 <output>{{ (typeof selected === "string" ? selected : selected.join(", ")) || "없음" }}</output></p>
+  </div>
+</template>

@@ -9,7 +9,7 @@
   border-radius: var(--ui-control-radius);
 }
 
-:where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="item"] {
+:where([data-scope="tree-view"], [data-scope="checkbox-tree"])[data-part="item"] {
   display: flex;
   align-items: center;
   gap: var(--ui-space-xs);
@@ -58,6 +58,21 @@
   &[hidden] {
     display: none;
   }
+}
+
+.ui-tree-group__rows {
+  display: grid;
+  align-content: start;
+  gap: var(--ui-space-2xs);
+}
+
+/* TreeSelect hides rows as soon as they leave its visible items. Keep their boxes
+   for the closing transition while the group's inert state blocks interaction. */
+:where([data-scope="tree-select"].ui-expandable-content[data-part="group"][data-state="closed"]:not([hidden]))
+  [data-scope="tree-select"][data-part="item"][hidden] {
+  transition:
+    background-color var(--ui-motion-fast) var(--ui-ease-out),
+    display var(--ui-motion-standard) allow-discrete;
 }
 
 :where([data-scope="checkbox-tree"])[data-part="item"][aria-checked] {
@@ -116,11 +131,12 @@
 }
 
 :where([data-scope="cascade-list"])[data-part="root"] {
-  display: grid;
-  grid-auto-flow: row;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 6rem), 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
   gap: 0;
-  inline-size: min(100%, 32rem);
+  inline-size: 32rem;
+  max-inline-size: 100%;
   box-sizing: border-box;
   padding: 0;
   overflow: hidden;
@@ -129,7 +145,9 @@
 }
 
 :where([data-scope="cascade-list"])[data-part="value"] {
-  grid-column: 1 / -1;
+  box-sizing: border-box;
+  flex: 0 0 100%;
+  min-inline-size: 0;
   padding: var(--ui-space-sm) var(--ui-space-md);
   border-block-end: 1px solid var(--ui-color-divider);
   color: var(--ui-color-text-muted);
@@ -139,6 +157,7 @@
 
 :where([data-scope="cascade-list"])[data-part="column"] {
   display: grid;
+  flex: 1 1 0;
   align-content: start;
   gap: var(--ui-space-2xs);
   min-inline-size: 0;
@@ -157,8 +176,12 @@
   min-inline-size: 0;
   padding: var(--ui-space-xs) var(--ui-space-sm);
   font-size: var(--ui-font-size-body-sm);
-  overflow-wrap: normal;
+  overflow-wrap: anywhere;
   cursor: pointer;
+
+  > :where([data-part="item-indicator"], [data-part="item-chevron"]) {
+    flex: none;
+  }
 }
 
 :where([data-scope="cascade-list"])[data-part="item"]:where([aria-selected="true"], [data-state="checked"]) {

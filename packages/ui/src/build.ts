@@ -5,6 +5,7 @@ import "./styles/virtual.css";
 import "./styles/tokens.css";
 import "./styles/scrollbar.css";
 import "./styles/interaction.css";
+import "./styles/expandable.css";
 import "./styles/temporal-picker.css";
 import "./styles/choice.css";
 import "./styles/field-control.css";

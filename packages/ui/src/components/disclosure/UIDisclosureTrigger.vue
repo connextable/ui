@@ -31,7 +31,15 @@ defineProps<{
 
 .ui-expandable-heading.ui-button,
 .ui-disclosure[data-variant="outline"] > .ui-disclosure-trigger.ui-button {
+  --ui-control-size-radius: calc(var(--ui-expandable-radius, var(--ui-radius-md)) - 1px);
+  --ui-focus-ring-offset: calc(-1 * var(--ui-focus-ring-width));
+
   inline-size: 100%;
+}
+
+:is(.ui-expandable-heading.ui-button, .ui-disclosure[data-variant="outline"] > .ui-disclosure-trigger.ui-button)[aria-expanded="true"] {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
 }
 
 .ui-expandable-heading .ui-button__content,

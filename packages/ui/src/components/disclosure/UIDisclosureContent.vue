@@ -18,28 +18,6 @@ defineSlots<{ default?(state: DisclosureSlotProps): unknown }>();
 </template>
 
 <style>
-.ui-expandable-content:not([hidden]) {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--ui-motion-standard) var(--ui-ease-out);
-}
-
-.ui-expandable-content[data-state="open"]:not([hidden]) {
-  grid-template-rows: 1fr;
-}
-
-.ui-expandable-clip {
-  min-block-size: 0;
-  min-inline-size: 0;
-  overflow: hidden;
-}
-
-.ui-expandable-body {
-  padding: var(--ui-space-sm) var(--ui-control-padding-inline) var(--ui-space-md);
-  overflow-wrap: anywhere;
-  color: var(--ui-color-text-muted);
-}
-
 .ui-disclosure-content__divider {
   border-block-start: 1px solid var(--ui-color-divider);
 }

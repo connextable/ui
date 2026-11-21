@@ -19,13 +19,16 @@ const { forcePresent = true, ...props } = defineProps<AccordionContentProps>();
 [data-scope="accordion"][data-part="root"] {
   display: grid;
   gap: var(--ui-space-xs);
-  inline-size: min(100%, 28rem);
+  inline-size: 28rem;
+  max-inline-size: 100%;
   min-inline-size: 0;
 }
 
 [data-scope="accordion"][data-part="item"] {
-  border: 1px solid var(--ui-color-divider);
-  border-radius: var(--ui-control-radius);
+  --ui-expandable-radius: var(--ui-radius-md);
+
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-expandable-radius);
 }
 
 [data-scope="accordion"][data-part="header"] {

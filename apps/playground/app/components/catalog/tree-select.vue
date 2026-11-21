@@ -22,7 +22,7 @@ function openFromField(event: MouseEvent) {
 <template>
   <UITreeSelect v-model:open="open" :nodes="nodes" :default-expanded-values="['design']" selection-mode="single" v-slot="{ value }">
     <div class="ui-tree-select-field" :data-has-selection="!!value.length || undefined" :data-open="open || undefined">
-      <UITreeSelectInput aria-label="팀 검색" :placeholder="value[0] ? labels[value[0]] : '팀을 검색하거나 선택하세요'" @click="openFromField" />
+      <UITreeSelectInput aria-label="팀 검색" :placeholder="value[0] ? labels[value[0]] : '팀을 검색하거나 선택하세요'" @click.stop="openFromField" />
       <ChevronDown :size="16" aria-hidden="true" />
     </div>
     <UITreeSelectContent>

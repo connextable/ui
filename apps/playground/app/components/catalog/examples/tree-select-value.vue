@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { UITreeSelect, UITreeSelectContent, UITreeSelectGroup, UITreeSelectInput, UITreeSelectItem } from "@connextable/ui";
 
+const labels: Record<string, string> = { design: "디자인", ui: "제품 디자인", brand: "브랜드" };
 const nodes = [
   { id: "design", parentID: null },
   { id: "ui", parentID: "design" },
@@ -12,12 +13,12 @@ const nodes = [
   <UITreeSelect v-slot="{ value }" :nodes="nodes" :default-expanded-values="['design']" selection-mode="single">
     <UITreeSelectInput aria-label="팀" placeholder="팀 선택" />
     <UITreeSelectContent>
-      <UITreeSelectItem value="design">디자인</UITreeSelectItem>
+      <UITreeSelectItem value="design">{{ labels.design }}</UITreeSelectItem>
       <UITreeSelectGroup for="design">
-        <UITreeSelectItem value="ui">UI</UITreeSelectItem>
-        <UITreeSelectItem value="brand">브랜드</UITreeSelectItem>
+        <UITreeSelectItem value="ui">{{ labels.ui }}</UITreeSelectItem>
+        <UITreeSelectItem value="brand">{{ labels.brand }}</UITreeSelectItem>
       </UITreeSelectGroup>
     </UITreeSelectContent>
-    <output>{{ value.join(", ") || "선택 없음" }}</output>
+    <output>{{ value.map(id => labels[id]).join(", ") || "선택 없음" }}</output>
   </UITreeSelect>
 </template>

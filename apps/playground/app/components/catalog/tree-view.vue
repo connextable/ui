@@ -26,20 +26,20 @@ const expandedValues = ref(['atlas', 'apps', 'dashboard', 'packages'])
 
     v-model:expanded-values="expandedValues"
     :default-value="['settings']"
-    label="Atlas project files"
+    label="아틀라스 프로젝트 파일"
 
   >
-    <UITreeViewItem value="atlas"><UITreeViewDisclosure for="atlas" as="button" aria-label="하위 항목 펼치기 또는 접기"><ChevronRight :size="16" aria-hidden="true" /></UITreeViewDisclosure>Atlas workspace</UITreeViewItem>
+    <UITreeViewItem value="atlas"><UITreeViewDisclosure for="atlas" as="button" aria-label="하위 항목 펼치기 또는 접기"><ChevronRight :size="16" aria-hidden="true" /></UITreeViewDisclosure>아틀라스 작업 공간</UITreeViewItem>
     <UITreeViewGroup for="atlas">
-      <UITreeViewItem value="apps"><UITreeViewDisclosure for="apps" as="button" aria-label="하위 항목 펼치기 또는 접기"><ChevronRight :size="16" aria-hidden="true" /></UITreeViewDisclosure>Applications</UITreeViewItem>
+      <UITreeViewItem value="apps"><UITreeViewDisclosure for="apps" as="button" aria-label="하위 항목 펼치기 또는 접기"><ChevronRight :size="16" aria-hidden="true" /></UITreeViewDisclosure>앱</UITreeViewItem>
       <UITreeViewGroup for="apps">
-        <UITreeViewItem value="dashboard"><UITreeViewDisclosure for="dashboard" as="button" aria-label="하위 항목 펼치기 또는 접기"><ChevronRight :size="16" aria-hidden="true" /></UITreeViewDisclosure>Dashboard</UITreeViewItem>
+        <UITreeViewItem value="dashboard"><UITreeViewDisclosure for="dashboard" as="button" aria-label="하위 항목 펼치기 또는 접기"><ChevronRight :size="16" aria-hidden="true" /></UITreeViewDisclosure>대시보드</UITreeViewItem>
         <UITreeViewGroup for="dashboard">
           <UITreeViewItem value="overview">Overview.vue</UITreeViewItem>
           <UITreeViewItem value="settings">Settings.vue</UITreeViewItem>
         </UITreeViewGroup>
       </UITreeViewGroup>
-      <UITreeViewItem value="packages"><UITreeViewDisclosure for="packages" as="button" aria-label="하위 항목 펼치기 또는 접기"><ChevronRight :size="16" aria-hidden="true" /></UITreeViewDisclosure>Packages</UITreeViewItem>
+      <UITreeViewItem value="packages"><UITreeViewDisclosure for="packages" as="button" aria-label="하위 항목 펼치기 또는 접기"><ChevronRight :size="16" aria-hidden="true" /></UITreeViewDisclosure>패키지</UITreeViewItem>
       <UITreeViewGroup for="packages"><UITreeViewItem value="tokens">tokens.ts</UITreeViewItem></UITreeViewGroup>
     </UITreeViewGroup>
   </UITreeView>
