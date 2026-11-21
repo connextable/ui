@@ -27,6 +27,33 @@ const treeReorderBoardExamples = [
 ] satisfies readonly CatalogExample[];
 
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
+  lightbox: {
+    title: "사진과 영상이 있는 관찰 기록 열기",
+    description: "썸네일을 눌러 해당 자료부터 엽니다. 창 안에서는 이전·다음 버튼, 방향키, 하단 썸네일로 사진과 영상을 오갈 수 있습니다.",
+    sections: [
+      { id: "examples", title: "미디어 구성", section: "media" },
+      { id: "lightbox-behavior", title: "탐색과 전환", section: "behavior" },
+    ],
+    examples: [
+      { id: "lightbox-single", section: "media", title: "세로 사진 한 장 열기", description: "한 장일 때는 사진과 설명에 집중할 수 있도록 이동 버튼과 썸네일을 숨깁니다." },
+      { id: "lightbox-video", section: "media", title: "예고편 재생과 자막", description: "재생과 일시정지, 재생 위치, 음소거, 한국어 자막을 조작해 보세요. 예고편은 처음에 음소거되어 있고, 끝까지 재생하면 반복됩니다." },
+      { id: "lightbox-controlled", section: "behavior", title: "마지막으로 본 자료 다시 열기", description: "현재 위치를 페이지와 공유합니다. 썸네일 없이 방향키로 탐색하고, 마지막 항목 다음에는 첫 항목으로 돌아갑니다." },
+      { id: "lightbox-motion", section: "behavior", title: "열기와 항목 전환 효과 비교", description: "전환 효과를 켜면 지원 브라우저에서 썸네일이 사진으로 이어지고, 다음·이전 항목은 이동 방향에 맞춰 전환됩니다." },
+      { id: "lightbox-error", section: "behavior", title: "열 수 없는 원본 건너뛰기", description: "원본이 없는 사진에는 안내를 표시합니다. 다음 버튼으로 다른 자료를 계속 확인할 수 있습니다." },
+    ],
+    api: {
+      items: "고유 id와 표시 이름을 지정합니다. 사진에는 src와 alt를, 동영상에는 sources와 선택적으로 poster, tracks, muted, loop를 지정합니다.",
+      "v-model:open": "보기 창의 열림 상태를 연결합니다.",
+      "v-model:index": "현재 미디어의 위치를 0부터 공유합니다.",
+      loop: "첫 항목과 마지막 항목 사이를 이어서 탐색합니다.",
+      thumbnails: "여러 항목의 하단 썸네일을 표시합니다. 기본값은 true입니다.",
+      motion: "View Transition을 사용합니다. 모션 감소 설정이 켜져 있으면 즉시 전환합니다.",
+      "close-on-interact-outside": "배경을 눌러 창을 닫을지 지정합니다. 기본값은 true입니다.",
+      "#default": "items와 openAt을 받아 직접 만든 버튼이나 미디어 목록에서 창을 엽니다. 버튼의 클릭 이벤트를 전달하면 닫을 때 포커스가 해당 버튼으로 돌아갑니다.",
+      "#caption, #actions": "현재 자료와 위치를 받아 설명과 상단 작업 버튼을 구성합니다.",
+      labels: "탐색 버튼, 닫기 버튼, 썸네일 목록, 로드 실패 메시지의 문구를 지정합니다.",
+    },
+  },
   "navigation-menu": {
     sections: [
       { id: "examples", title: "메뉴 구성", section: "structure" },

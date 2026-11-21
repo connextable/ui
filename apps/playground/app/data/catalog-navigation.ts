@@ -68,6 +68,7 @@ export const catalogNavigation = new Map<string, readonly string[]>([
     "UIAlertDialog",
     "UIDrawer",
     "UISheet",
+    "UILightbox",
     "UIPopover",
     "UITooltip",
     "UIToast",

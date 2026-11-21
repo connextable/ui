@@ -11,6 +11,14 @@ interface CatalogEntry {
 
 export const catalog: readonly CatalogEntry[] = [
   {
+    slug: "lightbox",
+    title: "UILightbox",
+    category: "오버레이",
+    description: "사진과 동영상을 크게 보고 여러 자료를 한 창에서 탐색합니다.",
+    wide: true,
+    visualStates: false,
+  },
+  {
     slug: "scroll-area",
     title: "UIScrollArea",
     category: "레이아웃",
