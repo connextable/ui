@@ -10,11 +10,10 @@ const tiles = Array.from({ length: 500 }, (_, index) => ({
 </script>
 
 <template>
-  <section ref="scrollport" class="scrollport" aria-label="샘플 갤러리" tabindex="0">
-    <p class="scrollport-heading">전체 샘플</p>
+  <section ref="scrollport" data-ui-virtual-scrollport aria-label="샘플 갤러리" tabindex="0">
+    <p data-ui-virtual-scrollport-title>전체 샘플</p>
     <UIVirtualGrid
       v-if="scrollport"
-      class="collection"
       :items="tiles"
       :get-i-d="tile => tile.id"
       :scrollport="scrollport"
@@ -26,25 +25,3 @@ const tiles = Array.from({ length: 500 }, (_, index) => ({
     </UIVirtualGrid>
   </section>
 </template>
-
-<style scoped>
-.scrollport {
-  inline-size: min(100%, 32rem);
-  block-size: 15rem;
-  overflow: auto;
-  border: 1px solid var(--ui-color-divider);
-  border-radius: var(--ui-control-radius);
-}
-
-.scrollport-heading {
-  margin: 0;
-  padding: var(--ui-space-sm);
-  font-weight: 600;
-}
-
-.collection {
-  block-size: auto;
-  overflow: visible;
-  border: 0;
-}
-</style>
