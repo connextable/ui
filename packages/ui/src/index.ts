@@ -49,6 +49,11 @@ export { default as UIToggleButton } from "./components/button/UIToggleButton.vu
 export { CheckboxIndicator as UICheckboxIndicator } from "@sectile/vue/checkbox";
 export { RadioGroupItem as UIRadioGroupItem, RadioGroupIndicator as UIRadioGroupIndicator } from "@sectile/vue/radio-group";
 export {
+  ProgressTrack as UIProgressTrack,
+  ProgressIndicator as UIProgressIndicator,
+  ProgressValueText as UIProgressValueText,
+} from "@sectile/vue/progress";
+export {
   FormLabel as UIFormLabel,
   FormDescription as UIFormDescription,
   FormMessage as UIFormMessage,

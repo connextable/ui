@@ -2,31 +2,24 @@
 import { UIButton, UIProgress } from "@connextable/ui";
 import { ref } from "vue";
 
-const total = 4;
-const completed = ref(1);
+const progress = ref(25);
 </script>
 
 <template>
-  <div class="progress-example">
-    <output>{{ completed }} / {{ total }} 완료</output>
-    <UIProgress label="검사 진행률" :value="completed" :max="total" />
-    <div class="progress-example__actions">
-      <UIButton size="sm" :disabled="completed === total" @click="completed++">한 항목 완료</UIButton>
-      <UIButton size="sm" variant="outline" :disabled="completed === 0" @click="completed = 0">초기화</UIButton>
-    </div>
+  <div class="example">
+    <UIProgress label="검사 진행률" :value="progress" show-value />
+    <UIButton size="sm" :disabled="progress === 100" @click="progress += 25">검사 한 단계 완료</UIButton>
   </div>
 </template>
 
 <style scoped>
-.progress-example {
+.example {
   display: grid;
-  gap: 0.875rem;
-  inline-size: min(100%, 26rem);
+  gap: var(--ui-space-sm);
+  inline-size: min(100%, 20rem);
 }
 
-.progress-example__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+.example > button {
+  justify-self: start;
 }
 </style>
