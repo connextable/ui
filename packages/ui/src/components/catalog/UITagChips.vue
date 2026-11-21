@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { GripVertical, X } from "@lucide/vue";
-import { SequenceReorderHandle, SequenceReorderItem, SequenceReorderRoot } from "@sectile/vue/reorder";
-import { TagsInputItem, TagsInputItemDelete, TagsInputItemText } from "@sectile/vue/tags-input";
-import { computed } from "vue";
+import { computed, nextTick } from "vue";
+import {
+  UIReorderFeedback,
+  UIReorderGroup,
+  UISequenceReorder,
+  UISequenceReorderHandle,
+  UISequenceReorderItem,
+} from "../reorder";
+import UITagChip from "./UITagChip.vue";
 
 const props = defineProps<{
   value: readonly string[];
@@ -20,39 +26,90 @@ const tags = computed(() => {
   });
 });
 const ids = computed(() => tags.value.map(({ id }) => id));
+const textById = computed(() => new Map(tags.value.map(({ id, text }) => [id, text])));
 
-function reorder(order: readonly string[]) {
-  const byId = new Map(tags.value.map(({ id, text }) => [id, text]));
-  const next = order.map((id) => byId.get(id));
-  if (next.every((tag) => tag !== undefined)) emit("reorder", next);
+function isolateReorderArrows(event: KeyboardEvent) {
+  const target = event.target;
+  if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+  // The tags input also owns horizontal arrows for navigating its delete buttons.
+  if (target instanceof Element && (target.matches(".ui-tags-input__chip") || target.closest(".ui-tags-input__handle"))) {
+    event.stopPropagation();
+  }
+}
+
+async function reorder(order: readonly string[]) {
+  const next = order.map((id) => textById.value.get(id));
+  if (!next.every((tag) => tag !== undefined)) return;
+
+  const activeElement = document.activeElement;
+  const handle = activeElement?.matches(".ui-tags-input__chip")
+    ? activeElement.querySelector(".ui-tags-input__handle")
+    : activeElement;
+  const sorter = handle?.closest(".ui-tags-input__sorter");
+  emit("reorder", next);
+  if (!(handle instanceof HTMLElement) || !sorter || !handle.matches(".ui-tags-input__handle")) return;
+
+  // Updating the tag indexes also refreshes Sectile's delete-button focus.
+  await nextTick();
+  const active = handle.ownerDocument.activeElement;
+  if (handle.isConnected && (active === handle.ownerDocument.body || sorter.contains(active))) {
+    handle.focus({ preventScroll: true });
+  }
 }
 </script>
 
 <template>
-  <component
-    :is="reorderable ? SequenceReorderRoot : 'div'"
-    v-if="tags.length"
-    v-bind="reorderable ? { items: ids, controlled: true, handleOnly: true, orientation: 'horizontal', label: '태그 순서', 'onUpdate:items': reorder } : {}"
-    class="ui-tags-input__chips"
+  <UISequenceReorder
+    v-if="reorderable && tags.length"
+    v-slot="{ interaction, getPreviewState }"
+    :items="ids"
+    controlled
+    handle-only
+    keyboard-mode="preview"
+    orientation="horizontal"
+    label="태그 순서"
+    class="ui-tags-input__sorter"
+    @keydown="isolateReorderArrows"
+    @update:items="reorder"
   >
-    <TransitionGroup name="ui-tag">
-      <component
-        :is="reorderable ? SequenceReorderItem : 'span'"
-        v-for="tag in tags"
-        :key="tag.id"
-        v-bind="reorderable ? { value: tag.id, as: 'span' } : {}"
-        class="ui-tags-input__chip"
-      >
-        <TagsInputItem :index="tag.index">
-          <SequenceReorderHandle v-if="reorderable" :label="`${tag.text} 이동`" class="ui-tags-input__handle">
-            <GripVertical aria-hidden="true" />
-          </SequenceReorderHandle>
-          <TagsInputItemText />
-          <TagsInputItemDelete v-if="!readonly" :aria-label="`${tag.text} 삭제`">
-            <X aria-hidden="true" />
-          </TagsInputItemDelete>
-        </TagsInputItem>
-      </component>
-    </TransitionGroup>
-  </component>
+    <UIReorderGroup
+      layout="wrap"
+      :interaction="interaction"
+      :get-preview-state="getPreviewState"
+      preview-item-class="ui-tags-input__chip"
+      class="ui-tags-input__chips"
+    >
+      <UISequenceReorderItem v-for="tag in tags" :key="tag.id" :value="tag.id" class="ui-tags-input__chip">
+        <UITagChip :index="tag.index" :text="tag.text" :readonly="readonly" class="ui-tags-input__chip-content">
+          <template #leading>
+            <UISequenceReorderHandle :label="`${tag.text} 이동`" class="ui-tags-input__handle">
+              <GripVertical aria-hidden="true" />
+            </UISequenceReorderHandle>
+          </template>
+        </UITagChip>
+      </UISequenceReorderItem>
+      <template #preview-handle><GripVertical class="ui-tags-input__icon" /></template>
+      <template #preview="{ id }">
+        <span class="ui-tags-input__text">{{ textById.get(id) }}</span>
+        <span class="ui-tags-input__delete-visual"><X class="ui-tags-input__icon" /></span>
+      </template>
+    </UIReorderGroup>
+    <UIReorderFeedback :interaction="interaction" lift-class="ui-tags-input__chip">
+      <template #lift-handle><GripVertical class="ui-tags-input__icon" /></template>
+      <template #lift="{ id }">
+        <span class="ui-tags-input__text">{{ textById.get(id) }}</span>
+        <span class="ui-tags-input__delete-visual"><X class="ui-tags-input__icon" /></span>
+      </template>
+    </UIReorderFeedback>
+  </UISequenceReorder>
+  <TransitionGroup v-else-if="tags.length" tag="div" name="ui-tag" class="ui-tags-input__chips">
+    <UITagChip
+      v-for="tag in tags"
+      :key="tag.id"
+      :index="tag.index"
+      :text="tag.text"
+      :readonly="readonly"
+      class="ui-tags-input__chip"
+    />
+  </TransitionGroup>
 </template>

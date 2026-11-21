@@ -7,6 +7,7 @@ export * from "./components/catalog/menu";
 export * from "./components/catalog/cascade-select";
 export * from "./components/catalog/file-input";
 export * from "./components/catalog/tags-input";
+export * from "./components/reorder";
 export { default as UISpinner } from "./components/progress/UISpinner.vue";
 export { ToggleGroupRoot as UIToggleGroup, ToggleGroupItem as UIToggleGroupItem } from "@sectile/vue/toggle-group";
 export { default as UIButton } from "./components/button/UIButton.vue";

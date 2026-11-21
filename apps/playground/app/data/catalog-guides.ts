@@ -444,7 +444,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
     examples: [
       { id: "tags-input-paste", title: "여러 태그 붙여넣기", description: "예제 문자열을 복사해 붙여넣으세요. 새 태그는 추가되고, 이미 있는 ‘디자인’은 제외됩니다.", section: "editing" },
-      { id: "tags-input-reorder", title: "태그 순서 바꾸기", description: "손잡이로 칩을 끌거나, 손잡이에 포커스한 뒤 Alt와 왼쪽·오른쪽 화살표를 함께 눌러 순서를 바꿉니다.", section: "editing" },
+      { id: "tags-input-reorder", title: "태그 순서 바꾸기", description: "칩을 끌어 놓거나, 손잡이에서 Space를 누른 뒤 방향키로 옮기고 Enter로 확정합니다. Escape로 취소하거나 Alt+방향키로 바로 옮길 수도 있습니다.", section: "editing" },
       { id: "tags-input-clear", title: "태그 한 번에 지우기", description: "입력창 오른쪽 버튼으로 선택된 태그를 모두 지웁니다.", section: "editing", parts: ["UITagsInputClear"] },
       { id: "tags-input-external-draft", title: "외부 버튼으로 입력값 채우기", description: "버튼으로 초안을 채우고 Enter로 태그를 확정합니다.", section: "editing" },
       { id: "tags-input-duplicates", title: "중복 태그 제한", description: "이미 있는 ‘Vue’를 다시 입력하면 새 태그가 생기지 않습니다.", section: "policies" },
