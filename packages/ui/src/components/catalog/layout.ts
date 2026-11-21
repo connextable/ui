@@ -23,3 +23,9 @@ export {
   WindowSplitterPane as UIWindowSplitterPane,
   WindowSplitterHandle as UIWindowSplitterHandle,
 } from "@sectile/vue/window-splitter";
+export {
+  FeedRoot as UIFeed,
+  FeedItem as UIFeedItem,
+  FeedLoadEarlier as UIFeedLoadEarlier,
+  FeedLoadNewer as UIFeedLoadNewer,
+} from "@sectile/vue/feed";

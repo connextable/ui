@@ -684,6 +684,17 @@ export const catalog: readonly CatalogEntry[] = [
     visualStates: false,
     parts: ["UIScrollFade", "useUIScrollArea", "useUIInfiniteScroll"],
   },
+  {
+    slug: "feed",
+    title: "UIFeed",
+    category: "레이아웃",
+    description: "연속된 콘텐츠를 피드로 탐색합니다.",
+    parts: [
+      "UIFeedItem",
+      "UIFeedLoadEarlier",
+      "UIFeedLoadNewer",
+    ],
+  },
 ];
 
 export const catalogBySlug = new Map(catalog.map(entry => [entry.slug, entry]));

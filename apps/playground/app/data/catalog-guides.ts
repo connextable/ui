@@ -840,6 +840,22 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "popover-position", title: "트리거 끝에 정렬", description: "side와 align을 함께 지정해 팝오버를 트리거의 아래쪽 끝에 맞춥니다." },
     ],
   },
+  feed: {
+    examples: [
+      { id: "feed-earlier", title: "고객 상담의 이전 기록 불러오기", description: "최근 상담 기록에서 시작해 이전 기록을 두 건씩 위에 추가합니다. 두 번째 요청에서는 예제 오류가 발생하며 다시 시도하면 전체 기록을 볼 수 있습니다.", parts: ["UIFeedLoadEarlier"] },
+      { id: "feed-newer", title: "받은편지함에서 새 알림 처리", description: "새 알림을 기존 목록 뒤에 추가합니다. 알림을 읽음 처리하면 받은편지함의 안 읽은 항목 수가 갱신됩니다.", parts: ["UIFeedLoadNewer"] },
+      { id: "feed-focus", title: "새 댓글이 도착해도 읽던 위치 유지", description: "3초 뒤 댓글 받기를 누른 후 기존 댓글에 포커스를 둡니다. 새 댓글이 맨 위에 추가되어도 같은 댓글에 포커스가 남습니다." },
+    ],
+    title: "릴리스 타임라인에서 배포 경과 읽기",
+    description: "결제 오류로 복구한 시점부터 수정 버전을 다시 배포한 시점까지 살펴봅니다. 항목에 포커스를 두고 Page Up 또는 Page Down으로 앞뒤 활동을 읽을 수 있습니다.",
+    api: {
+      items: "피드에 렌더링하는 항목의 식별자입니다.",
+      "set-size": "전체 피드의 항목 수입니다.",
+      "get-position": "항목 id의 전체 피드 내 위치를 반환합니다.",
+      "request-window": "현재 목록의 앞이나 뒤 항목이 필요할 때 방향, 기준 항목, 리비전, 요청 번호를 전달합니다.",
+      revision: "목록 요청을 처리한 뒤 갱신합니다. 실패 후 동일한 목록으로 돌아갈 때도 대기 상태를 해제할 수 있습니다.",
+    },
+  },
   "scroll-area": {
     title: "변경 기록과 처음·끝 이동",
     description: "변경 기록에 포커스하면 방향키나 Page Down으로 이동할 수 있습니다. 바깥 버튼으로 처음과 끝으로 이동합니다.",
