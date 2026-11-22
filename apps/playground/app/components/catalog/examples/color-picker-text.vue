@@ -7,6 +7,6 @@ const selectedColor = ref("#4168be");
 
 <template>
   <UIColorPicker label="강조 색상" v-model="selectedColor">
-    <div class="ui-color-sample"><UIColorPickerSwatch /><UIColorPickerTextInput aria-label="HEX 색상" /></div>
+    <div class="ui-color-sample"><UIColorPickerSwatch /><UIColorPickerTextInput aria-label="HEX 색상" placeholder="예: #4168be" /></div>
   </UIColorPicker>
 </template>

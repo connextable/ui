@@ -36,7 +36,7 @@ async function discard() {
       <UIDialogContent>
         <UIDialogTitle>정산 메모</UIDialogTitle>
         <UIDialogDescription>다음 검토 때 참고할 내용을 남깁니다.</UIDialogDescription>
-        <UIInput ref="memo" v-model="draft" multiline :rows="4" aria-label="정산 메모 내용" />
+        <UIInput ref="memo" v-model="draft" multiline :rows="4" aria-label="정산 메모 내용" placeholder="예: 수수료 항목 확인" />
         <template #footer-leading>{{ draft !== saved ? "저장하지 않은 변경사항" : "저장됨" }}</template>
         <template #actions><UIButton @click="saved = draft; open = false">저장</UIButton></template>
         <UIAlertDialog v-model:open="confirmDiscard" :restore-focus-target="memo?.control?.$el">

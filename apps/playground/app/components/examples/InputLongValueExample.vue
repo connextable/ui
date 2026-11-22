@@ -7,7 +7,7 @@ const query = ref("다음 분기에 팀 전체에서 확인해야 하는 디자�
 </script>
 
 <template>
-  <UIInput v-model="query" aria-label="긴 검색어" clearable clear-label="검색어 지우기" style="inline-size: min(100%, 15rem)">
+  <UIInput v-model="query" aria-label="긴 검색어" placeholder="문서 제목으로 검색" clearable clear-label="검색어 지우기" style="inline-size: min(100%, 15rem)">
     <template #leading><Search aria-hidden="true" /></template>
   </UIInput>
 </template>

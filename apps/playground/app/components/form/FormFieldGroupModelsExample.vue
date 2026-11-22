@@ -16,8 +16,8 @@ const time = computed({
 <template>
   <UIForm>
     <UIFormFieldGroup v-model="time" label="시작 시각" name="time" v-slot="{ field }">
-      <label>시 <UIInput v-model="hours" :name="field('hours').name" inputmode="numeric" /></label>
-      <label>분 <UIInput v-model="minutes" :name="field('minutes').name" inputmode="numeric" /></label>
+      <label>시 <UIInput v-model="hours" :name="field('hours').name" inputmode="numeric" placeholder="00–23" /></label>
+      <label>분 <UIInput v-model="minutes" :name="field('minutes').name" inputmode="numeric" placeholder="00–59" /></label>
     </UIFormFieldGroup>
     <template #output>{{ time.hours }}:{{ time.minutes }}</template>
   </UIForm>

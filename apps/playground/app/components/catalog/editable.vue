@@ -9,6 +9,8 @@ const readonly = ref(false);
 const submitOnBlur = ref(false);
 const attributes = computed(() => ({
   label: "배포 이름",
+  placeholder: "예: 11월 정산 배포",
+  clearable: true,
   readonly: readonly.value || undefined,
   submitOnBlur: submitOnBlur.value || undefined,
 }));

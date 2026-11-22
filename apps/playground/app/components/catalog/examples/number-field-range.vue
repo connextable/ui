@@ -10,7 +10,7 @@ const policies = { min: "0", max: "100" };
   <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
     <label class="ui-field">
       할인율 (%)
-      <UINumberField v-model="value" :policies="policies" />
+      <UINumberField v-model="value" :policies="policies" placeholder="예: 10" />
     </label>
     <template #footer><output>확정한 값 · {{ value ?? "없음" }}</output></template>
   </PlaygroundExample>

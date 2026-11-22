@@ -420,6 +420,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       "v-model": "선택된 색상 문자열을 연결합니다.",
       "allow-alpha": "투명도 채널을 사용할지 지정합니다.",
+      "TextInput placeholder": { owner: "UIColorPickerTextInput", label: "placeholder", type: "string", description: "빈 색상 입력에 서식의 예를 표시합니다. 기본 색상 선택기는 현재 표시 형식에 맞춰 예를 생성합니다.", example: { id: "color-picker-text", title: "텍스트로 색상 입력" } },
       "#default": "text 등 현재 색상 상태를 읽습니다.",
     },
   },
@@ -430,6 +431,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       unit: "입력창 안쪽 끝에 표시할 단위입니다. 모델과 제출에는 숫자 문자열이 사용됩니다.",
       "v-model": "확정된 숫자 문자열을 외부 상태에 연결합니다.",
+      placeholder: { type: "string", description: "입력창이 비었을 때 허용되는 숫자의 예를 표시합니다.", example: { id: "basic-example", title: "고정 단위가 있는 숫자 입력" } },
       clearable: "입력값을 비우고 모델에 null을 전달할 수 있게 합니다.",
       readonly: "확정값은 표시하고 편집은 막습니다.",
       "policies.min / max": "확정할 수 있는 값의 범위를 지정합니다.",
@@ -486,6 +488,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       "v-model": "마지막으로 확정한 텍스트를 연결합니다.",
       "v-model:draft": "편집 중인 초안을 외부에서 읽거나 변경합니다.",
+      placeholder: { type: "string", description: "값이 없을 때 기본 미리보기와 편집 입력에 표시할 문구입니다.", example: { id: "basic-example", title: "표시 중인 값을 바로 편집" } },
       "submit-on-blur": "입력에서 포커스가 벗어날 때 값을 확정합니다.",
       readonly: "현재 값을 표시하고 편집을 막습니다.",
       "policies.validate": "확정할 수 있는 초안인지 판단합니다.",
@@ -576,6 +579,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "page-step": "Page Up과 Page Down에서 적용할 증감량입니다.",
       layout: "field를 지정하면 증감 버튼을 입력 오른쪽에 세로로 배치합니다.",
       unit: "입력값 옆에 표시할 단위입니다.",
+      placeholder: { type: "string", description: "입력 중 초안이 비었을 때 표시합니다.", example: { id: "spin-button-draft", title: "소수 단위 처리 시간 입력" } },
     },
   },
   stepper: {
@@ -610,6 +614,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "default-value": "외부에서 선택값을 제어하지 않을 때 지정할 초기 항목 id입니다.",
       "default-input-value": "입력창의 초기 텍스트입니다.",
       label: "입력과 결과 목록에 전달할 접근성 이름입니다.",
+      placeholder: { type: "string", default: "검색 또는 선택", description: "검색어와 선택값이 비어 있을 때 입력에 표시합니다.", example: { id: "basic-example", title: "검색해서 항목 선택" } },
       "empty-label": "검색에 일치하는 항목이 없을 때 표시할 문구입니다.",
     },
     sections: [
@@ -634,6 +639,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       policy: "파일 형식, 개수, 개별 용량 및 전체 용량 제한을 지정합니다.",
       preview: "선택한 이미지의 썸네일을 표시합니다.",
       "v-model": "선택한 파일 배열을 읽고 변경합니다.",
+      "picker-label": { type: "string", description: "파일을 고르는 버튼에 표시할 이름입니다. 기본 문구는 파일 선택입니다." },
+      hint: { type: "string", description: "드롭존에 파일 형식이나 용량 제한을 안내할 때 사용합니다." },
       clearable: "선택을 비우는 버튼을 표시합니다. 기본값은 true입니다.",
       "#default": "파일 목록과 거절 상태를 받아 선택 영역과 목록을 직접 구성합니다.",
     },
@@ -673,6 +680,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "auto-start": { type: "boolean", default: "false", description: "편집 가능한 상태에서 파일을 연결하면 어댑터를 바로 실행합니다." },
       readonly: "연결된 파일과 상태를 읽을 수 있습니다. 업로드, 취소, 교체 조작을 잠급니다.",
       disabled: "업로드, 취소, 교체 조작을 비활성화합니다.",
+      "#name": "빈 상태의 안내 문구나 선택한 파일의 이름을 표시하는 영역입니다. 기본 문구는 파일 선택 가능 여부에 따라 달라집니다.",
       "#picker": "파일 선택·교체 버튼을 직접 구성합니다. file, disabled, readonly를 받습니다. 선택하기 전의 file은 null입니다.",
       "#status": { description: "현재 상태로 행 안의 문구를 구성합니다. status는 queued, uploading, succeeded, failed, canceled 중 하나이며 전송 상태가 준비되기 전에는 undefined입니다.", example: { id: "file-upload-retry", title: "실패 후 다시 전송" } },
       "Queue items": { ...queueApi, label: "items", type: "readonly { id: string; file: File }[]", description: "대기열에 표시할 파일을 전달합니다. ID는 목록에서 고유해야 합니다. 같은 파일의 진행 상태를 이어 가려면 ID를 유지합니다." },
@@ -748,6 +756,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       nodes: "선택할 항목의 id, parentID와 선택적인 label을 전달합니다. 이름으로 검색할 때 label을 사용합니다.",
       "v-model": "선택된 항목의 id 배열을 연결합니다.",
+      placeholder: { type: "string", default: "검색 또는 선택", description: "검색어와 선택값이 비어 있을 때 입력에 표시합니다.", example: { id: "basic-example", title: "계층형 팀 목록에서 선택" } },
       clearable: "선택과 검색어를 지울 수 있는 버튼을 표시합니다.",
       "selection-mode": "트리에서 한 항목 또는 여러 항목을 선택할지 지정합니다.",
       "default-expanded-values": "처음 표시할 하위 항목의 상위 노드를 지정합니다.",
@@ -831,6 +840,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       length: "입력할 코드 자리 수를 지정합니다.",
       "v-model": "입력한 코드를 문자열로 연결합니다.",
+      placeholder: { type: "string", default: "–", description: "아직 채우지 않은 각 칸에 표시할 짧은 기호나 문구입니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
       mask: "입력한 문자를 가립니다.",
       clearable: "모든 칸을 비우는 버튼을 표시합니다.",
       readonly: { description: "입력한 코드를 표시하고 칸의 포커스를 유지합니다. 타이핑, 붙여넣기, 지우기로 값이 바뀌지 않습니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
@@ -857,6 +867,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "unit-system": "표준 단위계를 지정합니다. metric, imperial, all을 지원하며 기본값은 all입니다.",
       policies: "사용자 정의 단위 등록부와 변환 규칙을 전달할 때 사용합니다.",
       "v-model": "확정한 수치와 기준 단위를 읽고 변경합니다.",
+      placeholder: { type: "string", default: "수량 입력", description: "수치가 비어 있을 때 표시합니다. 입력 단위는 필드 끝에서 확인할 수 있습니다.", example: { id: "basic-example", title: "단위가 붙은 길이 입력" } },
       "display-units": "사용자가 바꿀 수 있는 표시 단위의 목록입니다.",
       "v-model:display-unit": "입력에 표시하는 단위를 읽고 변경합니다.",
     },
@@ -868,6 +879,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       "v-model": "태그 배열을 외부에서 관리합니다. 여러 태그 붙여넣기와 순서 변경을 활성화할 때 사용합니다.",
       "v-model:input-value": "아직 등록하지 않은 입력 내용을 연결합니다.",
+      placeholder: { type: "string", default: "태그 추가", description: "추가할 태그의 입력창이 비었을 때 표시합니다.", example: { id: "basic-example", title: "태그 입력 및 삭제" } },
       clearable: "등록한 모든 태그를 지우는 버튼을 표시합니다.",
       "split-paste": "쉼표 또는 줄바꿈으로 나뉜 텍스트를 여러 태그로 추가합니다.",
       reorderable: "칩의 이동 손잡이를 표시합니다.",
@@ -1227,6 +1239,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       rows: "행별로 셀 식별자를 묶은 배열입니다.",
       "Cell value": "화면의 셀을 rows에 등록한 식별자와 연결합니다.",
       "edit-start / edit-commit / edit-cancel": "편집 시작, 저장, 취소 시 해당 셀의 식별자를 전달합니다.",
+      "Editor placeholder": { owner: "UIGridEditor", label: "placeholder", type: "string", description: "셀 편집 중 값이 비었을 때 해당 열의 입력 예를 표시합니다.", example: { id: "grid-edit-mode", title: "셀의 제목과 상태 편집" } },
       "Editor readonly": { owner: "UIGridEditor", label: "readonly", group: "입력 상태", type: "boolean", description: "현재 셀의 입력값을 읽거나 복사할 수 있습니다. 사용자가 텍스트를 수정할 수 없습니다." },
       "Editor disabled": { owner: "UIGridEditor", label: "disabled", group: "입력 상태", type: "boolean", description: "셀 편집기의 입력과 포커스를 비활성화합니다." },
     },

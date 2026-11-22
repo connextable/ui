@@ -29,7 +29,8 @@ function commitEdit(id: string) {
       <UIGridRow v-for="(row, index) in rows" :key="row[0]">
         <UIGridCell v-for="(id, column) in row" :key="id" :value="id" v-slot="cell">
           <UIGridEditor v-if="cell.highlighted && cell.editMode === 'editing'" v-model="draft"
-            :aria-label="`${index + 1}행 ${column === 0 ? '제목' : '상태'}`" />
+            :aria-label="`${index + 1}행 ${column === 0 ? '제목' : '상태'}`"
+            :placeholder="column === 0 ? '예: 예약 화면' : '예: 검토 중'" />
           <span :style="{ visibility: cell.highlighted && cell.editMode === 'editing' ? 'hidden' : undefined }">
             {{ values[id] || '빈 셀' }}
           </span>

@@ -10,6 +10,7 @@ const clearable = ref(true);
 const readonly = ref(false);
 const attributes = computed(() => ({
   label: "부품 길이",
+  placeholder: "예: 12.5",
   unit: unit.value ?? "cm",
   clearable: clearable.value || undefined,
   readonly: readonly.value || undefined,

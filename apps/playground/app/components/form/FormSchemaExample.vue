@@ -18,7 +18,7 @@ const submitted = ref<number>();
 <template>
   <UIForm :schema="schema" @submit="({ values }) => { submitted = values.quantity }">
     <UIFormField label="수량" name="quantity">
-      <UIInput v-model="quantity" inputmode="numeric" />
+      <UIInput v-model="quantity" inputmode="numeric" placeholder="1–99" />
     </UIFormField>
     <UIFormActions>
       <UIButton type="submit" size="sm">제출</UIButton>

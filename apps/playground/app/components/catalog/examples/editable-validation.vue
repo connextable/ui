@@ -20,7 +20,7 @@ const text = ref("제품 설계");
   <UIEditable v-model="text" label="작업 이름" :policies="policies" v-slot="{ value, draft, editing }">
     <UIEditableArea>
       <UIEditablePreview as="button" type="button">{{ value }}</UIEditablePreview>
-      <UIEditableInput aria-label="새 작업 이름" />
+      <UIEditableInput aria-label="새 작업 이름" placeholder="세 글자 이상" />
     </UIEditableArea>
     <UIFormActions>
       <UIEditableEditTrigger>수정</UIEditableEditTrigger>

@@ -18,7 +18,10 @@ const submitted = ref("");
     @submit="({ values }) => { submitted = `${values.contact.address} · ${values.contact.channel}` }"
   >
     <UIFormFieldGroup v-model="contact" name="contact" label="연락처" v-slot="{ field, bindModel }">
-      <label>연락처 주소 <UIInput v-bind="field('address')" /></label>
+      <label>
+        연락처 주소
+        <UIInput v-bind="field('address')" :placeholder="contact.channel === 'chat' ? '예: #프로젝트-공지' : '예: team@example.com'" />
+      </label>
       <UIFormField :name="field('channel').name" label="연락 방법">
         <UISelect v-bind="bindModel('channel')" :options="channels" />
       </UIFormField>

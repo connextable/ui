@@ -80,6 +80,7 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
   },
   input: {
     "v-model": note("입력 중 텍스트와 바깥 모델을 연결합니다.", input),
+    placeholder: note("빈 입력창에 입력할 내용이나 형식의 예를 표시합니다.", example("input-leading", "입력 앞 아이콘"), "string"),
     multiline: note("여러 줄 입력으로 표시합니다.", example("input-multiline", "여러 줄 입력"), "boolean", "false"),
     clearable: note("편집할 수 있는 값이 있을 때 지우기 버튼을 표시합니다.", example("input-long", "좁은 입력과 지우기"), "boolean", "false"),
     readonly: note("값을 읽거나 복사할 수 있고 입력은 잠깁니다.", example("input-readonly", "읽기 전용"), "boolean", "false"),
@@ -104,6 +105,7 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
   select: {
     options: note("value와 label로 선택지를 선언하고 disabled로 지정한 항목을 건너뜁니다.", example("select-disabled-option", "비활성 옵션"), "readonly UISelectOption[]"),
     "v-model": note("현재 value를 받습니다. 지우면 null로 돌아갑니다.", select, "string | null"),
+    placeholder: note("아직 항목을 선택하지 않았을 때 표시할 문구입니다.", select, "string", "선택"),
     "v-model:open": note("외부 버튼과 팝업 열림 상태를 공유합니다.", example("select-controlled-open", "열림 상태 제어"), "boolean"),
     clearable: note("값이 있는 편집 가능한 Select에 지우기 버튼을 표시합니다.", select, "boolean", "false"),
     readonly: note("현재 선택을 확인할 수 있고 팝업은 닫힌 상태를 유지합니다.", example("select-readonly", "읽기 전용 선택값"), "boolean", "false"),

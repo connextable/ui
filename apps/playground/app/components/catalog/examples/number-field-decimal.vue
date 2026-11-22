@@ -10,7 +10,7 @@ const lengthId = useId();
   <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
     <div class="ui-field">
       <label :for="lengthId">부품 길이</label>
-      <UINumberField :id="lengthId" v-model="value" unit="cm" clearable />
+      <UINumberField :id="lengthId" v-model="value" unit="cm" placeholder="예: 12.75" clearable />
     </div>
     <template #footer><output>확정한 숫자 · {{ value ?? "없음" }}</output></template>
   </PlaygroundExample>
