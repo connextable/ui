@@ -28,9 +28,9 @@
 | `UISelect`, `UITreeSelect`, `UICombobox` | Select는 `label`과 오류 연결을 지원한다. TreeSelect는 필드의 라벨·도움말과 선택 ID를 입력과 제출 대상에 연결한다. Combobox의 네이티브 제출값은 입력 텍스트다. 선택 ID는 `v-model`로 관리한다. |
 | `UIListbox`, `UICascadeSelect`, `UICascadeList`, `UITransfer` | 선택값 또는 Transfer의 대상 목록이 제출된다. 읽기 전용 상태가 필수 선택 검증으로 제출을 막지 않도록 했다. 열려 있는 목록은 화면에 선택지를 표시한다. |
 | `UISlider`, `UIMultiThumbSlider`, `UIRating`, `UIColorPicker` | 슬라이더와 색상 선택기는 정의된 값으로 시작한다. 평가에는 빈 선택 상태가 있으며 필수 조건과 지우기를 적용할 수 있다. |
-| `UICalendar`, `UIRangeCalendar` | 기본 달력도 단일 날짜 또는 시작·종료 날짜를 제출한다. 읽기 전용일 때 날짜 탐색과 제출값을 유지한다. |
+| `UICalendar`, `UIRangeCalendar` | 단일 날짜 또는 시작·종료 날짜를 제출한다. 읽기 전용일 때 연·월 탐색과 제출값을 유지한다. 달력에 추가한 시간은 `v-model:time` 또는 `v-model:start-time`과 `v-model:end-time`으로 관리한다. |
 | `UIDateField`, `UIDateRangeField`, `UIDateTimeField`, `UIDateTimeRangeField`, `UITimeField`, `UITimeRangeField` | 네이티브 텍스트 입력과 범위의 시작·종료 입력을 사용한다. 안내와 확정 형식은 `UITemporalProvider` 설정에 맞춰 생성한다. |
-| `UIDatePicker`, `UIDateRangePicker`, `UIDateTimePicker`, `UIDateTimeRangePicker`, `UITimePicker`, `UIMonthPicker`, `UIMonthRangePicker`, `UIYearPicker`, `UIYearRangePicker` | 기본 피커가 이름이 연결된 입력을 렌더링한다. 기본 날짜·시간 피커의 `name`을 기준으로 분할 입력에는 `.date`와 `.time`, 범위에는 `.start`와 `.end`가 붙는다. |
+| `UIDatePicker`, `UIDateRangePicker`, `UIDateTimePicker`, `UIDateTimeRangePicker`, `UITimePicker`, `UIMonthPicker`, `UIMonthRangePicker`, `UIYearPicker`, `UIYearRangePicker` | 기본 피커가 이름이 연결된 입력을 렌더링한다. 기본 날짜·시간 피커의 `name`을 기준으로 분할 입력에는 `.date`와 `.time`, 범위에는 `.start`와 `.end`가 붙는다. `UITimePicker inline`도 `name`, `required`, 폼 초기화를 지원한다. |
 | `UIFileInput`, `UIFileUpload`, `UIFileUploadQueue` | 파일 제출에는 `UIFileInput`의 네이티브 파일 필드를 사용한다. 업로드와 대기열은 전송 상태와 실행을 제공한다. 파일 선택 안내에는 `picker-label`과 `hint`를 사용한다. |
 
 ## 확인 범위

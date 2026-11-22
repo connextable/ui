@@ -1564,9 +1564,12 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   calendar: {
     title: "월간 달력에서 날짜 선택",
-    description: "날짜를 누르면 v-model에 선택값이 반영됩니다. 상단 버튼으로 표시되는 월을 바꿀 수 있습니다.",
+    description: "상단의 연·월 제목을 눌러 다른 연도와 월로 이동합니다. 날짜를 누르면 v-model에 반영됩니다.",
     api: {
       "v-model": "선택한 날짜 또는 비어 있는 값을 연결합니다.",
+      "v-model:time": { type: "UITimeValue | null", description: "달력 아래의 시간 선택을 연결합니다. null로 연결하면 미선택 상태로 시·분 목록을 표시합니다. 폼의 날짜 입력 이름과 시간 모델은 독립적입니다.", example: { id: "calendar-with-time", title: "날짜와 방문 시간 고르기" } },
+      "time-precision": "시간 열의 정밀도입니다. 기본값은 minute입니다.",
+      "time-policies": "선택할 수 있는 시간의 최소·최대 경계를 설정합니다.",
       "default-view": "처음 표시할 달력 보기 단위입니다.",
       "#default": "현재 보기의 dates와 view를 읽습니다.",
     },
@@ -1575,7 +1578,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "calendar-examples-2", title: "입력 연결과 날짜 탐색", section: "examples-2" },
     ],
     examples: [
-      { id: "calendar-week", section: "usage-options", title: "주 단위 보기", description: "default-view를 week로 지정하고 이전 주와 다음 주 컨트롤을 배치합니다." },
+      { id: "calendar-with-time", section: "usage-options", framed: true, title: "날짜와 방문 시간 고르기", description: "v-model:time을 연결해 달력에서 날짜를 고르고 아래 목록에서 시와 분을 선택합니다." },
+      { id: "calendar-week", section: "usage-options", title: "주 단위 보기", description: "default-view를 week로 지정하면 한 주를 먼저 표시합니다. 이전·다음 버튼으로 주를 이동합니다." },
       { id: "calendar-unavailable", section: "usage-options", title: "선택을 제한한 날짜", description: "8월 24일을 선택할 수 없는 날짜로 표시합니다." },
       { id: "calendar-input", section: "examples-2", title: "입력과 달력의 날짜 제출", description: "날짜 입력과 달력이 선택값을 공유합니다. 제출하면 선택한 날짜가 FormData에 포함됩니다.", parts: ["UICalendarInput"] },
       { id: "calendar-year", section: "examples-2", title: "월을 찾는 연도 뷰", description: "이전·다음 연도로 이동하고 월을 선택합니다.", parts: ["UICalendarMonthCell", "UICalendarNextYear", "UICalendarPreviousYear"] },
@@ -1587,15 +1591,19 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "range-calendar-examples-2", title: "입력 연결과 날짜 탐색", section: "examples-2" },
     ],
     examples: [
+      { id: "range-calendar-with-time", section: "usage-options", framed: true, title: "숙박 날짜와 입·퇴실 시간 고르기", description: "시작과 종료 시간에 각각 모델을 연결합니다. 두 시각은 날짜 범위와 독립적으로 바꿀 수 있습니다." },
       { id: "range-calendar-week", section: "usage-options", title: "주 단위 범위", description: "주 단위로 이동하면서 기간을 고릅니다.", parts: ["UIRangeCalendarNextWeek", "UIRangeCalendarPreviousWeek"] },
       { id: "range-calendar-bounds", section: "usage-options", title: "범위 선택의 최소·최대 날짜", description: "8월 20일과 27일 사이에서만 시작 및 종료 날짜를 고를 수 있습니다." },
       { id: "range-calendar-inputs", section: "examples-2", title: "선택한 기간 제출", description: "범위를 고른 뒤 제출하면 시작일과 종료일이 각각 FormData에 포함됩니다.", parts: ["UIRangeCalendarStartInput", "UIRangeCalendarEndInput"] },
       { id: "range-calendar-year", section: "examples-2", title: "연도를 옮겨 원하는 월 선택", description: "연도 뷰에서 월을 선택하면 해당 달의 날짜로 전환합니다.", parts: ["UIRangeCalendarMonthCell", "UIRangeCalendarNextYear", "UIRangeCalendarPreviousYear", "UIRangeCalendarMonthViewTrigger", "UIRangeCalendarYearViewTrigger"] },
     ],
     title: "달력에서 시작일과 종료일 고르기",
-    description: "시작일을 누른 다음 종료일을 선택하면 두 날짜 사이의 구간이 표시됩니다. 월 이동 버튼으로 다른 달까지 탐색할 수 있습니다.",
+    description: "시작일을 누른 다음 종료일을 선택하면 두 날짜 사이의 구간이 표시됩니다. 연·월 제목을 눌러 다른 달을 바로 찾을 수 있습니다.",
     api: {
       "default-value": "시작일과 종료일로 구성한 초기 날짜 범위입니다.",
+      "v-model:start-time": { type: "UITimeValue | null", description: "시작 시간 목록을 표시하고 선택값을 연결합니다.", example: { id: "range-calendar-with-time", title: "숙박 날짜와 입·퇴실 시간 고르기" } },
+      "v-model:end-time": { type: "UITimeValue | null", description: "종료 시간 목록을 표시하고 선택값을 연결합니다.", example: { id: "range-calendar-with-time", title: "숙박 날짜와 입·퇴실 시간 고르기" } },
+      "time-precision / time-policies": "양쪽 시간 목록에 사용할 정밀도와 시간 경계를 지정합니다.",
       "#default": "현재 보기의 날짜와 범위 선택 상태를 받습니다.",
     },
   },
@@ -1762,6 +1770,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "time-picker-examples-2", title: "포털 연결", section: "examples-2" },
     ],
     examples: [
+      { id: "time-picker-inline", section: "usage-options", title: "시·분 목록을 폼에 바로 배치", description: "inline으로 시·분 목록을 항상 표시합니다. 시각을 고르고 확정해 제출값을 확인할 수 있습니다." },
       { id: "time-picker-seconds", section: "usage-options", title: "초까지 선택", description: "precision을 second로 지정해 초 열도 표시합니다." },
       { id: "time-picker-bounds", section: "usage-options", title: "운영 시간 안에서 시각 선택", description: "09:00부터 17:00 사이에서 선택할 수 있는 시간만 목록에 표시합니다." },
       { id: "time-picker-portal", section: "examples-2", title: "시간 목록을 포털에 렌더링", description: "시간 입력과 연결된 선택 목록을 포털에 배치합니다.", parts: ["UITimePickerPortal"] },
@@ -1770,6 +1779,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "시계 버튼을 누르면 시와 분 목록이 열립니다. 입력에서 시각을 직접 편집할 수도 있습니다.",
     api: {
       "default-value": "처음 표시할 시각입니다.",
+      inline: { type: "boolean", default: "false", description: "시·분 목록을 열린 상태로 배치합니다. 기본 구성에서 UIFormField의 이름과 필수 검증을 지원합니다.", example: { id: "time-picker-inline", title: "시·분 목록을 폼에 바로 배치" } },
       "Column part": "이 열이 다루는 시 또는 분 같은 시간 단위입니다.",
       "Item value": "열의 choices에서 가져온 선택 항목의 id입니다.",
     },
