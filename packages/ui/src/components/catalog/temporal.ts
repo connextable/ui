@@ -303,6 +303,16 @@ function revealTimeChoice(column: HTMLElement, choice: Element | null) {
   column.scrollTop += Math.min(above, 0) + Math.max(below, 0);
 }
 
+function centerSelectedTimeChoice(column: HTMLElement) {
+  const selected = column.querySelector('[role="option"][aria-selected="true"]');
+  if (!selected || column.clientHeight === 0) return;
+
+  const viewport = column.getBoundingClientRect();
+  const option = selected.getBoundingClientRect();
+  const viewportCenter = viewport.top + column.clientTop + column.clientHeight / 2;
+  column.scrollTop += option.top + option.height / 2 - viewportCenter;
+}
+
 type TimePickerColumnInstance = InstanceType<typeof TimePickerColumn>;
 
 export const UITimePickerColumn = defineComponent({
@@ -315,6 +325,11 @@ export const UITimePickerColumn = defineComponent({
   setup(props, { attrs, slots }) {
     const { locale } = useUITemporalDisplay();
     const formatter = useTemporalFormatter();
+    let listbox: HTMLElement | undefined;
+    let resizeObserver: ResizeObserver | undefined;
+    const centerSelection = () => {
+      if (listbox) centerSelectedTimeChoice(listbox);
+    };
     const label = computed(() => {
       if (props.label !== undefined) return props.label;
       const { part } = props;
@@ -334,9 +349,20 @@ export const UITimePickerColumn = defineComponent({
           class: "ui-scrollbar",
           "data-ui-scrollbar": "centered",
           onVnodeMounted({ el }: { el: unknown }) {
-            if (el instanceof HTMLElement) {
-              revealTimeChoice(el, el.querySelector('[role="option"][aria-selected="true"]'));
+            if (!(el instanceof HTMLElement)) return;
+            listbox = el;
+            centerSelection();
+            if (typeof ResizeObserver !== "undefined") {
+              resizeObserver = new ResizeObserver(centerSelection);
+              resizeObserver.observe(el);
             }
+          },
+          onVnodeBeforeUnmount() {
+            resizeObserver?.disconnect();
+            listbox = undefined;
+          },
+          onActivate() {
+            void nextTick(centerSelection);
           },
           onKeydown(event: KeyboardEvent) {
             const column = event.currentTarget;
