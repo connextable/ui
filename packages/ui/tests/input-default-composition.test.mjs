@@ -27,7 +27,9 @@ test("quantity defaults render the input and unit, and allow custom unit present
     defaultValue: { value: "1.25", unit: "metre" },
     label: "길이",
   };
-  const standard = await render(UIQuantityField, { ...props, name: "length" });
+  const standard = await render(UIQuantityField, {
+    unit: "metre", unitSystem: "metric", modelValue: props.defaultValue, label: "길이", name: "length",
+  });
   assert.match(standard, /<input[^>]+name="length"[^>]+value="1.25"/);
   assert.match(standard, />m<\/span>/);
   const convertible = await render(UIQuantityField, { ...props, defaultDisplayUnit: "centimetre", displayUnits: ["centimetre", "metre"] });

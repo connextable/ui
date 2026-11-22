@@ -657,14 +657,15 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "quantity-field": {
     examples: [
       { id: "quantity-field-unit-commit", title: "단위와 값을 함께 확정", description: "새 수량을 입력하고 Enter를 눌러 확정된 수량과 단위를 읽습니다." },
-      { id: "quantity-field-unit", title: "표시 단위 환산", description: "포장 길이와 배송 무게의 표시 단위를 바꿔 보세요. 입력 숫자가 환산되고 아래의 기준값은 유지됩니다.", parts: ["createUIStandardQuantityPolicies"] },
+      { id: "quantity-field-unit", title: "표시 단위 환산", description: "포장 길이와 배송 무게의 표시 단위를 바꿔 보세요. 입력 숫자가 환산되고 아래의 기준값은 유지됩니다." },
       { id: "quantity-field-readonly", title: "확정된 길이", description: "값이나 단위 변경을 잠급니다." },
     ],
     title: "단위가 붙은 길이 입력",
-    description: "변환 정책과 초기값을 지정하면 입력 옆에 표시 단위가 나타납니다. 확정한 수량은 v-model로 읽습니다.",
+    description: "기준 단위와 단위계를 지정하면 입력 옆에 표시 단위가 나타납니다. 확정한 수량은 v-model로 읽습니다.",
     api: {
-      policies: "입력 수량에 적용할 단위 체계와 변환 정책입니다.",
-      "default-value": "수치 문자열과 단위로 이루어진 초기 수량입니다.",
+      unit: "확정값에 사용할 기준 단위입니다.",
+      "unit-system": "표준 단위계를 지정합니다. metric, imperial, all을 지원하며 기본값은 all입니다.",
+      policies: "사용자 정의 단위 등록부와 변환 규칙을 전달할 때 사용합니다.",
       "v-model": "확정한 수치와 기준 단위를 읽고 변경합니다.",
       "display-units": "사용자가 바꿀 수 있는 표시 단위의 목록입니다.",
       "v-model:display-unit": "입력에 표시하는 단위를 읽고 변경합니다.",

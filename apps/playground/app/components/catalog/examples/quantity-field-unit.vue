@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { createUIStandardQuantityPolicies, UIQuantityField } from "@connextable/ui";
+import { UIQuantityField } from "@connextable/ui";
 import { reactive } from "vue";
 
-function createExample(label: string, unit: string, value: string, displayUnits: string[]) {
-  const policies = createUIStandardQuantityPolicies(unit, "metric");
+function createExample(label: string, unit: string, symbol: string, value: string, displayUnits: string[]) {
   return {
     label,
-    policies,
+    unit,
+    symbol,
     model: { value, unit } as { value: string; unit: string } | null,
     displayUnit: unit,
     displayUnits,
@@ -14,8 +14,8 @@ function createExample(label: string, unit: string, value: string, displayUnits:
 }
 
 const examples = reactive([
-  createExample("포장 길이", "metre", "1.25", ["millimetre", "centimetre", "metre"]),
-  createExample("배송 무게", "kilogram", "0.65", ["gram", "kilogram"]),
+  createExample("포장 길이", "metre", "m", "1.25", ["millimetre", "centimetre", "metre"]),
+  createExample("배송 무게", "kilogram", "kg", "0.65", ["gram", "kilogram"]),
 ]);
 </script>
 
@@ -26,11 +26,12 @@ const examples = reactive([
       <UIQuantityField
         v-model="example.model"
         v-model:display-unit="example.displayUnit"
-        :policies="example.policies"
+        :unit="example.unit"
+        unit-system="metric"
         :display-units="example.displayUnits"
         :label="example.label"
       />
-      <output>기준값 {{ example.model?.value ?? "—" }} {{ example.policies.registry.get(example.policies.canonicalUnit)?.symbol }}</output>
+      <output>기준값 {{ example.model?.value ?? "—" }} {{ example.symbol }}</output>
     </div>
   </div>
 </template>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { createUIStandardQuantityPolicies, UIQuantityField } from "@connextable/ui";
+import { UIQuantityField } from "@connextable/ui";
+import { ref } from "vue";
 
-const policies = createUIStandardQuantityPolicies("metre", "metric");
+const length = ref<{ value: string; unit: string } | null>({ value: "1.25", unit: "metre" });
 </script>
 
 <template>
-  <UIQuantityField readonly :policies="policies" :default-value="{ value: '1.25', unit: 'metre' }" label="길이" />
+  <UIQuantityField v-model="length" unit="metre" unit-system="metric" label="길이" readonly />
 </template>
