@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { UIButton } from "@connextable/ui";
 import { ref } from "vue";
+import source from "./ButtonExample.vue?example-code&raw";
 
 const count = ref(0);
 </script>
 
 <template>
-  <div class="button-click">
+  <PlaygroundExample
+    id="button-example"
+    title="기본 동작"
+    description="click 이벤트로 버튼 동작을 연결합니다."
+    :source="source"
+    :heading-level="3"
+  >
     <UIButton @click="count++">실행</UIButton>
-    <output>실행 횟수 {{ count }}</output>
-  </div>
+    <template #footer>
+      <output>실행 횟수 {{ count }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
-
-<style scoped>
-.button-click {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-}
-</style>

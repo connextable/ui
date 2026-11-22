@@ -10,6 +10,7 @@ const props = defineProps<{
   description?: string;
   source: string | (() => Promise<string>);
   wide?: boolean;
+  inline?: boolean;
   headingLevel?: 2 | 3;
 }>();
 
@@ -61,9 +62,19 @@ watch(codeOpen, revealSource, { immediate: true });
       :content-id="`${id}-source`"
     >
       <div class="playground-example__demo">
-        <div ref="preview" class="playground-example__preview ui-field-layout" :class="{ 'playground-example__preview--wide': wide }">
+        <header v-if="$slots.header" class="playground-example__header ui-field-layout">
+          <slot name="header" />
+        </header>
+        <div
+          ref="preview"
+          class="playground-example__preview ui-field-layout"
+          :class="{ 'playground-example__preview--wide': wide, 'playground-example__preview--inline': inline }"
+        >
           <slot />
         </div>
+        <footer v-if="$slots.footer" class="playground-example__footer">
+          <slot name="footer" />
+        </footer>
         <UIDisclosureTrigger
           class="playground-example__toggle"
           size="sm"
@@ -148,6 +159,37 @@ watch(codeOpen, revealSource, { immediate: true });
 
 .playground-example__preview--wide {
   justify-items: stretch;
+}
+
+.playground-example__preview--inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ui-space-sm);
+}
+
+.playground-example__header,
+.playground-example__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ui-space-sm) var(--ui-space-md);
+  min-inline-size: 0;
+  padding: var(--ui-space-sm) var(--ui-space-md);
+}
+
+.playground-example__header {
+  border-block-end: 1px solid var(--ui-color-divider);
+}
+
+.playground-example__footer {
+  min-block-size: 1lh;
+  border-block-start: 1px solid var(--ui-color-divider);
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-body-sm);
+  line-height: var(--ui-line-height-body);
+  overflow-wrap: anywhere;
 }
 
 .playground-example__preview > :deep(*) {

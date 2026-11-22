@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { UIButton } from "@connextable/ui";
-
-const variants = ["solid", "soft", "outline", "ghost"] as const;
+import source from "./ButtonVariantExample.vue?example-code&raw";
 </script>
 
 <template>
-  <div class="button-variants">
-    <UIButton v-for="variant in variants" :key="variant" :variant="variant">
-      {{ variant }}
-    </UIButton>
-  </div>
+  <PlaygroundExample
+    id="button-variant"
+    title="스타일"
+    description="variant만 바꿔 같은 크기의 버튼을 비교합니다."
+    :source="source"
+    :heading-level="3"
+    inline
+  >
+    <UIButton variant="solid">solid</UIButton>
+    <UIButton variant="soft">soft</UIButton>
+    <UIButton variant="outline">outline</UIButton>
+    <UIButton variant="ghost">ghost</UIButton>
+  </PlaygroundExample>
 </template>
-
-<style scoped>
-.button-variants {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-</style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { UIButton } from "@connextable/ui";
 import { onScopeDispose, ref } from "vue";
+import source from "./ButtonAsyncExample.vue?example-code&raw";
 
 const pending = ref(false);
 const message = ref("");
@@ -34,21 +35,16 @@ async function save() {
 </script>
 
 <template>
-  <div class="example">
+  <PlaygroundExample
+    id="button-async"
+    title="비동기 요청과 재시도"
+    description="요청이 끝날 때까지 loading을 유지합니다. 이 예제는 첫 저장에 실패하고 재시도하면 성공합니다."
+    :source="source"
+    :heading-level="3"
+  >
     <UIButton :loading="pending" @click="save">초안 저장</UIButton>
-    <output>{{ message }}</output>
-  </div>
+    <template #footer>
+      <output>{{ message }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
-
-<style scoped>
-.example {
-  display: grid;
-  justify-items: center;
-  gap: var(--ui-space-sm);
-}
-
-.example output {
-  min-block-size: 1lh;
-  color: var(--ui-color-text-muted);
-}
-</style>
