@@ -3,6 +3,7 @@ export interface CatalogExample {
   title: string;
   description: string;
   section?: string;
+  framed?: boolean;
   parts?: readonly string[];
 }
 
@@ -15,6 +16,7 @@ export interface CatalogExampleSection {
 interface CatalogGuide {
   title: string;
   description: string;
+  framed?: boolean;
   api?: Record<string, string>;
   sections?: readonly CatalogExampleSection[];
   examples?: readonly CatalogExample[];
@@ -899,15 +901,23 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
   },
   toolbar: {
+    framed: true,
+    sections: [
+      { id: "toolbar-layout", title: "방향과 비활성 상태", section: "layout" },
+      { id: "examples", title: "실전 예제", section: "composition" },
+    ],
     examples: [
-      { id: "toolbar-vertical", title: "세로 도구 모음", description: "툴바 내부에서 위·아래 방향키로 이동합니다." },
-      { id: "toolbar-disabled", title: "사용하지 못하는 도구", description: "기울임을 비활성화해 탐색에서 건너뜁니다." },
-      { id: "toolbar-toggle", title: "토글 도구와 실행 도구", description: "굵게는 상태를 유지하고 복제는 한 번의 동작을 실행합니다." },
+      { id: "toolbar-vertical", section: "layout", title: "세로 도구 모음", description: "orientation을 vertical로 지정하면 위·아래 방향키로 이동합니다." },
+      { id: "toolbar-disabled", section: "layout", title: "사용하지 못하는 도구", description: "disabled-items에 기울임을 지정하면 방향키 탐색에서 건너뜁니다." },
+      { id: "toolbar-toggle", section: "composition", framed: true, title: "토글 도구와 실행 도구", description: "굵게는 상태를 유지하고 복제는 한 번의 동작을 실행합니다." },
     ],
     title: "문단의 서식과 정렬 바꾸기",
     description: "글자 서식과 문단 정렬을 구분선으로 나눕니다. 방향키로 도구를 이동하고 Enter를 눌러 문단에 적용해 보세요.",
     api: {
       items: "도구에 연결할 값의 순서입니다.",
+      orientation: "horizontal에서는 좌우, vertical에서는 위아래 방향키로 도구에 이동합니다.",
+      "disabled-items": "키보드 탐색과 실행에서 제외할 항목의 값입니다.",
+      "v-model": "현재 도구의 값을 연결합니다.",
       "@invoke": "사용자가 실행한 도구 항목의 id를 받습니다.",
     },
   },
