@@ -283,12 +283,12 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
   },
   popover: {
-    title: "트리거 옆에서 간단히 편집",
-    description: "기본 트리거를 눌러 프로필을 편집합니다. 열리는 방향과 정렬은 side와 align으로 지정합니다.",
+    title: "재고 표에 표시할 열 선택",
+    description: "열 표시를 눌러 재고나 보관 위치를 켜고 끕니다. 팝오버를 열어 둔 채 바뀐 표를 확인하고 완료로 닫습니다.",
     api: {
       "trigger-label": "기본 트리거 버튼의 텍스트입니다.",
       "#trigger": "팝오버를 여는 버튼을 직접 구성합니다.",
-      "#body": "팝오버에 표시할 내용을 배치합니다. 저장 시 close를 호출해 닫습니다.",
+      "#body": "트리거 옆에 표시할 내용을 배치합니다. 슬롯의 close()를 호출하면 팝오버를 닫습니다.",
       side: "팝오버가 놓일 방향입니다.",
       align: "기준 요소에 맞춰 정렬할 위치입니다.",
       "close-on-interact-outside": "기본값은 true입니다. 바깥을 눌렀을 때 열린 상태를 유지하려면 false를 지정합니다.",

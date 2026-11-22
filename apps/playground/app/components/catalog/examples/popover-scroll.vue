@@ -33,7 +33,7 @@ const selectedCount = computed(() => regions.filter(region => checkedRegions[reg
 </template>
 
 <style scoped>
-.region-panel {
+.region-panel:not([hidden]) {
   display: grid;
   gap: var(--ui-space-sm);
   inline-size: min(16rem, calc(100vw - 2rem));
