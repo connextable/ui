@@ -43,7 +43,7 @@ async function save() {
     :heading-level="3"
   >
     <UIButton :loading="pending" @click="save">초안 저장</UIButton>
-    <template #footer>
+    <template v-if="message" #footer>
       <output>{{ message }}</output>
     </template>
   </PlaygroundExample>
