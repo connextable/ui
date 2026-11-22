@@ -1253,7 +1253,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   calendar: {
     title: "월간 달력에서 날짜 선택",
-    description: "루트 슬롯의 dates로 날짜 버튼을 만들고 v-model로 선택값을 읽습니다. 상단 버튼으로 표시되는 월을 바꿀 수 있습니다.",
+    description: "날짜를 누르면 v-model에 선택값이 반영됩니다. 상단 버튼으로 표시되는 월을 바꿀 수 있습니다.",
     api: {
       "v-model": "선택한 날짜 또는 비어 있는 값을 연결합니다.",
       "default-view": "처음 표시할 달력 보기 단위입니다.",
@@ -1368,7 +1368,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "date-time-picker-portal", title: "일시 달력 포털", description: "날짜와 시간 입력은 유지하고 팝업을 포털 영역에서 표시합니다.", parts: ["UIDateTimePickerPortal"] },
     ],
     title: "달력에서 날짜를 고르고 시간 입력",
-    description: "날짜와 시간의 입력부를 Anchor에 배치합니다. 달력에서 날짜를 바꾸고 시간 입력에서 시각을 편집해 보세요.",
+    description: "달력에서 날짜를 바꾸고 시간 입력에서 시각을 편집합니다.",
     api: {
       "default-value": "처음 표시할 날짜와 시각입니다.",
       "#default": "달력의 날짜, 월, 보기 상태를 제공합니다.",
@@ -1407,7 +1407,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "time-picker-bounds", title: "운영 시간 안에서 시각 선택", description: "09:00부터 17:00 사이에서 선택할 수 있는 시간만 목록에 표시합니다." },
     ],
     title: "시간 목록에서 시와 분 선택",
-    description: "시계 버튼을 누르면 시와 분을 선택하는 목록이 열립니다. Content 슬롯의 columns를 사용해 각 시간 단위의 항목을 렌더링합니다.",
+    description: "시계 버튼을 누르면 시와 분 목록이 열립니다. 입력에서 시각을 직접 편집할 수도 있습니다.",
     api: {
       "default-value": "처음 표시할 시각입니다.",
       "Column part": "이 열이 다루는 시 또는 분 같은 시간 단위입니다.",

@@ -1,4 +1,5 @@
-import { computed, defineComponent, h, inject, mergeProps, nextTick, provide, shallowRef, watch, type PropType } from "vue";
+import { computed, defineComponent, h, inject, mergeProps, nextTick, provide, shallowRef, watch, type Component, type PropType } from "vue";
+import { Clock } from "@lucide/vue";
 import { TemporalProvider, useTemporalFormatter, type TemporalFormatterOptions } from "@sectile/vue/temporal/temporal-provider";
 import { DateField } from "@sectile/vue/temporal/date-field";
 import { CalendarRoot } from "@sectile/vue/temporal/calendar";
@@ -23,7 +24,8 @@ import { MonthRangePickerRoot, MonthRangePickerAnchor, MonthRangePickerStartInpu
 import { RangeCalendarRoot, RangeCalendarGrid, RangeCalendarCell, RangeCalendarMonthCell } from "@sectile/vue/temporal/range-calendar";
 import {
   TimePickerRoot, TimePickerColumn, TimePickerContent, TimePickerInput,
-  type TimePickerColumnProps, type TimePickerColumnSlotProps, type TimePickerContentSlotProps,
+  TimePickerItem, TimePickerTrigger,
+  type TimePickerColumnProps, type TimePickerColumnSlotProps, type TimePickerContentSlotProps, type TimePickerRootSlotProps,
 } from "@sectile/vue/temporal/time-picker";
 import { YearPickerRoot, YearPickerAnchor, YearPickerInput } from "@sectile/vue/temporal/year-picker";
 import { YearRangePickerRoot, YearRangePickerAnchor, YearRangePickerStartInput, YearRangePickerEndInput, YearRangePickerGrid, YearRangePickerCell } from "@sectile/vue/temporal/year-range-picker";
@@ -31,6 +33,7 @@ import { withClearableControl, withClearableModel, type ClearableComponent } fro
 import UIScrollFade from "../scroll/UIScrollFade.vue";
 import { useUIScrollArea } from "../scroll/useUIScrollArea";
 import { withTemporalEditing, withTemporalInputAppearance } from "./temporal-input";
+import { withCalendarDefaults } from "./temporal-composition";
 import { TemporalFormatterScope, TemporalInputFormatProvider, temporalInputFormatsKey, type UITemporalInputFormats } from "./temporal-input-format";
 import { withRangeGridPresentation, withRangeCellPresentation } from "./temporal-range-presentation";
 import { defaultTemporalFormatting, temporalDisplayFormatsKey, useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
@@ -97,16 +100,59 @@ export const UIYearPickerInput = withTemporalInputAppearance(YearPickerInput, "�
 export const UIYearRangePickerStartInput = withTemporalInputAppearance(YearRangePickerStartInput, "시작 연도");
 export const UIYearRangePickerEndInput = withTemporalInputAppearance(YearRangePickerEndInput, "종료 연도");
 
-export const UICalendar: ClearableComponent<typeof CalendarRoot> = withClearableModel(CalendarRoot, null, { placement: "beside" });
-export const UIDateRangeField: ClearableComponent<typeof DateRangeFieldRoot> = withClearableModel(DateRangeFieldRoot, null, rangeOptions);
-export const UITimeRangeField: ClearableComponent<typeof TimeRangeFieldRoot> = withClearableModel(TimeRangeFieldRoot, null, rangeOptions);
-export const UIDateTimeRangeField: ClearableComponent<typeof DateTimeRangeFieldRoot> = withClearableModel(DateTimeRangeFieldRoot, null, rangeOptions);
-export const UIDatePicker: ClearableComponent<typeof DatePickerRoot> = withClearableModel(DatePickerRoot, null);
+const RangeFieldDefaultParts = defineComponent({
+  props: {
+    start: { type: [Object, Function] as PropType<Component>, required: true },
+    end: { type: [Object, Function] as PropType<Component>, required: true },
+    startLabel: String,
+    endLabel: String,
+  },
+  setup(props) {
+    const { locale } = useUITemporalDisplay();
+    return () => {
+      const korean = locale.value.startsWith("ko");
+      return [
+        h(props.start, { "aria-label": props.startLabel ?? (korean ? "시작" : "Start") }),
+        h(props.end, { "aria-label": props.endLabel ?? (korean ? "종료" : "End") }),
+      ];
+    };
+  },
+});
+
+function rangeFieldParts(start: Component, end: Component) {
+  return (attrs: Record<string, unknown>) => [h(RangeFieldDefaultParts, {
+    start, end,
+    startLabel: (attrs.startLabel ?? attrs["start-label"]) as string | undefined,
+    endLabel: (attrs.endLabel ?? attrs["end-label"]) as string | undefined,
+  })];
+}
+
+export const UICalendar: ClearableComponent<typeof CalendarRoot> = withClearableModel(withCalendarDefaults(CalendarRoot, {}), null, { placement: "beside" });
+export const UIDateRangeField: ClearableComponent<typeof DateRangeFieldRoot> = withClearableModel(DateRangeFieldRoot, null, {
+  ...rangeOptions,
+  defaultParts: rangeFieldParts(UIDateRangeFieldStartInput, UIDateRangeFieldEndInput),
+});
+export const UITimeRangeField: ClearableComponent<typeof TimeRangeFieldRoot> = withClearableModel(TimeRangeFieldRoot, null, {
+  ...rangeOptions,
+  defaultParts: rangeFieldParts(UITimeRangeFieldStartInput, UITimeRangeFieldEndInput),
+});
+export const UIDateTimeRangeField: ClearableComponent<typeof DateTimeRangeFieldRoot> = withClearableModel(DateTimeRangeFieldRoot, null, {
+  ...rangeOptions,
+  defaultParts: rangeFieldParts(UIDateTimeRangeFieldStartInput, UIDateTimeRangeFieldEndInput),
+});
 export const UIDatePickerAnchor: typeof DatePickerAnchor = withClearableControl(DatePickerAnchor, "anchor");
-export const UIDateRangePicker: ClearableComponent<typeof DateRangePickerRoot> = withClearableModel(DateRangePickerRoot, null, { label: "범위 지우기" });
+export const UIDatePicker: ClearableComponent<typeof DatePickerRoot> = withClearableModel(withCalendarDefaults(DatePickerRoot, {
+  anchor: UIDatePickerAnchor, inputs: [UIDatePickerInput],
+}), null);
 export const UIDateRangePickerAnchor: typeof DateRangePickerAnchor = withClearableControl(DateRangePickerAnchor, "anchor");
-export const UIDateTimePicker: ClearableComponent<typeof DateTimePickerRoot> = withClearableModel(DateTimePickerRoot, null);
+export const UIDateRangePicker: ClearableComponent<typeof DateRangePickerRoot> = withClearableModel(withCalendarDefaults(DateRangePickerRoot, {
+  anchor: UIDateRangePickerAnchor, inputs: [UIDateRangePickerStartInput, UIDateRangePickerEndInput], summary: true,
+  grid: UIDateRangePickerGrid, cell: UIDateRangePickerCell, monthCell: UIDateRangePickerMonthCell,
+}), null, { label: "범위 지우기" });
 export const UIDateTimePickerAnchor: typeof DateTimePickerAnchor = withClearableControl(DateTimePickerAnchor, "anchor");
+export const UIDateTimePicker: ClearableComponent<typeof DateTimePickerRoot> = withClearableModel(withCalendarDefaults(DateTimePickerRoot, {
+  kind: "date-time", anchor: UIDateTimePickerAnchor, inputs: [UIDateTimePickerDateInput, UIDateTimePickerTimeInput],
+}), null);
 
 type DateTimeRangePickerInstance = InstanceType<typeof DateTimeRangePickerRoot>;
 
@@ -143,21 +189,72 @@ const DateTimeRangePicker = defineComponent({
   $props: DateTimeRangePickerInstance["$props"] & { timePrecision?: TimeFieldPrecision };
 };
 
-export const UIDateTimeRangePicker: ClearableComponent<typeof DateTimeRangePicker> = withClearableModel(DateTimeRangePicker, null, { label: "범위 지우기" });
 export const UIDateTimeRangePickerAnchor: typeof DateTimeRangePickerAnchor = withClearableControl(DateTimeRangePickerAnchor, "anchor");
+const InlineTimePicker = defineComponent({
+  inheritAttrs: false,
+  setup(_, { attrs }) {
+    return () => h(UITimePicker, attrs, {
+      default: (state: TimePickerRootSlotProps) => state.parts.map(part => h(UITimePickerColumn, { part, key: part }, {
+        default: renderTimeItems,
+      })),
+    });
+  },
+});
+export const UIDateTimeRangePicker: ClearableComponent<typeof DateTimeRangePicker> = withClearableModel(withCalendarDefaults(DateTimeRangePicker, {
+  kind: "date-time-range", anchor: UIDateTimeRangePickerAnchor,
+  inputs: [UIDateTimeRangePickerStartDateTimeInput, UIDateTimeRangePickerEndDateTimeInput], summary: true,
+  grid: UIDateTimeRangePickerGrid, cell: UIDateTimeRangePickerCell, monthCell: UIDateTimeRangePickerMonthCell,
+  timePicker: InlineTimePicker,
+}), null, { label: "범위 지우기" });
+
+function renderTimeItems(state: TimePickerColumnSlotProps) {
+  return state.choices.map(choice => h(TimePickerItem, { key: choice.id, value: choice.id }, () => choice.label));
+}
+
+const TimePickerDefaultParts = defineComponent({
+  props: { label: String },
+  setup(props) {
+    const { locale } = useUITemporalDisplay();
+    return () => {
+      const korean = locale.value.startsWith("ko");
+      const label = props.label ?? (korean ? "시간" : "Time");
+      return [
+        h(UITimePickerInput, { label }),
+        h(TimePickerTrigger, { "aria-label": korean ? "시간 선택 열기" : "Open time picker" }, () =>
+          h(Clock, { size: 16, "aria-hidden": true })),
+        h(UITimePickerContent, null, {
+          default: (state: TimePickerContentSlotProps) => state.columns.map(column =>
+            h(UITimePickerColumn, { key: column.part, part: column.part }, { default: renderTimeItems })),
+        }),
+      ];
+    };
+  },
+});
 export const UITimePicker: ClearableComponent<typeof TimePickerRoot> = withClearableModel(TimePickerRoot, null, {
   placement: "end", expose: ["element", "focus", "select", "requestClose", "selectChoice"],
+  defaultParts: attrs => [h(TimePickerDefaultParts, { label: attrs.label as string | undefined })],
 });
-export const UIMonthPicker: ClearableComponent<typeof MonthPickerRoot> = withClearableModel(MonthPickerRoot, null);
 export const UIMonthPickerAnchor: typeof MonthPickerAnchor = withClearableControl(MonthPickerAnchor, "anchor");
-export const UIMonthRangePicker: ClearableComponent<typeof MonthRangePickerRoot> = withClearableModel(MonthRangePickerRoot, null, { label: "범위 지우기" });
+export const UIMonthPicker: ClearableComponent<typeof MonthPickerRoot> = withClearableModel(withCalendarDefaults(MonthPickerRoot, {
+  kind: "month", anchor: UIMonthPickerAnchor, inputs: [UIMonthPickerInput], summary: true,
+}), null);
 export const UIMonthRangePickerAnchor: typeof MonthRangePickerAnchor = withClearableControl(MonthRangePickerAnchor, "anchor");
-export const UIYearPicker: ClearableComponent<typeof YearPickerRoot> = withClearableModel(YearPickerRoot, null);
+export const UIMonthRangePicker: ClearableComponent<typeof MonthRangePickerRoot> = withClearableModel(withCalendarDefaults(MonthRangePickerRoot, {
+  kind: "month", anchor: UIMonthRangePickerAnchor, inputs: [UIMonthRangePickerStartInput, UIMonthRangePickerEndInput], summary: true,
+  grid: UIMonthRangePickerGrid, monthCell: UIMonthRangePickerCell,
+}), null, { label: "범위 지우기" });
 export const UIYearPickerAnchor: typeof YearPickerAnchor = withClearableControl(YearPickerAnchor, "anchor");
-export const UIYearRangePicker: ClearableComponent<typeof YearRangePickerRoot> = withClearableModel(YearRangePickerRoot, null, { label: "범위 지우기" });
+export const UIYearPicker: ClearableComponent<typeof YearPickerRoot> = withClearableModel(withCalendarDefaults(YearPickerRoot, {
+  kind: "year", anchor: UIYearPickerAnchor, inputs: [UIYearPickerInput], summary: true,
+}), null);
 export const UIYearRangePickerAnchor: typeof YearRangePickerAnchor = withClearableControl(YearRangePickerAnchor, "anchor");
+export const UIYearRangePicker: ClearableComponent<typeof YearRangePickerRoot> = withClearableModel(withCalendarDefaults(YearRangePickerRoot, {
+  kind: "year", anchor: UIYearRangePickerAnchor, inputs: [UIYearRangePickerStartInput, UIYearRangePickerEndInput], summary: true,
+  grid: UIYearRangePickerGrid, yearCell: UIYearRangePickerCell,
+}), null, { label: "범위 지우기" });
 
 export type { DateValue as UIDateValue } from "@sectile/vue/temporal/calendar";
+export type { DateTimeValue as UIDateTimeValue, DateTimeRange as UIDateTimeRange } from "@sectile/temporal/date-time-field";
 export {
   useTemporalReferenceDate as useUITemporalReferenceDate,
   useTemporalFormatter as useUITemporalFormatter,
@@ -246,7 +343,9 @@ const InlineRangeCalendar = defineComponent({
     return () => h(RangeCalendarRoot, { position: false, ...attrs }, slots);
   },
 }) as typeof RangeCalendarRoot;
-export const UIRangeCalendar: ClearableComponent<typeof RangeCalendarRoot> = withClearableModel(InlineRangeCalendar, null, { placement: "beside", label: "범위 지우기" });
+export const UIRangeCalendar: ClearableComponent<typeof RangeCalendarRoot> = withClearableModel(withCalendarDefaults(InlineRangeCalendar, {
+  grid: UIRangeCalendarGrid, cell: UIRangeCalendarCell, monthCell: UIRangeCalendarMonthCell,
+}), null, { placement: "beside", label: "범위 지우기" });
 export {
   DatePickerTrigger as UIDatePickerTrigger,
   DatePickerPortal as UIDatePickerPortal,

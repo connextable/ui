@@ -1,4 +1,4 @@
-import { defineComponent, h, mergeProps, shallowRef, type Component, type Slots, type VNodeChild } from "vue";
+import { defineComponent, h, mergeProps, shallowRef, type Component, type Slots, type VNode, type VNodeChild } from "vue";
 import UIFieldClear from "./UIFieldClear.vue";
 import { controlFlag, hasClearableValue, provideClearable, useClearableValue, useFieldClear, type ClearableProps } from "./clearable";
 
@@ -25,6 +25,7 @@ export function withClearableModel<Part extends Component>(
     clearInput?: boolean;
     placement?: "inset" | "end" | "beside";
     expose?: readonly string[];
+    defaultParts?: (attrs: Attrs) => VNode[];
   } = {},
 ): ClearableComponent<Part> {
   const metadata = part as Part & { __sectileFormLabelMode?: "for" | "labelledby" };
@@ -82,13 +83,16 @@ export function withClearableModel<Part extends Component>(
         });
       };
       return () => {
-        if (!options.placement || !props.clearable || isAsChild(attrs)) return h(part, bindings(), slots);
+        const defaultParts = options.defaultParts;
+        const asChild = isAsChild(attrs);
+        const content = slots.default || asChild || !defaultParts ? slots : { ...slots, default: () => defaultParts(attrs) };
+        if (!options.placement || !props.clearable || asChild) return h(part, bindings(), content);
         if (options.placement === "end") {
-          return h(part, bindings(), appendClear(slots));
+          return h(part, bindings(), appendClear(content));
         }
         const inset = options.placement === "inset";
         return h(inset ? "span" : "div", { class: inset ? "ui-clearable-control ui-clearable-control--temporal" : "ui-clearable-group" }, [
-          h(part, bindings(), slots),
+          h(part, bindings(), content),
           h(UIFieldClear),
         ]);
       };

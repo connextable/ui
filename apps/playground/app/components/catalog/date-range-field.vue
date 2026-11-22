@@ -1,20 +1,12 @@
 <script setup lang="ts">
-import {
-  UIDateRangeField,
-  UIDateRangeFieldEndInput,
-  UIDateRangeFieldStartInput,
-} from "@connextable/ui";
+import { UIDateRangeField } from "@connextable/ui";
 
-import { ref } from 'vue'
-const range = ref({
+const range = {
   start: { year: 2026, month: 8, day: 22 },
   end: { year: 2026, month: 8, day: 25 },
-})
+};
 </script>
 
 <template>
-  <UIDateRangeField start-label="시작일" end-label="종료일" v-model="range">
-    <UIDateRangeFieldStartInput name="start" />
-    <UIDateRangeFieldEndInput name="end" />
-  </UIDateRangeField>
+  <UIDateRangeField :default-value="range" start-label="시작일" end-label="종료일" />
 </template>

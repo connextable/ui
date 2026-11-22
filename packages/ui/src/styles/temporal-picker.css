@@ -143,6 +143,48 @@ input.ui-temporal-input {
   > :where(header, nav, p, output) { justify-self: stretch; }
 }
 
+.ui-temporal-picker__time-range:not([hidden]) {
+  display: grid;
+  grid-template-areas: "start calendar end";
+  grid-template-columns: max-content minmax(0, 20rem) max-content;
+  gap: var(--ui-space-md);
+  inline-size: max-content;
+  max-inline-size: min(calc(100dvw - 1rem), var(--sectile-position-available-width, 100dvw));
+  padding: var(--ui-space-md);
+}
+
+.ui-temporal-picker__time-range > .ui-temporal-picker__calendar {
+  grid-area: calendar;
+  align-self: start;
+}
+
+.ui-temporal-picker__time {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  justify-items: center;
+  gap: var(--ui-space-sm);
+  min-inline-size: 0;
+
+  &[data-endpoint="start"] { grid-area: start; }
+  &[data-endpoint="end"] { grid-area: end; }
+}
+
+@media (width > 42rem) {
+  .ui-temporal-picker__time-range .ui-temporal-picker__time .ui-time-picker-column__viewport > [role="listbox"] {
+    contain: size;
+    max-block-size: none;
+  }
+}
+
+@media (width <= 42rem) {
+  .ui-temporal-picker__time-range:not([hidden]) {
+    grid-template-areas: "calendar calendar" "start end";
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    inline-size: min(22rem, calc(100dvw - 1rem));
+    max-block-size: min(38rem, var(--sectile-position-available-height, 85dvh));
+  }
+}
+
 [data-scope="time-picker"][data-part="root"]:has(> .ui-time-picker-column) {
   display: flex;
   flex-wrap: wrap;
