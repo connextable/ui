@@ -17,6 +17,7 @@
   "devDependencies": {
     "@types/node": "26.6.6",
     "lightningcss": "1.33.0",
+    "prettier": "3.9.9",
     "shiki": "4.6.0",
     "typescript": "catalog:",
     "vue-tsc": "catalog:"

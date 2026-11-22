@@ -1,6 +1,7 @@
 /// <reference types="node" />
 
 import { readFile } from "node:fs/promises";
+import { format } from "prettier";
 import { createHighlighterCore } from "shiki/core";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import { bundledLanguages } from "shiki/langs";
@@ -34,7 +35,8 @@ export function highlightExamples() {
       });
 
       const [renderer, source] = await Promise.all([highlighter, readFile(filename, "utf8")]);
-      const html = renderer.codeToHtml(source.trim(), {
+      const formatted = await format(source, { parser: "vue" });
+      const html = renderer.codeToHtml(formatted.trimEnd(), {
         lang: "vue",
         theme: "github-light",
         transformers: [usePlaygroundBackground],
