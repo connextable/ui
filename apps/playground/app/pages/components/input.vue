@@ -2,7 +2,6 @@
 import InputLongValueExample from "~/components/examples/InputLongValueExample.vue";
 import InputLongValueExampleSource from "~/components/examples/InputLongValueExample.vue?example-code&raw";
 import InputExample from "~/components/examples/InputExample.vue";
-import inputExampleSource from "~/components/examples/InputExample.vue?example-code&raw";
 import InputMultilineExample from "~/components/examples/InputMultilineExample.vue";
 import multilineSource from "~/components/examples/InputMultilineExample.vue?example-code&raw";
 import InputLeadingExample from "~/components/examples/InputLeadingExample.vue";
@@ -24,18 +23,9 @@ definePageMeta({
 </script>
 
 <template>
-  <div>
+  <div class="input-document">
     <PlaygroundExampleSection id="usage" title="기본 사용법">
-      <PlaygroundExample :heading-level="3"
-        id="input-example"
-        title="텍스트 입력"
-        description="v-model로 입력값을 연결합니다."
-        :source="inputExampleSource"
-      >
-        <InputExample />
-      </PlaygroundExample>
-    </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="examples" title="동작별 예제">
+      <InputExample />
       <PlaygroundExample :heading-level="3"
         id="input-multiline"
         title="여러 줄 입력"
@@ -54,12 +44,14 @@ definePageMeta({
       </PlaygroundExample>
       <PlaygroundExample :heading-level="3"
         id="input-trailing"
-        title="뒤쪽 슬롯"
-        description="trailing 슬롯에 입력값을 지우는 버튼을 넣습니다."
+        title="입력값 지우기"
+        description="clearable을 지정하면 값이 있을 때 지우기 버튼이 표시됩니다. clear-label로 버튼 이름을 지정합니다."
         :source="inputTrailingSource"
       >
         <InputTrailingExample />
       </PlaygroundExample>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="input-states-section" title="읽기 전용과 오류">
       <PlaygroundExample :heading-level="3"
         id="input-readonly"
         title="읽기 전용"
@@ -76,6 +68,8 @@ definePageMeta({
       >
         <InputStatesExample />
       </PlaygroundExample>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="examples" title="실전 예제">
       <PlaygroundExample id="input-long" title="좁은 입력 영역"
         description="긴 검색어의 끝으로 이동하고 앞 아이콘과 지우기 버튼이 제자리를 유지하는지 확인합니다." :source="InputLongValueExampleSource" :heading-level="3">
         <InputLongValueExample />
@@ -94,3 +88,9 @@ definePageMeta({
     </PlaygroundFormSection>
   </div>
 </template>
+
+<style scoped>
+.input-document :deep(.playground-example__preview > :is(.ui-input, .ui-field)) {
+  inline-size: min(100%, 26rem);
+}
+</style>

@@ -6,12 +6,5 @@ const text = ref("회의 내용을 적어보세요.");
 </script>
 
 <template>
-  <UIInput class="input-multiline" aria-label="메모" multiline :rows="3" v-model="text" />
+  <UIInput v-model="text" aria-label="메모" multiline :rows="3" />
 </template>
-
-<style scoped>
-.input-multiline {
-  inline-size: 26rem;
-  max-inline-size: 100%;
-}
-</style>

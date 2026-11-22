@@ -7,7 +7,7 @@ const id = useId();
 </script>
 
 <template>
-  <div class="ui-field input-leading">
+  <div class="ui-field">
     <label :for="id">웹사이트 주소</label>
     <UIInput :id="id" v-model="domain" :aria-describedby="`${id}-description`" inputmode="url" placeholder="example.com">
       <template #leading>https://</template>
@@ -17,11 +17,7 @@ const id = useId();
 </template>
 
 <style scoped>
-.input-leading {
-  inline-size: min(100%, 26rem);
-}
-
-.input-leading small {
+small {
   color: var(--ui-color-text-muted);
   font-size: var(--ui-font-size-metadata);
 }
