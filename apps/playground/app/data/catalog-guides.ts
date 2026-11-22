@@ -1610,13 +1610,20 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "date-field": {
     title: "날짜를 텍스트로 입력",
     description: "20260822 또는 2026-8-22를 입력한 뒤 Enter를 누릅니다. 값이 확정되면 공통 날짜 서식으로 표시됩니다.",
-    api: { "v-model": "확정된 DateValue 또는 null을 연결합니다.", "default-value": "처음 표시할 날짜입니다.", "policies.min / max": "확정할 수 있는 날짜의 범위를 지정합니다." },
+    api: {
+      "v-model": "확정된 DateValue 또는 null을 연결합니다.",
+      "default-value": "처음 표시할 날짜입니다.",
+      "policies.min / max": "확정할 수 있는 날짜의 범위를 지정합니다.",
+      format: { description: "해당 입력의 날짜 순서와 구분자를 지정합니다.", example: { id: "date-field-explicit-format", title: "한 날짜 입력의 서식 지정" } },
+      createUIDateFieldFormat: "날짜 순서와 구분 문자를 받아 format으로 전달할 서식을 만듭니다.",
+    },
     sections: [
       { id: "examples", title: "입력 형태와 상태", section: "usage-options" },
       { id: "date-field-examples-2", title: "범위 연결", section: "examples-2" },
       { id: "form", title: "폼 제출", section: "form" },
     ],
     examples: [
+      { id: "date-field-explicit-format", section: "usage-options", title: "한 날짜 입력의 서식 지정", description: "이 입력에만 일/월/년 순서를 적용합니다. 25/08/2026을 입력하고 Enter로 확정합니다." },
       { id: "date-field-readonly", section: "usage-options", title: "확정된 날짜", description: "확정한 날짜를 읽고 수정은 제한합니다." },
       { id: "date-field-invalid", section: "usage-options", title: "존재하지 않는 날짜 고치기", description: "8월 32일을 입력하고 확정해 보세요. 31일로 고치면 아래 확정값이 바뀝니다." },
       { id: "date-field-range", section: "examples-2", title: "입력 가능한 날짜 범위 제한", description: "policies에서 2026년 8월의 시작일과 종료일을 지정합니다. 다른 달의 날짜를 입력하고 확정해 보세요." },
@@ -1639,6 +1646,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       "v-model": "start와 end로 이루어진 날짜 범위를 연결합니다.",
       "default-value": "처음 표시할 날짜 범위입니다.",
+      format: "시작일과 종료일 입력에 함께 적용할 날짜 서식입니다.",
     },
   },
   "date-picker": {
@@ -1656,6 +1664,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "텍스트로 날짜를 입력하거나 달력 버튼으로 값을 선택합니다. 입력과 달력 셀은 루트의 날짜를 공유합니다.",
     api: {
       "default-value": "처음 표시할 날짜입니다.",
+      format: "날짜 입력의 편집 서식입니다. createUIDateFieldFormat으로 만들 수 있습니다.",
       "#default": "현재 보기에 해당하는 날짜와 월, 달력의 보기 상태를 제공합니다.",
     },
   },
@@ -1675,6 +1684,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       "default-value": "처음 표시할 시작일과 종료일입니다.",
       policies: "허용하는 날짜 범위와 선택 동작을 설정합니다.",
+      editable: "시작일과 종료일을 직접 편집하는 입력란을 표시합니다.",
+      format: "시작일과 종료일 입력의 편집 서식입니다.",
     },
   },
   "date-time-field": {
@@ -1723,11 +1734,12 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "date-time-picker-controlled", section: "examples-2", title: "다른 버튼에서 달력 열기", description: "외부 버튼에서 v-model:open을 변경합니다. Esc로 닫으면 열림 상태도 동기화됩니다." },
       { id: "date-time-picker-portal", section: "examples-2", title: "일시 달력 포털", description: "날짜와 시간 입력은 유지하고 팝업을 포털 영역에서 표시합니다.", parts: ["UIDateTimePickerPortal"] },
     ],
-    title: "달력에서 날짜를 고르고 시간 입력",
-    description: "달력에서 날짜를 바꾸고 시간 입력에서 시각을 편집합니다.",
+    title: "달력과 시간 목록에서 일시 선택",
+    description: "달력에서 날짜를 바꾸고 옆 목록에서 시·분을 선택합니다. 입력창에서도 일시를 편집할 수 있습니다.",
     api: {
       "v-model": "편집한 날짜와 시각을 연결합니다.",
       "time-precision": "시각 입력의 정밀도를 지정합니다. minute이면 시·분을 표시합니다.",
+      "time-choices": { type: "boolean", default: "true", description: "기본 팝업에 선택 가능한 시간 목록을 표시합니다." },
       "#default": "달력의 날짜, 월, 보기 상태를 제공합니다.",
     },
   },
@@ -1737,6 +1749,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "date-time-range-picker-examples-2", title: "포털 연결", section: "examples-2" },
     ],
     examples: [
+      { id: "date-time-range-picker-time-first", section: "usage-options", title: "날짜보다 먼저 시간 선택", description: "팝업에서 시작·종료 시간을 먼저 선택하고 날짜 범위를 고릅니다. 날짜 범위가 확정되면 앞서 고른 시각도 반영됩니다." },
       { id: "date-time-range-picker-parts", section: "usage-options", title: "시작·종료 날짜와 시간 따로 입력", description: "네 입력에서 시작 날짜와 시간, 종료 날짜와 시간을 각각 편집합니다." },
       { id: "date-time-range-picker-overnight", section: "usage-options", title: "자정을 넘기는 일시 범위", description: "시작일 23:30부터 다음 날 01:15까지를 한 줄에 표시합니다. 달력 양옆에서 시작·종료 시각을 선택할 수 있습니다." },
       { id: "date-time-range-picker-portal", section: "examples-2", title: "기간의 팝업을 포털에 배치", description: "시작·종료 일시 입력에서 연 달력을 포털에 표시합니다.", parts: ["UIDateTimeRangePickerPortal"] },
@@ -1746,6 +1759,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       "default-value": "날짜와 시간이 포함된 시작·종료 일시입니다.",
       "time-precision": "분리된 시작·종료 시간 입력의 정밀도를 분, 초, 밀리초 중에서 지정합니다.",
+      "time-choices": { type: "boolean", default: "true", description: "팝업 양옆에 시작·종료 시간 목록을 표시합니다." },
       "UIDateTimeRangePickerValue layout": "inline은 기본 한 줄 표시, stacked는 시작과 종료를 각각 한 줄에 표시합니다.",
       "#default": "현재 날짜와 월 목록을 달력에 렌더링할 수 있게 합니다.",
     },
@@ -1810,13 +1824,14 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "month-picker-examples-2", title: "포털 연결", section: "examples-2" },
     ],
     examples: [
-      { id: "month-picker-bounds", section: "usage-options", title: "선택 가능한 월", description: "2026년에 속하는 월만 선택합니다." },
+      { id: "month-picker-bounds", section: "usage-options", title: "선택 가능한 월", description: "2026년에 속하는 월만 고를 수 있습니다. 2026-09를 입력해 확정하거나 달력으로 선택합니다." },
       { id: "month-picker-portal", section: "examples-2", title: "월 선택 포털", description: "월 목록을 포털에 표시합니다.", parts: ["UIMonthPickerPortal"] },
     ],
     title: "청구 월 선택",
     description: "달력 버튼을 눌러 월 선택기를 엽니다. 연도를 탐색한 다음 해당 연도의 월을 선택합니다.",
     api: {
       "default-value": "선택기를 처음 열 때 입력에 표시할 월의 값입니다.",
+      editable: "YYYY-MM 형식으로 월을 직접 입력할 수 있습니다.",
       "#default": "현재 보고 있는 연도의 월들을 months로 받습니다.",
     },
   },
@@ -1828,13 +1843,14 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     examples: [
       { id: "month-range-picker-same-month", section: "usage-options", title: "한 달만 포함하는 범위", description: "시작과 종료에 같은 달을 지정합니다." },
       { id: "month-range-picker-year-boundary", section: "usage-options", title: "다른 연도에 걸친 월 범위", description: "연도를 넘겨 시작 월과 종료 월을 선택합니다." },
-      { id: "month-range-picker-bounds", section: "usage-options", title: "시작과 종료 월에 경계 적용", description: "4월에서 9월 사이의 월만 범위 끝점으로 고릅니다." },
+      { id: "month-range-picker-bounds", section: "usage-options", title: "시작과 종료 월에 경계 적용", description: "시작 월과 종료 월을 입력하거나 달력에서 고릅니다. 4월부터 9월까지 확정할 수 있습니다." },
       { id: "month-range-picker-portal", section: "examples-2", title: "월 범위 포털", description: "범위 입력에 연결된 월 목록을 포털에 표시합니다.", parts: ["UIMonthRangePickerPortal"] },
     ],
     title: "보고서의 시작 월과 종료 월 선택",
     description: "월 선택기에서 시작 월과 종료 월을 고릅니다. 같은 해의 범위는 시작 쪽에만 연도를 표시합니다. 위쪽 버튼으로 연도를 바꿉니다.",
     api: {
       "default-value": "시작 월과 종료 월을 담는 범위입니다.",
+      editable: "YYYY-MM 형식으로 범위의 두 끝을 편집합니다.",
       "#default": "선택할 수 있는 월 목록과 현재 보기 상태를 받습니다.",
     },
   },
@@ -1844,7 +1860,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "year-picker-examples-2", title: "외부 제어와 포털", section: "examples-2" },
     ],
     examples: [
-      { id: "year-picker-bounds", section: "usage-options", title: "선택 가능한 연도", description: "2025년부터 2030년까지 연도만 선택할 수 있습니다." },
+      { id: "year-picker-bounds", section: "usage-options", title: "선택 가능한 연도", description: "2025년부터 2030년까지의 연도를 입력하거나 목록에서 선택합니다." },
       { id: "year-picker-controlled", section: "examples-2", title: "외부에서 조사 연도 지정", description: "버튼으로 연도를 2030년으로 바꾸면 선택기의 입력값도 바뀝니다." },
       { id: "year-picker-portal", section: "examples-2", title: "연도 선택 포털", description: "연도 목록을 포털 안에 렌더링합니다.", parts: ["UIYearPickerPortal"] },
     ],
@@ -1852,6 +1868,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "연도 선택기를 열고 원하는 연도를 누릅니다. 이전·다음 버튼으로 연도 목록을 페이지 단위로 탐색합니다.",
     api: {
       "default-value": "선택기에 표기할 초기 연도에 대응하는 값입니다.",
+      editable: "네 자리 연도를 직접 입력할 수 있습니다.",
       "#default": "현재 페이지의 선택 가능한 years를 받습니다.",
     },
   },
@@ -1862,7 +1879,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
     examples: [
       { id: "year-range-picker-pages", section: "usage-options", title: "연도 페이지를 건너가는 범위", description: "연도 페이지를 넘겨 현재 화면 밖에 있는 종료 연도를 선택합니다." },
-      { id: "year-range-picker-bounds", section: "usage-options", title: "고를 수 있는 연도에 경계 적용", description: "범위의 시작과 종료를 2025년에서 2030년 사이로 제한합니다." },
+      { id: "year-range-picker-bounds", section: "usage-options", title: "고를 수 있는 연도에 경계 적용", description: "범위의 시작과 종료를 입력하거나 목록에서 고릅니다. 2025년부터 2030년까지 확정할 수 있습니다." },
       { id: "year-range-picker-draft", section: "examples-2", title: "연도 범위 확정 전 상태", description: "시작 연도를 고른 다음 종료 연도를 골라야 확정 결과가 나타납니다." },
       { id: "year-range-picker-portal", section: "examples-2", title: "연도 범위 포털", description: "연도 범위의 선택 목록을 포털로 전송합니다.", parts: ["UIYearRangePickerPortal"] },
     ],
@@ -1870,6 +1887,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "연도 목록에서 범위의 양 끝을 선택합니다. 입력에서는 선택한 첫 연도와 마지막 연도를 확인할 수 있습니다.",
     api: {
       "default-value": "시작 연도와 종료 연도를 담는 범위입니다.",
+      editable: "시작·종료 연도를 네 자리 숫자로 입력합니다.",
       "#default": "이 페이지에서 렌더링할 연도 묶음을 받습니다.",
     },
   },

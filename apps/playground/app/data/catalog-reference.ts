@@ -44,7 +44,7 @@ export function helperGroup(name: string) {
 export function componentGroup(name: string) {
   if (/^UI(?:IconButton|ToggleButton|FileUploadQueue|NavigationMenuPopover)$/.test(name)) return partGroups[0];
   if (/(Portal|Overlay|Backdrop|Anchor|Arrow|SubContent|Viewport)$/.test(name)) return partGroups[2];
-  if (/(?:SelectionControl|Editor|Input|Select|Slider|Thumb|Cell|Picker|EditTrigger)$/.test(name) && !/(HeaderCell|ColumnHeader)$/.test(name)) return partGroups[3];
+  if (/(?:SelectionControl|Editor|Input|Select|Slider|Thumb|Cell|Picker|TimeChoices|EditTrigger)$/.test(name) && !/(HeaderCell|ColumnHeader)$/.test(name)) return partGroups[3];
   if (/(?:Trigger|Disclosure|Close|Previous\w*|Next\w*|First|Last|Clear|Handle|Move|Link|Pause|Reset|Submit|Delete|Increment|Decrement|LoadEarlier|LoadNewer|Control|Dropzone)$/.test(name)) return partGroups[4];
   if (/(?:Indicator|Value(?:Text)?|Label|Description|Title|Status|Message|Legend|GridLines|Heading|Caption|Thumb|Icon|Preview|Swatch|Range|Track|Segment|Empty|Series|Line|Bar|Bars|Scatter|Pie|Donut|Heatmap|Candlesticks)$/.test(name)) return partGroups[5];
   return partGroups[1];

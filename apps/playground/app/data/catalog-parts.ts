@@ -38,6 +38,7 @@ const roles: Readonly<Record<string, string>> = {
   EndInput: "범위의 종료값을 입력합니다.",
   DateInput: "날짜 부분을 입력합니다.",
   TimeInput: "시간 부분을 입력합니다.",
+  TimeChoices: "현재 날짜와 선택 범위에서 가능한 시각을 시간 단위별 목록으로 제공합니다.",
   DateTimeInput: "날짜와 시간을 함께 입력합니다.",
   StartDateTimeInput: "범위 시작점의 날짜와 시간을 함께 입력합니다.",
   EndDateTimeInput: "범위 종료점의 날짜와 시간을 함께 입력합니다.",
