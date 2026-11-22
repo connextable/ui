@@ -451,18 +451,26 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
   },
   slider: {
+    framed: true,
     title: "하나의 범위 값 조절",
-    description: "thumb을 끌거나 방향키를 눌러 min과 max 사이의 값을 바꿉니다. v-model에는 현재 값의 문자열이 전달됩니다.",
+    description: "손잡이를 끌거나 방향키를 눌러 min과 max 사이의 값을 바꿉니다. v-model에는 문자열이 전달됩니다.",
     api: {
       "v-model": "현재 슬라이더의 값을 연결합니다.",
       "min / max": "트랙의 시작값과 끝값입니다.",
       step: "한 단계에서 값이 바뀌는 간격입니다.",
+      orientation: "가로와 세로 중 트랙의 방향을 지정합니다.",
+      readonly: "현재 값을 표시하고 값 변경을 막습니다.",
+      "format-value": "스크린 리더가 현재 값을 읽을 때 사용할 문구를 지정합니다.",
     },
+    sections: [
+      { id: "slider-settings", title: "방향·간격·읽기 전용", section: "settings" },
+      { id: "examples", title: "실전 예제", section: "format" },
+    ],
     examples: [
-      { id: "slider-readonly", title: "이미 결정된 값", description: "손잡이의 접근성 이름과 값을 읽고 수정하지 못합니다." },
-      { id: "slider-vertical", title: "세로 방향", description: "손잡이를 위아래로 움직여 값을 바꿉니다." },
-      { id: "slider-format", title: "단위를 함께 읽기", description: "format-value로 손잡이에서 읽을 값의 단위를 지정합니다." },
-      { id: "slider-step", title: "일정 간격으로 이동", description: "step을 25로 지정해 조절할 수 있는 값을 0, 25, 50, 75, 100으로 제한합니다." },
+      { id: "slider-vertical", section: "settings", title: "세로 방향", description: "손잡이를 위아래로 움직여 값을 바꿉니다." },
+      { id: "slider-step", section: "settings", framed: true, title: "일정 간격으로 이동", description: "step을 25로 지정해 조절할 수 있는 값을 0, 25, 50, 75, 100으로 제한합니다." },
+      { id: "slider-readonly", section: "settings", title: "이미 결정된 밝기", description: "readonly를 지정하면 밝기를 표시하고 값 변경을 막습니다." },
+      { id: "slider-format", section: "format", framed: true, title: "음량의 단위를 함께 읽기", description: "format-value를 지정하면 스크린 리더에서 ‘40 퍼센트’처럼 값과 단위를 함께 읽습니다." },
     ],
   },
   "spin-button": {
@@ -526,6 +534,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
   },
   "file-input": {
+    framed: true,
     title: "파일 하나 첨부하기",
     description: "파일을 고르고 이름과 크기를 확인합니다. 첨부한 파일을 제거하거나 다시 선택할 수 있습니다.",
     api: {
@@ -533,6 +542,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       size: "다른 입력과 같은 sm, md, lg 크기를 지정합니다. 기본값은 md입니다.",
       policy: "파일 형식, 개수, 개별 용량 및 전체 용량 제한을 지정합니다.",
       preview: "선택한 이미지의 썸네일을 표시합니다.",
+      "v-model": "선택한 파일 배열을 읽고 변경합니다.",
+      clearable: "선택을 비우는 버튼을 표시합니다. 기본값은 true입니다.",
       "#default": "파일 목록과 거절 상태를 받아 선택 영역과 목록을 직접 구성합니다.",
     },
     sections: [
@@ -560,13 +571,13 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "file-upload-retry", title: "실패 후 다시 전송", description: "첫 시도는 실패합니다. 다시 시도하면 같은 파일의 전송을 완료합니다." },
     ],
     title: "파일 선택과 교체",
-    description: "FileInput에서 고른 파일을 업로드 어댑터에 연결합니다. 이 예제의 어댑터는 브라우저 안에서 파일을 읽습니다.",
+    description: "기본 선택 버튼에서 파일을 고르면 어댑터를 실행합니다. 이 예제는 브라우저 안에서 파일을 읽습니다.",
     api: {
-      file: "전송할 브라우저 File 객체입니다. 비워 두면 파일 선택 상태를 표시합니다.",
+      file: "부모에서 고른 File 또는 null을 전달합니다. 생략하면 컴포넌트의 기본 선택 버튼으로 파일을 고릅니다.",
       adapter: "진행률과 완료 결과를 연결하는 Sectile 전송 어댑터입니다.",
       size: "다른 입력과 같은 sm, md, lg 크기를 지정합니다. 기본값은 md입니다.",
       "auto-start": "파일을 연결하면 어댑터를 바로 실행합니다.",
-      "#picker": "파일 영역을 선택 및 교체 버튼으로 연결합니다. 선택 전에는 슬롯의 file이 null입니다.",
+      "#picker": "파일 선택·교체 버튼을 직접 구성합니다. 현재 파일을 file로 받고, 선택하기 전에는 null을 받습니다.",
       "#status": "현재 업로드 상태에 맞춰 행 안에 짧은 상태 문구를 표시합니다.",
     },
   },
@@ -649,16 +660,22 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
   },
   "multi-thumb-slider": {
+    framed: true,
+    sections: [
+      { id: "multi-thumb-slider-settings", title: "방향과 간격", section: "settings" },
+      { id: "examples", title: "실전 예제", section: "pricing" },
+    ],
     examples: [
-      { id: "multi-thumb-slider-gap", title: "손잡이 최소 간격", description: "두 경계 사이에 최소 세 스텝을 유지합니다." },
-      { id: "multi-thumb-slider-labels", title: "상품 가격 범위 조절", description: "최소·최대 금액 손잡이를 끌면 아래에 선택한 가격이 원 단위로 표시됩니다. Tab으로 손잡이를 선택한 뒤 방향키로도 금액을 바꿀 수 있습니다." },
-      { id: "multi-thumb-slider-vertical", title: "세로 범위 조절", description: "두 경계값을 위아래로 조절합니다. 같은 끝점에 모인 손잡이를 안쪽으로 끌어 범위를 다시 넓힐 수 있습니다." },
+      { id: "multi-thumb-slider-gap", section: "settings", title: "손잡이 최소 간격", description: "두 경계 사이에 최소 세 스텝을 유지합니다." },
+      { id: "multi-thumb-slider-vertical", section: "settings", title: "세로 범위 조절", description: "두 경계값을 위아래로 조절합니다. 같은 끝점에 모인 손잡이를 안쪽으로 끌어 범위를 다시 넓힐 수 있습니다." },
+      { id: "multi-thumb-slider-labels", section: "pricing", title: "상품 가격 범위 조절", description: "최소·최대 금액 손잡이를 끌면 아래에 선택한 가격이 원 단위로 표시됩니다. Tab으로 손잡이를 선택한 뒤 방향키로도 금액을 바꿀 수 있습니다." },
     ],
     title: "범위의 시작값과 끝값 지정",
     description: "두 손잡이를 움직여 범위의 양 끝을 정합니다. 손잡이 사이에 선택한 구간이 표시됩니다.",
     api: {
       thumbs: "각 손잡이의 식별자를 값 배열과 같은 순서로 등록합니다.",
       "v-model": "손잡이별 현재 값을 배열로 연결합니다.",
+      "policies.minGap": "두 손잡이 사이에 유지할 최소 간격을 스텝 수로 지정합니다.",
       "get-thumb-label": "스크린 리더가 각 손잡이를 ‘최소 금액’, ‘최대 금액’처럼 구분해 읽을 이름을 제공합니다.",
       "--ui-slider-height": "세로 트랙의 전체 높이를 CSS에서 지정합니다.",
       "Thumb value": "이 손잡이가 대응하는 식별자입니다.",

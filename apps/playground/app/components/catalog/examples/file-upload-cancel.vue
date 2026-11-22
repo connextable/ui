@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { UIFileUpload } from "@connextable/ui";
-import { createExampleUpload } from "../../../utils/example-file-upload";
+import { UIFileUpload, type UIFileUploadAdapter } from "@connextable/ui";
 
 const file = new File(["로컬 예제 파일"], "회의록.txt", { type: "text/plain" });
-const adapter = createExampleUpload(5000);
+const adapter: UIFileUploadAdapter<File, string> = ({ file }) => {
+  let timer: ReturnType<typeof setTimeout>;
+  const result = new Promise<string>(resolve => {
+    timer = setTimeout(() => resolve(file.name), 5000);
+  });
+  return { result, dispose: () => clearTimeout(timer) };
+};
 </script>
 
 <template>

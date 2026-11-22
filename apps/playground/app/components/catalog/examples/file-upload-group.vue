@@ -1,8 +1,22 @@
 <script setup lang="ts">
-import { UIButton, UIProgress, useUIFileUploadGroup } from "@connextable/ui";
+import { UIButton, UIProgress, useUIFileUploadGroup, type UIFileUploadAdapter } from "@connextable/ui";
 import { FileText } from "@lucide/vue";
 import { computed } from "vue";
-import { createExampleUpload } from "../../../utils/example-file-upload";
+
+const adapter: UIFileUploadAdapter<File, string> = ({ file, reportProgress }) => {
+  let timer: ReturnType<typeof setInterval>;
+  let step = 0;
+  const result = new Promise<string>(resolve => {
+    timer = setInterval(() => {
+      step++;
+      reportProgress({ loaded: Math.floor(file.size * step / 20), total: file.size });
+      if (step < 20) return;
+      clearInterval(timer);
+      resolve(file.name);
+    }, 80);
+  });
+  return { result, dispose: () => clearInterval(timer) };
+};
 
 const entries = ["요구사항.txt", "작업 안내.txt", "점검 목록.txt"].map(name => ({
   id: name,
@@ -10,7 +24,7 @@ const entries = ["요구사항.txt", "작업 안내.txt", "점검 목록.txt"].m
 }));
 const { ready, snapshot, start, reset, useItem } = useUIFileUploadGroup({
   items: entries,
-  adapter: createExampleUpload(1600),
+  adapter,
   concurrency: 1,
 });
 const states = entries.map(({ id }) => ({ id, item: useItem(id) }));
