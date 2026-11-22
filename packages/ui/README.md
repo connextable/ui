@@ -43,6 +43,58 @@ Nuxt 4.5 이상에서 링크는 앱의 `experimental.defaults.nuxtLink` 프리�
 
 일반 Vue 앱에서 사용할 때는 `@connextable/ui`에서 컴포넌트를 가져오고 `@connextable/ui/styles.css`를 한 번 불러옵니다.
 
+## 파일 업로드
+
+`createUIFileUploadAdapter`에 업로드 주소를 전달합니다. 기본 요청은 `POST`이며, 선택한 파일은 `file` 필드에 담긴 `multipart/form-data`로 전송됩니다. `UIFileUpload`가 진행률과 취소를 연결합니다.
+
+```vue
+<script setup lang="ts">
+import { createUIFileUploadAdapter, UIFileUpload } from "@connextable/ui";
+
+const upload = createUIFileUploadAdapter({ url: "/api/uploads" });
+</script>
+
+<template>
+  <UIFileUpload :adapter="upload" auto-start />
+</template>
+```
+
+`fieldName`, `method`, `headers`, `withCredentials`로 요청을 설정합니다. 브라우저가 multipart 경계를 지정하도록 `Content-Type`은 비워 둡니다. 기본 완료 값은 응답 본문 문자열입니다. JSON과 같은 완료 값은 `readReceipt: response => JSON.parse(response.responseText)`로 읽을 수 있습니다.
+
+별도 SDK를 쓸 때는 `createUIFileUploadAdapter(({ file, signal, reportProgress }) => …)` 형태로 완료 값이나 Promise를 반환합니다. SDK에 `signal`을 연결하고, 전송이 진행될 때 `reportProgress({ loaded, total })`를 호출합니다. 작업 종료 시 동기 정리가 필요하면 `UIFileUploadAdapter`를 직접 구현하고 `{ result, dispose }`를 반환합니다.
+
+## 표와 그리드에 데이터 연결하기
+
+로컬 데이터는 `UIDataTable`과 `UIDataGrid`의 `columns`, `rows`에 바로 전달합니다. 서버에서 행을 요청하는 화면은 `createUITabularSource`로 응답을 만들어 `useUIDataTable`, `useUIDataGrid`, `useUIDataTreeGrid`의 `source`에 연결합니다.
+
+```ts
+import { createUITabularSource, useUIDataTable } from "@connextable/ui";
+
+const table = useUIDataTable({
+  source: createUITabularSource({
+    columns: [{ id: "name" }],
+    async load({ access }, { signal }) {
+      const params = new URLSearchParams(access.kind === "page"
+        ? { page: String(access.page), limit: String(access.itemsPerPage) }
+        : { offset: String(access.start), limit: String(access.count) });
+      const response = await fetch(`/api/reports?${params}`, { signal });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const { items, total } = await response.json() as {
+        items: { id: string; name: string }[];
+        total: number;
+      };
+      return {
+        rows: items.map(({ id, name }) => ({ kind: "leaf", id, cells: { name } })),
+        matchingLeafCount: total,
+        visibleRowCount: total,
+      };
+    },
+  }),
+});
+```
+
+모든 행을 한 번에 반환할 때는 두 개수를 생략할 수 있습니다. 일부 행만 반환할 때는 전체 개수 또는 `"unknown"`을 전달합니다. 트리의 `matchingLeafCount`는 그룹을 제외한 전체 결과 개수이고, `visibleRowCount`는 그룹 행을 포함해 현재 펼침 상태에서 표시되는 전체 행 개수입니다. 서버가 전체 응답과 열 스키마를 관리하는 경우 `source`에 직접 연결할 수 있습니다.
+
 ## 날짜와 시간 선택
 
 달력, 피커, 범위 입력은 기본 입력부와 버튼, 선택 목록을 제공합니다. 예를 들어 일시 범위는 아래처럼 연결합니다.

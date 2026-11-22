@@ -654,14 +654,14 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
     examples: [
       { id: "file-upload-group", section: "usage-options", title: "여러 파일의 전송 대기열", description: "세 파일을 차례로 전송하고 각 파일의 진행 상태를 확인합니다." },
-      { id: "file-upload-cancel", section: "usage-options", title: "전송 중 취소", description: "회의록의 전송을 시작한 다음 진행 중에 취소하세요. 이 예제는 브라우저에서 전송을 모의 실행합니다." },
+      { id: "file-upload-cancel", section: "usage-options", title: "직접 만든 어댑터에서 전송 취소", description: "전송을 시작하고 취소해 보세요. UIFileUploadAdapter를 직접 구현하면 dispose에서 타이머나 SDK 연결을 정리할 수 있습니다." },
       { id: "file-upload-retry", section: "usage-options", title: "실패 후 다시 전송", description: "첫 시도는 실패합니다. 다시 시도하면 같은 파일의 전송을 완료합니다." },
     ],
     title: "파일 선택과 교체",
-    description: "기본 선택 버튼에서 파일을 고르면 어댑터를 실행합니다. 이 예제는 브라우저 안에서 파일을 읽습니다.",
+    description: "createUIFileUploadAdapter에 URL을 넘기면 파일을 multipart로 전송합니다. 파일을 처리하는 함수도 넘길 수 있습니다. 아래 예제는 선택한 파일을 브라우저에서 읽습니다.",
     api: {
       file: "부모에서 고른 File 또는 null을 전달합니다. 생략하면 컴포넌트의 기본 선택 버튼으로 파일을 고릅니다.",
-      adapter: "진행률과 완료 결과를 연결하는 Sectile 전송 어댑터입니다.",
+      adapter: "createUIFileUploadAdapter로 만든 어댑터나 직접 구현한 UIFileUploadAdapter를 전달합니다.",
       size: "다른 입력과 같은 sm, md, lg 크기를 지정합니다. 기본값은 md입니다.",
       "auto-start": "파일을 연결하면 어댑터를 바로 실행합니다.",
       "#picker": "파일 선택·교체 버튼을 직접 구성합니다. 현재 파일을 file로 받고, 선택하기 전에는 null을 받습니다.",

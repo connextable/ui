@@ -365,6 +365,7 @@ export const catalog: readonly CatalogEntry[] = [
     category: "입력·폼",
     description: "선택한 파일을 업로드하고 진행 상태를 표시합니다.",
     parts: [
+      "createUIFileUploadAdapter",
       "useUIFileUpload",
       "useUIFileUploadGroup",
     ],
@@ -681,6 +682,7 @@ export const catalog: readonly CatalogEntry[] = [
     description: "행과 열 데이터로 표를 그리고 페이지를 탐색합니다.",
     wide: true,
     parts: [
+      "createUITabularSource",
       "useUIDataTable",
       "createUIDataTableComponents",
       "useUIDataTableContext",
@@ -717,6 +719,7 @@ export const catalog: readonly CatalogEntry[] = [
     description: "Sectile의 팩토리로 상호작용 가능한 데이터 그리드를 구성합니다.",
     wide: true,
     parts: [
+      "createUITabularSource",
       "useUIDataGrid",
       "createUIDataGridComponents",
       "useUIDataGridContext",
@@ -744,6 +747,7 @@ export const catalog: readonly CatalogEntry[] = [
     description: "Sectile의 팩토리로 계층형 데이터 그리드를 구성합니다.",
     wide: true,
     parts: [
+      "createUITabularSource",
       "useUIDataTreeGrid",
       "createUIDataTreeGridComponents",
       "useUIDataTreeGridContext",
