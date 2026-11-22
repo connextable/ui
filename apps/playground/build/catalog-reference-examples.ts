@@ -17,6 +17,7 @@ function exampleUses(source: string, title: string, parts: readonly string[]) {
   const { descriptor } = parse(source);
   const script = [descriptor.script?.content, descriptor.scriptSetup?.content].filter(Boolean).join("\n");
   const used = new Set<string>();
+  const rootProps = new Set<string>();
   const aliases = new Set([title, ...parts]);
   const pending = (descriptor.template?.ast?.children ?? []).map(node => ({ node, parent: "" }));
 
@@ -35,10 +36,14 @@ function exampleUses(source: string, title: string, parts: readonly string[]) {
     for (const prop of node.props) {
       if (prop.type === 6) {
         used.add(prop.name);
+        if (node.tag === title) rootProps.add(prop.name);
         continue;
       }
       const arg = prop.arg?.type === 4 ? prop.arg.content : undefined;
-      if (prop.name === "bind" && arg) used.add(arg);
+      if (prop.name === "bind" && arg) {
+        used.add(arg);
+        if (node.tag === title) rootProps.add(arg);
+      }
       if (prop.name === "model") used.add(arg ? `v-model:${arg}` : "v-model");
       if (prop.name === "slot") used.add(`#${arg ?? "default"}`);
       if (prop.name === "on" && arg) used.add(`@${arg}`);
@@ -50,7 +55,7 @@ function exampleUses(source: string, title: string, parts: readonly string[]) {
   for (const part of parts) {
     if (/^(?:use|create|track)[A-Z]/.test(part) && script.includes(`${part}(`)) used.add(part);
   }
-  return { used, scriptProps };
+  return { used, scriptProps, rootProps };
 }
 
 export function catalogReferenceExamples() {
@@ -67,7 +72,7 @@ export function catalogReferenceExamples() {
           { id: "basic-example", title: guide.title, file: `${entry.slug}.vue`, parts: undefined },
           ...(guide.examples ?? []).map(example => ({ ...example, file: `examples/${example.id}.vue` })),
         ];
-        const notes = Object.keys({ ...stateApiNotes(entry.category, entry.slug), ...guide.api });
+        const notes = Object.keys({ ...stateApiNotes(entry.slug), ...guide.api });
         const results = await Promise.all(sections.map(async example => {
           const file = fileURLToPath(new URL(example.file, base));
           this.addWatchFile(file);
@@ -78,12 +83,13 @@ export function catalogReferenceExamples() {
         const links: Record<string, ReferenceExample> = {};
         for (const name of new Set([...(entry.parts ?? []), ...notes])) {
           const tokens = name.split(/\s+\/\s+|,\s*/);
-          const matchesTemplate = (used: Set<string>) => tokens.some(token => used.has(token));
+          const matchesTemplate = ({ used, rootProps }: ReturnType<typeof exampleUses>) => tokens.some(token =>
+            (token === "readonly" || token === "disabled" ? rootProps : used).has(token));
           const matchesScript = (found: Set<string>) => tokens.some(token =>
             /^(?:source|defaultExpansion|defaultAccessState|rowSelection|isCellDisabled)$/.test(token) && found.has(token));
           const match = results.find(({ example }) => example.parts?.includes(name))
-            ?? results.find(({ example, used }) => example.id !== "basic-example" && matchesTemplate(used))
-            ?? results.find(({ used, scriptProps }) => matchesTemplate(used) || matchesScript(scriptProps));
+            ?? results.find(result => result.example.id !== "basic-example" && matchesTemplate(result))
+            ?? results.find(result => matchesTemplate(result) || matchesScript(result.scriptProps));
           if (match) links[name] = { id: match.example.id, title: match.example.title };
         }
         output[entry.slug] = links;

@@ -30,6 +30,10 @@ const treeReorderBoardExamples = [
   { id: "reorder-restricted", title: "항목 유형에 따른 이동 제한", description: "스타일 가이드는 ‘문서’로, 표지 그림과 미리보기는 ‘이미지’로 옮길 수 있습니다. 다른 유형의 섹션으로 옮기면 금지 표시가 나오고 원래 위치에 남습니다." },
 ] satisfies readonly CatalogExample[];
 
+const uploadExample = { id: "basic-example", title: "파일 선택과 교체" };
+const queueExample = { id: "file-upload-group", title: "여러 파일의 전송 대기열" };
+const queueApi = { owner: "UIFileUploadQueue", example: queueExample };
+
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   lightbox: {
     title: "사진과 영상이 있는 관찰 기록 열기",
@@ -663,17 +667,27 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "파일 선택과 교체",
     description: "createUIFileUploadAdapter에 URL을 넘기면 파일을 multipart로 전송합니다. 파일을 처리하는 함수도 넘길 수 있습니다. 아래 예제는 선택한 파일을 브라우저에서 읽습니다.",
     api: {
-      file: { type: "File | null", description: "부모에서 고른 파일을 연결합니다. 생략하면 컴포넌트의 기본 선택 버튼으로 파일을 고릅니다." },
-      adapter: { type: "UIFileUploadAdapter<File, Receipt>", description: "createUIFileUploadAdapter로 만든 HTTP·SDK 어댑터나 직접 구현한 어댑터를 전달합니다. 취소 시 signal이 중단됩니다." },
+      file: { type: "File | null", description: "부모에서 고른 파일을 연결합니다. 생략하면 컴포넌트의 기본 선택 버튼으로 파일을 고릅니다.", example: uploadExample },
+      adapter: { type: "UIFileUploadAdapter<File, Receipt>", description: "HTTP·SDK 어댑터나 직접 구현한 어댑터를 전달합니다. 취소하면 어댑터의 AbortSignal이 중단됩니다.", example: uploadExample },
       size: { type: "'sm' | 'md' | 'lg'", default: "md", description: "파일 행과 안쪽 버튼의 크기를 함께 변경합니다." },
       "auto-start": { type: "boolean", default: "false", description: "편집 가능한 상태에서 파일을 연결하면 어댑터를 바로 실행합니다." },
-      "Queue items": { type: "readonly { id: string; file: File }[]", description: "대기열에 표시할 파일을 전달합니다. 각 ID는 목록에서 고유해야 하고 같은 파일의 상태를 유지하려면 ID를 유지합니다.", example: { id: "file-upload-group", title: "여러 파일의 전송 대기열" } },
-      "Queue concurrency": { type: "number", default: "3", description: "동시에 실행할 수 있는 전송 수입니다. 1이면 한 파일씩 처리합니다.", example: { id: "file-upload-group", title: "여러 파일의 전송 대기열" } },
       readonly: "연결된 파일과 상태를 읽을 수 있습니다. 업로드, 취소, 교체 조작을 잠급니다.",
       disabled: "업로드, 취소, 교체 조작을 비활성화합니다.",
       "#picker": "파일 선택·교체 버튼을 직접 구성합니다. file, disabled, readonly를 받습니다. 선택하기 전의 file은 null입니다.",
       "#status": { description: "현재 상태로 행 안의 문구를 구성합니다. status는 queued, uploading, succeeded, failed, canceled 중 하나이며 전송 상태가 준비되기 전에는 undefined입니다.", example: { id: "file-upload-retry", title: "실패 후 다시 전송" } },
-      "Queue start() / cancel() / reset()": { description: "대기열 ref로 전송을 제어합니다. start와 cancel에 ID 배열을 생략하면 목록 전체에 적용합니다. getItem(id)로 진행 상태와 완료 결과를 읽습니다.", group: "메서드" },
+      "Queue items": { ...queueApi, label: "items", type: "readonly { id: string; file: File }[]", description: "대기열에 표시할 파일을 전달합니다. ID는 목록에서 고유해야 합니다. 같은 파일의 진행 상태를 이어 가려면 ID를 유지합니다." },
+      "Queue adapter": { ...queueApi, label: "adapter", type: "UIFileUploadAdapter<File, Receipt>", description: "대기열의 파일을 각각 전송할 때 사용할 어댑터입니다." },
+      "Queue concurrency": { ...queueApi, label: "concurrency", type: "number", default: "3", description: "동시에 실행할 수 있는 전송 수입니다. 1이면 한 파일씩 처리합니다." },
+      "Queue label": { owner: queueApi.owner, label: "label", type: "string", default: "파일 전송 대기열", description: "보조 기술에 대기열의 이름을 알립니다." },
+      "Queue readonly": { owner: queueApi.owner, label: "readonly", group: "입력 상태", type: "boolean", description: "파일 목록과 진행 상태를 표시합니다. 전송을 시작하거나 취소하는 조작을 잠급니다." },
+      "Queue disabled": { owner: queueApi.owner, label: "disabled", group: "입력 상태", type: "boolean", description: "대기열의 전송 버튼을 비활성화합니다." },
+      "Queue start(ids?)": { owner: queueApi.owner, label: "start(ids?)", description: "대기열 ref에서 지정한 파일을 전송합니다. ID 배열을 생략하면 대기열 전체에 적용합니다." },
+      "Queue cancel(ids?)": { owner: queueApi.owner, label: "cancel(ids?)", description: "지정한 파일의 전송을 취소합니다. ID 배열을 생략하면 대기열 전체에 적용합니다." },
+      "Queue reset()": { owner: queueApi.owner, label: "reset()", description: "진행 중이거나 대기 중인 전송이 없을 때 대기열 상태를 초기화합니다." },
+      "Queue getItem(id)": { owner: queueApi.owner, label: "getItem(id)", description: "파일 하나의 진행률과 완료 결과를 읽습니다." },
+      useUIFileUpload: { owner: "업로드 도구", description: "단일 파일과 업로드 어댑터를 연결해 진행 상태와 동작을 제공합니다." },
+      useUIFileUploadGroup: { owner: "업로드 도구", description: "여러 파일의 업로드 상태와 동시 실행을 그룹 단위로 제어합니다." },
+      createUIFileUploadAdapter: { owner: "업로드 도구", description: "HTTP 주소나 파일을 처리하는 함수로 업로드 어댑터를 만듭니다.", example: uploadExample },
     },
   },
   "checkbox-tree": {
@@ -813,12 +827,14 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "pin-input-correct", section: "editing", title: "코드의 한 자리만 수정", description: "세 번째 칸의 숫자를 선택하고 새 숫자를 입력하면 나머지 칸은 그대로 유지됩니다." },
     ],
     title: "여섯 자리 인증 코드 입력",
-    description: "length로 자리 수를 지정합니다. 숫자를 입력하면 다음 칸으로 이동합니다.",
+    description: "숫자를 입력한 뒤 readonly와 disabled를 켜보세요. 읽기 전용에서는 칸에 포커스를 둘 수 있고, 비활성에서는 Tab으로 칸을 건너뜁니다.",
     api: {
       length: "입력할 코드 자리 수를 지정합니다.",
       "v-model": "입력한 코드를 문자열로 연결합니다.",
       mask: "입력한 문자를 가립니다.",
       clearable: "모든 칸을 비우는 버튼을 표시합니다.",
+      readonly: { description: "입력한 코드를 표시하고 칸의 포커스를 유지합니다. 타이핑, 붙여넣기, 지우기로 값이 바뀌지 않습니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
+      disabled: { description: "모든 칸의 입력과 키보드 포커스를 비활성화합니다. 연결된 값은 유지합니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
       "@complete": "모든 칸이 채워지면 입력한 코드를 전달합니다.",
       "Input index": "이 입력 칸이 맡는 0부터 시작하는 인덱스입니다.",
     },
@@ -1211,6 +1227,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       rows: "행별로 셀 식별자를 묶은 배열입니다.",
       "Cell value": "화면의 셀을 rows에 등록한 식별자와 연결합니다.",
       "edit-start / edit-commit / edit-cancel": "편집 시작, 저장, 취소 시 해당 셀의 식별자를 전달합니다.",
+      "Editor readonly": { owner: "UIGridEditor", label: "readonly", group: "입력 상태", type: "boolean", description: "현재 셀의 입력값을 읽거나 복사할 수 있습니다. 사용자가 텍스트를 수정할 수 없습니다." },
+      "Editor disabled": { owner: "UIGridEditor", label: "disabled", group: "입력 상태", type: "boolean", description: "셀 편집기의 입력과 포커스를 비활성화합니다." },
     },
   },
   "data-table": {

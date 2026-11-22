@@ -271,7 +271,7 @@ onMounted(() => { mounted.value = true; });
                 <NuxtPage />
               </UITemporalProvider>
             </UIHostProvider>
-            <PlaygroundReference v-if="standalone" v-bind="standalone" />
+            <PlaygroundReference v-if="standalone && typeof title === 'string'" :component="title" v-bind="standalone" />
           </PlaygroundComponentExamples>
         </article>
       </div>

@@ -25,7 +25,7 @@ const guide = catalogGuides[entry.slug];
 const path = `../../components/catalog/${entry.slug}.vue`;
 const [Preview, source] = await Promise.all([previews[path]!(), sources[path]!()]);
 const links = referenceExamples[entry.slug] ?? {};
-const stateNotes = stateApiNotes(entry.category, entry.slug);
+const stateNotes = stateApiNotes(entry.slug);
 const notes = { ...guide?.api };
 for (const [name, note] of Object.entries(stateNotes)) notes[name] ??= note;
 const api: ReferenceRow[] = Object.entries(notes).map(([name, note]) => {
@@ -81,7 +81,7 @@ for (const name of entry.parts ?? []) {
       :wide="entry.wide"
       :defer-previews="entry.deferPreviews"
     />
-    <PlaygroundReference :parts="parts" :api="api" />
+  <PlaygroundReference :component="entry.title" :parts="parts" :api="api" />
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 import { describeCatalogPart } from "./catalog-parts";
-import type { ApiNote, ApiNotes, ReferenceExample, ReferenceRow } from "./catalog-reference";
+import { stateApiNotes, type ApiNote, type ApiNotes, type ReferenceExample, type ReferenceRow } from "./catalog-reference";
 import { dashboardParts } from "./dashboard-parts";
 import { disclosureParts } from "./disclosure-parts";
 import { selectParts } from "./select-parts";
@@ -44,6 +44,8 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     "#leading / #trailing": note("라벨 앞이나 뒤에 아이콘을 배치합니다.", example("button-leading-icon", "아이콘 위치")),
     "#loading": note("로딩 중 가운데 표시할 진행 표시를 직접 지정합니다.", example("UIIconButton", "아이콘 버튼 로딩")),
     "@click": note("실행 가능한 버튼을 누르면 MouseEvent를 받습니다.", example("button-example", "버튼 기본 사용법")),
+    "ToggleButton readonly": { owner: "UIToggleButton", label: "readonly", group: "입력 상태", type: "boolean", description: "눌림 상태를 표시하고 사용자가 전환하는 동작을 막습니다.", example: example("UIToggleButton", "토글 버튼") },
+    "ToggleButton disabled": { owner: "UIToggleButton", label: "disabled", group: "입력 상태", type: "boolean", description: "토글과 키보드 포커스를 비활성화합니다.", example: example("UIToggleButton", "토글 버튼") },
   },
   checkbox: {
     "v-model": note("선택은 true, 해제는 false, 일부 선택은 indeterminate로 표현합니다.", example("checkbox-select-all", "전체 선택"), "boolean | 'indeterminate'"),
@@ -70,6 +72,8 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     schema: note("필드 값을 검증하고 지원하는 스키마 변환을 제출 데이터에 적용합니다.", example("form-schema", "스키마 검사와 제출")),
     "Field name": note("제출 객체에서 사용할 필드 키입니다. 같은 필드 안에 라벨과 입력을 배치합니다.", form, "string"),
     "Field required": note("값을 필수로 지정하며 라벨과 유효성 상태에 반영합니다.", example("required-field", "필수 입력"), "boolean"),
+    "Field readonly": { group: "입력 상태", type: "boolean", description: "UIFormField 또는 UIFormFieldGroup에서 지정하면 하위 입력이 읽기 전용 상태를 상속합니다." },
+    "Field disabled": { group: "입력 상태", type: "boolean", description: "UIFormField 또는 UIFormFieldGroup에서 지정하면 하위 입력을 비활성화합니다." },
     "Field Group v-model": note("서로 관련된 입력의 값을 하나의 객체로 관리합니다. 기본 슬롯의 field(key)로 이름과 모델 바인딩을 함께 연결할 수 있습니다.", example("UIFormFieldGroup", "객체 값으로 필드 그룹 연결")),
     "#default": note("필드, 오류 요약, 제출·초기화 버튼을 한 폼으로 조합합니다.", example("UIFormActions", "폼 동작")),
     "#output": note("제출 결과를 폼 하단에 표시합니다.", example("UIFormActions", "폼 동작")),
@@ -94,6 +98,7 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     "v-model": note("선택된 항목의 value를 읽고 변경합니다.", radio, "string"),
     orientation: note("항목의 배치 방향과 그룹 내부의 방향키 탐색을 지정합니다.", example("radio-horizontal", "가로 배치")),
     readonly: note("선택값을 유지하며 읽고 탐색할 수 있습니다.", example("radio-readonly", "읽기 전용"), "boolean", "false"),
+    disabled: note("그룹의 모든 선택지를 비활성화합니다.", example("radio-example", "한 항목 선택"), "boolean", "false"),
     name: note("폼으로 보낼 선택값의 필드 이름입니다.", example("radio-form", "폼에 연결"), "string"),
   },
   select: {
@@ -157,7 +162,14 @@ export function standaloneReference(slug: string, names: readonly string[]) {
         : slug === "dashboard" ? dashboard : example(name, name)),
     };
   });
-  const api = Object.entries(notes).map(([name, value]): ReferenceRow => ({ name, ...(typeof value === "string" ? { description: value } : value) }));
+  const stateNotes = stateApiNotes(slug);
+  const apiNotes = { ...notes };
+  for (const [name, value] of Object.entries(stateNotes)) apiNotes[name] ??= value;
+  const api = Object.entries(apiNotes)
+    .map(([name, value]): ReferenceRow => {
+      const stateNote = stateNotes[name];
+      return { name, ...(typeof stateNote === "object" ? stateNote : {}), ...(typeof value === "string" ? { description: value } : value) };
+    });
   const headingAnchors: Record<string, string> | undefined = slug === "button"
     ? { props: "button-props", links: "button-link-props", slots: "button-slots-events" }
     : slug === "form" ? { display: "form-field-parts" } : undefined;

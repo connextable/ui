@@ -5,10 +5,12 @@ export interface ReferenceExample {
 
 export interface ApiNote {
   description: string;
+  label?: string;
   type?: string;
   default?: string;
   example?: ReferenceExample;
   group?: string;
+  owner?: string;
 }
 
 export type ApiNotes = Readonly<Record<string, string | ApiNote>>;
@@ -26,10 +28,10 @@ export interface ReferenceGroup {
 }
 
 const partGroups = ["완성 컴포넌트", "구조와 배치", "팝업과 위치", "값 입력과 선택", "탐색과 동작", "값과 상태 표시"] as const;
-const apiGroups = ["속성과 모델", "데이터 소스와 컨트롤러", "링크", "슬롯", "이벤트와 명령", "메서드", "컴포저블", "팩토리와 유틸리티", "스타일"] as const;
+const apiGroups = ["속성과 모델", "입력 상태", "데이터 소스와 컨트롤러", "링크", "슬롯", "이벤트와 명령", "메서드", "컴포저블", "팩토리와 유틸리티", "스타일"] as const;
 const sectionIDs: Readonly<Record<string, string>> = {
   "완성 컴포넌트": "composed", "구조와 배치": "structure", "팝업과 위치": "popup", "값 입력과 선택": "input",
-  "탐색과 동작": "action", "값과 상태 표시": "display", "속성과 모델": "props", "데이터 소스와 컨트롤러": "source",
+  "탐색과 동작": "action", "값과 상태 표시": "display", "속성과 모델": "props", "입력 상태": "input-state", "데이터 소스와 컨트롤러": "source",
   "링크": "links", "슬롯": "slots", "이벤트와 명령": "events", "메서드": "methods", "컴포저블": "composables",
   "팩토리와 유틸리티": "factories", "스타일": "styles",
 };
@@ -66,12 +68,46 @@ export function apiGroup(name: string, description: string) {
   return "속성과 모델";
 }
 
-export function stateApiNotes(category: string, slug: string): ApiNotes {
-  if (!["입력·폼", "선택", "날짜·시간"].includes(category) || slug === "temporal-provider") return {};
+const inputStatePages = new Set([
+  "input", "editable", "pin-input", "tags-input", "number-field", "spin-button", "quantity-field",
+  "slider", "multi-thumb-slider", "file-input", "file-upload",
+  "checkbox", "checkbox-group", "checkbox-tree", "radio-group", "switch", "toggle-group",
+  "select", "combobox", "listbox", "tree-select", "cascade-select", "cascade-list", "transfer", "color-picker", "rating",
+  "calendar", "range-calendar", "date-field", "date-range-field", "date-picker", "date-range-picker",
+  "time-field", "time-range-field", "time-picker", "date-time-field", "date-time-range-field", "date-time-picker",
+  "date-time-range-picker", "month-picker", "month-range-picker", "year-picker", "year-range-picker",
+]);
+
+export function stateApiNotes(slug: string): ApiNotes {
+  if (!inputStatePages.has(slug)) return {};
   return {
-    readonly: { type: "boolean", description: "사용자 조작으로 값이 변경되지 않습니다. 값 읽기와 키보드 탐색을 지원합니다." },
-    disabled: { type: "boolean", description: "입력과 선택을 비활성화합니다. 네이티브 입력은 Tab 순서에서 빠집니다." },
+    readonly: { group: "입력 상태", type: "boolean", description: "값을 유지하고 사용자 조작으로 변경되는 것을 막습니다. 읽기와 탐색은 계속 지원합니다." },
+    disabled: { group: "입력 상태", type: "boolean", description: "입력과 선택을 비활성화합니다. 네이티브 입력은 Tab 순서에서 빠집니다." },
   };
+}
+
+export function referenceBlocks(entries: readonly ReferenceRow[], kind: "parts" | "api", component: string) {
+  if (kind === "parts" || !entries.some(entry => entry.owner)) {
+    return [{ id: "", owner: undefined, groups: groupReferences(entries, kind) }];
+  }
+
+  const byOwner = new Map<string, ReferenceRow[]>([[component, []]]);
+  for (const entry of entries) {
+    const owner = entry.owner ?? component;
+    const rows = byOwner.get(owner);
+    if (rows) rows.push(entry);
+    else byOwner.set(owner, [entry]);
+  }
+  const usedGroups = new Set<string>();
+  return [...byOwner].filter(([, rows]) => rows.length).map(([owner, rows]) => {
+    const id = owner.replace(/([a-z0-9])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase();
+    const groups = groupReferences(rows, kind).map(group => {
+      const groupId = usedGroups.has(group.id) ? `${id}-${group.id}` : group.id;
+      usedGroups.add(group.id);
+      return { ...group, id: groupId };
+    });
+    return { id, owner, groups };
+  });
 }
 
 export function groupReferences(entries: readonly ReferenceRow[], kind: "parts" | "api"): ReferenceGroup[] {
