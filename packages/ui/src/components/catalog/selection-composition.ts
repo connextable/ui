@@ -2,7 +2,8 @@ import { CheckboxGroupItem, CheckboxGroupRoot } from "@sectile/vue/checkbox-grou
 import { ListboxItem, ListboxItemIndicator, ListboxItemText, ListboxRoot } from "@sectile/vue/listbox";
 import { ToggleGroupItem, ToggleGroupRoot } from "@sectile/vue/toggle-group";
 import { defineComponent, h, type Component, type PropType, type VNode } from "vue";
-import { controlFlag } from "../clear/clearable";
+import { controlFlag, useFieldClear } from "../clear/clearable";
+import UIFieldClear from "../clear/UIFieldClear.vue";
 import { useInputState } from "../control-attrs";
 import { useCompositeValueForm } from "../form/composite-value";
 import { type SelectionOption } from "../selection/selection-options";
@@ -25,6 +26,7 @@ function withOptions<Root extends SelectionRoot>(
     props: { options: Array as PropType<readonly Option[]> },
     setup(props, { attrs, slots }) {
       const group = root === CheckboxGroupRoot || root === ToggleGroupRoot;
+      const clear = useFieldClear();
       const formProps = {
         get name() { return attrs.name as string | undefined; },
         get form() { return attrs.form as string | undefined; },
@@ -44,11 +46,12 @@ function withOptions<Root extends SelectionRoot>(
         const bindings: Record<string, unknown> = { ...attrs, items };
         const labels = new Map(options.map(option => [option.value, option]));
         const rendered = (attrs.renderedItems ?? attrs["rendered-items"]) as readonly string[] | undefined;
-        const content = slots.default || controlFlag(attrs.asChild ?? attrs["as-child"]) ? slots : {
-          default: () => (rendered ?? items).flatMap(value => {
+        const content = controlFlag(attrs.asChild ?? attrs["as-child"]) ? slots : {
+          ...slots,
+          default: (...args: unknown[]) => [slots.default?.(...args) ?? (rendered ?? items).flatMap(value => {
             const option = labels.get(value);
             return option ? [renderItem(option)] : [];
-          }),
+          }), group && clear?.enabled.value ? h(UIFieldClear) : null],
         };
 
         if (props.options && root !== CheckboxGroupRoot) {

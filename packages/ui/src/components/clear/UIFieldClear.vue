@@ -2,21 +2,24 @@
 import { nextTick } from "vue";
 import UIClearButton from "./UIClearButton.vue";
 import { useFieldClear } from "./clearable";
-import { clearFocusTarget } from "./clear-focus";
+import { resolveClearFocus } from "./clear-focus";
 
-defineProps<{ label?: string }>();
+defineProps<{ label?: string; text?: boolean; footer?: boolean }>();
 const context = useFieldClear();
 const visible = context?.visible;
 const label = context?.label;
 async function clear(event: MouseEvent) {
   if (!context) return;
-  const target = clearFocusTarget(event);
+  const restoreFocus = resolveClearFocus(event);
   context.clear();
   await nextTick();
-  target?.focus({ preventScroll: true });
+  restoreFocus();
 }
 </script>
 
 <template>
-  <UIClearButton v-if="visible" :label="$props.label ?? label" @click="clear" />
+  <div v-if="visible && footer" class="ui-clearable-footer">
+    <UIClearButton :label="$props.label ?? label" @click="clear" />
+  </div>
+  <UIClearButton v-else-if="visible" :label="$props.label ?? label" :text="text" @click="clear" />
 </template>

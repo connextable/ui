@@ -9,6 +9,7 @@ import {
   type StandardQuantityUnitSystem,
 } from "@sectile/vue/quantity-field";
 import { computed, defineComponent, h, shallowRef, type Component } from "vue";
+import UIFieldClear from "../clear/UIFieldClear.vue";
 import { useFieldClear } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
 import UISelect from "../select/UISelect.vue";
@@ -113,6 +114,7 @@ function updateUnit(value: string | null) {
           @update:model-value="updateUnit"
         />
         <span v-else class="ui-numeric-unit">{{ policies.registry.get(state.displayUnit)?.symbol ?? state.displayUnit }}</span>
+        <UIFieldClear />
       </div>
     </slot>
   </QuantityFieldRoot>

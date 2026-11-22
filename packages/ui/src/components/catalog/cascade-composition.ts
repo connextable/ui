@@ -8,7 +8,8 @@ import {
   CascadeSelectItemIndicator, CascadeSelectRoot, CascadeSelectValue,
 } from "@sectile/vue/cascade-select";
 import { defineComponent, h, type Component } from "vue";
-import { controlFlag } from "../clear/clearable";
+import { controlFlag, useFieldClear } from "../clear/clearable";
+import UIFieldClear from "../clear/UIFieldClear.vue";
 import { inputStateAttrs, useInputState } from "../control-attrs";
 import UICascadeSelectTrigger from "./UICascadeSelectTrigger.vue";
 
@@ -52,17 +53,19 @@ export const CascadeListComposition = defineComponent({
   __sectileFormLabelMode: "labelledby",
   setup(_, { attrs, slots }) {
     const { required, editable } = useCascadeRequired(attrs);
+    const clear = useFieldClear();
     return () => {
       const { columnLabels, "column-labels": columnLabelsKebab, ...rootAttrs } = attrs;
       const bindings = { ...rootAttrs, required: required.value && editable.value };
-      if (slots.default || controlFlag(attrs.asChild ?? attrs["as-child"])) return h(CascadeListRoot as Component, bindings, slots);
+      if (controlFlag(attrs.asChild ?? attrs["as-child"])) return h(CascadeListRoot as Component, bindings, slots);
       const labels = (columnLabels ?? columnLabelsKebab) as CascadeOptions["columnLabels"];
       const labelFor = (attrs.textValue ?? attrs["text-value"] ?? idText) as typeof idText;
       return h(CascadeListRoot as Component, bindings, {
-        default: (state: CascadeListRootSlotProps) => [
+        ...slots,
+        default: (state: CascadeListRootSlotProps) => [slots.default?.(state) ?? [
           h(CascadeListValue, null, () => state.valuePath.map(labelFor).join(" / ") || String(attrs.label ?? "")),
           ...renderCascadeColumns(state, labelFor, labels, listParts),
-        ],
+        ], clear?.enabled.value ? h(UIFieldClear, { footer: true }) : null],
       });
     };
   },

@@ -7,7 +7,7 @@ import {
   type TagsInputRootSlotProps,
 } from "@sectile/vue/tags-input";
 import { computed, nextTick, ref, type SetupContext } from "vue";
-import { clearFocusTarget } from "../clear/clear-focus";
+import { resolveClearFocus } from "../clear/clear-focus";
 import { TagsInputClearScope, UITagsInputClear } from "../clear/selection-clear-parts";
 import { useClearableValue, type ClearableProps } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
@@ -60,10 +60,10 @@ function updateValue(value: readonly string[]) {
 }
 
 async function clearControlled(event: MouseEvent) {
-  const target = clearFocusTarget(event);
+  const restoreFocus = resolveClearFocus(event);
   updateValue([]);
   await nextTick();
-  target?.focus({ preventScroll: true });
+  restoreFocus();
 }
 
 function paste(event: ClipboardEvent, scope: TagsInputRootSlotProps) {

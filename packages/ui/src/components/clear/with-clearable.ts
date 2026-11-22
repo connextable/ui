@@ -23,7 +23,7 @@ export function withClearableModel<Part extends Component>(
   options: {
     label?: string;
     clearInput?: boolean;
-    placement?: "inset" | "end" | "beside";
+    placement?: "inset" | "end" | "panel";
     expose?: readonly string[];
     defaultParts?: (attrs: Attrs) => VNode[];
   } = {},
@@ -91,7 +91,7 @@ export function withClearableModel<Part extends Component>(
           return h(part, bindings(), appendClear(content));
         }
         const inset = options.placement === "inset";
-        return h(inset ? "span" : "div", { class: inset ? "ui-clearable-control ui-clearable-control--temporal" : "ui-clearable-group" }, [
+        return h(inset ? "span" : "div", { class: inset ? "ui-clearable-control ui-clearable-control--temporal" : "ui-clearable-panel" }, [
           h(part, bindings(), content),
           h(UIFieldClear),
         ]);

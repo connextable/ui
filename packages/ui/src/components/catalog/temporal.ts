@@ -2,7 +2,7 @@ import { computed, defineComponent, h, inject, mergeProps, nextTick, provide, sh
 import { Clock } from "@lucide/vue";
 import { TemporalProvider, useTemporalFormatter, type TemporalFormatterOptions } from "@sectile/vue/temporal/temporal-provider";
 import { DateField } from "@sectile/vue/temporal/date-field";
-import { CalendarInput, CalendarRoot } from "@sectile/vue/temporal/calendar";
+import { CalendarContent, CalendarInput, CalendarRoot } from "@sectile/vue/temporal/calendar";
 import { DateRangeFieldRoot, DateRangeFieldStartInput, DateRangeFieldEndInput } from "@sectile/vue/temporal/date-range-field";
 import { DatePickerRoot, DatePickerAnchor, DatePickerInput } from "@sectile/vue/temporal/date-picker";
 import { DateTimeField } from "@sectile/vue/temporal/date-time-field";
@@ -21,7 +21,7 @@ import { TimeRangeFieldRoot, TimeRangeFieldStartInput, TimeRangeFieldEndInput } 
 import { DateRangePickerRoot, DateRangePickerAnchor, DateRangePickerStartInput, DateRangePickerEndInput, DateRangePickerGrid, DateRangePickerCell, DateRangePickerMonthCell } from "@sectile/vue/temporal/date-range-picker";
 import { MonthPickerRoot, MonthPickerAnchor, MonthPickerInput } from "@sectile/vue/temporal/month-picker";
 import { MonthRangePickerRoot, MonthRangePickerAnchor, MonthRangePickerStartInput, MonthRangePickerEndInput, MonthRangePickerGrid, MonthRangePickerCell } from "@sectile/vue/temporal/month-range-picker";
-import { RangeCalendarRoot, RangeCalendarGrid, RangeCalendarCell, RangeCalendarMonthCell, RangeCalendarStartInput, RangeCalendarEndInput } from "@sectile/vue/temporal/range-calendar";
+import { RangeCalendarContent, RangeCalendarRoot, RangeCalendarGrid, RangeCalendarCell, RangeCalendarMonthCell, RangeCalendarStartInput, RangeCalendarEndInput } from "@sectile/vue/temporal/range-calendar";
 import {
   TimePickerRoot, TimePickerColumn, TimePickerContent, TimePickerInput,
   TimePickerItem, TimePickerTrigger,
@@ -273,7 +273,8 @@ const TimePickerComposition = defineComponent({
 
     function renderPicker(bindings: Record<string, unknown>) {
       const asChild = controlFlag(attrs.asChild ?? attrs["as-child"]);
-      return h(TimePickerRoot, { ...bindings, ref: picker }, asChild ? slots : {
+      const framed = props.inline && !asChild && clear?.enabled.value;
+      return h(TimePickerRoot, mergeProps(bindings, { ref: picker, class: framed ? "ui-clearable-inline" : undefined }), asChild ? slots : {
         default: (state: TimePickerRootSlotProps) => [
           slots.default?.(state) ?? (props.inline ? state.parts.map(part => h(UITimePickerColumn, { part, key: part }, {
             default: renderTimeItems,
@@ -299,9 +300,10 @@ export const UITimePicker: ClearableComponent<TimePickerWithInline> = withCleara
   expose: ["element", "focus", "select", "requestClose", "selectChoice"],
 });
 
+export const UICalendarContent: typeof CalendarContent = withClearableControl(CalendarContent, "anchor");
 export const UICalendar: ClearableComponent<CalendarFormComponent<typeof CalendarRoot, CalendarTimeModels>> = withClearableModel(withCalendarDefaults<typeof CalendarRoot, CalendarTimeModels>(CalendarRoot, {
-  inputs: [CalendarInput], timePicker: UITimePicker, inlineTime: "single",
-}), null, { placement: "beside" });
+  content: UICalendarContent, inputs: [CalendarInput], timePicker: UITimePicker, inlineTime: "single",
+}), null, { label: "날짜 지우기" });
 
 export const UIDateTimeRangePicker: ClearableComponent<CalendarFormComponent<typeof DateTimeRangePicker>> = withClearableModel(withCalendarDefaults(DateTimeRangePicker, {
   kind: "date-time-range", anchor: UIDateTimeRangePickerAnchor,
@@ -379,7 +381,6 @@ export const UITemporalProvider = defineComponent({
 });
 
 export {
-  CalendarContent as UICalendarContent,
   CalendarGrid as UICalendarGrid,
   CalendarCell as UICalendarCell,
   CalendarMonthCell as UICalendarMonthCell,
@@ -395,7 +396,6 @@ export {
   CalendarYearViewTrigger as UICalendarYearViewTrigger,
 } from "@sectile/vue/temporal/calendar";
 export {
-  RangeCalendarContent as UIRangeCalendarContent,
   RangeCalendarStartInput as UIRangeCalendarStartInput,
   RangeCalendarEndInput as UIRangeCalendarEndInput,
   RangeCalendarPreviousWeek as UIRangeCalendarPreviousWeek,
@@ -419,11 +419,12 @@ const InlineRangeCalendar = defineComponent({
     return () => h(RangeCalendarRoot, { position: false, ...attrs }, slots);
   },
 }) as typeof RangeCalendarRoot;
+export const UIRangeCalendarContent: typeof RangeCalendarContent = withClearableControl(RangeCalendarContent, "anchor");
 export const UIRangeCalendar: ClearableComponent<CalendarFormComponent<typeof RangeCalendarRoot, RangeCalendarTimeModels>> = withClearableModel(withCalendarDefaults<typeof RangeCalendarRoot, RangeCalendarTimeModels>(InlineRangeCalendar, {
-  inputs: [RangeCalendarStartInput, RangeCalendarEndInput],
+  content: UIRangeCalendarContent, inputs: [RangeCalendarStartInput, RangeCalendarEndInput],
   grid: UIRangeCalendarGrid, cell: UIRangeCalendarCell, monthCell: UIRangeCalendarMonthCell,
   timePicker: UITimePicker, inlineTime: "range",
-}), null, { placement: "beside", label: "범위 지우기" });
+}), null, { label: "범위 지우기" });
 export {
   DatePickerTrigger as UIDatePickerTrigger,
   DatePickerPortal as UIDatePickerPortal,

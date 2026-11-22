@@ -11,11 +11,15 @@
 
 :where(
   .ui-inset-frame,
+  .ui-clearable-inline,
   .ui-file-row__actions,
   .ui-number-control,
+  .ui-quantity-control,
   .ui-tree-select-field,
+  [data-scope="editable"][data-part="area"],
   [data-part="anchor"],
   [data-scope="time-picker"][data-part="root"],
+  [data-scope="toggle-group"][data-part="root"],
   [data-scope$="-range-field"][data-part="root"]
 ) > .ui-clear-button {
   --ui-clear-size: var(--ui-inset-size, 2rem);
@@ -26,26 +30,44 @@
   display: none;
 }
 
-.ui-clearable-control {
+:where(.ui-clearable-control, [data-scope="editable"][data-part="area"]:has(> .ui-clear-button)) {
   --ui-clear-size: var(--ui-inset-size);
   --ui-clear-radius: var(--ui-inset-radius);
   --ui-clear-offset: var(--ui-inset-distance);
 
   position: relative;
-  display: grid;
-  min-inline-size: 0;
-  max-inline-size: 100%;
-  padding: 0;
 
-  > .ui-clear-button {
+  > .ui-clear-button.ui-button {
     position: absolute;
     inset-block-start: 50%;
     inset-inline-end: var(--ui-clear-offset);
     translate: 0 -50%;
   }
+}
+
+.ui-clearable-control {
+  display: grid;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding: 0;
 
   &:has(> .ui-clear-button) > :is(input, [role="combobox"], .ui-popup-trigger, .ui-input--with-slots) {
     padding-inline-end: calc(var(--ui-clear-offset) + var(--ui-clear-size) + var(--ui-space-xs));
+  }
+}
+
+.ui-clearable-control:has(> .ui-clear-button) > input[data-scope="quantity-field"] {
+  inline-size: 100%;
+}
+
+[data-scope="editable"][data-part="area"]:has(> .ui-clear-button) {
+  > :is([data-part="input"], [data-part="preview"]) {
+    padding-inline-end: calc(var(--ui-clear-offset) + var(--ui-clear-size) + var(--ui-space-xs));
+  }
+
+  > [data-part="preview"] {
+    border-color: var(--ui-color-border);
+    background-color: var(--ui-color-surface);
   }
 }
 
@@ -65,21 +87,86 @@
   }
 }
 
-.ui-clearable-group {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--ui-space-xs);
-  min-inline-size: 0;
+.ui-clearable-panel {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr);
   max-inline-size: 100%;
+  border: var(--ui-frame-border-width) solid var(--ui-color-border);
+  border-radius: var(--ui-radius-md);
+  background: var(--ui-color-surface);
 
-  > :first-child { min-inline-size: 0; }
+  > :is([data-scope="listbox"], [data-scope="checkbox-tree"])[data-part="root"] {
+    border: 0;
+    background: transparent;
+  }
+
+  > .ui-clear-button {
+    justify-self: end;
+    margin: 0 var(--ui-space-xs) var(--ui-space-xs);
+  }
 }
 
-.ui-number-control:has(> .ui-clear-button) {
+:is(.ui-number-control, .ui-quantity-control):has(> .ui-clear-button) {
   align-items: center;
   padding-inline-end: var(--ui-frame-padding);
 
   > .ui-numeric-unit { padding-inline-end: var(--ui-space-sm); }
+}
+
+.ui-quantity-control > .ui-clearable-control {
+  flex: 1 1 auto;
+}
+
+.ui-clearable-inline:is([data-scope="pin-input"], [data-scope="rating"], [data-scope="time-picker"])[data-part="root"] {
+  --ui-frame-radius: var(--ui-radius-md);
+
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  padding: var(--ui-frame-padding);
+  border: var(--ui-frame-border-width) solid var(--ui-color-border);
+  border-radius: var(--ui-frame-radius);
+  background: var(--ui-color-surface);
+
+  > .ui-clear-button { align-self: center; }
+}
+
+.ui-clearable-inline:is([data-scope="pin-input"], [data-scope="time-picker"])[data-part="root"] {
+  inline-size: fit-content;
+}
+
+.ui-clearable-inline[data-scope="pin-input"][data-part="root"] {
+  flex-wrap: nowrap;
+  gap: var(--ui-space-xs);
+
+  > input[data-part="input"] {
+    flex: 0 1 var(--ui-control-height);
+    min-inline-size: 0;
+    min-block-size: var(--ui-control-height-small);
+    aspect-ratio: 1;
+  }
+}
+
+:where([data-scope="checkbox-group"][data-part="root"],
+  :is([data-scope="calendar"], [data-scope="range-calendar"])[data-part="content"]
+) > .ui-clear-button {
+  grid-column: 1 / -1;
+  justify-self: end;
+}
+
+[data-scope="toggle-group"][data-part="root"] > .ui-clear-button {
+  align-self: center;
+}
+
+[data-scope="toggle-group"][data-part="root"][data-orientation="vertical"] > .ui-clear-button {
+  align-self: end;
+}
+
+.ui-clearable-footer {
+  display: flex;
+  flex: 0 0 100%;
+  justify-content: end;
+  box-sizing: border-box;
+  padding: 0 var(--ui-space-xs) var(--ui-space-xs);
 }
 
 .ui-clearable-control--temporal {
@@ -87,7 +174,6 @@
 
   > input.ui-temporal-input { inline-size: 100%; }
 }
-
 .ui-tree-select-field:has(> .ui-clear-button) {
   --ui-clear-offset: calc(var(--ui-control-padding-inline) + 1rem + var(--ui-space-xs));
 
@@ -105,14 +191,10 @@
 
 :where(
   [data-part="anchor"]:is([data-scope^="date"], [data-scope^="month-"], [data-scope^="year-"]),
-  [data-scope="time-picker"][data-part="root"]
+  [data-scope="time-picker"][data-part="root"]:not(.ui-clearable-inline)
 ):has(> .ui-clear-button) {
   > .ui-clear-button {
     grid-row: 1;
     grid-column: var(--ui-picker-clear-column, 3);
   }
-}
-
-:where([data-scope="pin-input"], [data-scope="rating"])[data-part="root"] > .ui-clear-button {
-  align-self: center;
 }

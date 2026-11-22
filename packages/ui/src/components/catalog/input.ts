@@ -1,5 +1,6 @@
 import { ComboboxEditor } from "@sectile/vue/combobox";
 import { EditableArea, EditableInput, EditablePreview, EditableRoot, type EditableRootSlotProps } from "@sectile/vue/editable";
+import { QuantityFieldInput } from "@sectile/vue/quantity-field";
 import { defineComponent, h } from "vue";
 import { controlFlag } from "../clear/clearable";
 import { withClearableControl, withClearableModel, type ClearableComponent } from "../clear/with-clearable";
@@ -10,8 +11,8 @@ import QuantityFieldComposition from "./QuantityFieldComposition.vue";
 import { CheckboxGroupComposition, ListboxComposition, ToggleGroupComposition } from "./selection-composition";
 import { CheckboxTreeComposition } from "./tree-choice-composition";
 
-const group = { placement: "beside" } as const;
-export const UICascadeList: ClearableComponent<typeof CascadeListComposition> = withClearableModel(CascadeListComposition, null, group);
+const panel = { placement: "panel" } as const;
+export const UICascadeList: ClearableComponent<typeof CascadeListComposition> = withClearableModel(CascadeListComposition, null);
 export const UICombobox: ClearableComponent<typeof ComboboxComposition> = withClearableModel(ComboboxComposition, null, { clearInput: true });
 export { UIComboboxInput } from "./combobox-composition";
 export const UIComboboxEditor: typeof ComboboxEditor = withClearableControl(ComboboxEditor, "input");
@@ -27,7 +28,7 @@ const EditableComposition = defineComponent({
     return () => {
       if (slots.default || controlFlag(attrs.asChild ?? attrs["as-child"])) return h(EditableRoot, { ...attrs, ...definedControlAttrs(props) }, slots);
       return h(EditableRoot, { ...attrs, ...definedControlAttrs({ name: props.name, required: props.required }) }, {
-        default: (state: EditableRootSlotProps) => h(EditableArea, null, () => [
+        default: (state: EditableRootSlotProps) => h(UIEditableArea, null, () => [
           h(EditablePreview, {
             as: "button", type: "button", disabled: state.disabled,
             "data-placeholder": !state.value && !!props.placeholder || undefined,
@@ -48,17 +49,19 @@ const EditableComposition = defineComponent({
   },
 }) as unknown as EditableWithPlaceholder;
 
-export const UIEditable: ClearableComponent<typeof EditableComposition> = withClearableModel(EditableComposition, "", { ...group, label: "값 지우기" });
+export const UIEditableArea: typeof EditableArea = withClearableControl(EditableArea, "anchor");
+export const UIEditable: ClearableComponent<typeof EditableComposition> = withClearableModel(EditableComposition, "", { label: "값 지우기" });
 export const UIListbox: ClearableComponent<typeof ListboxComposition> = withClearableModel(ListboxComposition,
-  attrs => (attrs.selectionMode ?? attrs["selection-mode"]) === "multiple" ? [] : "", group);
-export const UICheckboxGroup: ClearableComponent<typeof CheckboxGroupComposition> = withClearableModel(CheckboxGroupComposition, [], group);
+  attrs => (attrs.selectionMode ?? attrs["selection-mode"]) === "multiple" ? [] : "", panel);
+export const UICheckboxGroup: ClearableComponent<typeof CheckboxGroupComposition> = withClearableModel(CheckboxGroupComposition, []);
 export const UICheckboxTree: ClearableComponent<typeof CheckboxTreeComposition> = withClearableModel(CheckboxTreeComposition, [], {
-  ...group, expose: ["element", "focus"],
+  ...panel, expose: ["element", "focus"],
 });
-export const UIToggleGroup: ClearableComponent<typeof ToggleGroupComposition> = withClearableModel(ToggleGroupComposition, [], group);
+export const UIToggleGroup: ClearableComponent<typeof ToggleGroupComposition> = withClearableModel(ToggleGroupComposition, []);
 export const UIQuantityField: ClearableComponent<typeof QuantityFieldComposition> = withClearableModel(QuantityFieldComposition, null, {
-  ...group, label: "수량 지우기",
+  label: "수량 지우기",
 });
+export const UIQuantityFieldInput: typeof QuantityFieldInput = withClearableControl(QuantityFieldInput, "input");
 
 export {
   CascadeListValue as UICascadeListValue,
@@ -87,7 +90,6 @@ export {
 } from "@sectile/vue/color-picker";
 export { default as UINumberField } from "../text-input/UINumberField.vue";
 export {
-  EditableArea as UIEditableArea,
   EditablePreview as UIEditablePreview,
   EditableInput as UIEditableInput,
   EditableEditTrigger as UIEditableEditTrigger,
@@ -162,7 +164,6 @@ export {
 } from "@sectile/vue/pin-input";
 export { UIPinInput } from "./pin-input";
 export {
-  QuantityFieldInput as UIQuantityFieldInput,
   QuantityFieldUnitSelect as UIQuantityFieldUnitSelect,
   QuantityFieldValue as UIQuantityFieldValue,
   createStandardQuantityPolicies as createUIStandardQuantityPolicies,

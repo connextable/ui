@@ -1,5 +1,5 @@
 import { PinInputInput, PinInputRoot, type PinInputRootProps, type PinInputRootSlotProps } from "@sectile/vue/pin-input";
-import { defineComponent, h, nextTick, type VNode } from "vue";
+import { defineComponent, h, mergeProps, nextTick, type VNode } from "vue";
 import UIFieldClear from "../clear/UIFieldClear.vue";
 import { controlFlag, useFieldClear } from "../clear/clearable";
 import { withClearableModel, type ClearableComponent } from "../clear/with-clearable";
@@ -90,7 +90,9 @@ const PinInputComposition = defineComponent({
         onComplete: (value: string) => { if (editable.value) emit("complete", value); },
       };
       if (controlFlag(attrs.asChild ?? attrs["as-child"])) return renderForm(metadata => h(PinInputRoot, { ...metadata, ...bindings }, slots));
-      return renderForm(metadata => h(PinInputRoot, { ...metadata, ...bindings }, {
+      return renderForm(metadata => h(PinInputRoot, mergeProps({ ...metadata, ...bindings }, {
+        class: clear?.enabled.value ? "ui-clearable-inline" : undefined,
+      }), {
         default: (state: PinInputRootSlotProps) => {
           currentState = state;
           const cells = slots.default?.(state) ?? defaultCells();

@@ -28,10 +28,11 @@ test("quantity defaults render the input and unit, and allow custom unit present
     label: "길이",
   };
   const standard = await render(UIQuantityField, {
-    unit: "metre", unitSystem: "metric", modelValue: props.defaultValue, label: "길이", name: "length",
+    unit: "metre", unitSystem: "metric", modelValue: props.defaultValue, label: "길이", name: "length", clearable: true,
   });
   assert.match(standard, /<input[^>]+name="length"[^>]+value="1.25"/);
   assert.match(standard, />m<\/span>/);
+  assert.match(standard, /class="ui-quantity-control">(?:(?!<\/div>)[\s\S])*aria-label="수량 지우기"/);
   const convertible = await render(UIQuantityField, { ...props, defaultDisplayUnit: "centimetre", displayUnits: ["centimetre", "metre"] });
   assert.match(convertible, /<input[^>]+value="125"/);
   assert.match(convertible, /aria-label="길이 표시 단위"/);
@@ -43,10 +44,12 @@ test("quantity defaults render the input and unit, and allow custom unit present
 test("simple choice roots render their options and preserve disabled choices", async () => {
   const options = [{ value: "email", label: "이메일" }, { value: "sms", label: "문자", disabled: true }];
   for (const component of [UICheckboxGroup, UIListbox, UIToggleGroup]) {
-    const html = await render(component, { options });
+    const defaultValue = component === UIListbox ? "email" : ["email"];
+    const html = await render(component, { options, defaultValue, clearable: true });
     assert.match(html, /이메일/);
     assert.match(html, /문자/);
     assert.match(html, /aria-disabled="true"| disabled/);
+    assert.match(html, /aria-label="선택 지우기"/);
   }
   const combo = await render(UICombobox, { items: [{ id: "email", label: "이메일" }], defaultOpen: true, placeholder: "알림 검색" });
   assert.match(combo, /placeholder="알림 검색"/);

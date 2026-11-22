@@ -30,6 +30,7 @@ type Kind = "day" | "month" | "year" | "date-time" | "date-time-range";
 interface CalendarComposition {
   kind?: Kind;
   anchor?: Component;
+  content?: Component;
   inputs?: readonly Component[];
   grid?: Component;
   cell?: Component;
@@ -109,7 +110,7 @@ const CalendarTimeControl = defineComponent({
 });
 
 export function withCalendarDefaults<Root extends Component, Extra = object>(root: Root, options: CalendarComposition): CalendarFormComponent<Root, Extra> {
-  const { kind = "day", anchor, inputs = [], grid = DatePickerGrid, cell = DatePickerCell, monthCell, yearCell, timePicker, inlineTime } = options;
+  const { kind = "day", anchor, content = DatePickerContent, inputs = [], grid = DatePickerGrid, cell = DatePickerCell, monthCell, yearCell, timePicker, inlineTime } = options;
   const metadata = root as Root & { __sectileFormLabelMode?: "for" | "labelledby" };
   return defineComponent({
     inheritAttrs: false,
@@ -220,7 +221,7 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
             ? inlineClock(state, `${labels.start} ${labels.time}`, props.startTime, time => emit("update:startTime", time), "start") : undefined;
           const end = inlineTime === "range" && props.endTime !== undefined
             ? inlineClock(state, `${labels.end} ${labels.time}`, props.endTime, time => emit("update:endTime", time), "end") : undefined;
-          return h(DatePickerContent, null, () => [
+          return h(content, null, () => [
             ...renderInputs(), calendar(state, labels), clock,
             start || end ? h("div", { class: "ui-calendar-time-range" }, [start, end]) : undefined,
           ]);

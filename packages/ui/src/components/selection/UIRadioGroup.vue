@@ -59,7 +59,6 @@ provideClearable({
 <template>
   <div class="ui-radio-group">
     <span v-if="label || $slots.label" :id="`${id}-label`" class="ui-radio-group__label"><slot name="label">{{ label }}</slot></span>
-    <UIFieldClear />
     <RadioGroupRoot
       v-bind="definedControlAttrs({
         ...$attrs,
@@ -102,6 +101,7 @@ provideClearable({
         </span>
       </RadioGroupItem>
     </RadioGroupRoot>
+    <UIFieldClear text class="ui-radio-group__clear" />
   </div>
 </template>
 
@@ -112,11 +112,8 @@ provideClearable({
   min-inline-size: 0;
 }
 
-.ui-radio-group:has(> .ui-clear-button) {
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-
-  > .ui-radio-group__options { grid-column: 1 / -1; }
+.ui-radio-group__clear {
+  justify-self: end;
 }
 
 .ui-radio-group__label {

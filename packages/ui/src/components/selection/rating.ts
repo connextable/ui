@@ -29,7 +29,7 @@ export const UIRating = defineComponent({
       const items = attrs.items as readonly string[];
       const bindings = { ...attrs, items, required: required.value && editable.value };
       if (controlFlag(attrs.asChild ?? attrs["as-child"])) return h(RatingRoot, bindings, slots);
-      return h(RatingRoot, bindings, {
+      return h(RatingRoot, { ...bindings, class: [attrs.class, controlFlag(attrs.clearable) && "ui-clearable-inline"] }, {
         default: (state: RatingRootSlotProps) => {
           const children = slots.default?.(state) ?? items.map(value =>
             h(RatingItem, { key: value, value, "aria-label": value }, () => h(Star, { size: 18, "aria-hidden": "true" })));
