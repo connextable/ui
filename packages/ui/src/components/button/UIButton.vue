@@ -15,6 +15,7 @@ export interface UIButtonProps extends LinkPrefetchProps {
   type?: "button" | "reset" | "submit";
   disabled?: boolean;
   loading?: boolean;
+  block?: boolean;
   iconOnly?: boolean;
   variant?: "solid" | "soft" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
@@ -83,6 +84,7 @@ function onClick(event: MouseEvent) {
     class="ui-button"
     :data-disabled="disabled || (linkDisabled && !loading) || undefined"
     :data-loading="loading || undefined"
+    :data-block="(block && !iconOnly) || undefined"
     :data-variant="variant"
     :data-size="size"
     :data-ui-control-size="size"
@@ -131,6 +133,11 @@ function onClick(event: MouseEvent) {
   overflow-wrap: anywhere;
   cursor: pointer;
   transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+.ui-button[data-block] {
+  display: flex;
+  inline-size: 100%;
 }
 
 .ui-button[data-ui-control-shape="square"] {

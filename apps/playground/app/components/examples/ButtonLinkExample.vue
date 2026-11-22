@@ -20,6 +20,7 @@ const destination = ref<string | null>("route");
 const prefetch = ref<string | null>("default");
 const newTab = ref(false);
 const disabled = ref(false);
+const block = ref(false);
 const isRoute = computed(() => destination.value === "route" || destination.value === "routeObject");
 const isDownload = computed(() => destination.value === "download");
 const prefetchOn = computed<"visibility" | "interaction" | undefined>(() => {
@@ -40,6 +41,7 @@ const attributes = computed(() => ({
   prefetchOn: prefetchOn.value,
   noPrefetch: (isRoute.value && prefetch.value === "off") || undefined,
   disabled: disabled.value || undefined,
+  block: block.value || undefined,
   variant: "outline" as const,
 }));
 const code = computed(() => buttonExampleCode(attributes.value, { label: label.value }));
@@ -62,6 +64,7 @@ const code = computed(() => buttonExampleCode(attributes.value, { label: label.v
       </PlaygroundExampleControl>
       <UISwitch v-if="!isDownload" v-model="newTab" label="새 탭" size="sm" />
       <UISwitch v-model="disabled" label="disabled" size="sm" />
+      <UISwitch v-model="block" label="block" size="sm" />
     </template>
     <UIButton v-bind="attributes">{{ label }}</UIButton>
   </PlaygroundExample>
