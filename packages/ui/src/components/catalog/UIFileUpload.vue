@@ -1,9 +1,11 @@
 <script setup lang="ts" generic="Receipt = unknown">
-import { FileUp, RotateCcw, X } from "@lucide/vue";
+import { ChevronRight, FileUp, RotateCcw, X } from "@lucide/vue";
+import { FileInputInput } from "@sectile/vue/form/file-input";
 import type { FileUploadAdapter, UseFileUploadReturn } from "@sectile/vue/form/file-upload";
-import { computed, useTemplateRef, type ShallowUnwrapRef } from "vue";
+import { computed, shallowRef, useTemplateRef, type ShallowUnwrapRef } from "vue";
 import UIButton from "../button/UIButton.vue";
 import UIProgress from "../progress/UIProgress.vue";
+import UIFileInput from "./UIFileInput.vue";
 import UIFileRow from "./UIFileRow.vue";
 import FileUploadAttempt from "./FileUploadAttempt.vue";
 
@@ -14,11 +16,15 @@ const props = defineProps<{
   size?: "sm" | "md" | "lg";
 }>();
 
+const files = shallowRef<readonly File[]>([]);
+const fileInput = useTemplateRef<InstanceType<typeof UIFileInput>>("fileInput");
+const file = computed(() => props.file === undefined ? files.value[0] ?? null : props.file);
+
 type Attempt = Pick<UseFileUploadReturn<File, Receipt>, "snapshot" | "error" | "ready" | "start" | "cancel">;
 const attempt = useTemplateRef<ShallowUnwrapRef<Attempt>>("attempt");
 const state = computed(() => {
   const current = attempt.value?.snapshot?.state;
-  return current?.file === props.file ? current : undefined;
+  return current?.file === file.value ? current : undefined;
 });
 const progress = computed(() => state.value?.total
   ? 100 * state.value.loaded / state.value.total
@@ -36,10 +42,26 @@ defineSlots<{
 
 <template>
   <UIFileRow class="ui-file-upload" :file="file" :size="size" preview>
+    <UIFileInput v-if="props.file === undefined && !$slots.picker" ref="fileInput" v-model="files">
+      <FileInputInput hidden tabindex="-1" />
+    </UIFileInput>
     <FileUploadAttempt v-if="file" ref="attempt" :file="file" :adapter="adapter" :auto-start="autoStart" />
     <template v-if="!file" #icon><FileUp :size="18" /></template>
     <template #name><slot name="name">{{ file?.name ?? '파일 선택' }}</slot></template>
-    <template v-if="$slots.picker" #picker><slot name="picker" :file="file ?? null" /></template>
+    <template v-if="$slots.picker || props.file === undefined" #picker>
+      <slot name="picker" :file="file">
+        <UIButton
+          icon-only
+          size="sm"
+          variant="ghost"
+          :aria-label="file ? `${file.name} 교체` : '파일 선택'"
+          :title="file?.name"
+          @click="fileInput?.open()"
+        >
+          <template #leading><ChevronRight /></template>
+        </UIButton>
+      </slot>
+    </template>
     <template #metadata>
       <small class="ui-file-upload__status">
         <slot name="status" :status="state?.status">
