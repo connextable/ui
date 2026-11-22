@@ -9,6 +9,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./nuxt": {
+      "types": "./dist/nuxt.d.ts",
+      "import": "./dist/nuxt.js"
+    },
     "./styles.css": "./dist/styles.css"
   },
   "publishConfig": {
@@ -16,17 +20,20 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "vite build && vue-tsc -p tsconfig.build.json"
+    "build": "vite build && vue-tsc -p tsconfig.build.json && vue-tsc -p tsconfig.nuxt.json"
   },
   "dependencies": {
     "@lucide/vue": "catalog:",
+    "@nuxt/kit": "4.6.4",
+    "@nuxt/schema": "4.6.4",
     "@sectile/chart": "0.16.1",
     "@sectile/core": "0.16.0",
     "@sectile/form": "0.15.2",
     "@sectile/tabular": "0.17.1",
     "@sectile/temporal": "0.15.1",
     "@sectile/virtual": "0.16.1",
-    "@sectile/vue": "0.21.0"
+    "@sectile/vue": "0.21.0",
+    "vue-router": "^5.5.1"
   },
   "peerDependencies": {
     "vue": "^3.5.41"

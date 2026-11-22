@@ -4,7 +4,7 @@ import { interactionStyles } from "./build/interaction-styles";
 
 export default defineNuxtConfig({
   compatibilityDate: "2026-11-20",
-  css: ["@connextable/ui/styles.css"],
+  modules: ["@connextable/ui/nuxt"],
   // Rebuild Vite's dependency graph when pnpm changes a workspace peer resolution.
   watch: [fileURLToPath(new URL("../../pnpm-lock.yaml", import.meta.url))],
   vite: {

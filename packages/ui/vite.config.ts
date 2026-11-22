@@ -5,13 +5,13 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: "src/build.ts",
+      entry: { index: "src/build.ts", nuxt: "src/nuxt.ts" },
       formats: ["es"],
-      fileName: "index",
+      fileName: (_format, name) => `${name}.js`,
       cssFileName: "styles",
     },
     rolldownOptions: {
-      external: ["vue", "@lucide/vue", /^@sectile\//],
+      external: ["vue", "@lucide/vue", "@nuxt/kit", /^@sectile\//],
     },
   },
 });
