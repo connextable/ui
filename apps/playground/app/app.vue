@@ -260,7 +260,7 @@ onMounted(() => { mounted.value = true; });
         </header>
         <PlaygroundOutline :content="documentContent" class="playground-document__outline" />
         <article ref="documentContent" class="playground-document__content">
-          <PlaygroundComponentExamples :key="route.path" :enabled="route.path.startsWith('/components/') && Boolean(title) && catalogPage?.visualStates !== false">
+          <PlaygroundComponentExamples :key="route.path" :visual-states="route.path.startsWith('/components/') && Boolean(title) && catalogPage?.visualStates !== false">
             <UIHostProvider portal-target="#teleports">
               <UITemporalProvider>
                 <NuxtPage />

@@ -2,23 +2,24 @@
 import { provide, shallowRef } from "vue";
 import { playgroundPrimaryExampleKey } from "~/utils/playground-primary-example";
 
-const { enabled } = defineProps<{ enabled: boolean }>();
+const props = defineProps<{ visualStates: boolean }>();
 const id = shallowRef<string>();
 const examples = new Set<string>();
 
-if (enabled) {
-  provide(playgroundPrimaryExampleKey, {
-    id,
-    register(exampleId) {
-      examples.add(exampleId);
-      id.value ??= exampleId;
-      return () => {
-        examples.delete(exampleId);
-        if (id.value === exampleId) id.value = examples.values().next().value;
-      };
-    },
-  });
-}
+provide(playgroundPrimaryExampleKey, {
+  id,
+  get visualStates() {
+    return props.visualStates;
+  },
+  register(exampleId) {
+    examples.add(exampleId);
+    id.value ??= exampleId;
+    return () => {
+      examples.delete(exampleId);
+      if (id.value === exampleId) id.value = examples.values().next().value;
+    };
+  },
+});
 </script>
 
 <template>

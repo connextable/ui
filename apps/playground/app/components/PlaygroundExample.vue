@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { UIDisclosure, UIDisclosureContent, UIDisclosureTrigger } from "@connextable/ui";
-import { computed, inject, onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
+import { computed, inject, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
 import { playgroundPrimaryExampleKey } from "~/utils/playground-primary-example";
 import PlaygroundCodeBlock from "./PlaygroundCodeBlock.vue";
 
@@ -14,14 +14,12 @@ const props = defineProps<{
 }>();
 
 const primaryExample = inject(playgroundPrimaryExampleKey, undefined);
+const unregisterExample = primaryExample?.register(props.id);
 const isPrimaryExample = computed(() => primaryExample?.id.value === props.id);
 const preview = useTemplateRef<HTMLElement>("preview");
-let unregisterExample: (() => void) | undefined;
-onMounted(() => {
-  unregisterExample = primaryExample?.register(props.id);
-});
 onBeforeUnmount(() => unregisterExample?.());
 
+const codeOpen = ref(isPrimaryExample.value);
 const hasOpenedCode = ref(false);
 const loadedSource = ref<string>();
 const sourceFailed = ref(false);
@@ -43,6 +41,8 @@ async function revealSource(open: boolean) {
     loadingSource = false;
   }
 }
+
+watch(codeOpen, revealSource, { immediate: true });
 </script>
 
 <template>
@@ -55,11 +55,10 @@ async function revealSource(open: boolean) {
     >{{ title }}</component>
     <p v-if="description" class="playground-example__description">{{ description }}</p>
     <UIDisclosure
+      v-model="codeOpen"
       class="playground-example__frame"
       variant="outline"
       :content-id="`${id}-source`"
-      @update:model-value="revealSource"
-      v-slot="{ open }"
     >
       <div class="playground-example__demo">
         <div ref="preview" class="playground-example__preview ui-field-layout" :class="{ 'playground-example__preview--wide': wide }">
@@ -69,9 +68,9 @@ async function revealSource(open: boolean) {
           class="playground-example__toggle"
           size="sm"
           variant="ghost"
-          :aria-label="`${title} 코드 ${open ? '접기' : '보기'}`"
+          :aria-label="`${title} 코드 ${codeOpen ? '접기' : '보기'}`"
         >
-          {{ open ? "코드 접기" : "코드 보기" }}
+          {{ codeOpen ? "코드 접기" : "코드 보기" }}
         </UIDisclosureTrigger>
       </div>
       <UIDisclosureContent divided flush role="region" :aria-label="`${title} Vue 코드`">
@@ -84,7 +83,7 @@ async function revealSource(open: boolean) {
       </UIDisclosureContent>
     </UIDisclosure>
   </section>
-  <PlaygroundVisualStates v-if="isPrimaryExample" :source="preview" />
+  <PlaygroundVisualStates v-if="primaryExample?.visualStates && isPrimaryExample && preview" :source="preview" />
 </template>
 
 <style scoped>

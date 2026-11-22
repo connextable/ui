@@ -21,8 +21,7 @@ const route = useRoute();
 const entry = catalogBySlug.get(String(route.params.name))!;
 const guide = catalogGuides[entry.slug];
 const path = `../../components/catalog/${entry.slug}.vue`;
-const Preview = await previews[path]!();
-const source = sources[path]!;
+const [Preview, source] = await Promise.all([previews[path]!(), sources[path]!()]);
 const parts = (entry.parts ?? []).map((name) => {
   const related = catalog.find((component) => component.title === name);
   const example = guide?.examples?.find((scenario) => scenario.parts?.includes(name));
