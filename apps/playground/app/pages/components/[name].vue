@@ -3,6 +3,8 @@ import type { Component } from "vue";
 import { catalog, catalogBySlug } from "~/data/catalog";
 import { catalogGuides } from "~/data/catalog-guides";
 import { describeCatalogPart } from "~/data/catalog-parts";
+import { helperGroup, stateApiNotes, type ReferenceRow } from "~/data/catalog-reference";
+import referenceExamples from "virtual:catalog-reference-examples";
 
 definePageMeta({
   key: (route) => String(route.params.name),
@@ -22,11 +24,39 @@ const entry = catalogBySlug.get(String(route.params.name))!;
 const guide = catalogGuides[entry.slug];
 const path = `../../components/catalog/${entry.slug}.vue`;
 const [Preview, source] = await Promise.all([previews[path]!(), sources[path]!()]);
-const parts = (entry.parts ?? []).map((name) => {
-  const related = catalog.find((component) => component.title === name);
-  const example = guide?.examples?.find((scenario) => scenario.parts?.includes(name));
-  return { name, related, example, description: related?.description ?? describeCatalogPart(name) };
+const links = referenceExamples[entry.slug] ?? {};
+const stateNotes = stateApiNotes(entry.category, entry.slug);
+const notes = { ...guide?.api };
+for (const [name, note] of Object.entries(stateNotes)) notes[name] ??= note;
+const api: ReferenceRow[] = Object.entries(notes).map(([name, note]) => {
+  const stateNote = stateNotes[name];
+  return {
+    name,
+    example: links[name],
+    ...(typeof stateNote === "object" ? stateNote : {}),
+    ...(typeof note === "string" ? { description: note } : note),
+  };
 });
+const parts: ReferenceRow[] = [];
+for (const name of entry.parts ?? []) {
+  const related = catalog.find((component) => component.title === name);
+  const description = describeCatalogPart(name) ?? related?.description;
+  if (!description) throw new Error(`Missing reference description for ${entry.slug} / ${name}`);
+  const row = { name, description, anchor: name, route: related && `/components/${related.slug}`, example: links[name] };
+  const group = helperGroup(name);
+  if (!group) {
+    const duplicate = api.findIndex(item => item.name === name);
+    if (duplicate === -1) parts.push(row);
+    else {
+      const [note] = api.splice(duplicate, 1);
+      parts.push({ ...row, ...note, example: note?.example ?? row.example });
+    }
+    continue;
+  }
+  const existing = api.find(item => item.name === name || item.name.startsWith(`${name}(`));
+  if (existing) Object.assign(existing, { anchor: name, group, example: existing.example ?? row.example });
+  else api.push({ ...row, group });
+}
 </script>
 
 <template>
@@ -51,32 +81,7 @@ const parts = (entry.parts ?? []).map((name) => {
       :wide="entry.wide"
       :defer-previews="entry.deferPreviews"
     />
-    <section v-if="parts.length" class="catalog-section" aria-labelledby="parts">
-      <h2 id="parts" class="catalog-heading" data-playground-heading tabindex="-1">구성 컴포넌트</h2>
-      <dl class="catalog-reference">
-        <div v-for="part in parts" :id="part.name" :key="part.name" class="catalog-reference__part" tabindex="-1">
-          <dt>
-            <UIAnchor v-if="part.related" :to="`/components/${part.related.slug}`"><code>{{ part.name }}</code></UIAnchor>
-            <code v-else>{{ part.name }}</code>
-          </dt>
-          <dd v-if="part.description || part.example">
-            {{ part.description }}
-            <UIAnchor v-if="part.example" class="catalog-reference__example" :to="{ path: route.path, hash: `#${part.example.id}` }">
-              {{ part.example.title }} 예제
-            </UIAnchor>
-          </dd>
-        </div>
-      </dl>
-    </section>
-    <section v-if="guide?.api" class="catalog-section" aria-labelledby="api">
-      <h2 id="api" class="catalog-heading" data-playground-heading tabindex="-1">주요 API</h2>
-      <dl class="catalog-reference">
-        <div v-for="(description, name) in guide.api" :key="name">
-          <dt><code>{{ name }}</code></dt>
-          <dd>{{ description }}</dd>
-        </div>
-      </dl>
-    </section>
+    <PlaygroundReference :parts="parts" :api="api" />
   </div>
 </template>
 
@@ -86,66 +91,4 @@ const parts = (entry.parts ?? []).map((name) => {
   min-inline-size: 0;
 }
 
-.catalog-section + .catalog-section {
-  margin-block-start: clamp(3rem, 6vw, 5rem);
-}
-
-.catalog-heading {
-  margin: 0 0 calc(var(--ui-space-md) * 2);
-  font-size: clamp(1.25rem, 2.5vw, 1.625rem);
-  font-weight: 680;
-  letter-spacing: -0.025em;
-}
-
-.catalog-reference {
-  margin: 0;
-  border-block-start: 1px solid var(--ui-color-divider);
-}
-
-.catalog-reference > div {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-  gap: var(--ui-space-xs) calc(var(--ui-space-md) * 2);
-  padding-block: var(--ui-space-sm);
-  border-block-end: 1px solid var(--ui-color-divider);
-  overflow-wrap: anywhere;
-}
-
-.catalog-reference code {
-  font-family: var(--ui-font-mono);
-  font-size: var(--ui-font-size-body-sm);
-  font-weight: 600;
-}
-
-.catalog-reference__part {
-  scroll-margin-block-start: 2rem;
-}
-
-.catalog-reference__part:focus-visible {
-  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
-  outline-offset: var(--ui-focus-ring-offset);
-}
-
-.catalog-reference dd {
-  margin: 0;
-  color: var(--ui-color-text-muted);
-  font-size: var(--ui-font-size-body-sm);
-  word-break: keep-all;
-}
-
-.catalog-reference a {
-  color: var(--ui-color-accent);
-  text-underline-offset: 0.15em;
-}
-
-.catalog-reference__example {
-  display: block;
-  margin-block-start: var(--ui-space-xs);
-}
-
-@container catalog-document (width < 30rem) {
-  .catalog-reference > div {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 </style>

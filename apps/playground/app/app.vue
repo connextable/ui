@@ -16,6 +16,8 @@ import { Search, X } from "@lucide/vue";
 import { computed, onMounted, ref, useTemplateRef, watch } from "vue";
 import { catalog, catalogBySlug } from "~/data/catalog";
 import { catalogNavigation } from "~/data/catalog-navigation";
+import { orderedReferenceParts } from "~/data/catalog-reference";
+import { standaloneReference } from "~/data/standalone-references";
 
 type CatalogItem = {
   path: string;
@@ -45,6 +47,9 @@ const description = computed(() =>
   catalogPage.value?.description ?? route.meta.description,
 );
 const category = computed(() => catalogPage.value?.category ?? route.meta.category);
+const standalone = computed(() => route.path.startsWith("/components/") && !catalogPage.value
+  ? standaloneReference(route.path.split("/").filter(Boolean).at(-1) ?? "", route.meta.componentParts ?? [])
+  : undefined);
 const categories = new Map<string, CatalogItem[]>();
 
 for (const { path, meta, aliasOf } of router.getRoutes()) {
@@ -53,13 +58,13 @@ for (const { path, meta, aliasOf } of router.getRoutes()) {
   }
 
   const items = categories.get(meta.category) ?? [];
-  items.push({ path, title: meta.title, parts: meta.componentParts ?? [] });
+  items.push({ path, title: meta.title, parts: orderedReferenceParts(meta.componentParts ?? []) });
   categories.set(meta.category, items);
 }
 
 for (const { slug, title, category, parts } of catalog) {
   const items = categories.get(category) ?? [];
-  items.push({ path: `/components/${slug}`, title, parts: parts ?? [] });
+  items.push({ path: `/components/${slug}`, title, parts: orderedReferenceParts(parts ?? []) });
   categories.set(category, items);
 }
 
@@ -266,6 +271,7 @@ onMounted(() => { mounted.value = true; });
                 <NuxtPage />
               </UITemporalProvider>
             </UIHostProvider>
+            <PlaygroundReference v-if="standalone" v-bind="standalone" />
           </PlaygroundComponentExamples>
         </article>
       </div>

@@ -38,6 +38,5 @@ definePageMeta({
         <ProgressValueExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
-    <PlaygroundParts :parts="['UIProgressTrack', 'UIProgressIndicator', 'UIProgressValueText']" />
   </div>
 </template>

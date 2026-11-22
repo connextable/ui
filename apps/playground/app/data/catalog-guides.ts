@@ -1,3 +1,5 @@
+import type { ApiNotes } from "./catalog-reference";
+
 export interface CatalogExample {
   id: string;
   title: string;
@@ -17,7 +19,7 @@ interface CatalogGuide {
   title: string;
   description: string;
   framed?: boolean;
-  api?: Record<string, string>;
+  api?: ApiNotes;
   sections?: readonly CatalogExampleSection[];
   examples?: readonly CatalogExample[];
 }
@@ -279,7 +281,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "트리거 옆에서 간단히 편집",
     description: "기본 트리거를 눌러 프로필을 편집합니다. 열리는 방향과 정렬은 side와 align으로 지정합니다.",
     api: {
-      "trigger-label / #trigger": "기본 트리거의 문구를 지정하거나, 슬롯으로 트리거를 직접 제공합니다.",
+      "trigger-label": "기본 트리거 버튼의 텍스트입니다.",
+      "#trigger": "팝오버를 여는 버튼을 직접 구성합니다.",
       "#body": "팝오버에 표시할 내용을 배치합니다. 저장 시 close를 호출해 닫습니다.",
       side: "팝오버가 놓일 방향입니다.",
       align: "기준 요소에 맞춰 정렬할 위치입니다.",
@@ -660,14 +663,17 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "파일 선택과 교체",
     description: "createUIFileUploadAdapter에 URL을 넘기면 파일을 multipart로 전송합니다. 파일을 처리하는 함수도 넘길 수 있습니다. 아래 예제는 선택한 파일을 브라우저에서 읽습니다.",
     api: {
-      file: "부모에서 고른 File 또는 null을 전달합니다. 생략하면 컴포넌트의 기본 선택 버튼으로 파일을 고릅니다.",
-      adapter: "createUIFileUploadAdapter로 만든 어댑터나 직접 구현한 UIFileUploadAdapter를 전달합니다.",
-      size: "다른 입력과 같은 sm, md, lg 크기를 지정합니다. 기본값은 md입니다.",
-      "auto-start": "파일을 연결하면 어댑터를 바로 실행합니다.",
+      file: { type: "File | null", description: "부모에서 고른 파일을 연결합니다. 생략하면 컴포넌트의 기본 선택 버튼으로 파일을 고릅니다." },
+      adapter: { type: "UIFileUploadAdapter<File, Receipt>", description: "createUIFileUploadAdapter로 만든 HTTP·SDK 어댑터나 직접 구현한 어댑터를 전달합니다. 취소 시 signal이 중단됩니다." },
+      size: { type: "'sm' | 'md' | 'lg'", default: "md", description: "파일 행과 안쪽 버튼의 크기를 함께 변경합니다." },
+      "auto-start": { type: "boolean", default: "false", description: "편집 가능한 상태에서 파일을 연결하면 어댑터를 바로 실행합니다." },
+      "Queue items": { type: "readonly { id: string; file: File }[]", description: "대기열에 표시할 파일을 전달합니다. 각 ID는 목록에서 고유해야 하고 같은 파일의 상태를 유지하려면 ID를 유지합니다.", example: { id: "file-upload-group", title: "여러 파일의 전송 대기열" } },
+      "Queue concurrency": { type: "number", default: "3", description: "동시에 실행할 수 있는 전송 수입니다. 1이면 한 파일씩 처리합니다.", example: { id: "file-upload-group", title: "여러 파일의 전송 대기열" } },
       readonly: "연결된 파일과 상태를 읽을 수 있습니다. 업로드, 취소, 교체 조작을 잠급니다.",
       disabled: "업로드, 취소, 교체 조작을 비활성화합니다.",
-      "#picker": "파일 선택·교체 버튼을 직접 구성합니다. 현재 파일을 file로 받고, 선택하기 전에는 null을 받습니다.",
-      "#status": "현재 업로드 상태에 맞춰 행 안에 짧은 상태 문구를 표시합니다.",
+      "#picker": "파일 선택·교체 버튼을 직접 구성합니다. file, disabled, readonly를 받습니다. 선택하기 전의 file은 null입니다.",
+      "#status": { description: "현재 상태로 행 안의 문구를 구성합니다. status는 queued, uploading, succeeded, failed, canceled 중 하나이며 전송 상태가 준비되기 전에는 undefined입니다.", example: { id: "file-upload-retry", title: "실패 후 다시 전송" } },
+      "Queue start() / cancel() / reset()": { description: "대기열 ref로 전송을 제어합니다. start와 cancel에 ID 배열을 생략하면 목록 전체에 적용합니다. getItem(id)로 진행 상태와 완료 결과를 읽습니다.", group: "메서드" },
     },
   },
   "checkbox-tree": {
@@ -1176,11 +1182,12 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
     api: {
       "axis / scrollbar": "세로, 가로, 양축을 선택하고 스크롤바를 thin, native, hidden 중 하나로 지정합니다.",
-      "fade / #fade": "기본값은 false입니다. fade를 켜면 스크롤할 수 있는 쪽의 콘텐츠가 투명해집니다. 방향 배열로 가장자리를 지정하고, #fade 슬롯에서 edge와 visible로 효과를 직접 구성할 수 있습니다.",
+      fade: { type: "boolean | readonly UIScrollEdge[]", default: "false", description: "스크롤할 수 있는 쪽의 콘텐츠를 투명하게 표시합니다. 방향 배열로 효과를 적용할 가장자리를 제한합니다." },
+      "#fade": "가장자리별 효과를 조합합니다. edge로 어느 쪽인지, visible로 그 방향으로 더 스크롤할 수 있는지 확인합니다.",
       "#header / #footer": "스크롤하는 동안 상단과 하단에 보이는 영역입니다. 슬롯의 높이가 바뀌면 뷰포트와 페이드 위치도 함께 갱신됩니다.",
       sticky: "뷰포트 안에 있는 position: sticky 요소를 전달합니다. 고정 방향과 요소 크기를 읽어 페이드를 고정 영역 안쪽으로 옮깁니다.",
       "--ui-scroll-fade-size": "콘텐츠가 투명해지는 길이입니다. --ui-scroll-fade-top, --ui-scroll-fade-right, --ui-scroll-fade-bottom, --ui-scroll-fade-left로 방향별 길이를 지정할 수 있습니다.",
-      "#controls / state": "viewportId와 스크롤 위치, 크기, 가장자리까지의 거리, 이동 메서드를 외부 조작 버튼에 전달합니다. 가로 좌표는 쓰기 방향과 관계없이 왼쪽에서 시작합니다.",
+      "#controls": "뷰포트 ID, 스크롤 상태와 이동 메서드를 외부 조작 버튼에 연결합니다. 가로 좌표는 쓰기 방향과 관계없이 왼쪽에서 시작합니다.",
       "scrollTo / scrollBy / scrollToEdge": "절대 위치, 상대 위치, 지정한 가장자리로 스크롤합니다. 모션 줄이기가 켜져 있으면 즉시 이동합니다.",
       "useUIScrollArea(target, { content })": "기존 스크롤 요소를 연결합니다. 크기가 바뀌는 콘텐츠 요소를 함께 넘기거나 refresh()로 직접 새로 측정할 수 있습니다.",
       "useUIInfiniteScroll(scroll, options)": "edge, distance, hasMore, auto로 자동 요청을 제어하고 loading, failure, loadMore, reset으로 대기·오류·재시도를 처리합니다. 요청의 signal을 데이터 로더에 전달할 수 있습니다.",
@@ -1286,16 +1293,21 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "data-tree-grid-expansion", section: "structure", title: "중첩 그룹의 펼침 상태 읽기", description: "플랫폼과 API 그룹을 차례로 펼치고 요약과 보이는 행이 동기화되는지 확인합니다.", parts: ["useUIDataTreeGridContext"] },
       { id: "data-tree-grid-collapsed", section: "source", title: "필요할 때 하위 행 읽기", description: "처음에는 닫힌 그룹을 펼쳐 하위 행이 들어오는 것을 봅니다." },
       { id: "data-tree-grid-async", section: "source", title: "지연 응답으로 하위 행 펼치기", description: "부서를 펼치면 하위 프로젝트가 도착할 때 행이 들어오고, 옆 부서는 새 위치로 이동합니다.", parts: ["DataTreeGrid.RowDisclosure", "DataTreeGrid.Row"] },
-      { id: "data-tree-grid-group-selection", section: "actions", title: "그룹의 하위 행 선택", description: "그룹의 선택 컨트롤 하나로 하위 행을 선택합니다.", parts: ["DataTreeGrid.BulkSelectionControl"] },
+      { id: "data-tree-grid-group-selection", section: "actions", title: "그룹 전체와 일부 선택", description: "하위 서비스를 하나만 선택하면 그룹에 일부 선택 표시가 나타납니다. 그룹 체크박스로 하위 서비스를 모두 선택하거나 해제합니다. 접힌 하위 행도 같은 ID 목록으로 관리합니다.", parts: ["DataTreeGrid.RowSelectionControl"] },
       { id: "data-tree-grid-edit", section: "actions", title: "하위 행을 편집해 소스에 반영", description: "웹사이트 담당자 옆 연필 버튼을 누르고 새 값을 저장합니다. 데이터 소스를 다시 읽어 편집 결과를 표시합니다.", parts: ["DataTreeGrid.Editor", "UITabularEditTrigger"] },
     ],
     title: "서비스의 하위 행 표시",
-    description: "플랫폼 행을 펼치거나 접어 보세요. source는 요청의 expansion을 읽고 현재 보이는 행을 반환합니다.",
+    description: "createUITabularSource에서 열과 행을 정의하고 useUIDataTreeGrid에 연결합니다. 플랫폼 행을 접으면 load가 새 expansion을 받아 그룹 행만 반환합니다.",
     api: {
-      source: "expansion에 포함된 그룹의 하위 행을 반환합니다. 행의 parentGroupID와 depth를 선언해 계층을 표현합니다.",
-      defaultExpansion: "처음부터 펼쳐 둘 그룹의 id입니다.",
-      RowDisclosure: "현재 그룹 행의 확장 상태를 변경합니다.",
-      "BulkSelectionControl": "선택 대상에 group-leaves를 지정하면 해당 그룹의 하위 행을 한 번에 선택합니다.",
+      source: { type: "DataTreeGridSourceResolver", description: "열 스키마와 요청한 행을 반환합니다. createUITabularSource의 load는 expansion을 읽어 펼쳐진 그룹의 하위 행을 노출합니다. 지연 요청은 signal로 취소할 수 있습니다.", example: { id: "data-tree-grid-async", title: "지연 응답으로 하위 행 펼치기" } },
+      defaultExpansion: { type: "readonly string[]", default: "[]", description: "처음부터 펼칠 그룹 ID입니다. 값이 없으면 그룹을 접은 상태에서 시작합니다.", example: { id: "basic-example", title: "서비스의 하위 행 표시" } },
+      expansion: { type: "Ref<readonly string[]>", description: "펼쳐진 그룹 ID를 외부 상태와 공유합니다. 현재 범위는 Provider 슬롯이나 useUIDataTreeGridContext에서도 읽을 수 있습니다.", example: { id: "data-tree-grid-expansion", title: "중첩 그룹의 펼침 상태 읽기" } },
+      rowSelection: { type: "Ref<DataTreeGridRowSelection>", description: "외부 선택 상태를 연결하고 onRowSelectionChange에서 그 상태를 갱신합니다. 예제는 explicit-rows의 하위 ID로 전체와 일부 선택을 구분합니다.", example: { id: "data-tree-grid-group-selection", title: "그룹 전체와 일부 선택" } },
+      "Body #default": { description: "현재 행을 row로 제공합니다. 기본 행 렌더링에서 각 열에 DataTreeGrid.Cell을 배치합니다. 행을 직접 배치할 때는 manual과 Row의 row-i-d를 사용합니다.", example: { id: "basic-example", title: "서비스의 하위 행 표시" } },
+      RowDisclosure: { description: "그룹 행을 펼치고 접습니다. Body의 기본 행 안에서 쓰면 현재 행 ID를 사용합니다. 직접 배치한 Row에서는 row-i-d를 전달할 수 있습니다.", example: { id: "basic-example", title: "서비스의 하위 행 표시" } },
+      "BulkSelectionControl target": { type: "{ kind: 'all-matching' } | { kind: 'group-leaves'; groupID: string }", description: "group-leaves는 앱이 처리할 일괄 선택 요청을 만듭니다. 로드하지 않은 하위 행까지 포함할 때는 데이터 소스에서 범위를 확인합니다. 현재 Sectile 연결은 이 대상의 그룹 체크 상태를 계산하지 않습니다. 전체 하위 ID를 알고 있으면 예제처럼 rowSelection과 UICheckbox를 연결해 상태를 표시합니다.", example: { id: "data-tree-grid-group-selection", title: "알고 있는 하위 ID로 그룹 선택 상태 계산" } },
+      "request-bulk-selection": "컨트롤러의 subscribeCommands로 받아 일괄 선택의 대상·쿼리 리비전·제외 ID에 따라 앱의 선택 상태를 반영합니다.",
+      "commit-edit": { description: "편집할 셀 주소와 확정값을 전달합니다. 소스 데이터에 값을 반영하고 컨트롤러를 다시 읽으면 바뀐 값이 셀에 표시됩니다.", example: { id: "data-tree-grid-edit", title: "하위 행을 편집해 소스에 반영" } },
     },
   },
   "tree-grid": {

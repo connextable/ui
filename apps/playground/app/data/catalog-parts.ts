@@ -128,6 +128,7 @@ const roles: Readonly<Record<string, string>> = {
 };
 
 const partRoles: Readonly<Record<string, string>> = {
+  UINavigationMenuPopover: "items로 직접 이동할 링크와 하위 링크 그룹을 정의합니다. 하위 링크는 팝오버에서 선택하고, 이동은 Nuxt 모듈의 링크 설정을 따릅니다.",
   UITreeSelectField: "팀 목록 검색 입력과 열림 상태를 나타내는 화살표를 함께 표시합니다.",
   UICalendarInput: "선택한 날짜를 제출하는 숨은 폼 입력입니다.",
   UICalendarPeriodHeader: "달력의 이동 버튼과 제목을 배치하고 월 보기에서 연도 목록을 엽니다.",
@@ -247,6 +248,7 @@ const tabularParts: Readonly<Record<string, string>> = {
 const suffixes = Object.keys(roles).sort((a, b) => b.length - a.length);
 
 export function describeCatalogPart(part: string): string | undefined {
+  if (part === "DataTreeGrid.BulkSelectionControl") return "그룹의 하위 행이나 현재 검색 결과를 대상으로 일괄 선택 요청을 보냅니다. group-leaves의 상태 표시는 주요 API에서 확인할 수 있습니다.";
   if (partRoles[part]) return partRoles[part];
   const tabularPart = /^(?:DataTable|DataGrid|DataTreeGrid)\.(.+)$/.exec(part)?.[1];
   if (tabularPart) return tabularParts[tabularPart];

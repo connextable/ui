@@ -745,7 +745,7 @@ export const catalog: readonly CatalogEntry[] = [
     slug: "data-tree-grid",
     title: "UIDataTreeGrid",
     category: "표와 그리드",
-    description: "Sectile의 팩토리로 계층형 데이터 그리드를 구성합니다.",
+    description: "그룹 행과 하위 데이터를 펼쳐 탐색하고, 선택과 셀 편집을 데이터 소스에 연결합니다.",
     wide: true,
     parts: [
       "createUITabularSource",

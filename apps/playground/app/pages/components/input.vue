@@ -76,7 +76,6 @@ definePageMeta({
         <InputLongValueExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
-    <PlaygroundParts :parts="['UIClearButton', 'UIFieldClear']" />
     <PlaygroundFormSection>
       <PlaygroundExample
         id="input-form"

@@ -46,7 +46,6 @@ definePageMeta({
         <RadioGroupReadonlyExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
-    <PlaygroundParts :parts="['UIRadioGroupItem', 'UIRadioGroupIndicator']" />
     <PlaygroundFormSection>
       <PlaygroundExample
         id="radio-form"

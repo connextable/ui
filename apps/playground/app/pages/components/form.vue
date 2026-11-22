@@ -152,36 +152,5 @@ definePageMeta({
         <FormSelectorExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="form-field-parts" title="필드 구성 요소">
-      <dl class="form-parts">
-        <div id="UIFormLabel" tabindex="-1">
-          <dt><code>UIFormLabel</code></dt>
-          <dd>필드 이름을 입력에 연결합니다.</dd>
-        </div>
-        <div id="UIFormDescription" tabindex="-1">
-          <dt><code>UIFormDescription</code></dt>
-          <dd>필드에 입력 조건이나 예시를 연결합니다.</dd>
-        </div>
-        <div id="UIFormMessage" tabindex="-1">
-          <dt><code>UIFormMessage</code></dt>
-          <dd>필드의 검증 상태에 맞는 메시지를 표시합니다.</dd>
-        </div>
-      </dl>
-    </PlaygroundExampleSection>
   </div>
 </template>
-
-<style scoped>
-.form-parts > div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--ui-space-xs) var(--ui-space-md);
-  padding-block: var(--ui-space-sm);
-  border-block-end: 1px solid var(--ui-color-divider);
-}
-
-.form-parts dd {
-  margin: 0;
-  color: var(--ui-color-text-muted);
-}
-</style>

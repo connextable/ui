@@ -74,7 +74,7 @@ const parts = {
       </PlaygroundExample>
     </PlaygroundExampleSection>
     <section aria-labelledby="select-parts">
-      <h2 id="select-parts" class="select-page__parts-heading" data-playground-heading tabindex="-1">구성 컴포넌트</h2>
+      <h2 id="select-parts" class="select-page__parts-heading" data-playground-heading tabindex="-1">조합 예제</h2>
       <PlaygroundExample
         v-for="(part, name) in parts"
         :id="name"
