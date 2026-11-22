@@ -2,6 +2,9 @@ import { nextTick, onBeforeUnmount } from "vue";
 
 type LightboxTransition = "open" | "close" | "next" | "previous";
 type LightboxSnapshots = Partial<Record<"media" | "panel" | "overlay", HTMLElement | null>>;
+type TransitionScope = HTMLElement & {
+  startViewTransition?: (update: () => Promise<void>) => ViewTransition;
+};
 type TransitionRun = {
   direction: LightboxTransition;
   transition: ViewTransition;
@@ -9,7 +12,7 @@ type TransitionRun = {
   cleanup: () => void;
 };
 
-// A document can have only one active View Transition, including across lightboxes.
+// Finish the previous lightbox transition before switching between scopes.
 const activeLightboxes = new WeakMap<Document, () => void>();
 
 function nameSnapshots(elements: LightboxSnapshots) {
@@ -40,9 +43,11 @@ export function useLightboxTransition() {
     update: () => void,
     before: LightboxSnapshots,
     after: () => LightboxSnapshots | Promise<LightboxSnapshots>,
+    scope?: TransitionScope,
   ) {
     const owner = before.media?.ownerDocument ?? before.panel?.ownerDocument ?? document;
-    if (typeof owner.startViewTransition !== "function" || owner.fullscreenElement
+    const host = scope ?? owner;
+    if (typeof host.startViewTransition !== "function" || owner.fullscreenElement
       || owner.defaultView?.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       update();
       return;
@@ -52,7 +57,7 @@ export function useLightboxTransition() {
 
     let committed = false;
     let restore: (() => void) | undefined = nameSnapshots(before);
-    const root = owner.documentElement;
+    const root = scope ?? owner.documentElement;
     const cancel = () => stop();
     root.dataset.uiLightboxTransition = direction;
     const commit = () => {
@@ -60,7 +65,7 @@ export function useLightboxTransition() {
       committed = true;
       update();
     };
-    const transition = owner.startViewTransition(async () => {
+    const transition = host.startViewTransition(async () => {
       if (active?.transition !== transition) return;
       restore?.();
       restore = undefined;

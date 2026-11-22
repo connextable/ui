@@ -116,7 +116,7 @@ function goTo(position: number, direction?: "next" | "previous") {
   };
   if (motion && visual.value) {
     transition.start(direction ?? (position > from ? "next" : "previous"), select,
-      { media: visual.value }, () => ({ media: visual.value }));
+      { media: visual.value }, () => ({ media: visual.value }), visual.value);
   } else {
     select();
   }

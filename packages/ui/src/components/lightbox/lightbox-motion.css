@@ -40,11 +40,15 @@
     }
   }
 
-  :root[data-ui-lightbox-transition]::view-transition-image-pair(ui-lightbox-media) {
+  [data-ui-lightbox-transition]::view-transition-image-pair(ui-lightbox-media) {
     overflow: clip;
   }
 
-  :root:is([data-ui-lightbox-transition="next"], [data-ui-lightbox-transition="previous"]) {
+  .ui-lightbox__visual[data-ui-lightbox-transition] {
+    &::view-transition {
+      pointer-events: none;
+    }
+
     &::view-transition-group(ui-lightbox-media) {
       animation-duration: var(--ui-motion-standard);
     }
@@ -58,13 +62,13 @@
     }
   }
 
-  :root[data-ui-lightbox-transition="next"],
-  :root:dir(rtl)[data-ui-lightbox-transition="previous"] {
+  .ui-lightbox__visual[data-ui-lightbox-transition="next"],
+  .ui-lightbox__visual:dir(rtl)[data-ui-lightbox-transition="previous"] {
     --ui-lightbox-slide-direction: 1;
   }
 
-  :root[data-ui-lightbox-transition="previous"],
-  :root:dir(rtl)[data-ui-lightbox-transition="next"] {
+  .ui-lightbox__visual[data-ui-lightbox-transition="previous"],
+  .ui-lightbox__visual:dir(rtl)[data-ui-lightbox-transition="next"] {
     --ui-lightbox-slide-direction: -1;
   }
 
@@ -83,9 +87,9 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    :root[data-ui-lightbox-transition]::view-transition-group(*),
-    :root[data-ui-lightbox-transition]::view-transition-old(*),
-    :root[data-ui-lightbox-transition]::view-transition-new(*) {
+    [data-ui-lightbox-transition]::view-transition-group(*),
+    [data-ui-lightbox-transition]::view-transition-old(*),
+    [data-ui-lightbox-transition]::view-transition-new(*) {
       animation-duration: 0s;
     }
   }
