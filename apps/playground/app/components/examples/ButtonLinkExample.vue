@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { UIButton } from "@connextable/ui";
 import source from "./ButtonLinkExample.vue?example-code&raw";
 </script>
 

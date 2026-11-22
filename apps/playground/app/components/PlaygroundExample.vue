@@ -150,6 +150,7 @@ watch(codeOpen, revealSource, { immediate: true });
 .playground-example__preview {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--ui-space-md);
   justify-items: center;
   justify-self: center;
   box-sizing: border-box;

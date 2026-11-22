@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { UIButton, UISelect } from "@connextable/ui";
-import { computed, ref, useId } from "vue";
+import { UIButton } from "@connextable/ui";
+import { computed, ref } from "vue";
 import source from "./ButtonSizeExample.vue?example-code&raw";
 
 const sizes = (["sm", "md", "lg"] as const).map((value) => ({ value, label: value }));
 const size = ref<string | null>("md");
 const buttonSize = computed(() => sizes.find((option) => option.value === size.value)?.value);
-const id = useId();
 </script>
 
 <template>
@@ -18,8 +17,8 @@ const id = useId();
     :heading-level="3"
   >
     <template #header>
-      <label :for="id">크기</label>
-      <UISelect :id="id" v-model="size" :options="sizes" size="sm" />
+      <span aria-hidden="true">크기</span>
+      <UISelect v-model="size" :options="sizes" aria-label="크기" size="sm" />
     </template>
     <UIButton :size="buttonSize">버튼</UIButton>
   </PlaygroundExample>

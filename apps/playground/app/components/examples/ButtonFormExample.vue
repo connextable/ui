@@ -20,13 +20,11 @@ function submit() {
     :source="source"
     :heading-level="3"
   >
-    <template #header>
-      <UIForm :id="formId" @submit="submit">
-        <UIFormField label="표시 이름">
-          <UIInput v-model="name" />
-        </UIFormField>
-      </UIForm>
-    </template>
+    <UIForm :id="formId" @submit="submit">
+      <UIFormField label="표시 이름">
+        <UIInput v-model="name" />
+      </UIFormField>
+    </UIForm>
     <UIButton type="submit" :form="formId" size="sm">저장</UIButton>
     <template #footer>
       <output>{{ submitted ? `저장한 이름 ${submitted}` : "" }}</output>

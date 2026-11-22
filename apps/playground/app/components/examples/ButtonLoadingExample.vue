@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UISwitch } from "@connextable/ui";
+import { UIButton } from "@connextable/ui";
 import { Check } from "@lucide/vue";
 import { ref } from "vue";
 import source from "./ButtonLoadingExample.vue?example-code&raw";
