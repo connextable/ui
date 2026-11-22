@@ -128,6 +128,7 @@ const roles: Readonly<Record<string, string>> = {
 };
 
 const partRoles: Readonly<Record<string, string>> = {
+  UITreeSelectField: "팀 목록 검색 입력과 열림 상태를 나타내는 화살표를 함께 표시합니다.",
   UICalendarInput: "선택한 날짜를 제출하는 숨은 폼 입력입니다.",
   UICalendarPeriodHeader: "달력의 이동 버튼과 제목을 배치하고 월 보기에서 연도 목록을 엽니다.",
   UIRangeCalendarStartInput: "선택한 시작일을 제출하는 숨은 폼 입력입니다.",

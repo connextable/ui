@@ -113,13 +113,14 @@
     translate: 0 -50%;
     color: var(--ui-color-text-muted);
     pointer-events: none;
+    transition: rotate var(--ui-motion-fast) var(--ui-ease-out);
   }
 
   &[data-has-selection] input::placeholder {
     color: var(--ui-color-text);
   }
 
-  &[data-open] > svg {
+  &:has(> input[aria-expanded="true"]) > svg {
     rotate: 180deg;
   }
 }

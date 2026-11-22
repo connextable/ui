@@ -572,7 +572,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     examples: [
       { id: "tree-select-value", title: "선택된 노드 읽기", description: "선택한 노드의 값을 출력에서 확인합니다." },
       { id: "tree-select-multiple", title: "계층에서 여러 값 선택", description: "디자인 아래 두 항목을 모두 선택할 수 있습니다." },
-      { id: "tree-select-disclosure", title: "하위 팀 펼치기", description: "팀을 펼치는 버튼과 선택 동작이 구분됩니다.", parts: ["UITreeSelectDisclosure"] },
+      { id: "tree-select-disclosure", title: "하위 팀 펼치기", description: "화살표를 누르면 하위 팀을 펼치거나 접습니다. 팀 이름을 누르면 해당 팀을 선택합니다.", parts: ["UITreeSelectDisclosure"] },
       { id: "tree-select-search-empty", title: "검색 결과가 없을 때 표시", description: "아래 방향키로 트리를 열고 ‘화면’과 ‘운영’을 입력해 결과를 비교합니다." },
       { id: "tree-select-disabled-branch", title: "잠긴 가지 건너뛰기", description: "디자인 팀의 가지와 자식은 비활성으로 두고 개발 팀의 웹을 선택합니다." },
     ],
@@ -582,6 +582,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       nodes: "선택할 항목의 id와 parentID를 전달합니다.",
       "selection-mode": "트리에서 한 항목 또는 여러 항목을 선택할지 지정합니다.",
       "default-expanded-values": "처음 표시할 하위 항목의 상위 노드를 지정합니다.",
+      UITreeSelectField: "검색 입력과 열림 상태를 나타내는 화살표를 표시합니다. selected는 선택된 값을 입력에 표시할 때 지정합니다.",
     },
   },
   "tree-view": {

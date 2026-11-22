@@ -81,11 +81,12 @@ export {
   CheckboxTreeDisclosure as UICheckboxTreeDisclosure,
 } from "@sectile/vue/checkbox-tree";
 export { default as UITreeSelect } from "./UITreeSelect.vue";
+export { default as UITreeSelectField } from "./UITreeSelectField.vue";
+export { default as UITreeSelectDisclosure } from "./UITreeSelectDisclosure.vue";
 export {
   TreeSelectInput as UITreeSelectInput,
   TreeSelectContent as UITreeSelectContent,
   TreeSelectItem as UITreeSelectItem,
-  TreeSelectDisclosure as UITreeSelectDisclosure,
 } from "@sectile/vue/tree-select";
 export {
   TreeViewRoot as UITreeView,

@@ -32,9 +32,20 @@ function openFromInput(event: MouseEvent) {
     event.defaultPrevented || !(input instanceof HTMLInputElement) ||
     !input.matches('[data-scope="tree-select"][data-part="input"]') ||
     input.closest('[data-scope="tree-select"][data-part="root"]') !== event.currentTarget ||
-    input.disabled || input.readOnly || (props.open ?? localOpen.value)
+    input.disabled || input.readOnly
   ) return;
-  updateOpen(true);
+
+  const open = props.open ?? localOpen.value;
+  if (!open) {
+    updateOpen(true);
+    return;
+  }
+
+  if (event.detail > 0 && input.parentElement?.classList.contains("ui-tree-select-field")) {
+    const { left, right, height } = input.getBoundingClientRect();
+    const distanceFromEnd = input.matches(":dir(rtl)") ? event.clientX - left : right - event.clientX;
+    if (distanceFromEnd < height) updateOpen(false);
+  }
 }
 
 const tree = useTemplateRef<TreeSelectExpose<ID>>("tree");

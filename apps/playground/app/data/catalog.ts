@@ -397,6 +397,7 @@ export const catalog: readonly CatalogEntry[] = [
     category: "선택",
     description: "계층 구조의 목록에서 값을 선택합니다.",
     parts: [
+      "UITreeSelectField",
       "UITreeSelectInput",
       "UITreeSelectContent",
       "UITreeSelectItem",
