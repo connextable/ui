@@ -1,7 +1,6 @@
 interface CatalogEntry {
   slug: string;
   title: string;
-  category: string;
   description: string;
   wide?: boolean;
   visualStates?: boolean;
@@ -13,7 +12,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "lightbox",
     title: "UILightbox",
-    category: "오버레이",
     description: "사진과 동영상을 크게 보고 여러 자료를 한 창에서 탐색합니다.",
     wide: true,
     visualStates: false,
@@ -21,7 +19,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "scroll-area",
     title: "UIScrollArea",
-    category: "레이아웃",
     description: "스크롤 위치를 읽고 이동 버튼과 가장자리 페이드를 설정합니다.",
     wide: true,
     visualStates: false,
@@ -30,7 +27,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "navigation-menu",
     title: "UINavigationMenu",
-    category: "탐색",
     description: "사이트 헤더에 바로 이동하는 링크와 펼쳐서 찾는 링크 그룹을 배치합니다.",
     wide: true,
     parts: [
@@ -47,7 +43,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "virtualizer",
     title: "UIVirtualizer",
-    category: "가상화",
     description: "사용자가 정의한 배치 방식에서 보이는 항목만 렌더링합니다.",
     wide: true,
     deferPreviews: true,
@@ -59,33 +54,28 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "temporal-provider",
     title: "UITemporalProvider",
-    category: "날짜·시간",
     description: "하위 날짜·시간 입력에 기준 날짜와 서식을 전달합니다.",
     parts: ["useUITemporalReferenceDate", "useUITemporalFormatter", "useUITemporalDisplay"],
   },
   {
     slug: "host-provider",
     title: "UIHostProvider",
-    category: "기반",
     description: "하위 오버레이의 기본 포털 위치와 쓰기 방향을 지정합니다.",
     parts: ["UIHostPortal"],
   },
   {
     slug: "primitive",
     title: "UIPrimitive",
-    category: "기반",
     description: "as로 결과 요소를 지정하고 공통 속성을 전달합니다.",
   },
   {
     slug: "anchor",
     title: "UIAnchor",
-    category: "탐색",
     description: "링크를 구성하고 현재 위치나 비활성 상태를 표현합니다.",
   },
   {
     slug: "tree-reorder",
     title: "UITreeReorder",
-    category: "데이터",
     description: "계층의 항목을 이동해 순서나 상위 항목을 바꿉니다.",
     wide: true,
     parts: ["UITreeReorderItem", "UITreeReorderHandle", "UITreeReorderDropTarget", "UIReorderGroup", "UIReorderFeedback"],
@@ -93,7 +83,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "alert-dialog",
     title: "UIAlertDialog",
-    category: "오버레이",
     description: "확인이 필요한 동작을 대화상자로 표시합니다.",
     parts: [
       "UIAlertDialogTrigger",
@@ -108,7 +97,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "dialog",
     title: "UIDialog",
-    category: "오버레이",
     description: "배경과 구분된 대화상자에서 내용을 표시합니다.",
     parts: [
       "UIDialogTrigger",
@@ -123,7 +111,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "drawer",
     title: "UIDrawer",
-    category: "오버레이",
     description: "화면 가장자리에서 탐색이나 설정을 위한 패널을 엽니다.",
     parts: [
       "UIDrawerTrigger",
@@ -139,7 +126,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "sheet",
     title: "UISheet",
-    category: "오버레이",
     description: "정렬이나 작업 선택을 화면 가장자리의 짧은 패널로 표시합니다.",
     parts: [
       "UISheetTrigger",
@@ -155,7 +141,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "popover",
     title: "UIPopover",
-    category: "오버레이",
     description: "트리거 옆에 작업 영역을 표시합니다.",
     parts: [
       "UIPopoverTrigger",
@@ -171,7 +156,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "toast",
     title: "UIToast",
-    category: "오버레이",
     description: "작업 결과를 알림으로 표시합니다.",
     parts: [
       "UIToastProvider",
@@ -185,7 +169,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "tooltip",
     title: "UITooltip",
-    category: "오버레이",
     description: "포인터나 키보드 포커스로 짧은 도움말을 표시합니다.",
     parts: [
       "UITooltipTrigger",
@@ -198,7 +181,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "cascade-list",
     title: "UICascadeList",
-    category: "선택",
     description: "계층별 목록을 나란히 탐색합니다.",
     parts: [
       "UICascadeListValue",
@@ -211,7 +193,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "cascade-select",
     title: "UICascadeSelect",
-    category: "선택",
     description: "계층을 따라 내려가 항목을 선택합니다.",
     parts: [
       "UICascadeSelectTrigger",
@@ -226,7 +207,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "color-picker",
     title: "UIColorPicker",
-    category: "선택",
     description: "색상 채널을 조절해 색을 선택합니다.",
     parts: [
       "UIColorPickerLabel",
@@ -249,13 +229,11 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "number-field",
     title: "UINumberField",
-    category: "입력·폼",
     description: "숫자를 입력하고 증감합니다.",
   },
   {
     slug: "toggle-group",
     title: "UIToggleGroup",
-    category: "선택",
     description: "관련된 토글 버튼을 하나의 그룹으로 다룹니다.",
     parts: [
       "UIToggleGroupItem",
@@ -264,7 +242,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "editable",
     title: "UIEditable",
-    category: "입력·폼",
     description: "내용을 표시하다가 같은 자리에서 편집합니다.",
     parts: [
       "UIEditableArea",
@@ -278,7 +255,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "listbox",
     title: "UIListbox",
-    category: "선택",
     description: "목록의 항목을 키보드 또는 포인터로 선택합니다.",
     parts: [
       "UIListboxItem",
@@ -289,7 +265,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "rating",
     title: "UIRating",
-    category: "선택",
     description: "단계별 평가 값을 선택합니다.",
     parts: [
       "UIRatingItem",
@@ -300,7 +275,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "slider",
     title: "UISlider",
-    category: "입력·폼",
     description: "범위 안에서 하나의 값을 조절합니다.",
     parts: [
       "UISliderTrack",
@@ -311,7 +285,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "spin-button",
     title: "UISpinButton",
-    category: "입력·폼",
     description: "단계에 따라 숫자 값을 증감합니다.",
     parts: [
       "UISpinButtonInput",
@@ -322,7 +295,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "stepper",
     title: "UIStepper",
-    category: "탐색",
     description: "여러 단계로 이루어진 흐름에서 현재 위치를 표시합니다.",
     parts: [
       "UIStepperList",
@@ -336,7 +308,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "combobox",
     title: "UICombobox",
-    category: "선택",
     description: "검색어로 목록을 좁히고 값을 선택합니다.",
     parts: [
       "UIComboboxInput",
@@ -350,7 +321,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "file-input",
     title: "UIFileInput",
-    category: "입력·폼",
     description: "파일을 선택하거나 끌어 놓고 첨부 목록을 관리합니다.",
     parts: [
       "UIFileInputInput",
@@ -362,7 +332,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "file-upload",
     title: "UIFileUpload",
-    category: "입력·폼",
     description: "선택한 파일을 업로드하고 진행 상태를 표시합니다.",
     parts: [
       "UIFileUploadQueue",
@@ -374,7 +343,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "checkbox-tree",
     title: "UICheckboxTree",
-    category: "선택",
     description: "계층 구조에서 여러 항목을 선택합니다.",
     parts: [
       "UICheckboxTreeGroup",
@@ -386,7 +354,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "transfer",
     title: "UITransfer",
-    category: "선택",
     description: "두 목록 사이로 항목을 이동합니다.",
     wide: true,
     parts: [
@@ -398,7 +365,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "tree-select",
     title: "UITreeSelect",
-    category: "선택",
     description: "계층 구조의 목록에서 값을 선택합니다.",
     parts: [
       "UITreeSelectField",
@@ -412,7 +378,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "tree-view",
     title: "UITreeView",
-    category: "탐색",
     description: "계층 구조를 접고 펼칩니다.",
     parts: [
       "UITreeViewGroup",
@@ -423,7 +388,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "checkbox-group",
     title: "UICheckboxGroup",
-    category: "선택",
     description: "하나의 선택 상태로 여러 체크박스를 연결합니다.",
     parts: [
       "UICheckboxGroupItem",
@@ -433,7 +397,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "multi-thumb-slider",
     title: "UIMultiThumbSlider",
-    category: "입력·폼",
     description: "두 핸들로 범위의 양 끝을 조절합니다.",
     parts: [
       "UIMultiThumbSliderTrack",
@@ -444,7 +407,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "pin-input",
     title: "UIPinInput",
-    category: "입력·폼",
     description: "한 칸씩 코드를 입력합니다.",
     parts: [
       "UIPinInputInput",
@@ -453,7 +415,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "quantity-field",
     title: "UIQuantityField",
-    category: "입력·폼",
     description: "수량과 단위를 함께 입력합니다.",
     parts: [
       "UIQuantityFieldInput",
@@ -465,7 +426,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "tags-input",
     title: "UITagsInput",
-    category: "입력·폼",
     description: "텍스트를 입력해 여러 태그를 관리합니다.",
     parts: [
       "UITagsInputItem",
@@ -478,7 +438,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "tabs",
     title: "UITabs",
-    category: "탐색",
     description: "관련된 콘텐츠를 탭으로 전환합니다.",
     parts: [
       "UITabsList",
@@ -490,7 +449,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "menu",
     title: "UIMenu",
-    category: "탐색",
     description: "명령을 목록으로 표시합니다.",
     parts: [
       "UIMenubar",
@@ -509,7 +467,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "context-menu",
     title: "UIContextMenu",
-    category: "탐색",
     description: "항목을 우클릭하거나 키보드로 맥락 메뉴를 엽니다.",
     parts: [
       "UIContextMenuTrigger",
@@ -522,7 +479,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "menu-button",
     title: "UIMenuButton",
-    category: "탐색",
     description: "버튼으로 명령 메뉴를 엽니다.",
     parts: [
       "UIMenuButtonContent",
@@ -535,7 +491,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "menubar",
     title: "UIMenubar",
-    category: "탐색",
     description: "여러 명령 메뉴를 한 줄에 배치합니다.",
     parts: [
       "UIMenubarItem",
@@ -546,7 +501,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "accordion",
     title: "UIAccordion",
-    category: "레이아웃",
     description: "여러 콘텐츠 영역을 접고 펼칩니다.",
     parts: [
       "UIAccordionItem",
@@ -558,7 +512,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "carousel",
     title: "UICarousel",
-    category: "레이아웃",
     description: "여러 슬라이드를 순서대로 탐색합니다.",
     parts: [
       "UICarouselViewport",
@@ -574,7 +527,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "feed",
     title: "UIFeed",
-    category: "레이아웃",
     description: "연속된 콘텐츠를 피드로 탐색합니다.",
     parts: [
       "UIFeedItem",
@@ -585,13 +537,11 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "image",
     title: "UIImage",
-    category: "레이아웃",
     description: "이미지의 로드 상태에 따라 대체 콘텐츠를 표시합니다.",
   },
   {
     slug: "meter",
     title: "UIMeter",
-    category: "상태 표시",
     description: "범위 내에서 현재 값을 표시합니다.",
     parts: [
       "UIMeterTrack",
@@ -602,7 +552,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "meter-group",
     title: "UIMeterGroup",
-    category: "상태 표시",
     description: "하나의 눈금에 여러 값을 표시합니다.",
     wide: true,
     parts: [
@@ -620,7 +569,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "pagination",
     title: "UIPagination",
-    category: "탐색",
     description: "페이지 사이를 이동합니다.",
     parts: [
       "UIPaginationItem",
@@ -633,7 +581,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "timer",
     title: "UITimer",
-    category: "상태 표시",
     description: "경과 시간을 표시합니다.",
     parts: [
       "UITimerArea",
@@ -646,7 +593,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "toolbar",
     title: "UIToolbar",
-    category: "동작",
     description: "관련 동작을 키보드로 탐색할 수 있는 도구 모음에 배치합니다.",
     parts: [
       "UIToolbarItem",
@@ -656,7 +602,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "window-splitter",
     title: "UIWindowSplitter",
-    category: "레이아웃",
     description: "두 영역 사이의 경계를 움직여 크기를 조절합니다.",
     wide: true,
     parts: [
@@ -667,7 +612,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "grid",
     title: "UIGrid",
-    category: "표와 그리드",
     description: "행과 열로 구성된 항목 사이를 이동합니다.",
     wide: true,
     parts: [
@@ -679,7 +623,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "data-table",
     title: "UIDataTable",
-    category: "표와 그리드",
     description: "행과 열 데이터로 표를 그리고 페이지를 탐색합니다.",
     wide: true,
     parts: [
@@ -716,7 +659,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "data-grid",
     title: "UIDataGrid",
-    category: "표와 그리드",
     description: "Sectile의 팩토리로 상호작용 가능한 데이터 그리드를 구성합니다.",
     wide: true,
     parts: [
@@ -744,7 +686,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "data-tree-grid",
     title: "UIDataTreeGrid",
-    category: "표와 그리드",
     description: "그룹 행과 하위 데이터를 펼쳐 탐색하고, 선택과 셀 편집을 데이터 소스에 연결합니다.",
     wide: true,
     parts: [
@@ -773,7 +714,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "tree-grid",
     title: "UITreeGrid",
-    category: "표와 그리드",
     description: "계층형 행을 펼치고 셀 사이를 이동합니다.",
     wide: true,
     parts: [
@@ -790,7 +730,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "chart",
     title: "UIChart",
-    category: "데이터",
     description: "추이, 비교, 분포, 비중에 맞는 차트를 구성합니다.",
     wide: true,
     deferPreviews: true,
@@ -837,7 +776,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "reorder",
     title: "UISequenceReorder",
-    category: "데이터",
     description: "키보드나 포인터로 항목의 순서를 바꿉니다.",
     wide: true,
     parts: [
@@ -855,7 +793,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "virtual-list",
     title: "UIVirtualList",
-    category: "가상화",
     description: "화면에 보이는 구간의 목록을 렌더링합니다.",
     wide: true,
     deferPreviews: true,
@@ -863,7 +800,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "virtual-grid",
     title: "UIVirtualGrid",
-    category: "가상화",
     description: "행과 열 중 보이는 구간을 렌더링합니다.",
     wide: true,
     deferPreviews: true,
@@ -871,7 +807,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "virtual-masonry",
     title: "UIVirtualMasonry",
-    category: "가상화",
     description: "서로 다른 높이의 항목을 가상화된 열에 배치합니다.",
     wide: true,
     deferPreviews: true,
@@ -879,7 +814,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "virtual-spatial",
     title: "UIVirtualSpatial",
-    category: "가상화",
     description: "좌표로 배치된 항목에서 보이는 구간을 렌더링합니다.",
     wide: true,
     deferPreviews: true,
@@ -887,7 +821,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "calendar",
     title: "UICalendar",
-    category: "날짜·시간",
     description: "달력에서 날짜 하나를 선택합니다.",
     wide: true,
     parts: [
@@ -910,7 +843,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "range-calendar",
     title: "UIRangeCalendar",
-    category: "날짜·시간",
     description: "달력에서 시작일과 종료일을 선택합니다.",
     wide: true,
     parts: [
@@ -934,13 +866,11 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "date-field",
     title: "UIDateField",
-    category: "날짜·시간",
     description: "텍스트로 날짜를 입력합니다.",
   },
   {
     slug: "date-range-field",
     title: "UIDateRangeField",
-    category: "날짜·시간",
     description: "시작일과 종료일을 각각 입력합니다.",
     parts: [
       "UIDateRangeFieldStartInput",
@@ -950,7 +880,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "date-picker",
     title: "UIDatePicker",
-    category: "날짜·시간",
     description: "날짜를 입력하거나 달력에서 선택합니다.",
     parts: [
       "UICalendarPeriodHeader",
@@ -977,7 +906,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "date-range-picker",
     title: "UIDateRangePicker",
-    category: "날짜·시간",
     description: "달력에서 시작일과 종료일을 골라 날짜 범위를 정합니다.",
     parts: [
       "UIDateRangePickerTrigger",
@@ -1004,13 +932,11 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "date-time-field",
     title: "UIDateTimeField",
-    category: "날짜·시간",
     description: "날짜와 시간을 입력합니다.",
   },
   {
     slug: "date-time-range-field",
     title: "UIDateTimeRangeField",
-    category: "날짜·시간",
     description: "시작 및 종료 일시를 입력합니다.",
     parts: [
       "UIDateTimeRangeFieldStartInput",
@@ -1020,7 +946,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "date-time-picker",
     title: "UIDateTimePicker",
-    category: "날짜·시간",
     description: "날짜와 시간을 입력하거나 달력과 시간 목록에서 선택합니다.",
     parts: [
       "UIDateTimePickerTrigger",
@@ -1048,7 +973,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "date-time-range-picker",
     title: "UIDateTimeRangePicker",
-    category: "날짜·시간",
     description: "시작 및 종료 일시를 달력과 입력란에서 지정합니다.",
     parts: [
       "UIDateTimeRangePickerTrigger",
@@ -1080,13 +1004,11 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "time-field",
     title: "UITimeField",
-    category: "날짜·시간",
     description: "텍스트로 시간을 입력합니다.",
   },
   {
     slug: "time-picker",
     title: "UITimePicker",
-    category: "날짜·시간",
     description: "시간을 입력하거나 목록에서 선택합니다.",
     parts: [
       "UITimePickerInput",
@@ -1104,7 +1026,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "time-range-field",
     title: "UITimeRangeField",
-    category: "날짜·시간",
     description: "시작 시간과 종료 시간을 입력합니다.",
     parts: [
       "UITimeRangeFieldStartInput",
@@ -1114,7 +1035,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "month-picker",
     title: "UIMonthPicker",
-    category: "날짜·시간",
     description: "월을 입력하거나 달력에서 선택합니다.",
     parts: [
       "UIMonthPickerTrigger",
@@ -1131,7 +1051,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "month-range-picker",
     title: "UIMonthRangePicker",
-    category: "날짜·시간",
     description: "시작 월과 종료 월을 선택합니다.",
     parts: [
       "UIMonthRangePickerTrigger",
@@ -1149,7 +1068,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "year-picker",
     title: "UIYearPicker",
-    category: "날짜·시간",
     description: "연도를 선택합니다.",
     parts: [
       "UIYearPickerTrigger",
@@ -1166,7 +1084,6 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "year-range-picker",
     title: "UIYearRangePicker",
-    category: "날짜·시간",
     description: "시작 연도와 종료 연도를 선택합니다.",
     parts: [
       "UIYearRangePickerTrigger",

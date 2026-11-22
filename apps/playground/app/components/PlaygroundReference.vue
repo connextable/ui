@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ArrowRight } from "@lucide/vue";
 import { computed } from "vue";
-import { referenceBlocks, type ReferenceRow } from "~/data/catalog-reference";
+import { legacyStructureAnchorSlugs, referenceBlocks, type ReferenceRow } from "~/data/catalog-reference";
 
 const props = defineProps<{ component: string; parts: readonly ReferenceRow[]; api: readonly ReferenceRow[]; headingAnchors?: Record<string, string> }>();
+const route = useRoute();
+const legacyStructureAnchor = computed(() => legacyStructureAnchorSlugs.has(route.path.split("/").filter(Boolean).at(-1) ?? ""));
 const sections = computed(() => [
   { id: "parts" as const, title: "구성 컴포넌트", entries: props.parts },
   { id: "api" as const, title: "주요 API", entries: props.api },
@@ -24,7 +26,13 @@ function groupAnchor(section: string, group: string) {
         <h3 v-if="block.owner" :id="`${section.id}-owner-${block.id}`" class="playground-reference__owner" data-playground-heading tabindex="-1">
           {{ block.owner }}
         </h3>
-        <section v-for="group in block.groups" :key="group.id" class="playground-reference__group" :aria-labelledby="groupAnchor(section.id, group.id)">
+        <section
+          v-for="(group, index) in block.groups"
+          :id="section.id === 'parts' && index === 0 && legacyStructureAnchor ? 'parts-structure' : undefined"
+          :key="group.id"
+          class="playground-reference__group"
+          :aria-labelledby="groupAnchor(section.id, group.id)"
+        >
           <component
             :is="block.owner ? 'h4' : 'h3'"
             :id="groupAnchor(section.id, group.id)"

@@ -29,12 +29,19 @@ export interface ReferenceGroup {
 
 const partGroups = ["완성 컴포넌트", "구조와 배치", "팝업과 위치", "값 입력과 선택", "탐색과 동작", "값과 상태 표시"] as const;
 const apiGroups = ["속성과 모델", "입력 상태", "데이터 소스와 컨트롤러", "링크", "슬롯", "이벤트와 명령", "메서드", "컴포저블", "팩토리와 유틸리티", "스타일"] as const;
+const sidebarPartGroups: readonly string[] = [...partGroups, "컴포저블", "팩토리와 유틸리티"];
 const sectionIDs: Readonly<Record<string, string>> = {
   "완성 컴포넌트": "composed", "구조와 배치": "structure", "팝업과 위치": "popup", "값 입력과 선택": "input",
   "탐색과 동작": "action", "값과 상태 표시": "display", "속성과 모델": "props", "입력 상태": "input-state", "데이터 소스와 컨트롤러": "source",
   "링크": "links", "슬롯": "slots", "이벤트와 명령": "events", "메서드": "methods", "컴포저블": "composables",
   "팩토리와 유틸리티": "factories", "스타일": "styles",
 };
+
+// These pages previously had a structure group. Keep its published fragment on the first group.
+export const legacyStructureAnchorSlugs: ReadonlySet<string> = new Set([
+  "checkbox-group", "radio-group", "toggle-group", "select", "dialog",
+  "alert-dialog", "drawer", "sheet", "popover", "tooltip",
+]);
 
 export function helperGroup(name: string) {
   if (/^use[A-Z]/.test(name)) return "컴포저블";
@@ -43,23 +50,36 @@ export function helperGroup(name: string) {
 
 export function componentGroup(name: string) {
   if (/^UI(?:IconButton|ToggleButton|FileUploadQueue|NavigationMenuPopover)$/.test(name)) return partGroups[0];
-  if (/(Portal|Overlay|Backdrop|Anchor|Arrow|SubContent|Viewport)$/.test(name)) return partGroups[2];
-  if (/(?:SelectionControl|Editor|Input|Select|Slider|Thumb|Cell|Picker|TimeChoices|EditTrigger)$/.test(name) && !/(HeaderCell|ColumnHeader)$/.test(name)) return partGroups[3];
-  if (/(?:Trigger|Disclosure|Close|Previous\w*|Next\w*|First|Last|Clear|Handle|Move|Link|Pause|Reset|Submit|Delete|Increment|Decrement|LoadEarlier|LoadNewer|Control|Dropzone)$/.test(name)) return partGroups[4];
+  if (/\.(?:Provider|Root|Header|HeaderRow|ColumnHeader|Body|Row|Cell)$/.test(name)) return partGroups[1];
+  if (/(?:Portal|Overlay|Backdrop|Anchor|Arrow|SubContent|Viewport)$/.test(name)
+    || /^UI(?:AlertDialog|Dialog|Drawer|Sheet|Tooltip|Popover|Select|Combobox|TreeSelect|CascadeSelect|Menu(?:Button)?|ContextMenu|.*Picker)Content$/.test(name)) return partGroups[2];
+  if (/(?:SelectionControl|Editor|Input|Select|Slider|Thumb|Cell|Picker|TimeChoices|EditTrigger)$/.test(name) && !/(HeaderCell|ColumnHeader)$/.test(name)
+    || /^UI(?:CheckboxGroup|CheckboxTree|RadioGroup|Select|Combobox|Listbox|TreeSelect|CascadeList|CascadeSelect|ToggleGroup)Item$/.test(name)) return partGroups[3];
+  if (/(?:Trigger|Disclosure|Close|Previous\w*|Next\w*|First|Last|Clear|Handle|Move|Link|Pause|Reset|Submit|Delete|Increment|Decrement|LoadEarlier|LoadNewer|Control|Dropzone|MenuItem)$/.test(name)) return partGroups[4];
   if (/(?:Indicator|Value(?:Text)?|Label|Description|Title|Status|Message|Legend|GridLines|Heading|Caption|Thumb|Icon|Preview|Swatch|Range|Track|Segment|Empty|Series|Line|Bar|Bars|Scatter|Pie|Donut|Heatmap|Candlesticks)$/.test(name)) return partGroups[5];
   return partGroups[1];
 }
 
-export function orderedReferenceParts(parts: readonly string[]) {
-  const order: readonly string[] = [...partGroups, "컴포저블", "팩토리와 유틸리티"];
-  return [...parts].sort((a, b) => order.indexOf(helperGroup(a) ?? componentGroup(a)) - order.indexOf(helperGroup(b) ?? componentGroup(b)));
+export function referencePartGroups(parts: readonly string[]) {
+  const byGroup = new Map<string, string[]>();
+  for (const name of parts) {
+    const title = helperGroup(name) ?? componentGroup(name);
+    const names = byGroup.get(title);
+    if (names) names.push(name);
+    else byGroup.set(title, [name]);
+  }
+  return sidebarPartGroups.flatMap((title) => {
+    const names = byGroup.get(title);
+    return names ? [{ title, names }] : [];
+  });
 }
 
 export function apiGroup(name: string, description: string) {
   if (name.startsWith("--") || name.startsWith("data-") || name.includes("CSS 변수")) return "스타일";
   if (name.startsWith("@") || /^(?:commit-edit|move-cell|edit-start|request-bulk-selection|set-row-selection|request-window|plan-change)\b/.test(name)) return "이벤트와 명령";
   if (name.includes("#")) return "슬롯";
-  if (/^(?:to|href|external|rel|target|download|prefetch(?:-on)?)(?:\b|\s)/.test(name)) return "링크";
+  if (/^(?:to|href|external|rel|target|download|no-prefetch|prefetch(?:-on)?)(?:\b|\s)/.test(name)) return "링크";
+  if (/^(?:readonly|disabled|loading|required|invalid)(?:\b|\s)/.test(name)) return "입력 상태";
   if (name.startsWith("useUI")) return "컴포저블";
   if (name.startsWith("createUI")) return "팩토리와 유틸리티";
   if (/^(?:(?:source|defaultAccessState|defaultExpansion|rowSelection|expansion|isCellDisabled)\b|controller\.)/.test(name)) return "데이터 소스와 컨트롤러";
@@ -114,10 +134,20 @@ export function groupReferences(entries: readonly ReferenceRow[], kind: "parts" 
   const order: readonly string[] = kind === "parts" ? partGroups : apiGroups;
   const groups = new Map<string, ReferenceRow[]>();
   for (const entry of entries) {
-    const group = entry.group ?? (kind === "parts" ? componentGroup(entry.name) : apiGroup(entry.name, entry.description));
+    const group = entry.group ?? (kind === "parts" ? componentGroup(entry.name) : apiGroup(entry.label ?? entry.name, entry.description));
     const rows = groups.get(group);
     if (rows) rows.push(entry);
     else groups.set(group, [entry]);
   }
-  return [...groups].sort(([a], [b]) => order.indexOf(a) - order.indexOf(b)).map(([title, entries]) => ({ id: sectionIDs[title] ?? title, title, entries }));
+  return [...groups].sort(([a], [b]) => order.indexOf(a) - order.indexOf(b)).map(([title, entries]) => ({
+    id: sectionIDs[title] ?? title,
+    title,
+    entries: title === "속성과 모델" ? [...entries].sort((a, b) => modelPriority(a.label ?? a.name) - modelPriority(b.label ?? b.name)) : entries,
+  }));
+}
+
+function modelPriority(name: string) {
+  if (name === "v-model") return 0;
+  if (name.startsWith("v-model:")) return 1;
+  return 2;
 }

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   UIAnchor,
-  UIButton,
   UIDashboard,
   UIDashboardNavbar,
   UIDashboardNavGroup,
@@ -12,17 +11,19 @@ import {
   UIInput,
   UITemporalProvider,
 } from "@connextable/ui";
-import { Search, X } from "@lucide/vue";
+import { Search } from "@lucide/vue";
 import { computed, onMounted, ref, useTemplateRef, watch } from "vue";
 import { catalog, catalogBySlug } from "~/data/catalog";
 import { catalogNavigation } from "~/data/catalog-navigation";
-import { orderedReferenceParts } from "~/data/catalog-reference";
+import { referencePartGroups } from "~/data/catalog-reference";
 import { standaloneReference } from "~/data/standalone-references";
 
 type CatalogItem = {
   path: string;
   title: string;
+  description?: string;
   parts: readonly string[];
+  partMatch?: boolean;
 };
 
 const route = useRoute();
@@ -46,42 +47,33 @@ const title = computed(() =>
 const description = computed(() =>
   catalogPage.value?.description ?? route.meta.description,
 );
-const category = computed(() => catalogPage.value?.category ?? route.meta.category);
 const standalone = computed(() => route.path.startsWith("/components/") && !catalogPage.value
   ? standaloneReference(route.path.split("/").filter(Boolean).at(-1) ?? "", route.meta.componentParts ?? [])
   : undefined);
-const categories = new Map<string, CatalogItem[]>();
+const entries = new Map<string, CatalogItem>();
 
 for (const { path, meta, aliasOf } of router.getRoutes()) {
-  if (aliasOf || typeof meta.category !== "string" || typeof meta.title !== "string") {
-    continue;
-  }
-
-  const items = categories.get(meta.category) ?? [];
-  items.push({ path, title: meta.title, parts: orderedReferenceParts(meta.componentParts ?? []) });
-  categories.set(meta.category, items);
+  if (aliasOf || !path.startsWith("/components/") || typeof meta.title !== "string") continue;
+  entries.set(path.slice("/components/".length), {
+    path, title: meta.title, description: typeof meta.description === "string" ? meta.description : undefined,
+    parts: meta.componentParts ?? [],
+  });
 }
 
-for (const { slug, title, category, parts } of catalog) {
-  const items = categories.get(category) ?? [];
-  items.push({ path: `/components/${slug}`, title, parts: orderedReferenceParts(parts ?? []) });
-  categories.set(category, items);
+for (const { slug, title, description, parts } of catalog) {
+  entries.set(slug, { path: `/components/${slug}`, title, description, parts: parts ?? [] });
 }
 
-const categoryPriority = new Map([...catalogNavigation.keys()].map((name, index) => [name, index]));
-const groups = Array.from(categories, ([category, items]) => {
-  const itemPriority = new Map(catalogNavigation.get(category)?.map((name, index) => [name, index]));
-  return {
-    category,
-    items: items.sort((a, b) =>
-      (itemPriority.get(a.title) ?? itemPriority.size) - (itemPriority.get(b.title) ?? itemPriority.size)
-      || a.title.localeCompare(b.title, "en"),
-    ),
-  };
-}).sort((a, b) =>
-  (categoryPriority.get(a.category) ?? categoryPriority.size) - (categoryPriority.get(b.category) ?? categoryPriority.size)
-  || a.category.localeCompare(b.category, "ko"),
-);
+const groups = catalogNavigation.map(({ title, slugs }) => ({
+  title,
+  items: slugs.map((slug) => {
+    const entry = entries.get(slug);
+    if (!entry) throw new Error(`Missing catalog page for ${slug}`);
+    return entry;
+  }),
+}));
+const categoryByPath = new Map(groups.flatMap(({ title, items }) => items.map(({ path }) => [path, title] as const)));
+const category = computed(() => categoryByPath.get(route.path));
 
 function normalizeSearch(value: string) {
   return value.normalize("NFKC").toLowerCase().replace(/[\s_-]+/gu, "");
@@ -99,7 +91,8 @@ const visibleGroups = computed(() => {
       const parts = item.parts.filter((part) =>
         normalizeSearch(part).includes(query.value),
       );
-      return parts.length ? [{ ...item, parts }] : [];
+      if (parts.length) return [{ ...item, parts, partMatch: true }];
+      return [group.title, item.description ?? ""].some(text => normalizeSearch(text).includes(query.value)) ? [item] : [];
     });
     return items.length ? [{ ...group, items }] : [];
   });
@@ -125,9 +118,9 @@ watch([sidebar, navbar], ([sidebarComponent, navbarComponent], _, onCleanup) => 
   onCleanup(() => observer.disconnect());
 }, { flush: "post" });
 
-function isExpanded({ path, title }: CatalogItem) {
+function isExpanded({ path, partMatch }: CatalogItem) {
   if (query.value) {
-    return expandedSearchItems.value[path] ?? !normalizeSearch(title).includes(query.value);
+    return expandedSearchItems.value[path] ?? Boolean(partMatch);
   }
 
   return expandedItems.value[path] ?? false;
@@ -184,13 +177,10 @@ onMounted(() => { mounted.value = true; });
               aria-label="컴포넌트 검색"
               placeholder="컴포넌트 검색"
               autocomplete="off"
+              clearable
+              clear-label="검색어 지우기"
             >
               <template #leading><Search aria-hidden="true" /></template>
-              <template v-if="searchQuery" #trailing>
-                <UIButton size="sm" variant="ghost" icon-only aria-label="검색어 지우기" @click="clearSearch">
-                  <template #leading><X /></template>
-                </UIButton>
-              </template>
             </UIInput>
           </div>
         </template>
@@ -204,8 +194,8 @@ onMounted(() => { mounted.value = true; });
         </UIDashboardNavGroup>
         <UIDashboardNavGroup
           v-for="group in visibleGroups"
-          :key="group.category"
-          :label="group.category"
+          :key="group.title"
+          :label="group.title"
         >
           <UIDashboardNavItem
             v-for="item in group.items"
@@ -224,20 +214,25 @@ onMounted(() => { mounted.value = true; });
               <span>{{ item.title }}</span>
             </UIAnchor>
             <template v-if="item.parts.length" #children>
-              <UIDashboardNavItem v-for="part in item.parts" :key="part">
-                <UIAnchor
-                  class="playground-sidebar-link"
-                  :to="{ path: item.path, hash: `#${part}` }"
-                  :aria-label="part"
-                  :title="part"
-                  :current="route.path === item.path && selectedPart === part ? 'location' : undefined"
-                >
-                  <span v-if="part.startsWith(item.title)" class="playground-sidebar-part">
-                    <span>{{ item.title }}</span><span>{{ part.slice(item.title.length) }}</span>
-                  </span>
-                  <span v-else>{{ part }}</span>
-                </UIAnchor>
-              </UIDashboardNavItem>
+              <li v-for="section in referencePartGroups(item.parts)" :key="section.title" class="playground-sidebar-part-group">
+                <span class="playground-sidebar-part-label">{{ section.title }}</span>
+                <ul :aria-label="section.title" role="list">
+                  <UIDashboardNavItem v-for="part in section.names" :key="part">
+                    <UIAnchor
+                      class="playground-sidebar-link"
+                      :to="{ path: item.path, hash: `#${part}` }"
+                      :aria-label="part"
+                      :title="part"
+                      :current="route.path === item.path && selectedPart === part ? 'location' : undefined"
+                    >
+                      <span v-if="part.startsWith(item.title)" class="playground-sidebar-part">
+                        <span>{{ item.title }}</span><span>{{ part.slice(item.title.length) }}</span>
+                      </span>
+                      <span v-else>{{ part }}</span>
+                    </UIAnchor>
+                  </UIDashboardNavItem>
+                </ul>
+              </li>
             </template>
           </UIDashboardNavItem>
         </UIDashboardNavGroup>
@@ -391,6 +386,23 @@ body {
   max-inline-size: 100%;
 }
 
+.playground-sidebar-part-group > ul {
+  display: grid;
+  gap: var(--ui-space-2xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.playground-sidebar-part-label {
+  display: block;
+  padding: var(--ui-space-xs) var(--ui-control-padding-inline);
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-metadata);
+  font-weight: 650;
+  word-break: keep-all;
+}
+
 .playground-main.ui-dashboard-panel {
   --ui-dashboard-bar-padding-inline: clamp(1.25rem, 4vw, 3rem);
   --ui-dashboard-panel-padding: clamp(1.25rem, 4vw, 3rem);
@@ -445,11 +457,12 @@ body {
 }
 
 .playground-document__outline {
+  --playground-outline-height: calc(100dvh - var(--playground-sticky-height) - 1.5rem - var(--ui-dashboard-panel-padding));
   position: sticky;
   grid-area: outline;
   inset-block-start: calc(var(--playground-sticky-height) + 1.5rem);
   box-sizing: border-box;
-  max-block-size: calc(100dvh - var(--playground-sticky-height) - 1.5rem - var(--ui-dashboard-panel-padding));
+  max-block-size: var(--playground-outline-height);
   padding-block: 0.375rem;
 }
 
