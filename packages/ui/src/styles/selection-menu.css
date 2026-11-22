@@ -102,7 +102,7 @@
   text-align: start;
   text-decoration: none;
   overflow-wrap: anywhere;
-  cursor: pointer;
+  cursor: var(--ui-input-state-cursor, pointer);
   transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
 
   &[hidden] {
@@ -129,7 +129,7 @@
 
   &[aria-disabled="true"] {
     color: var(--ui-color-disabled);
-    cursor: default;
+    cursor: not-allowed;
   }
 
   > :is(kbd, .ui-menu-item__chevron, [data-part="item-chevron"], [data-part="item-indicator"]) {
@@ -313,7 +313,7 @@
   color: var(--ui-color-text);
   font: 600 var(--ui-font-size-body-sm)/1.35 var(--ui-font-sans);
   overflow-wrap: anywhere;
-  cursor: pointer;
+  cursor: var(--ui-input-state-cursor, pointer);
   transition: none;
 
   &:is([aria-selected="true"], [aria-pressed="true"]) {
@@ -332,11 +332,11 @@
 
   &:is(:disabled, [aria-disabled="true"]):not([aria-selected="true"], [aria-pressed="true"]) {
     color: var(--ui-color-disabled);
-    cursor: default;
+    cursor: not-allowed;
   }
 
   @media (hover: hover) {
-    &:hover:not([aria-selected="true"], [aria-pressed="true"], :disabled, [aria-disabled="true"]) {
+    &:hover:not([aria-selected="true"], [aria-pressed="true"], :disabled, [aria-disabled="true"], [data-readonly] *) {
       background: var(--ui-color-surface-hover);
     }
   }
@@ -403,7 +403,7 @@
 
   &[aria-disabled="true"] {
     color: var(--ui-color-disabled);
-    cursor: default;
+    cursor: not-allowed;
   }
 }
 
@@ -442,11 +442,11 @@
   cursor: context-menu;
 }
 
-.ui-popup-trigger:enabled:not([data-ui-readonly]) {
+.ui-popup-trigger:enabled:not([data-ui-readonly], [data-ui-input-state], [aria-disabled="true"]) {
   cursor: pointer;
 }
 
-.ui-popup-trigger:enabled:not([data-ui-readonly]):active {
+.ui-popup-trigger:enabled:not([data-ui-readonly], [data-ui-input-state], [aria-disabled="true"]):active {
   background: var(--ui-color-surface-active);
 }
 

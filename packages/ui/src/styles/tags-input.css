@@ -74,7 +74,7 @@
 
 .ui-tags-input:is([data-readonly], [data-disabled]) [data-scope="tags-input"][data-part="input"] {
   caret-color: transparent;
-  cursor: default;
+  cursor: var(--ui-input-state-cursor);
 }
 
 .ui-tags-input[data-readonly] {
@@ -130,7 +130,7 @@
 
 .ui-tags-input [data-part="item-delete"]:disabled {
   color: var(--ui-color-disabled);
-  cursor: default;
+  cursor: not-allowed;
 }
 
 .ui-tags-input__chip .ui-tags-input__handle:focus-visible {

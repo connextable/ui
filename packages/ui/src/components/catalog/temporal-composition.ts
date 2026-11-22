@@ -14,6 +14,7 @@ import { applyDateTimeRangePickerEvent, createDateTimeRangePickerState, type Dat
 import { compareTimeValues, type TimeValue } from "@sectile/temporal/time-field";
 import { defineComponent, h, shallowRef, type Component } from "vue";
 import { controlFlag } from "../clear/clearable";
+import { inputStateAttrs } from "../control-attrs";
 import UICalendarPeriodHeader from "./UICalendarPeriodHeader.vue";
 import UIDatePickerValue from "./UIDatePickerValue.vue";
 import UIDateRangePickerValue from "./UIDateRangePickerValue.vue";
@@ -101,7 +102,12 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
           : week ? [DatePickerNextWeek, labels.nextWeek] as const : [DatePickerNextMonth, labels.nextMonth] as const;
         const previousButton = () => h(previous[0], { "aria-label": previous[1] }, () => h(ChevronLeft, { size: 16, "aria-hidden": true }));
         const nextButton = () => h(next[0], { "aria-label": next[1] }, () => h(ChevronRight, { size: 16, "aria-hidden": true }));
-        const cells = () => h(grid, { "data-view": choosingYear || kind === "month" ? undefined : state.viewMode }, () =>
+        const cells = () => h(grid, {
+          "data-view": choosingYear || kind === "month" ? undefined : state.viewMode,
+          "aria-readonly": state.readonly && !state.disabled || undefined,
+          "aria-disabled": state.disabled || undefined,
+          ...inputStateAttrs(state.disabled, state.readonly),
+        }, () =>
           choosingYear ? state.years.flat().map(value => h(yearCell ?? YearPickerCell, { key: value.year, value }, () => display.year(value)))
             : choosingMonth ? state.months.flat().map(value => h(monthCell ?? (kind === "month" ? MonthPickerCell : DatePickerMonthCell), { key: value.month, value }, () => display.month(value)))
             : state.dates.flat().map(value => h(cell, { key: `${value.year}-${value.month}-${value.day}`, value }, () => display.day(value))));
@@ -173,7 +179,7 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
           ]);
         }
         return [
-          h(anchor, null, () => [
+          h(anchor, inputStateAttrs(state.disabled, state.readonly), () => [
             ...renderInputs(),
             value,
             h(DatePickerTrigger, { "aria-label": triggerLabel }, () => h(CalendarDays, { size: 18, "aria-hidden": true })),

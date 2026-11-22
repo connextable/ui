@@ -138,10 +138,6 @@ provideClearable({
   align-self: stretch;
 }
 
-.ui-radio-group :deep(.ui-radio-group__options[aria-readonly="true"] > .ui-choice) {
-  cursor: default;
-}
-
 .ui-radio-group__ring {
   display: grid;
   flex: none;

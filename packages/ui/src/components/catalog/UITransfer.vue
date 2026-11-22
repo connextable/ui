@@ -185,7 +185,7 @@ defineExpose({
   border-radius: inherit;
   font-size: var(--ui-font-size-body-sm);
   overflow-wrap: anywhere;
-  cursor: pointer;
+  cursor: var(--ui-input-state-cursor, pointer);
 }
 
 .ui-transfer__item[data-highlighted] {
@@ -195,11 +195,6 @@ defineExpose({
 .ui-transfer__item[aria-selected="true"] {
   background: var(--ui-color-accent-soft);
   color: var(--ui-color-accent);
-}
-
-.ui-transfer__item[aria-disabled="true"],
-.ui-transfer__list[aria-readonly="true"] .ui-transfer__item {
-  cursor: default;
 }
 
 .ui-transfer__item[aria-disabled="true"] {

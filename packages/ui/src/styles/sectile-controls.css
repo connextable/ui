@@ -22,7 +22,7 @@
     transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
   }
 
-  :where(button[data-scope][data-part]):where(:hover:not(:disabled, [aria-disabled="true"])) {
+  :where(button[data-scope][data-part]):where(:hover:not(:disabled, [aria-disabled="true"], [aria-readonly="true"], [data-readonly] *)) {
     background: var(--ui-color-surface-hover);
   }
 
@@ -33,7 +33,7 @@
 
   :where([data-scope][data-part]):where(:disabled, [aria-disabled="true"]) {
     color: var(--ui-color-disabled);
-    cursor: default;
+    cursor: var(--ui-input-state-cursor, not-allowed);
   }
 
   :where([data-scope][data-part]):where([aria-selected="true"], [aria-checked="true"], [aria-pressed="true"], [aria-current="page"], [data-state="selected"]) {
@@ -54,7 +54,7 @@
   }
 
   :where(input[data-scope][data-part], textarea[data-scope][data-part]):where([readonly], [aria-readonly="true"]) {
-    background: var(--ui-color-surface-readonly);
+    background: var(--ui-input-state-surface, var(--ui-color-surface-readonly));
     caret-color: transparent;
     cursor: default;
   }

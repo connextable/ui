@@ -50,26 +50,26 @@
     opacity: 1;
   }
 
-  &:is([data-ui-readonly], [readonly], [aria-readonly="true"], [data-readonly],
+  &:is([data-ui-input-state="readonly"], [data-ui-readonly], [readonly], [aria-readonly="true"], [data-readonly],
     :has(> :is(input, textarea)[readonly]:not([hidden], [type="hidden"])):not(:has(> [data-part="trigger"]:enabled))
   ) {
     --ui-field-border: var(--ui-color-border);
-    --ui-field-surface: var(--ui-color-surface-readonly);
+    --ui-field-surface: var(--ui-input-state-surface, var(--ui-color-surface-readonly));
     caret-color: transparent;
     cursor: default;
   }
 
-  &:hover:where(:not(:disabled, :focus-within, [data-ui-readonly], [readonly], [aria-readonly="true"], [data-readonly],
+  &:hover:where(:not(:disabled, :focus-within, [data-ui-input-state], [data-ui-readonly], [readonly], [aria-readonly="true"], [data-readonly],
     :has(> :is(input, textarea):is(:disabled, [readonly]):not([hidden], [type="hidden"])):not(:has(> [data-part="trigger"]:enabled))
   )) {
     --ui-field-border: var(--ui-color-border-hover);
   }
 
-  &:is(:disabled, [data-disabled], :has(> :is(input, textarea):disabled, > [data-part="trigger"]:disabled)) {
+  &:is(:disabled, [aria-disabled="true"], [data-ui-input-state="disabled"], [data-disabled], :has(> :is(input, textarea):disabled, > [data-part="trigger"]:disabled)) {
     --ui-field-border: var(--ui-color-border);
-    --ui-field-surface: var(--ui-color-surface-muted);
-    color: var(--ui-color-disabled);
-    cursor: default;
+    --ui-field-surface: var(--ui-input-state-surface, var(--ui-color-surface-muted));
+    color: var(--ui-input-state-ink, var(--ui-color-disabled));
+    cursor: not-allowed;
   }
 
   &:is(:focus-visible, :has(> :focus-visible, > :is(label, [role="group"]) > .ui-temporal-input:focus-visible)),
@@ -159,13 +159,15 @@
     border-color: var(--ui-color-danger);
   }
 
-  &:is([data-readonly], :has(input[readonly])) {
-    background: var(--ui-color-surface-readonly);
+  &:is([data-ui-input-state="readonly"], [data-readonly], :has(input[readonly])) {
+    background: var(--ui-input-state-surface, var(--ui-color-surface-readonly));
+    cursor: default;
   }
 
-  &:is([data-disabled], :has(input:disabled)) {
-    background: var(--ui-color-surface-muted);
-    color: var(--ui-color-disabled);
+  &:is([data-ui-input-state="disabled"], [data-disabled], :has(input:disabled)) {
+    background: var(--ui-input-state-surface, var(--ui-color-surface-muted));
+    color: var(--ui-input-state-ink, var(--ui-color-disabled));
+    cursor: not-allowed;
   }
 
   :where(input, button[data-part="increment"], button[data-part="decrement"], .ui-select-trigger) {

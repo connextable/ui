@@ -13,7 +13,7 @@
   color: var(--ui-color-text);
   font: inherit;
   text-align: start;
-  cursor: pointer;
+  cursor: var(--ui-input-state-cursor, pointer);
   transition:
     background-color var(--ui-motion-fast) var(--ui-ease-out),
     border-color var(--ui-motion-fast) var(--ui-ease-out);
@@ -25,11 +25,13 @@
   background: var(--ui-color-surface);
 }
 
-.ui-choice:enabled:hover {
+.ui-choice:enabled:hover:not([aria-readonly="true"], [aria-readonly="true"] *) {
   background: var(--ui-color-surface-hover);
 }
 
-.ui-choice[data-variant="card"]:is([aria-checked="true"], [aria-checked="mixed"]) {
+.ui-choice[data-variant="card"]:is([aria-checked="true"], [aria-checked="mixed"]):not(:where(
+  :disabled, [aria-disabled="true"], [aria-disabled="true"] *, [aria-readonly="true"], [aria-readonly="true"] *
+)) {
   border-color: var(--ui-color-accent);
   background: var(--ui-color-accent-soft);
 }
@@ -37,15 +39,6 @@
 .ui-choice:focus-visible {
   outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
   outline-offset: var(--ui-focus-ring-offset);
-}
-
-.ui-choice:disabled {
-  opacity: 0.55;
-}
-
-.ui-choice:disabled,
-.ui-choice[aria-readonly="true"] {
-  cursor: default;
 }
 
 .ui-choice__copy {
@@ -99,6 +92,7 @@
   background: transparent;
   color: var(--ui-color-text);
   text-align: start;
+  cursor: var(--ui-input-state-cursor, pointer);
 
   &:hover:not(:disabled, [aria-disabled="true"], [aria-readonly="true"]) {
     background: var(--ui-color-surface-hover);
@@ -116,4 +110,16 @@
     display: flex;
     flex: none;
   }
+}
+
+:is(.ui-choice, [data-scope="checkbox-group"][data-part="item"], [data-scope="checkbox-tree"][data-part="item"]):where(
+  :disabled, [aria-disabled="true"], [aria-disabled="true"] *, [aria-readonly="true"], [aria-readonly="true"] *
+) {
+  background: var(--ui-input-state-surface);
+  color: var(--ui-input-state-ink, var(--ui-color-text));
+  cursor: var(--ui-input-state-cursor);
+}
+
+:where([data-scope="checkbox-tree"][data-part="disclosure"]:enabled:not([aria-disabled="true"])) {
+  cursor: pointer;
 }

@@ -1,0 +1,56 @@
+/* Native controls and Sectile parts share state tokens. Disabled takes precedence. */
+:where(input[readonly], textarea[readonly], [aria-readonly="true"], [data-readonly],
+  [data-ui-readonly], [data-ui-input-state="readonly"]) {
+  --ui-input-state-surface: var(--ui-color-surface-readonly);
+  --ui-input-state-cursor: default;
+}
+
+:where(:disabled, [aria-disabled="true"], [data-disabled], [data-ui-input-state="disabled"]) {
+  --ui-input-state-surface: var(--ui-color-surface-muted);
+  --ui-input-state-ink: var(--ui-color-disabled);
+  --ui-input-state-cursor: not-allowed;
+}
+
+:is(input, textarea, button, [data-part], [data-ui-input-state]):where(
+  :disabled, [aria-disabled="true"], [aria-readonly="true"], [readonly],
+  [data-disabled], [data-readonly], [data-ui-readonly], [data-ui-input-state]
+) {
+  cursor: var(--ui-input-state-cursor);
+}
+
+:where(input[data-scope][data-part], textarea[data-scope][data-part]):is(:disabled, [readonly]) {
+  color: var(--ui-input-state-ink, var(--ui-color-text));
+}
+
+/* Keep value targets visually locked while disclosure and calendar navigation stay available. */
+:where([data-scope="transfer"][data-part="item"], [data-scope="listbox"][data-part="item"],
+  [data-scope="cascade-list"][data-part="item"], [data-scope="toggle-group"][data-part="item"],
+  [data-scope="rating"][data-part="item"], [data-scope="color-picker"][data-part="area"],
+  [data-scope="color-picker"][data-part="native-input"], [data-scope="editable"][data-part="preview"],
+  [data-scope="slider"][data-part="track"], [data-scope="multi-thumb-slider"][data-part="track"],
+  :is([data-scope="calendar"], [data-scope="range-calendar"], [data-scope^="date"],
+    [data-scope^="month-"], [data-scope^="year-"]):is([data-part="cell"], [data-part="month-cell"], [data-part="year-cell"])
+) {
+  cursor: var(--ui-input-state-cursor, pointer);
+}
+
+:where([role="grid"][data-ui-input-state]) {
+  border-radius: var(--ui-radius-sm);
+  background: var(--ui-input-state-surface);
+}
+
+:where([data-ui-input-state="readonly"][tabindex="0"]):focus-visible {
+  outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
+  outline-offset: var(--ui-focus-ring-offset);
+}
+
+:where([data-scope="color-picker"], [data-scope="listbox"], [data-scope="cascade-list"],
+  [data-scope="transfer"], [data-scope="rating"], [data-scope="toggle-group"]
+)[data-part="root"]:where([aria-readonly="true"], [aria-disabled="true"], [data-readonly], [data-disabled]) {
+  border-radius: var(--ui-control-radius);
+  background-color: var(--ui-input-state-surface);
+}
+
+:where([data-scope="slider"], [data-scope="multi-thumb-slider"])[data-part="track"]::before {
+  background: var(--ui-input-state-surface, var(--ui-color-surface));
+}

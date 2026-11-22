@@ -9,6 +9,7 @@ import {
 } from "@sectile/vue/cascade-select";
 import { defineComponent, h, type Component } from "vue";
 import { controlFlag } from "../clear/clearable";
+import { inputStateAttrs } from "../control-attrs";
 import UICascadeSelectTrigger from "./UICascadeSelectTrigger.vue";
 
 type CascadeOptions = { columnLabels?: readonly string[] };
@@ -69,7 +70,11 @@ export const CascadeSelectComposition = defineComponent({
       const labelFor = (attrs.textValue ?? attrs["text-value"] ?? idText) as typeof idText;
       return h(CascadeSelectRoot as Component, bindings, {
         default: (state: CascadeListRootSlotProps) => [
-          h(UICascadeSelectTrigger, { "aria-label": attrs.label as string | undefined },
+          h(UICascadeSelectTrigger, {
+            "aria-label": attrs.label as string | undefined,
+            "aria-description": state.readonly && !state.disabled ? "읽기 전용" : undefined,
+            ...inputStateAttrs(state.disabled, state.readonly),
+          },
             () => h(CascadeSelectValue, { placeholder: (placeholder ?? "항목 선택") as string })),
           h(CascadeSelectContent, null, () => renderCascadeColumns(state, labelFor, labels, selectParts)),
         ],

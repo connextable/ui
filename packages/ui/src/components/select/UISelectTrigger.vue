@@ -29,6 +29,7 @@ function triggerBindings(attrs: Record<string, unknown>) {
       aria.value.label && !aria.value.labelledby && valueId,
     ].filter(Boolean).join(" ") || undefined,
     "aria-invalid": aria.value.invalid ?? attrs["aria-invalid"],
+    "aria-description": attrs["aria-description"] ?? (readonly.value ? "읽기 전용" : undefined),
   });
 }
 </script>

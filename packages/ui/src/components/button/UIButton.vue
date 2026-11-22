@@ -171,11 +171,11 @@ function onClick(event: MouseEvent) {
   --ui-button-fill: transparent;
 }
 
-.ui-button:not(:disabled, [data-disabled], [data-loading]):hover {
+.ui-button:not(:disabled, [data-disabled], [data-loading], [data-readonly]):hover {
   background: var(--ui-button-hover);
 }
 
-.ui-button:not(:disabled, [data-disabled], [data-loading]):active,
+.ui-button:not(:disabled, [data-disabled], [data-loading], [data-readonly]):active,
 .ui-button:not(:disabled, [data-disabled])[aria-pressed="true"] {
   background: var(--ui-button-pressed);
 }
@@ -190,9 +190,19 @@ function onClick(event: MouseEvent) {
 }
 
 .ui-button:is(:disabled, [data-disabled]) {
-  background: var(--ui-color-surface-muted);
-  color: var(--ui-color-disabled);
-  cursor: default;
+  background: var(--ui-input-state-surface, var(--ui-color-surface-muted));
+  color: var(--ui-input-state-ink, var(--ui-color-disabled));
+  cursor: not-allowed;
+}
+
+.ui-button[data-readonly]:not(:disabled, [data-disabled]) {
+  background: var(--ui-input-state-surface);
+  color: var(--ui-color-text);
+  cursor: var(--ui-input-state-cursor);
+}
+
+.ui-button[data-readonly][aria-pressed="true"]:not(:disabled, [data-disabled]) {
+  border-color: var(--ui-color-accent);
 }
 
 .ui-button:not(:disabled, [data-disabled])[data-loading] {

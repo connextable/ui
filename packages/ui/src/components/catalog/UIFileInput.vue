@@ -15,7 +15,7 @@ import { computed, ref, useId, useTemplateRef } from "vue";
 import UIButton from "../button/UIButton.vue";
 import UIClearButton from "../clear/UIClearButton.vue";
 import type { ClearableProps } from "../clear/clearable";
-import { definedControlAttrs } from "../control-attrs";
+import { definedControlAttrs, inputStateAttrs } from "../control-attrs";
 import UIFileRow from "./UIFileRow.vue";
 
 defineOptions({ inheritAttrs: false });
@@ -108,20 +108,25 @@ defineExpose({
 <template>
   <FileInputRoot ref="picker" v-bind="{ ...rootProps, ...$attrs }" v-slot="state">
     <slot v-if="$slots.default" v-bind="state" />
-    <div v-else class="ui-file-input" :data-inline-file="inlineFile || undefined" @paste="paste($event, state)">
+    <div v-else class="ui-file-input" :data-inline-file="inlineFile || undefined"
+      v-bind="inputStateAttrs(state.disabled, state.readonly)"
+      :role="state.readonly && !state.disabled ? 'group' : undefined"
+      :aria-label="state.readonly ? label ?? '선택한 파일' : undefined"
+      :aria-description="state.readonly ? '읽기 전용' : undefined"
+      :tabindex="state.readonly && !state.disabled ? 0 : undefined"
+      @paste="paste($event, state)">
       <FileInputInput class="ui-file-input__native" tabindex="-1" :aria-label="label" />
       <template v-if="inlineFile">
         <UIFileRow
           :file="state.files[0]"
           :size="size"
           :preview="preview"
-          :data-ui-readonly="state.readonly || undefined"
-          :data-disabled="state.disabled || undefined"
+          v-bind="inputStateAttrs(state.disabled, state.readonly)"
           :aria-invalid="state.error ? 'true' : undefined"
         >
           <template v-if="!state.files.length" #icon><Paperclip :size="18" /></template>
-          <template v-if="!state.files.length" #name>{{ pickerLabel ?? '파일 선택' }}</template>
-          <template #picker>
+          <template v-if="!state.files.length" #name>{{ state.readonly ? '선택한 파일 없음' : pickerLabel ?? '파일 선택' }}</template>
+          <template v-if="!state.readonly || state.disabled" #picker>
             <FileInputTrigger
               ref="trigger"
               as-child
@@ -141,7 +146,7 @@ defineExpose({
         <small v-if="hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>
       </template>
       <template v-else>
-        <FileInputDropzone v-if="variant === 'dropzone'" as-child>
+        <FileInputDropzone v-if="variant === 'dropzone' && (!state.readonly || state.disabled)" as-child>
           <FileInputTrigger
             ref="trigger"
             class="ui-field-control ui-file-input__picker"
@@ -164,13 +169,14 @@ defineExpose({
           </FileInputTrigger>
         </FileInputDropzone>
         <div
-          v-if="variant === 'compact' || clearable && state.files.length > 1 && !state.readonly && !state.disabled"
+          v-if="variant === 'compact' || state.readonly || clearable && state.files.length > 1 && !state.disabled"
           class="ui-file-input__options"
           :data-layout="variant"
         >
           <div class="ui-file-input__controls">
-            <template v-if="variant === 'compact'">
+            <template v-if="variant === 'compact' || state.readonly">
               <FileInputTrigger
+                v-if="!state.readonly || state.disabled"
                 ref="trigger"
                 as-child
                 :aria-describedby="[hint && `${id}-hint`, state.error && `${id}-error`].filter(Boolean).join(' ') || undefined"
@@ -189,7 +195,7 @@ defineExpose({
               <UIClearButton :label="clearLabel ?? '파일 모두 지우기'" @click="focusTrigger" />
             </FileInputClear>
           </div>
-          <small v-if="variant === 'compact' && hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>
+          <small v-if="(variant === 'compact' || state.readonly) && hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>
         </div>
       </template>
       <p v-if="state.error" :id="`${id}-error`" class="ui-file-input__error" role="alert">
@@ -197,7 +203,7 @@ defineExpose({
       </p>
       <TransitionGroup v-if="!inlineFile" tag="ul" name="ui-file" class="ui-file-input__files" aria-label="선택한 파일">
         <li v-for="({ file, key }, index) in fileRows(state.files)" :key="key">
-          <UIFileRow :file="file" :size="size" :preview="preview">
+          <UIFileRow :file="file" :size="size" :preview="preview" v-bind="inputStateAttrs(state.disabled, state.readonly)">
             <template v-if="clearable && !state.disabled && !state.readonly" #actions>
               <UIClearButton :label="`${file.name} 제거`" @click="remove(index, state)" />
             </template>

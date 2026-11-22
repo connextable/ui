@@ -1,10 +1,10 @@
 <script setup lang="ts" generic="Value extends string | number = string">
 import { TextField, type TextFieldProps } from "@sectile/vue/text";
-import { provideFormControlReset, useFormFieldDefaults } from "@sectile/vue/form-boundary";
+import { provideFormControlReset } from "@sectile/vue/form-boundary";
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 import UIClearButton from "../clear/UIClearButton.vue";
 import type { ClearableProps } from "../clear/clearable";
-import { definedControlAttrs } from "../control-attrs";
+import { definedControlAttrs, useInputState } from "../control-attrs";
 
 defineOptions({ inheritAttrs: false });
 defineSlots<{
@@ -24,11 +24,10 @@ const { size = "md", variant = "outline", disabled = undefined, readonly = undef
 const emit = defineEmits<{ "update:modelValue": [value: Value] }>();
 const control = useTemplateRef<InstanceType<typeof TextField>>("control");
 defineExpose({ control, focus });
-const defaults = useFormFieldDefaults();
+const state = useInputState({ get disabled() { return disabled; }, get readonly() { return readonly; } });
 const initialText = String(fieldProps.defaultValue ?? "");
 const text = ref(String(fieldProps.modelValue ?? initialText));
-const canClear = computed(() => clearable && text.value !== "" &&
-  !(disabled ?? defaults?.value.disabled) && !(readonly ?? defaults?.value.readonly));
+const canClear = computed(() => clearable && text.value !== "" && state.editable.value);
 watch(() => fieldProps.modelValue, value => {
   if (value !== undefined) text.value = String(value);
 });
@@ -66,7 +65,7 @@ function focus(options?: FocusOptions) {
 }
 
 function focusFromFrame(event: MouseEvent) {
-  if (disabled || event.defaultPrevented) return;
+  if (state.disabled.value || event.defaultPrevented) return;
 
   for (const target of event.composedPath()) {
     if (target === event.currentTarget) break;
@@ -83,6 +82,7 @@ function focusFromFrame(event: MouseEvent) {
   <div
     v-if="$slots.leading || $slots.trailing || clearable"
     class="ui-field-control ui-inset-frame ui-input ui-input--with-slots"
+    v-bind="state.attrs.value"
     :class="$attrs.class"
     :style="$attrs.style"
     :data-size="size"

@@ -23,7 +23,7 @@ const { as, asChild, size = "md", variant = "outline" } = defineProps<MenuPartPr
       :data-variant="asChild ? undefined : variant"
     >
       <slot v-if="asChild" v-bind="state" />
-      <UIPopupTriggerContent v-else>
+      <UIPopupTriggerContent v-else :hide-indicator="state.readonly">
         <template v-if="$slots.leading" #leading><slot name="leading" /></template>
         <slot v-bind="state" />
         <template v-if="$slots.trailing" #trailing><slot name="trailing" /></template>

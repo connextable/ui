@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { NumberField, type NumberFieldExpose, type NumberFieldProps } from "@sectile/vue/number-field";
-import { provideFormControlReset, useFormFieldDefaults } from "@sectile/vue/form-boundary";
+import { provideFormControlReset } from "@sectile/vue/form-boundary";
 import { computed, nextTick, ref, useId, useTemplateRef, watch } from "vue";
 import UIClearButton from "../clear/UIClearButton.vue";
 import type { ClearableProps } from "../clear/clearable";
-import { definedControlAttrs } from "../control-attrs";
+import { definedControlAttrs, useInputState } from "../control-attrs";
 
 defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "for" });
 
@@ -16,11 +16,10 @@ const control = useTemplateRef<InstanceType<typeof NumberField>>("control");
 const pointerFocus = ref(false);
 const unitId = useId();
 const unavailable = { status: "rejected", reason: "unavailable" } as const;
-const defaults = useFormFieldDefaults();
+const state = useInputState({ get disabled() { return disabled; }, get readonly() { return readonly; } });
 const initialText = fieldProps.defaultValue ?? "";
 const text = ref(fieldProps.modelValue === undefined ? initialText : fieldProps.modelValue ?? "");
-const canClear = computed(() => clearable && text.value !== "" &&
-  !(disabled ?? defaults?.value.disabled) && !(readonly ?? defaults?.value.readonly));
+const canClear = computed(() => clearable && text.value !== "" && state.editable.value);
 watch(() => fieldProps.modelValue, value => {
   if (value !== undefined) text.value = value ?? "";
 });
@@ -74,6 +73,7 @@ async function clear() {
 <template>
   <span
     class="ui-number-control"
+    v-bind="state.attrs.value"
     :class="$attrs.class"
     :style="$attrs.style"
     :data-pointer-focus="pointerFocus || undefined"

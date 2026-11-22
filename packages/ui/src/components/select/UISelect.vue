@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { provideFormControlReset, useFormFieldDefaults } from "@sectile/vue/form-boundary";
+import { provideFormControlReset } from "@sectile/vue/form-boundary";
 import { SelectRoot, type SelectRootProps, type SelectRootSlotProps } from "@sectile/vue/select";
 import { computed, provide, ref, useId, watch, type AriaAttributes } from "vue";
 import { provideClearable, useClearableValue, type ClearableProps } from "../clear/clearable";
-import { definedControlAttrs } from "../control-attrs";
+import { definedControlAttrs, useInputState } from "../control-attrs";
 import { useSelectionOptions } from "../selection/selection-options";
 import UISelectContent from "./UISelectContent.vue";
 import UISelectTrigger from "./UISelectTrigger.vue";
@@ -39,11 +39,13 @@ const emit = defineEmits<{
 defineSlots<{ default?(state: SelectRootSlotProps): unknown }>();
 
 const uid = useId();
-const fieldDefaults = useFormFieldDefaults();
-const isReadonly = computed(() => props.readonly ?? fieldDefaults?.value.readonly ?? false);
+const { readonly: isReadonly, editable } = useInputState({
+  get disabled() { return props.options.length ? props.disabled : true; },
+  get readonly() { return props.readonly; },
+});
 const initialOpen = Boolean(props.defaultOpen);
-const localOpen = ref(!isReadonly.value && initialOpen);
-const menuOpen = computed(() => !isReadonly.value && (props.open ?? localOpen.value));
+const localOpen = ref(editable.value && initialOpen);
+const menuOpen = computed(() => editable.value && (props.open ?? localOpen.value));
 const selection = useClearableValue(
   () => props.modelValue,
   props.defaultValue ?? null,
@@ -52,14 +54,14 @@ const selection = useClearableValue(
 
 provideFormControlReset(() => {
   selection.reset();
-  if (props.open === undefined) localOpen.value = !isReadonly.value && initialOpen;
+  if (props.open === undefined) localOpen.value = editable.value && initialOpen;
 });
-watch(isReadonly, (readonly) => {
-  if (readonly) localOpen.value = false;
+watch(editable, (available) => {
+  if (!available) localOpen.value = false;
 });
 
 function updateOpen(open: boolean) {
-  if (isReadonly.value && open) return;
+  if (!editable.value && open) return;
   if (props.open === undefined) localOpen.value = open;
   emit("update:open", open);
 }

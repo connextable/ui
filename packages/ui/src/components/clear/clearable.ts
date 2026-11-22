@@ -1,5 +1,6 @@
-import { provideFormControlReset, useFormFieldDefaults } from "@sectile/vue/form-boundary";
+import { provideFormControlReset } from "@sectile/vue/form-boundary";
 import { computed, inject, provide, shallowRef, type InjectionKey, type Ref } from "vue";
+import { useInputState } from "../control-attrs";
 
 export interface ClearableProps {
   clearable?: boolean;
@@ -48,10 +49,11 @@ export function provideClearable(options: {
   clear: () => void;
   reset?: () => void;
 }) {
-  const defaults = useFormFieldDefaults();
-  const visible = computed(() => Boolean(options.enabled() && options.hasValue() &&
-    !(options.disabled() ?? defaults?.value.disabled) &&
-    !(options.readonly() ?? defaults?.value.readonly)));
+  const { editable } = useInputState({
+    get disabled() { return options.disabled(); },
+    get readonly() { return options.readonly(); },
+  });
+  const visible = computed(() => Boolean(options.enabled() && options.hasValue() && editable.value));
   provide(clearKey, {
     enabled: computed(() => Boolean(options.enabled())),
     visible,

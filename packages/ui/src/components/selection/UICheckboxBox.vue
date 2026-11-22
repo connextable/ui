@@ -65,7 +65,7 @@ import { Check, Minus } from "@lucide/vue";
 }
 
 .ui-checkbox__box > :slotted(.ui-checkbox__control:disabled) {
-  cursor: default;
+  cursor: not-allowed;
 }
 
 .ui-checkbox__marks {

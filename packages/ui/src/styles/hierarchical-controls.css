@@ -80,11 +80,6 @@
   color: var(--ui-color-text);
 }
 
-:where([data-scope="checkbox-tree"])[data-part="item"][aria-disabled="true"] {
-  color: var(--ui-color-disabled);
-  opacity: 0.7;
-}
-
 :where([data-scope="tree-view"], [data-scope="tree-select"])[data-part="item"]:where([aria-selected="true"]) {
   background-color: var(--ui-color-accent-soft);
   color: var(--ui-color-accent);
