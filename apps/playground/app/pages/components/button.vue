@@ -15,11 +15,11 @@ const api = {
     variant: "solid는 주요 동작, soft는 보조 강조, outline은 경계선, ghost는 배경 없이 표시합니다. 기본값은 solid입니다.",
     size: "sm, md, lg 가운데 선택합니다. 기본값은 md입니다.",
     block: "버튼과 링크 버튼이 부모 너비를 채웁니다. 기본값은 false입니다. 아이콘 전용 버튼은 원형 크기를 유지합니다.",
-    "icon-only": "원형 크기를 지정하는 기존 속성입니다. 아이콘만 표시할 때는 UIIconButton을 사용할 수 있습니다.",
-    loading: "버튼 크기를 유지하며 가운데 진행 표시를 띄우고, aria-busy를 설정해 실행을 막습니다.",
     disabled: "버튼 실행과 키보드 탭 진입을 막습니다.",
+    loading: "버튼 크기를 유지하며 가운데 진행 표시를 띄우고, aria-busy를 설정해 실행을 막습니다.",
     type: "기본값인 button은 클릭 동작에 사용합니다. submit은 폼을 제출하고 reset은 초기화합니다.",
     form: "폼 밖에 있는 버튼을 폼의 id와 연결하는 HTML 속성입니다.",
+    "icon-only": "원형 크기를 지정하는 기존 속성입니다. 아이콘만 표시할 때는 UIIconButton을 사용할 수 있습니다.",
   },
   link: {
     to: "Nuxt 내부 이동에 사용하는 경로 문자열 또는 라우트 객체입니다. to와 href가 모두 있으면 to가 우선합니다.",
@@ -52,13 +52,19 @@ definePageMeta({
     <PlaygroundExampleSection id="usage" title="기본 사용법">
       <ButtonExample />
       <ButtonUsageExample topic="label" />
+      <ButtonUsageExample topic="icons" />
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="button-appearance" title="모양과 크기">
       <ButtonUsageExample topic="appearance" />
       <ButtonUsageExample topic="size" />
       <ButtonFullWidthExample />
-      <ButtonUsageExample topic="icons" />
-      <ButtonUsageExample topic="loading" />
-      <IconButtonExample />
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="button-states" title="비활성과 로딩">
       <ButtonUsageExample topic="disabled" />
+      <ButtonUsageExample topic="loading" />
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="button-types" title="버튼 종류">
+      <IconButtonExample />
       <ButtonToggleExample />
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="link" title="링크">
@@ -69,8 +75,8 @@ definePageMeta({
       <ButtonLinkExample />
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="examples" title="실전 예제">
-      <ButtonAsyncExample />
       <ButtonPendingExample />
+      <ButtonAsyncExample />
       <div id="form"><ButtonFormExample /></div>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="api" title="API">
