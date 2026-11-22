@@ -7,7 +7,7 @@ import { DateRangeFieldRoot, DateRangeFieldStartInput, DateRangeFieldEndInput } 
 import { DatePickerRoot, DatePickerAnchor, DatePickerInput } from "@sectile/vue/temporal/date-picker";
 import { DateTimeField } from "@sectile/vue/temporal/date-time-field";
 import { DateTimeRangeFieldRoot, DateTimeRangeFieldStartInput, DateTimeRangeFieldEndInput } from "@sectile/vue/temporal/date-time-range-field";
-import { DateTimePickerRoot, DateTimePickerAnchor, DateTimePickerDateTimeInput, DateTimePickerDateInput, DateTimePickerTimeInput } from "@sectile/vue/temporal/date-time-picker";
+import { DateTimePickerRoot, DateTimePickerAnchor, DateTimePickerDateTimeInput, DateTimePickerDateInput, DateTimePickerTimeInput, type DateTimePickerRootSlotProps } from "@sectile/vue/temporal/date-time-picker";
 import {
   DateTimeRangePickerRoot, DateTimeRangePickerAnchor,
   DateTimeRangePickerStartDateInput, DateTimeRangePickerEndDateInput,
@@ -150,44 +150,48 @@ export const UIDateRangePicker: ClearableComponent<typeof DateRangePickerRoot> =
   grid: UIDateRangePickerGrid, cell: UIDateRangePickerCell, monthCell: UIDateRangePickerMonthCell,
 }), null, { label: "범위 지우기" });
 export const UIDateTimePickerAnchor: typeof DateTimePickerAnchor = withClearableControl(DateTimePickerAnchor, "anchor");
-export const UIDateTimePicker: ClearableComponent<typeof DateTimePickerRoot> = withClearableModel(withCalendarDefaults(DateTimePickerRoot, {
+type DateTimeRoot = typeof DateTimePickerRoot | typeof DateTimeRangePickerRoot;
+type DateTimeWithPrecision<Root extends DateTimeRoot> = new () => Omit<InstanceType<Root>, "$props"> & {
+  $props: InstanceType<Root>["$props"] & { timePrecision?: TimeFieldPrecision };
+};
+
+function withSplitTimePrecision<Root extends DateTimeRoot>(root: Root): DateTimeWithPrecision<Root> {
+  return defineComponent({
+    inheritAttrs: false,
+    props: { timePrecision: String as PropType<TimeFieldPrecision> },
+    setup(props, { attrs, slots }) {
+      const formatter = useTemporalFormatter();
+      const renderWithTimePrecision = () => h(TemporalFormatterScope, {
+        transform: base => ({
+          ...base,
+          // Sectile requests millisecond precision for the split time inputs.
+          timeFieldFormat: precision => base.timeFieldFormat(precision === "millisecond" ? props.timePrecision : precision),
+          dateTimeFieldFormat: precision => base.dateTimeFieldFormat(precision === "millisecond" ? props.timePrecision : precision),
+        }),
+      }, {
+        default: (inherited: ReturnType<typeof useTemporalFormatter>) => h(root as Component, attrs, {
+          ...slots,
+          default: (state: DateTimePickerRootSlotProps | DateTimeRangePickerRootSlotProps) => h(TemporalFormatterScope, {
+            transform: base => inherited.value ?? base,
+          }, { default: () => slots.default?.(state) }),
+        }),
+      });
+
+      return () => {
+        if (!props.timePrecision) return h(root as Component, attrs, slots);
+        return formatter.value ? renderWithTimePrecision() : h(TemporalProvider, {
+          formatting: defaultTemporalFormatting,
+        }, { default: renderWithTimePrecision });
+      };
+    },
+  }) as unknown as DateTimeWithPrecision<Root>;
+}
+
+const DateTimePicker: DateTimeWithPrecision<typeof DateTimePickerRoot> = withSplitTimePrecision(DateTimePickerRoot);
+export const UIDateTimePicker: ClearableComponent<typeof DateTimePicker> = withClearableModel(withCalendarDefaults(DateTimePicker, {
   kind: "date-time", anchor: UIDateTimePickerAnchor, inputs: [UIDateTimePickerDateInput, UIDateTimePickerTimeInput],
 }), null);
-
-type DateTimeRangePickerInstance = InstanceType<typeof DateTimeRangePickerRoot>;
-
-const DateTimeRangePicker = defineComponent({
-  inheritAttrs: false,
-  props: {
-    timePrecision: String as PropType<TimeFieldPrecision>,
-  },
-  setup(props, { attrs, slots }) {
-    const formatter = useTemporalFormatter();
-    const renderWithTimePrecision = () => h(TemporalFormatterScope, {
-      transform: base => ({
-        ...base,
-        // Sectile requests millisecond precision for the split time inputs.
-        timeFieldFormat: precision => base.timeFieldFormat(precision === "millisecond" ? props.timePrecision : precision),
-      }),
-    }, {
-      default: (inherited: ReturnType<typeof useTemporalFormatter>) => h(DateTimeRangePickerRoot, attrs, {
-        ...slots,
-        default: (state: DateTimeRangePickerRootSlotProps) => h(TemporalFormatterScope, {
-          transform: base => inherited.value ?? base,
-        }, { default: () => slots.default?.(state) }),
-      }),
-    });
-
-    return () => {
-      if (!props.timePrecision) return h(DateTimeRangePickerRoot, attrs, slots);
-      return formatter.value ? renderWithTimePrecision() : h(TemporalProvider, {
-        formatting: defaultTemporalFormatting,
-      }, { default: renderWithTimePrecision });
-    };
-  },
-}) as unknown as new () => Omit<DateTimeRangePickerInstance, "$props"> & {
-  $props: DateTimeRangePickerInstance["$props"] & { timePrecision?: TimeFieldPrecision };
-};
+const DateTimeRangePicker: DateTimeWithPrecision<typeof DateTimeRangePickerRoot> = withSplitTimePrecision(DateTimeRangePickerRoot);
 
 export const UIDateTimeRangePickerAnchor: typeof DateTimeRangePickerAnchor = withClearableControl(DateTimeRangePickerAnchor, "anchor");
 const InlineTimePicker = defineComponent({

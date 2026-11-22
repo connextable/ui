@@ -7,11 +7,13 @@ import {
   UIDateTimeField, UIDateTimePicker, UIDateTimePickerDateInput, UIDateTimePickerTimeInput,
   UIDateTimeRangePicker, UIDateTimeRangePickerStartTimeInput, UIDateTimeRangePickerEndTimeInput,
   UITemporalProvider, UITimeField, UITimePicker, UITimePickerInput,
+  UITimeRangeField, UITimeRangeFieldStartInput, UITimeRangeFieldEndInput,
 } from "@connextable/ui";
 
 const date = { year: 2026, month: 8, day: 22 };
 const time = { hour: 17, minute: 30, second: 12, millisecond: 345 };
 const seconds = { ...time, millisecond: 0 };
+const minutes = { ...seconds, second: 0 };
 const inputFormats = {
   date: { order: ["day", "month", "year"], separator: "/" },
   time: { hourCycle: "h12", separator: ".", fractionSeparator: ",", dayPeriods: ["AM", "PM"] },
@@ -40,6 +42,14 @@ test("custom formats reach the SSR input values and placeholders of fields and p
         h(UIDateTimePickerDateInput, { id: "picker-date" }),
         h(UIDateTimePickerTimeInput, { id: "picker-time" }),
       ]),
+      h(UIDateTimePicker, { defaultValue: { date, time: minutes }, timePrecision: "minute" }, () =>
+        h(UIDateTimePickerTimeInput, { id: "picker-time-minutes" })),
+      h(UITimeRangeField, { defaultValue: { start: { ...minutes, hour: 9 }, end: minutes }, precision: "minute" }, () => [
+        h(UITimeRangeFieldStartInput, { id: "time-range-start" }),
+        h(UITimeRangeFieldEndInput, { id: "time-range-end" }),
+      ]),
+      h(UITimeRangeField, { defaultValue: { start: { ...seconds, hour: 9 }, end: seconds }, precision: "second" }, () =>
+        h(UITimeRangeFieldEndInput, { id: "time-range-end-seconds" })),
       h(UITimePicker, { defaultValue: seconds, precision: "second" }, () => [
         h(UITimePickerInput, { id: "time-picker" }),
       ]),
@@ -56,6 +66,10 @@ test("custom formats reach the SSR input values and placeholders of fields and p
   assertInput(html, "range-end", "25/08/2026", "DD/MM/YYYY");
   assertInput(html, "picker-date", "22/08/2026", "DD/MM/YYYY");
   assertInput(html, "picker-time", "05.30.12,345 PM", "hh.mm.ss,SSS AM/PM");
+  assertInput(html, "picker-time-minutes", "05.30 PM", "hh.mm AM/PM");
+  assertInput(html, "time-range-start", "09.30 AM", "hh.mm AM/PM");
+  assertInput(html, "time-range-end", "05.30 PM", "hh.mm AM/PM");
+  assertInput(html, "time-range-end-seconds", "05.30.12 PM", "hh.mm.ss AM/PM");
   assertInput(html, "time-picker", "05.30.12 PM", "hh.mm.ss AM/PM");
   assertInput(html, "nested-date", "22-08-2026", "DD-MM-YYYY");
 });

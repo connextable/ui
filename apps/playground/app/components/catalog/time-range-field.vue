@@ -9,5 +9,7 @@ const hours = ref({
 </script>
 
 <template>
-  <UITimeRangeField v-model="hours" aria-label="운영 시간" start-label="운영 시작" end-label="운영 종료" />
+  <UITimeRangeField
+    v-model="hours" precision="minute" aria-label="운영 시간" start-label="운영 시작" end-label="운영 종료"
+  />
 </template>

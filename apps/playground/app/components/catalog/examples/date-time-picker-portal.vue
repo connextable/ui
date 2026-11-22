@@ -8,7 +8,7 @@ const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIDateTimePicker v-model="initial"  v-slot="{ dates, view }">
+  <UIDateTimePicker v-model="initial" time-precision="minute" v-slot="{ dates, view }">
     <UIDateTimePickerAnchor>
       <UIDateTimePickerDateInput aria-label="날짜" />
       <UIDateTimePickerTimeInput aria-label="시간" />

@@ -9,5 +9,5 @@ const initial = ref({
 </script>
 
 <template>
-  <UIDateTimePicker v-model="initial" />
+  <UIDateTimePicker v-model="initial" time-precision="minute" />
 </template>

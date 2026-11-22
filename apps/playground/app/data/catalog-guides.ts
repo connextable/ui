@@ -1671,7 +1671,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "달력에서 날짜를 고르고 시간 입력",
     description: "달력에서 날짜를 바꾸고 시간 입력에서 시각을 편집합니다.",
     api: {
-      "default-value": "처음 표시할 날짜와 시각입니다.",
+      "v-model": "편집한 날짜와 시각을 연결합니다.",
+      "time-precision": "분리된 시각 입력의 정밀도를 지정합니다. minute이면 시·분을 표시합니다.",
       "#default": "달력의 날짜, 월, 보기 상태를 제공합니다.",
     },
   },
@@ -1682,7 +1683,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
     examples: [
       { id: "date-time-range-picker-parts", section: "usage-options", title: "시작·종료 날짜와 시간 따로 입력", description: "네 입력에서 시작 날짜와 시간, 종료 날짜와 시간을 각각 편집합니다." },
-      { id: "date-time-range-picker-overnight", section: "usage-options", title: "두 줄로 표시하는 일시 범위", description: "자정을 넘기는 일시 범위의 시작과 종료를 위아래에 표시합니다." },
+      { id: "date-time-range-picker-overnight", section: "usage-options", title: "자정을 넘기는 일시 범위", description: "시작일 23:30부터 다음 날 01:15까지를 한 줄에 표시합니다. 달력 양옆에서 시작·종료 시각을 선택할 수 있습니다." },
       { id: "date-time-range-picker-portal", section: "examples-2", title: "기간의 팝업을 포털에 배치", description: "시작·종료 일시 입력에서 연 달력을 포털에 표시합니다.", parts: ["UIDateTimeRangePickerPortal"] },
     ],
     title: "한 줄로 표시하는 일시 범위",
@@ -1742,6 +1743,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "한 범위 필드에서 시작과 종료 시간을 입력합니다. 범위 모델의 start와 end로 확정 시간을 읽을 수 있습니다.",
     api: {
       "v-model": "시작과 종료 시각을 포함한 범위 객체입니다.",
+      precision: "시간의 표시 및 편집 정밀도입니다. minute, second, millisecond를 지정할 수 있습니다.",
       "default-value": "두 입력에 처음 표시할 시간을 전달합니다.",
     },
   },
