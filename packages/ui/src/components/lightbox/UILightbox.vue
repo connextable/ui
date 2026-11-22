@@ -58,10 +58,10 @@ const mediaKey = computed(() => {
 const canGoBack = computed(() => items.length > 1 && (loop || selectedIndex.value > 0));
 const canGoForward = computed(() => items.length > 1 && (loop || selectedIndex.value < items.length - 1));
 
-watch([mediaKey, displayedOpen], ([key, isOpen], [previousKey]) => {
+watch([mediaKey, displayedOpen], ([key, isOpen], [previousKey, wasOpen]) => {
   clearSwipe();
   video.value?.pause();
-  if (!isOpen && !transition.isClosing()) transition.stop(false);
+  if (!isOpen && (wasOpen || !key) && !transition.isClosing()) transition.stop(false);
   if (key !== previousKey || isOpen) mediaFailed.value = false;
 }, { flush: "sync" });
 
