@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { computed, inject, type Component } from "vue";
+import type { RouteLocationRaw } from "vue-router";
 import UISpinner from "../progress/UISpinner.vue";
+import { buttonLinkKey } from "./link-component";
 
 defineOptions({ inheritAttrs: false });
 defineSlots<{
@@ -15,6 +18,12 @@ export interface UIButtonProps {
   iconOnly?: boolean;
   variant?: "solid" | "soft" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
+  href?: string;
+  to?: RouteLocationRaw;
+  target?: string;
+  rel?: string;
+  download?: string | boolean;
+  external?: boolean;
 }
 
 const props = withDefaults(
@@ -23,9 +32,33 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{ click: [event: MouseEvent] }>();
+const linkComponent = inject<Component | null>(buttonLinkKey, null);
+const destination = computed(() => props.to ?? props.href);
+const isLink = computed(() => destination.value != null);
+const nativeHref = computed(() => typeof destination.value === "string" ? destination.value : props.href);
+const routerLink = computed(() => isLink.value && !props.disabled && !props.loading
+  && (props.download == null || props.download === false) ? linkComponent : null);
+const linkDisabled = computed(() => isLink.value && (props.disabled || props.loading
+  || (!routerLink.value && nativeHref.value == null)));
+const elementProps = computed(() => {
+  if (!isLink.value) return { type: props.type, disabled: props.disabled };
+
+  if (routerLink.value) {
+    return { to: destination.value, target: props.target, rel: props.rel, external: props.external };
+  }
+
+  if (linkDisabled.value) return { role: "link", tabindex: -1 };
+
+  return {
+    href: nativeHref.value,
+    target: props.target,
+    rel: props.rel ?? (props.target === "_blank" ? "noopener noreferrer" : undefined),
+    download: props.download,
+  };
+});
 
 function onClick(event: MouseEvent) {
-  if (props.loading || props.disabled) {
+  if (props.loading || props.disabled || linkDisabled.value) {
     event.preventDefault();
     event.stopPropagation();
     return;
@@ -35,17 +68,19 @@ function onClick(event: MouseEvent) {
 </script>
 
 <template>
-  <button
-    v-bind="loading ? { ...$attrs, 'aria-busy': true, 'aria-disabled': true } : $attrs"
+  <component
+    :is="routerLink ?? (isLink ? 'a' : 'button')"
+    v-bind="{ ...$attrs, ...elementProps, ...(loading ? { 'aria-busy': true } : {}),
+      ...(loading || linkDisabled ? { 'aria-disabled': true } : {}) }"
     class="ui-button"
-    :type="type"
-    :disabled="disabled"
+    :data-disabled="disabled || (linkDisabled && !loading) || undefined"
     :data-loading="loading || undefined"
     :data-variant="variant"
     :data-size="size"
     :data-ui-control-size="size"
     :data-ui-control-shape="iconOnly ? 'square' : undefined"
-    @click="onClick"
+    @click.capture="routerLink && onClick($event)"
+    @click="!routerLink && onClick($event)"
   >
     <span class="ui-button__content" :data-hidden="(loading && !$slots.leading && !$slots.trailing) || undefined">
       <span v-if="$slots.leading" class="ui-button__icon" aria-hidden="true">
@@ -61,7 +96,7 @@ function onClick(event: MouseEvent) {
     <span v-if="loading && !$slots.leading && !$slots.trailing" class="ui-button__spinner" aria-hidden="true">
       <UISpinner variant="wave" />
     </span>
-  </button>
+  </component>
 </template>
 
 <style scoped>
@@ -73,6 +108,7 @@ function onClick(event: MouseEvent) {
   --ui-button-pressed: var(--ui-color-accent-active);
 
   position: relative;
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -83,9 +119,14 @@ function onClick(event: MouseEvent) {
   background: var(--ui-button-fill);
   color: var(--ui-button-ink);
   font: 600 var(--ui-control-size-font)/1.35 var(--ui-font-sans);
+  text-decoration: none;
   overflow-wrap: anywhere;
   cursor: pointer;
   transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+.ui-button[data-ui-control-shape="square"] {
+  border-radius: 50%;
 }
 
 .ui-button[data-variant="soft"],
@@ -112,12 +153,12 @@ function onClick(event: MouseEvent) {
   --ui-button-fill: transparent;
 }
 
-.ui-button:enabled:not([data-loading]):hover {
+.ui-button:not(:disabled, [data-disabled], [data-loading]):hover {
   background: var(--ui-button-hover);
 }
 
-.ui-button:enabled:not([data-loading]):active,
-.ui-button:enabled[aria-pressed="true"] {
+.ui-button:not(:disabled, [data-disabled], [data-loading]):active,
+.ui-button:not(:disabled, [data-disabled])[aria-pressed="true"] {
   background: var(--ui-button-pressed);
 }
 
@@ -130,13 +171,13 @@ function onClick(event: MouseEvent) {
   outline-color: var(--ui-color-on-accent);
 }
 
-.ui-button:disabled {
+.ui-button:is(:disabled, [data-disabled]) {
   background: var(--ui-color-surface-muted);
   color: var(--ui-color-disabled);
   cursor: default;
 }
 
-.ui-button:enabled[data-loading] {
+.ui-button:not(:disabled, [data-disabled])[data-loading] {
   cursor: progress;
 }
 

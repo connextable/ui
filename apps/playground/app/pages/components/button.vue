@@ -15,6 +15,8 @@ import ButtonTrailingIconExample from "~/components/examples/ButtonTrailingIconE
 import trailingIconSource from "~/components/examples/ButtonTrailingIconExample.vue?example-code&raw";
 import ButtonIconOnlyExample from "~/components/examples/ButtonIconOnlyExample.vue";
 import iconOnlySource from "~/components/examples/ButtonIconOnlyExample.vue?example-code&raw";
+import ButtonLinkExample from "~/components/examples/ButtonLinkExample.vue";
+import linkSource from "~/components/examples/ButtonLinkExample.vue?example-code&raw";
 import ButtonToggleExample from "~/components/examples/ButtonToggleExample.vue";
 import toggleSource from "~/components/examples/ButtonToggleExample.vue?example-code&raw";
 import ButtonLoadingExample from "~/components/examples/ButtonLoadingExample.vue";
@@ -28,7 +30,7 @@ definePageMeta({
   title: "UIButton",
   componentParts: ["UIToggleButton"],
   category: "동작",
-  description: "화면 동작을 실행하고, 아이콘과 선택 상태, 요청 진행 상태를 표시합니다.",
+  description: "화면 동작을 실행하거나 다른 페이지로 이동합니다.",
 });
 </script>
 
@@ -64,10 +66,18 @@ definePageMeta({
       <PlaygroundExample :heading-level="3"
         id="button-icon-only"
         title="아이콘 전용 버튼"
-        description="icon-only로 정사각형 크기를 적용하고 aria-label로 동작을 설명합니다."
+        description="icon-only로 원형 버튼을 만들고 aria-label로 동작을 설명합니다."
         :source="iconOnlySource"
       >
         <ButtonIconOnlyExample />
+      </PlaygroundExample>
+      <PlaygroundExample :heading-level="3"
+        id="button-link"
+        title="링크 버튼"
+        description="href 또는 to로 이동할 곳을 지정합니다. Nuxt 모듈을 사용하면 내부 경로가 NuxtLink로 연결됩니다."
+        :source="linkSource"
+      >
+        <ButtonLinkExample />
       </PlaygroundExample>
       <PlaygroundExample :heading-level="3"
         id="UIToggleButton"
