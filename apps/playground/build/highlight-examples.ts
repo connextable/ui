@@ -36,7 +36,7 @@ async function formatExample(source: string) {
         parser: "vue",
         htmlWhitespaceSensitivity: "ignore",
       });
-      return formatted.trimEnd().split("\n").slice(1, -1).map(line => line.replace(/^  /, "")).join("\n");
+      return formatted.trimEnd();
     }
   }
   return (await format(source, { parser: "vue" })).trimEnd();

@@ -75,6 +75,8 @@ watch(codeOpen, revealSource, { immediate: true });
         <footer v-if="$slots.footer" class="playground-example__footer">
           <slot name="footer" />
         </footer>
+      </div>
+      <div class="playground-example__code-bar">
         <UIDisclosureTrigger
           class="playground-example__toggle"
           size="sm"
@@ -196,9 +198,30 @@ watch(codeOpen, revealSource, { immediate: true });
   max-inline-size: 100%;
 }
 
+.playground-example__code-bar {
+  display: grid;
+  border-block-start: 1px solid var(--ui-color-divider);
+}
+
 .playground-example__toggle {
-  justify-self: end;
+  --ui-control-size-height: 1.75rem;
+  --ui-control-size-padding-block: var(--ui-space-2xs);
+  --ui-control-size-font: var(--ui-font-size-metadata);
+  --ui-control-size-radius: 0;
+  --ui-focus-ring-offset: calc(-1 * var(--ui-focus-ring-width));
+
+  inline-size: 100%;
   white-space: nowrap;
+}
+
+.playground-example__toggle[aria-expanded="false"] {
+  border-end-start-radius: calc(var(--ui-expandable-radius) - var(--ui-frame-border-width));
+  border-end-end-radius: calc(var(--ui-expandable-radius) - var(--ui-frame-border-width));
+}
+
+.playground-example__toggle :deep(.ui-button__content) {
+  inline-size: 100%;
+  justify-content: space-between;
 }
 
 </style>
