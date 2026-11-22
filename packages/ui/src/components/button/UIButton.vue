@@ -238,12 +238,19 @@ function onClick(event: MouseEvent) {
   .ui-button__content,
   .ui-button-loading-enter-active,
   .ui-button-loading-leave-active {
-    transition: opacity var(--ui-motion-fast) var(--ui-ease-out);
+    transition:
+      opacity var(--ui-motion-fast) var(--ui-ease-out),
+      transform var(--ui-motion-standard) var(--ui-ease-out);
+  }
+
+  .ui-button__content[data-hidden] {
+    transform: translateY(-0.25rem) scale(0.92);
   }
 
   .ui-button-loading-enter-from,
   .ui-button-loading-leave-to {
     opacity: 0;
+    transform: translateY(0.375rem) scale(0.65);
   }
 }
 
