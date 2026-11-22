@@ -15,6 +15,7 @@ definePageMeta({
   title: "UIRadioGroup",
   category: "선택",
   description: "여러 선택지 중 하나를 선택합니다. 목록과 카드에서 같은 선택 상태를 비교할 수 있습니다.",
+  componentParts: ["UIRadioGroupItem", "UIRadioGroupIndicator"],
 });
 </script>
 
@@ -45,6 +46,7 @@ definePageMeta({
         <RadioGroupReadonlyExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
+    <PlaygroundParts :parts="['UIRadioGroupItem', 'UIRadioGroupIndicator']" />
     <PlaygroundFormSection>
       <PlaygroundExample
         id="radio-form"

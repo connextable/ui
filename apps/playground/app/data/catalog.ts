@@ -61,7 +61,7 @@ export const catalog: readonly CatalogEntry[] = [
     title: "UITemporalProvider",
     category: "날짜·시간",
     description: "하위 날짜·시간 입력에 기준 날짜와 서식을 전달합니다.",
-    parts: ["useUITemporalReferenceDate", "useUITemporalFormatter"],
+    parts: ["useUITemporalReferenceDate", "useUITemporalFormatter", "useUITemporalDisplay"],
   },
   {
     slug: "host-provider",
@@ -192,6 +192,7 @@ export const catalog: readonly CatalogEntry[] = [
       "UITooltipPortal",
       "UITooltipContent",
       "UITooltipArrow",
+      "createUITooltipGroup",
     ],
   },
   {
@@ -377,6 +378,7 @@ export const catalog: readonly CatalogEntry[] = [
       "UICheckboxTreeGroup",
       "UICheckboxTreeItem",
       "UICheckboxTreeDisclosure",
+      "UICheckboxTreeIndicator",
     ],
   },
   {
@@ -676,7 +678,7 @@ export const catalog: readonly CatalogEntry[] = [
     slug: "data-table",
     title: "UIDataTable",
     category: "표와 그리드",
-    description: "Sectile의 팩토리로 데이터 테이블을 구성합니다.",
+    description: "행과 열 데이터로 표를 그리고 페이지를 탐색합니다.",
     wide: true,
     parts: [
       "useUIDataTable",
@@ -699,6 +701,9 @@ export const catalog: readonly CatalogEntry[] = [
       "DataTable.Disclosure",
       "DataTable.Editor",
       "UITabularRows",
+      "UITabularColumnAction",
+      "UITabularColumnHeading",
+      "UITabularFilterPopover",
       "UIDataActions",
       "UIDataSurface",
       "UIDataLabel",
@@ -946,6 +951,7 @@ export const catalog: readonly CatalogEntry[] = [
       "UICalendarPeriodHeader",
       "UIDatePickerTrigger",
       "UIDatePickerAnchor",
+      "UIDatePickerValue",
       "UIDatePickerPortal",
       "UIDatePickerContent",
       "UIDatePickerGrid",
