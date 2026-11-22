@@ -1,5 +1,11 @@
-import { TooltipRoot, type TooltipGroup, type TooltipRootSlotProps } from "@sectile/vue/tooltip";
-import { defineComponent, h, shallowRef, watch, type PropType } from "vue";
+import { TooltipArrow, TooltipContent, TooltipRoot, TooltipTrigger, type TooltipGroup, type TooltipRootSlotProps } from "@sectile/vue/tooltip";
+import { defineComponent, h, shallowRef, watch, type PropType, type VNodeChild } from "vue";
+
+type TooltipInstance = InstanceType<typeof TooltipRoot>;
+type TooltipWithText = new () => Omit<TooltipInstance, "$props" | "$slots"> & {
+  $props: TooltipInstance["$props"] & { text?: string };
+  $slots: TooltipInstance["$slots"] & { trigger?: (state: TooltipRootSlotProps) => VNodeChild };
+};
 
 const openMembers = new WeakMap<TooltipGroup, () => void>();
 
@@ -28,7 +34,7 @@ const TooltipGroupMember = defineComponent({
 export const UITooltip = defineComponent({
   name: "UITooltip",
   inheritAttrs: false,
-  props: { group: Object as PropType<TooltipGroup> },
+  props: { group: Object as PropType<TooltipGroup>, text: String },
   setup(props, { attrs, expose, slots }) {
     const root = shallowRef<InstanceType<typeof TooltipRoot> | null>(null);
     const requestClose = () => root.value?.requestClose();
@@ -37,8 +43,11 @@ export const UITooltip = defineComponent({
     return () => h(TooltipRoot, { ...attrs, group: props.group, ref: root }, {
       default: (state: TooltipRootSlotProps) => [
         props.group && h(TooltipGroupMember, { group: props.group, open: state.open, close: requestClose }),
-        slots.default?.(state),
+        slots.default ? slots.default(state) : slots.trigger && [
+          h(TooltipTrigger, { asChild: true }, () => slots.trigger?.(state)),
+          h(TooltipContent, null, () => [h(TooltipArrow), props.text]),
+        ],
       ],
     });
   },
-}) as typeof TooltipRoot;
+}) as unknown as TooltipWithText;

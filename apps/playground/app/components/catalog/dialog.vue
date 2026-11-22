@@ -1,28 +1,20 @@
 <script setup lang="ts">
-import {
-  UIButton,
-  UIDialog,
-  UIDialogContent,
-  UIDialogDescription,
-  UIDialogOverlay,
-  UIDialogTitle,
-  UIDialogTrigger,
-} from "@connextable/ui";
+import { UIDialog } from "@connextable/ui";
 </script>
 
 <template>
-  <UIDialog>
-    <UIDialogTrigger as-child><UIButton variant="outline">배포 요약 열기</UIButton></UIDialogTrigger>
-    <UIDialogOverlay />
-    <UIDialogContent>
-      <UIDialogTitle>결제 서비스 배포 요약</UIDialogTitle>
-      <UIDialogDescription>결제 재시도 과정에서 중복 승인을 방지하는 수정 사항이 포함됩니다.</UIDialogDescription>
+  <UIDialog
+    trigger-label="배포 요약 열기"
+    title="결제 서비스 배포 요약"
+    description="결제 재시도 과정에서 중복 승인을 방지하는 수정 사항이 포함됩니다."
+  >
+    <template #body>
       <dl class="release-details">
         <dt>버전</dt><dd>v2.8.4</dd>
         <dt>대상 리전</dt><dd>서울</dd>
         <dt>배포 예정</dt><dd>11월 24일 오후 2시</dd>
       </dl>
-    </UIDialogContent>
+    </template>
   </UIDialog>
 </template>
 

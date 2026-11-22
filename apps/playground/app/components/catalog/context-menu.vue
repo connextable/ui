@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
-  UIButton, UIContextMenu, UIContextMenuContent, UIContextMenuItem,
-  UIContextMenuSeparator, UIContextMenuTrigger, UIInput,
+  UIButton, UIContextMenu, UIInput,
 } from "@connextable/ui";
 import { Copy, FileText, Pencil, Trash2 } from "@lucide/vue";
 import { nextTick, ref, useId } from "vue";
@@ -11,10 +10,10 @@ const initialFiles = [
   { id: 2, name: "업데이트 안내.txt", size: "12 KB" },
 ];
 const commands = [
-  { id: "rename", parentID: null },
-  { id: "duplicate", parentID: null },
-  { id: "delete", parentID: null },
-];
+  { id: "rename", parentID: null, label: "이름 변경", icon: Pencil },
+  { id: "duplicate", parentID: null, label: "복제", icon: Copy },
+  { id: "delete", parentID: null, label: "삭제", icon: Trash2, tone: "danger", separatorBefore: true },
+] as const;
 const files = ref([...initialFiles]);
 const nameInputID = useId();
 const editing = ref<number>();
@@ -55,17 +54,13 @@ function rename() {
     <ul class="file-example__list" aria-label="예제 파일">
       <li v-for="file in files" :key="file.id">
         <UIContextMenu :items="commands" :label="`${file.name} 작업`" @invoke="invoke($event, file)">
-          <UIContextMenuTrigger as="div" tabindex="0" aria-keyshortcuts="Shift+F10" class="file-example__row">
-            <FileText aria-hidden="true" />
-            <span>{{ file.name }}</span>
-            <small>{{ file.size }}</small>
-          </UIContextMenuTrigger>
-          <UIContextMenuContent>
-            <UIContextMenuItem value="rename" :icon="Pencil">이름 변경</UIContextMenuItem>
-            <UIContextMenuItem value="duplicate" :icon="Copy">복제</UIContextMenuItem>
-            <UIContextMenuSeparator />
-            <UIContextMenuItem value="delete" :icon="Trash2" tone="danger">삭제</UIContextMenuItem>
-          </UIContextMenuContent>
+          <template #trigger>
+            <div tabindex="0" aria-keyshortcuts="Shift+F10" class="file-example__row">
+              <FileText aria-hidden="true" />
+              <span>{{ file.name }}</span>
+              <small>{{ file.size }}</small>
+            </div>
+          </template>
         </UIContextMenu>
       </li>
     </ul>

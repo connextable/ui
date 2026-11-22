@@ -1,8 +1,5 @@
+export { UIContextMenu, UIMenu, UIMenuButton, UIMenubar } from "./menu-composition";
 export {
-  MenuRoot as UIMenu,
-  MenubarRoot as UIMenubar,
-  MenuButtonRoot as UIMenuButton,
-  ContextMenuRoot as UIContextMenu,
   ContextMenuTrigger as UIContextMenuTrigger,
   MenuButtonContent as UIMenuButtonContent,
   ContextMenuContent as UIContextMenuContent,

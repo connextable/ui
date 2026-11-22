@@ -1,4 +1,8 @@
 @layer ui.sectile {
+  :where(.ui-toast__status-icon) {
+    flex: none;
+    color: var(--ui-color-accent);
+  }
   :where([data-scope="dialog"], [data-scope="alert-dialog"], [data-scope="drawer"]):where([data-part="overlay"]) {
     position: fixed;
     z-index: var(--ui-layer-floating);

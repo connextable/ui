@@ -4,8 +4,9 @@ export { default as UIDrawerContent } from "./UIDrawerContent.vue";
 export { default as UISheetContent } from "./UISheetContent.vue";
 export { default as UIToastViewport, type UIToastPosition } from "./UIToastViewport.vue";
 export { UITooltip } from "./tooltip";
+export { UIToast } from "./toast-composition";
+export { UIAlertDialog, UIDialog, UIDrawer, UIPopover, UISheet } from "./panel-composition";
 export {
-  AlertDialogRoot as UIAlertDialog,
   AlertDialogTrigger as UIAlertDialogTrigger,
   AlertDialogPortal as UIAlertDialogPortal,
   AlertDialogOverlay as UIAlertDialogOverlay,
@@ -14,7 +15,6 @@ export {
   AlertDialogClose as UIAlertDialogClose,
 } from "@sectile/vue/alert-dialog";
 export {
-  DialogRoot as UIDialog,
   DialogTrigger as UIDialogTrigger,
   DialogPortal as UIDialogPortal,
   DialogOverlay as UIDialogOverlay,
@@ -23,7 +23,6 @@ export {
   DialogClose as UIDialogClose,
 } from "@sectile/vue/dialog";
 export {
-  DrawerRoot as UIDrawer,
   DrawerTrigger as UIDrawerTrigger,
   DrawerPortal as UIDrawerPortal,
   DrawerOverlay as UIDrawerOverlay,
@@ -33,7 +32,6 @@ export {
   DrawerClose as UIDrawerClose,
 } from "@sectile/vue/drawer";
 export {
-  DrawerRoot as UISheet,
   DrawerTrigger as UISheetTrigger,
   DrawerPortal as UISheetPortal,
   DrawerOverlay as UISheetOverlay,
@@ -43,7 +41,6 @@ export {
   DrawerClose as UISheetClose,
 } from "@sectile/vue/drawer";
 export {
-  PopoverRoot as UIPopover,
   PopoverTrigger as UIPopoverTrigger,
   PopoverAnchor as UIPopoverAnchor,
   PopoverPortal as UIPopoverPortal,
@@ -56,7 +53,6 @@ export {
 export {
   ToastProvider as UIToastProvider,
   ToastPortal as UIToastPortal,
-  ToastRoot as UIToast,
   ToastTitle as UIToastTitle,
   ToastDescription as UIToastDescription,
   ToastClose as UIToastClose,

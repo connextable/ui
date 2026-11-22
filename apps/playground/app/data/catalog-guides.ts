@@ -195,7 +195,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       "v-model:open": "확인 창의 열린 상태를 외부 상태와 연결합니다.",
       label: "제목에서 이름을 제공하기 어려울 때 사용할 접근성 이름입니다.",
-      "Content #actions": "오른쪽 아래에 취소와 확인 버튼을 배치합니다.",
+      "trigger-label / title / description": "열기 버튼, 확인 창 제목과 설명에 표시할 문구를 지정합니다.",
+      "#actions": "취소와 확인 버튼을 배치하고, 슬롯의 close로 확인 창을 닫습니다.",
       "Content #footer-leading": "하단 왼쪽에 상태나 보조 콘텐츠를 배치합니다.",
     },
   },
@@ -210,7 +211,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "v-model:open": "부모에서 대화상자의 열린 상태를 관리합니다.",
       "default-open": "외부에서 상태를 제어하지 않을 때의 초기 상태입니다.",
       "restore-focus-target": "컴포넌트 바깥에서 열었다면 닫은 후 포커스를 돌려줄 요소를 전달합니다.",
-      "Content show-close": "기본 닫기 버튼의 표시 여부를 지정합니다. 기본값은 true입니다.",
+      "trigger-label / title / description": "열기 버튼과 대화상자의 제목·설명을 설정합니다.",
+      "#body": "제목과 설명 아래에 대화상자의 실제 내용을 배치합니다.",
+      "show-close": "기본 닫기 버튼의 표시 여부를 지정합니다. 기본값은 true입니다.",
       "Content close-label": "기본 닫기 버튼의 접근성 이름입니다.",
       "Content #actions": "오른쪽 아래에 저장 등 작업 버튼을 배치합니다.",
       "Content #footer-leading": "하단 왼쪽에 상태나 보조 콘텐츠를 배치합니다.",
@@ -244,7 +247,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "v-model:open": "패널이 열린 상태를 외부에 연결합니다.",
       "Content show-close": "오른쪽 위의 기본 닫기 버튼을 표시합니다. 기본값은 true입니다.",
       "Content close-label": "기본 닫기 버튼의 접근성 이름입니다.",
-      "Content #actions / #footer-leading": "오른쪽에 작업 버튼을, 왼쪽에 선택 상태나 보조 콘텐츠를 배치합니다.",
+      "#body / #actions / #footer-leading": "패널의 실제 내용, 적용 버튼, 보조 상태를 배치합니다. 각 슬롯에서 close를 사용할 수 있습니다.",
     },
   },
   sheet: {
@@ -265,15 +268,19 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       side: "시트가 들어오는 방향입니다. 기본값은 bottom입니다.",
       "swipe-to-dismiss": "시트를 화면 가장자리 방향으로 밀어 닫을 수 있게 합니다.",
-      "Content size / block": "size는 sm, md, lg 중 하나를 선택합니다. 기본값은 md입니다. block을 지정하면 안전 영역과 바깥 여백을 뺀 가용 너비를 채웁니다.",
+      "size / block": "size는 sm, md, lg 중 하나를 선택합니다. 기본값은 md입니다. block을 지정하면 안전 영역과 바깥 여백을 뺀 가용 너비를 채웁니다.",
+      "panel-class": "시트 패널에 CSS 클래스를 적용합니다.",
+      "#body": "시트에 담을 내용을 배치합니다. close를 사용해 선택 후 닫을 수 있습니다.",
       "--ui-sheet-width": "맞춤 너비가 필요한 경우 Content의 CSS 클래스에서 지정합니다. 화면이 좁아지면 양쪽 여백을 유지하며 줄어듭니다.",
       "v-model:open": "시트가 열린 상태를 외부에 연결합니다.",
     },
   },
   popover: {
     title: "트리거 옆에서 간단히 편집",
-    description: "Trigger의 as-child에 윤곽선 버튼을 연결합니다. 열리는 방향과 정렬은 side와 align으로 지정합니다.",
+    description: "기본 트리거를 눌러 프로필을 편집합니다. 열리는 방향과 정렬은 side와 align으로 지정합니다.",
     api: {
+      "trigger-label / #trigger": "기본 트리거의 문구를 지정하거나, 슬롯으로 트리거를 직접 제공합니다.",
+      "#body": "팝오버에 표시할 내용을 배치합니다. 저장 시 close를 호출해 닫습니다.",
       side: "팝오버가 놓일 방향입니다.",
       align: "기준 요소에 맞춰 정렬할 위치입니다.",
       "close-on-interact-outside": "기본값은 true입니다. 바깥을 눌렀을 때 열린 상태를 유지하려면 false를 지정합니다.",
@@ -884,6 +891,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
   },
   menu: {
+    framed: true,
     sections: [
       { id: "examples", title: "메뉴 구성과 비활성 항목", section: "usage-options" },
     ],
@@ -924,6 +932,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
   },
   "menu-button": {
+    framed: true,
     sections: [
       { id: "examples", title: "메뉴 항목과 포커스", section: "usage-options" },
     ],
@@ -941,6 +950,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
   },
   menubar: {
+    framed: true,
     sections: [
       { id: "examples", title: "항목 상태와 키보드 탐색", section: "usage-options" },
     ],
