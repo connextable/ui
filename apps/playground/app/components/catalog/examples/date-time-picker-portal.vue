@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { UIDateTimePicker, UIDateTimePickerAnchor, UIDateTimePickerDateInput, UIDateTimePickerTimeInput, UIDateTimePickerTrigger, UIDateTimePickerPortal, UIDateTimePickerContent, UIDateTimePickerPreviousMonth, UIDateTimePickerNextMonth, UIDateTimePickerGrid, UIDateTimePickerCell, useUITemporalDisplay } from "@connextable/ui";
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
+import { ref } from "vue";
 
-const initial = { date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minute: 30, second: 0, millisecond: 0 } };
+const initial = ref({ date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minute: 30, second: 0, millisecond: 0 } });
 const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIDateTimePicker :default-value="initial"  v-slot="{ dates, view }">
+  <UIDateTimePicker v-model="initial"  v-slot="{ dates, view }">
     <UIDateTimePickerAnchor>
       <UIDateTimePickerDateInput aria-label="날짜" />
       <UIDateTimePickerTimeInput aria-label="시간" />

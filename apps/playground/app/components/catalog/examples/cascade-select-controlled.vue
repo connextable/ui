@@ -16,11 +16,13 @@ const nodes = [
   { id: "한국", parentID: "아시아" },
   { id: "서울", parentID: "한국" },
 ];
+
+const region = ref<string | null>("서울");
 </script>
 
 <template>
   <div>
-    <UICascadeSelect v-model:open="open" :nodes="nodes" default-value="서울" aria-label="배송 지역" clearable v-slot="{ columns }">
+    <UICascadeSelect v-model:open="open" :nodes="nodes" v-model="region" aria-label="배송 지역" clearable v-slot="{ columns }">
       <UICascadeSelectTrigger><UICascadeSelectValue placeholder="배송 지역" /></UICascadeSelectTrigger>
       <UICascadeSelectContent>
         <UICascadeSelectColumn v-for="(_, depth) in columns" :key="depth" :depth="depth" v-slot="{ items }">

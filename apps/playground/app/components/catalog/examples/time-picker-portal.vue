@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { UITimePicker, UITimePickerColumn, UITimePickerContent, UITimePickerPortal, UITimePickerInput, UITimePickerItem, UITimePickerTrigger } from "@connextable/ui";
 import { Clock } from "@lucide/vue";
+import { ref } from "vue";
+
+const time = ref({ hour: 9, minute: 30, second: 0, millisecond: 0 });
 
 </script>
 
 <template>
-  <UITimePicker label="시간 선택" precision="minute" :default-value="{ hour: 9, minute: 30, second: 0, millisecond: 0 }">
+  <UITimePicker label="시간 선택" precision="minute" v-model="time">
     <UITimePickerInput label="시작 시간" />
     <UITimePickerTrigger aria-label="시간 선택 열기"><Clock :size="16" aria-hidden="true" /></UITimePickerTrigger>
     <UITimePickerPortal>

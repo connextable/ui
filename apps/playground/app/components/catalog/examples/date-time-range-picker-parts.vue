@@ -24,7 +24,8 @@ import {
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
-const initialRange = {
+import { ref } from "vue";
+const range = ref({
   start: {
     date: { year: 2026, month: 8, day: 22 },
     time: { hour: 9, minute: 30, second: 0, millisecond: 0 },
@@ -33,13 +34,13 @@ const initialRange = {
     date: { year: 2026, month: 8, day: 25 },
     time: { hour: 17, minute: 30, second: 0, millisecond: 0 },
   },
-}
+})
 
 const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIDateTimeRangePicker :default-value="initialRange" time-precision="minute" v-slot="{ dates, months, view, viewMode }">
+  <UIDateTimeRangePicker v-model="range" time-precision="minute" v-slot="{ dates, months, view, viewMode }">
     <UIDateTimeRangePickerAnchor>
       <div role="group" aria-label="시작 일시">
         <UIDateTimeRangePickerStartDateInput aria-label="시작 날짜" />

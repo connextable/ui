@@ -7,12 +7,15 @@ const submitted = ref("");
 function submit({ formData }: { formData: FormData }) {
   submitted.value = formData.getAll("topics").join(" · ");
 }
+
+const initialTags = ["프로젝트", "회의"];
+const tags = ref<readonly string[]>(initialTags);
 </script>
 
 <template>
-  <UIForm @submit="submit">
+  <UIForm @submit="submit" @reset="tags = initialTags">
     <UIFormField label="문서 주제" name="topics" label-mode="labelledby" v-slot="{ labelId, describedBy }">
-      <UITagsInput :default-value="['프로젝트', '회의']" :aria-labelledby="labelId" :aria-describedby="describedBy" />
+      <UITagsInput v-model="tags" :aria-labelledby="labelId" :aria-describedby="describedBy" />
     </UIFormField>
     <UIFormActions>
       <UIButton type="reset" size="sm" variant="outline">초기화</UIButton>

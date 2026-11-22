@@ -8,18 +8,22 @@ import {
   UIFormFieldGroup,
   UIFormSubmit,
 } from "@connextable/ui";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 type Range = NonNullable<InstanceType<typeof UIDateRangeField>["$props"]["modelValue"]>;
-const range = ref<Range>({ start: { year: 2026, month: 8, day: 22 }, end: { year: 2026, month: 8, day: 25 } });
+const initialRange: Range = { start: { year: 2026, month: 8, day: 22 }, end: { year: 2026, month: 8, day: 25 } };
+const range = ref<Range | null>(initialRange);
+const fieldValues = computed({
+  get: () => range.value ?? initialRange,
+  set: (value: Range) => { range.value = value; },
+});
 const submitted = ref("");
 </script>
 
 <template>
   <UIForm @submit="({ formData }) => { submitted = Array.from(formData.values()).map(String).join(' ~ ') }">
-    <UIFormFieldGroup v-model="range" label="서비스 적용 기간" name="period" v-slot="{ field }">
-      <UIDateRangeField :default-value="range" start-label="시작" end-label="종료"
-        @update:model-value="value => { if (value) range = value }">
+    <UIFormFieldGroup v-model="fieldValues" label="서비스 적용 기간" name="period" v-slot="{ field }">
+      <UIDateRangeField v-model="range" start-label="시작" end-label="종료">
         <UIDateRangeFieldStartInput :name="field('start').name" />
         <UIDateRangeFieldEndInput :name="field('end').name" />
       </UIDateRangeField>

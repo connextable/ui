@@ -18,7 +18,7 @@ import {
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 import { ref } from "vue";
 
-const initial = { start: { year: 2026, month: 8, day: 22 }, end: { year: 2026, month: 8, day: 25 } };
+const range = ref({ start: { year: 2026, month: 8, day: 22 }, end: { year: 2026, month: 8, day: 25 } });
 const formats: UITemporalDisplayFormats = {
   date: { year: "numeric", month: "long", day: "numeric", weekday: "short" },
   yearMonth: { year: "numeric", month: "2-digit" },
@@ -31,7 +31,7 @@ const display = useUITemporalDisplay();
   <div class="formatting-example">
     <UIButton variant="outline" size="sm" :aria-pressed="showWeekday" @click="showWeekday = !showWeekday">요일 표시</UIButton>
     <UITemporalProvider :formats="showWeekday ? formats : undefined">
-      <UIDateRangePicker :default-value="initial" v-slot="{ dates, value, view }">
+      <UIDateRangePicker v-model="range" v-slot="{ dates, value, view }">
         <UIDateRangePickerAnchor>
           <UIDateRangePickerValue :value="value" />
           <UIDateRangePickerTrigger aria-label="표기 예제의 날짜 범위 선택"><CalendarDays :size="18" aria-hidden="true" /></UIDateRangePickerTrigger>

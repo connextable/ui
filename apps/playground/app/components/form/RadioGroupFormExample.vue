@@ -11,12 +11,14 @@ const submitted = ref("");
 function submit(formData: FormData) {
   submitted.value = String(formData.get("density") ?? "");
 }
+
+const selected = ref("compact");
 </script>
 
 <template>
   <UIForm @submit="({ formData }) => submit(formData)">
     <UIFormField name="density">
-      <UIRadioGroup label="화면 밀도" :options="options" default-value="compact" />
+      <UIRadioGroup label="화면 밀도" :options="options" v-model="selected" />
     </UIFormField>
     <UIFormActions>
       <UIButton type="submit" size="sm">제출</UIButton>

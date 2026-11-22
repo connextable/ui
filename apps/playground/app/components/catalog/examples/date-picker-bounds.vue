@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { UIDatePicker, UIDatePickerAnchor, UIDatePickerInput, UIDatePickerTrigger, UIDatePickerContent, UIDatePickerGrid, UIDatePickerCell, useUITemporalDisplay } from "@connextable/ui";
 import { CalendarDays } from "@lucide/vue";
+import { ref } from "vue";
 
 const min = { year: 2026, month: 8, day: 20 };
 const max = { year: 2026, month: 8, day: 27 };
 const display = useUITemporalDisplay();
+
+const date = ref({ year: 2026, month: 8, day: 22 });
 </script>
 
 <template>
-  <UIDatePicker :default-value="{ year: 2026, month: 8, day: 22 }" :policies="{ min, max }" v-slot="{ dates }">
+  <UIDatePicker v-model="date" :policies="{ min, max }" v-slot="{ dates }">
     <UIDatePickerAnchor>
       <UIDatePickerInput aria-label="배송 날짜" />
       <UIDatePickerTrigger aria-label="배송 날짜 선택"><CalendarDays :size="18" aria-hidden="true" /></UIDatePickerTrigger>

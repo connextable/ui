@@ -10,12 +10,14 @@ function save() {
     throw new Error("저장 서비스가 응답하지 않았습니다.");
   }
 }
+
+const text = ref("릴리스 안내");
 </script>
 
 <template>
   <UIForm :map-submit-error="(error) => ({ message: error instanceof Error ? error.message : '저장 오류' })" @submit="save">
     <UIFormField label="문서 제목" name="title">
-      <UIInput default-value="릴리스 안내" />
+      <UIInput v-model="text" />
     </UIFormField>
     <UIFormSummary />
     <UIFormActions><UIFormSubmit>저장</UIFormSubmit></UIFormActions>

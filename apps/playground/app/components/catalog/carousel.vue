@@ -6,16 +6,19 @@ import {
   UICarouselSlide,
   UICarouselTrack,
 } from "@connextable/ui";
+import { ref } from "vue";
 
 const slides = [
   { id: "foundation", title: "디자인 토큰", description: "색상, 간격, 모서리 정책을 한곳에서 확인합니다." },
   { id: "adapters", title: "접근성 패턴", description: "키보드로 탐색할 수 있는 기본 조작을 익힙니다." },
   { id: "frameworks", title: "컴포넌트 예제", description: "완성된 예제를 열어 조합과 상태를 확인합니다." },
 ];
+
+const activeSlide = ref<string | null>("foundation");
 </script>
 
 <template>
-  <UICarousel :slides="slides.map(({ id }) => id)" default-value="foundation" label="디자인 시스템 둘러보기"
+  <UICarousel :slides="slides.map(({ id }) => id)" v-model="activeSlide" label="디자인 시스템 둘러보기"
     :get-slide-label="(_id, index) => slides[index]?.title ?? ''"
     :get-indicator-label="(_id, index) => `${slides[index]?.title ?? ''} 슬라이드`">
     <UICarouselTrack>

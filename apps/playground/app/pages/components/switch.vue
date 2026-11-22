@@ -44,7 +44,7 @@ definePageMeta({
         <SwitchReadonlyExample />
       </PlaygroundExample>
       <PlaygroundExample id="switch-default" title="초기값"
-        description="default-value를 켜 둔 스위치는 처음 표시할 때 켜진 상태로 시작합니다." :source="SwitchDefaultExampleSource" :heading-level="3">
+        description="v-model에 연결한 상태를 true로 시작하면 스위치가 처음부터 켜져 있습니다." :source="SwitchDefaultExampleSource" :heading-level="3">
         <SwitchDefaultExample />
       </PlaygroundExample>
       <PlaygroundExample id="switch-disabled" title="비활성"

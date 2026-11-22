@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { UIDisclosure, UIDisclosureContent, UIDisclosureTrigger } from "@connextable/ui";
+import { ref } from "vue";
+
+const open = ref(true);
 </script>
 
 <template>
-  <UIDisclosure default-value variant="outline">
+  <UIDisclosure v-model="open" variant="outline">
     <UIDisclosureTrigger variant="ghost">보기 권한</UIDisclosureTrigger>
     <UIDisclosureContent divided>모든 구성원이 볼 수 있습니다.</UIDisclosureContent>
   </UIDisclosure>

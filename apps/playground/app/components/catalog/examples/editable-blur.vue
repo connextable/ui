@@ -5,10 +5,13 @@ import {
   UIEditableInput,
   UIEditablePreview,
 } from "@connextable/ui";
+import { ref } from "vue";
+
+const text = ref("정리할 메모");
 
 </script>
 <template>
-  <UIEditable submit-on-blur default-value="정리할 메모" v-slot="{ value }">
+  <UIEditable submit-on-blur v-model="text" v-slot="{ value }">
     <UIEditableArea><UIEditablePreview as="button" type="button">{{ value }}</UIEditablePreview><UIEditableInput />
     </UIEditableArea>
   </UIEditable>

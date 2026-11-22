@@ -21,13 +21,14 @@ import {
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
-const initialDate = { year: 2026, month: 8, day: 22 }
+import { ref } from "vue";
+const date = ref({ year: 2026, month: 8, day: 22 })
 
 const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIDatePicker :default-value="initialDate" v-slot="{ dates, months, view, viewMode }">
+  <UIDatePicker v-model="date" v-slot="{ dates, months, view, viewMode }">
     <UIDatePickerAnchor>
       <UIDatePickerInput />
       <UIDatePickerTrigger aria-label="날짜 선택 열기">

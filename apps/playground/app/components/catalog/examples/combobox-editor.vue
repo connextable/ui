@@ -8,7 +8,7 @@ import {
   UIComboboxItem,
   UIComboboxResults,
 } from "@connextable/ui";
-import { ref, useId } from "vue";
+import { computed, ref, useId } from "vue";
 
 const inputId = useId();
 const query = ref("");
@@ -22,10 +22,13 @@ const policies = {
   matches: (label: string, query: string) => label.toLowerCase().includes(query.trim().toLowerCase()),
 };
 
-function edit(value: string) {
-  query.value = value;
-  open.value = true;
-}
+const editorValue = computed({
+  get: () => query.value,
+  set(value: string) {
+    query.value = value;
+    open.value = true;
+  },
+});
 </script>
 
 <template>
@@ -33,7 +36,7 @@ function edit(value: string) {
     <label :for="inputId">실행 환경</label>
     <UICombobox v-model:input-value="query" v-model:open="open" :items="environments" :policies="policies" label="실행 환경">
       <UIComboboxEditor>
-        <UIInput :id="inputId" :model-value="query" placeholder="이름으로 검색" @update:model-value="edit" />
+        <UIInput :id="inputId" v-model="editorValue" placeholder="이름으로 검색" />
       </UIComboboxEditor>
       <UIComboboxContent>
         <UIComboboxResults v-slot="{ items }">

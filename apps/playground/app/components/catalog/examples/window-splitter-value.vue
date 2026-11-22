@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { UIWindowSplitter, UIWindowSplitterHandle, UIWindowSplitterPane } from "@connextable/ui";
 import { GripVertical } from "@lucide/vue";
+import { ref } from "vue";
+
+const position = ref("40");
 </script>
 
 <template>
-  <UIWindowSplitter class="report-preview" :min="28" :max="66" default-value="40" label="보고서 목록 너비 조절">
+  <UIWindowSplitter class="report-preview" :min="28" :max="66" v-model="position" label="보고서 목록 너비 조절">
     <UIWindowSplitterPane side="before" class="report-pane">
       <strong>월별 보고서</strong>
       <ul class="report-list">

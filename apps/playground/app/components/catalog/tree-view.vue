@@ -18,6 +18,8 @@ const nodes = [
   { id: 'tokens', parentID: 'packages' },
 ]
 const expandedValues = ref(['atlas', 'apps', 'dashboard', 'packages'])
+
+const selected = ref<readonly string[]>(['settings']);
 </script>
 
 <template>
@@ -25,7 +27,7 @@ const expandedValues = ref(['atlas', 'apps', 'dashboard', 'packages'])
     :nodes="nodes"
 
     v-model:expanded-values="expandedValues"
-    :default-value="['settings']"
+    v-model="selected"
     label="아틀라스 프로젝트 파일"
 
   >

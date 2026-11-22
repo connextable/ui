@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { UIDateRangePicker, UIDateRangePickerAnchor, UIDateRangePickerStartInput, UIDateRangePickerEndInput, UIDateRangePickerTrigger, UIDateRangePickerPortal, UIDateRangePickerContent, UIDateRangePickerPreviousMonth, UIDateRangePickerNextMonth, UIDateRangePickerGrid, UIDateRangePickerCell, UIDateRangePickerValue, useUITemporalDisplay } from "@connextable/ui";
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
+import { ref } from "vue";
 
-const initial = { start: { year: 2026, month: 8, day: 22 }, end: { year: 2026, month: 8, day: 25 } };
+const range = ref({ start: { year: 2026, month: 8, day: 22 }, end: { year: 2026, month: 8, day: 25 } });
 const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIDateRangePicker :default-value="initial"  v-slot="{ value, dates, view }">
+  <UIDateRangePicker v-model="range"  v-slot="{ value, dates, view }">
     <UIDateRangePickerAnchor>
       <UIDateRangePickerStartInput hidden />
       <UIDateRangePickerEndInput hidden />

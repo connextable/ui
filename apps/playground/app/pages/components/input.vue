@@ -39,7 +39,7 @@ definePageMeta({
       <PlaygroundExample :heading-level="3"
         id="input-multiline"
         title="여러 줄 입력"
-        description="multiline을 사용하면 여러 줄을 입력할 수 있습니다. default-value로 초기 내용을 지정합니다."
+        description="multiline을 사용하면 여러 줄을 입력할 수 있습니다. v-model에 연결한 상태에 초기 내용을 지정합니다."
         :source="multilineSource"
       >
         <InputMultilineExample />

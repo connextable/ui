@@ -11,7 +11,7 @@ import {
   UIToggleGroupItem,
   useUIChartSelector,
 } from "@connextable/ui";
-import { defineComponent, h, ref } from "vue";
+import { computed, defineComponent, h, ref } from "vue";
 
 const teams = [
   { id: "web", name: "웹", count: 64 },
@@ -20,7 +20,14 @@ const teams = [
   { id: "support", name: "운영", count: 27 },
 ];
 const teamIds = teams.map(({ id }) => id);
-const selection = ref<{ type: "points"; ids: readonly string[] }>({ type: "points", ids: [] });
+type Selection = NonNullable<InstanceType<typeof UIChart>["$props"]["modelValue"]>;
+const selection = ref<Selection>({ type: "points", ids: [] });
+const selectedTeams = computed({
+  get: () => selection.value.type === "points"
+    ? selection.value.ids.filter(id => typeof id === "string")
+    : [],
+  set: (ids: readonly string[]) => { selection.value = { type: "points", ids }; },
+});
 
 const SelectionSummary = defineComponent({
   setup() {
@@ -40,16 +47,14 @@ const SelectionSummary = defineComponent({
 
 <template>
   <UIChart
-    :model-value="selection"
+    v-model="selection"
     :dom="{ accessibilityLabel: '팀별 처리 건수', getAccessibleDatumLabel: id => teams.find(team => team.id === id)?.name ?? String(id) }"
-    @update:model-value="value => { if (value.type === 'points') selection = value }"
   >
     <UIToggleGroup
       multiple
       :items="teamIds"
-      :model-value="selection.ids"
+      v-model="selectedTeams"
       label="팀 선택"
-      @update:model-value="ids => selection = { type: 'points', ids }"
     >
       <UIToggleGroupItem v-for="team in teams" :key="team.id" :value="team.id">{{ team.name }}</UIToggleGroupItem>
     </UIToggleGroup>

@@ -8,6 +8,8 @@ const options = [
   { value: "compact", label: "촘촘하게" },
 ];
 const submitted = ref("");
+const initialDensity = "standard";
+const density = ref<string | null>(initialDensity);
 
 function submit(formData: FormData) {
   submitted.value = String(formData.get("density") || "미선택");
@@ -15,9 +17,9 @@ function submit(formData: FormData) {
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => submit(formData)">
+  <UIForm @submit="({ formData }) => submit(formData)" @reset="density = initialDensity">
     <UIFormField label="화면 밀도" name="density">
-      <UISelect default-value="standard" :options="options" clearable />
+      <UISelect v-model="density" :options="options" clearable />
     </UIFormField>
     <UIFormActions>
       <UIButton type="submit" size="sm">제출</UIButton>

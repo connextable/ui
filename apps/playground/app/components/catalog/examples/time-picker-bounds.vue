@@ -9,14 +9,15 @@ import {
 
 } from "@connextable/ui";
 import { Clock } from "@lucide/vue";
+import { ref } from "vue";
 
-const initial = { hour: 10, minute: 30, second: 0, millisecond: 0 };
+const time = ref({ hour: 10, minute: 30, second: 0, millisecond: 0 });
 const min = { hour: 9, minute: 0, second: 0, millisecond: 0 };
 const max = { hour: 17, minute: 0, second: 0, millisecond: 0 };
 </script>
 
 <template>
-  <UITimePicker label="시간 선택" :default-value="initial" precision="minute" :policies="{ min, max }" clearable>
+  <UITimePicker label="시간 선택" v-model="time" precision="minute" :policies="{ min, max }" clearable>
     <UITimePickerInput label="시작 시간" />
     <UITimePickerTrigger aria-label="시작 시간 선택"><Clock :size="16" aria-hidden="true" /></UITimePickerTrigger>
     <UITimePickerContent v-slot="{ columns }">

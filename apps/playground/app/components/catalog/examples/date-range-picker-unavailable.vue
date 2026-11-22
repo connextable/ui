@@ -23,10 +23,11 @@ import {
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
-const initialRange = {
+import { ref } from "vue";
+const range = ref({
   start: { year: 2026, month: 8, day: 22 },
   end: { year: 2026, month: 8, day: 25 },
-}
+})
 const unavailableDates = new Set(['2026-08-27', '2026-08-29'])
 const policies = {
   unavailable: (value: { year: number; month: number; day: number }) =>
@@ -39,7 +40,7 @@ const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIDateRangePicker :default-value="initialRange" :policies="policies" v-slot="{ value, dates, months, view, viewMode }">
+  <UIDateRangePicker v-model="range" :policies="policies" v-slot="{ value, dates, months, view, viewMode }">
     <UIDateRangePickerAnchor>
       <UIDateRangePickerStartInput hidden />
       <UIDateRangePickerEndInput hidden />

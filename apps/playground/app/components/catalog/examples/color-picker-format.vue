@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { UIColorPickerSwatch, UIColorPicker, UIColorPickerControl, UIColorPickerFormatTrigger, UIColorPickerTextInput } from "@connextable/ui";
+import { ref } from "vue";
+
+const selectedColor = ref("#4168be");
 </script>
 
 <template>
-  <UIColorPicker label="강조 색상" default-value="#4168be">
+  <UIColorPicker label="강조 색상" v-model="selectedColor">
     <UIColorPickerControl>
       <UIColorPickerFormatTrigger format="hex">HEX</UIColorPickerFormatTrigger>
       <UIColorPickerFormatTrigger format="hsv">HSV</UIColorPickerFormatTrigger>

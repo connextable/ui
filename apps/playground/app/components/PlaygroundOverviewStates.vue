@@ -10,6 +10,10 @@ const statuses = [
   { value: "active", label: "진행 중" },
   { value: "complete", label: "완료" },
 ];
+
+const readonlyText = ref("이름");
+const disabledText = ref("이름");
+const selected = ref<string | null>("active");
 </script>
 
 <template>
@@ -25,11 +29,11 @@ const statuses = [
           </div>
           <div class="ui-field design-states__field">
             <label for="design-state-readonly">읽기 전용</label>
-            <UIInput id="design-state-readonly" model-value="이름" size="sm" readonly />
+            <UIInput id="design-state-readonly" v-model="readonlyText" size="sm" readonly />
           </div>
           <div class="ui-field design-states__field">
             <label for="design-state-disabled">비활성</label>
-            <UIInput id="design-state-disabled" model-value="이름" size="sm" disabled />
+            <UIInput id="design-state-disabled" v-model="disabledText" size="sm" disabled />
           </div>
           <div class="ui-field design-states__field">
             <label for="design-state-invalid">오류</label>
@@ -49,7 +53,7 @@ const statuses = [
       <div>
         <h3>떠 있는 목록</h3>
         <p class="design-states__note">목록을 열면 그림자와 레이어가 적용된 표면을 볼 수 있습니다.</p>
-        <UISelect aria-label="진행 상태" :options="statuses" default-value="active" size="sm" />
+        <UISelect aria-label="진행 상태" :options="statuses" v-model="selected" size="sm" />
       </div>
     </div>
   </section>

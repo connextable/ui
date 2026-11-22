@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { createUIDataGridComponents, UISelect, UISelectContent, UISelectTrigger, UITabularColumnHeading, UITabularFilterPopover, useUIDataGrid } from "@connextable/ui";
+import { computed } from "vue";
 
 const tasks = [
   { kind: "leaf", id: "review", cells: { task: "시안 검토", status: "완료" } },
@@ -28,14 +29,20 @@ const data = useUIDataGrid({
 });
 const DataGrid = createUIDataGridComponents(data);
 
-function filterByStatus(status: string | null) {
-  const query = data.snapshot.value.tabular.state.query;
-  const filters = query.filters.filter(filter => filter.id !== filterID);
-  if (status && status !== "all") {
-    filters.push({ id: filterID, scope: "column", columnID: "status", predicate: "equals", value: status });
-  }
-  data.dispatch({ type: "set-query", query: { ...query, filters } });
-}
+const statusFilter = computed({
+  get() {
+    const filter = data.snapshot.value.tabular.state.query.filters.find(filter => filter.id === filterID);
+    return String(filter?.value ?? "all");
+  },
+  set(status: string | null) {
+    const query = data.snapshot.value.tabular.state.query;
+    const filters = query.filters.filter(filter => filter.id !== filterID);
+    if (status && status !== "all") {
+      filters.push({ id: filterID, scope: "column", columnID: "status", predicate: "equals", value: status });
+    }
+    data.dispatch({ type: "set-query", query: { ...query, filters } });
+  },
+});
 </script>
 
 <template>
@@ -44,21 +51,19 @@ function filterByStatus(status: string | null) {
       <DataGrid.Header>
         <DataGrid.HeaderRow>
           <DataGrid.ColumnHeader column="task">작업</DataGrid.ColumnHeader>
-          <DataGrid.ColumnHeader column="status" v-slot="{ query }">
+          <DataGrid.ColumnHeader column="status">
             <UITabularColumnHeading>
               상태
               <template #actions>
                 <UITabularFilterPopover
                   label="상태 필터"
-                  :value="String(query.filters.find(filter => filter.id === filterID)?.value ?? '')"
-                  v-slot="{ value }"
+                  :value="statusFilter === 'all' ? '' : statusFilter"
                 >
                   <UISelect
                     aria-label="상태 선택"
                     size="sm"
                     :options="statusOptions"
-                    :model-value="value || 'all'"
-                    @update:model-value="filterByStatus"
+                    v-model="statusFilter"
                   >
                     <UISelectTrigger />
                     <UISelectContent width="trigger" />

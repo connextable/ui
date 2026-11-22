@@ -3,11 +3,12 @@ import { UIPinInput } from "@connextable/ui";
 import { ref } from "vue";
 
 const complete = ref(false);
+const code = ref("");
 </script>
 
 <template>
   <div class="example">
-    <UIPinInput :length="4" @complete="complete = true" @update:model-value="complete = false" label="확인 코드" clearable />
+    <UIPinInput v-model="code" :length="4" @complete="complete = true" @update:model-value="complete = false" label="확인 코드" clearable />
     <output>{{ complete ? "확인 코드 입력 완료" : "네 자리를 입력하세요." }}</output>
   </div>
 </template>

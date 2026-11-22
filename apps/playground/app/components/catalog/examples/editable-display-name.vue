@@ -5,10 +5,13 @@ import {
   UIEditableInput,
   UIEditablePreview,
 } from "@connextable/ui";
+import { ref } from "vue";
+
+const text = ref("알림에 표시할 이름");
 
 </script>
 <template>
-  <UIEditable default-value="알림에 표시할 이름" v-slot="{ value }">
+  <UIEditable v-model="text" v-slot="{ value }">
     <UIEditableArea><UIEditablePreview as="button" type="button">{{ value }}</UIEditablePreview><UIEditableInput />
     </UIEditableArea>
   </UIEditable>

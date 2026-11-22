@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { UIDateRangeField } from "@connextable/ui";
+import { ref } from "vue";
 
-const range = {
+const range = ref({
   start: { year: 2026, month: 8, day: 22 },
   end: { year: 2026, month: 8, day: 25 },
-};
+});
 </script>
 
 <template>
-  <UIDateRangeField :default-value="range" start-label="시작일" end-label="종료일" />
+  <UIDateRangeField v-model="range" start-label="시작일" end-label="종료일" />
 </template>

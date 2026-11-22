@@ -14,13 +14,13 @@ import { CalendarDays } from "@lucide/vue";
 import { ref } from "vue";
 
 const open = ref(false);
-const initial = { date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minute: 30, second: 0, millisecond: 0 } };
+const initial = ref({ date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minute: 30, second: 0, millisecond: 0 } });
 const display = useUITemporalDisplay();
 </script>
 
 <template>
   <div>
-    <UIDateTimePicker v-model:open="open" :default-value="initial" v-slot="{ dates }">
+    <UIDateTimePicker v-model:open="open" v-model="initial" v-slot="{ dates }">
       <UIDateTimePickerAnchor>
         <UIDateTimePickerDateTimeInput aria-label="업데이트 일시" />
         <UIDateTimePickerTrigger aria-label="업데이트 달력"><CalendarDays :size="18" aria-hidden="true" /></UIDateTimePickerTrigger>

@@ -15,13 +15,14 @@ import {
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
-const billingMonth = { year: 2026, month: 8, day: 1 }
+import { ref } from "vue";
+const billingMonth = ref({ year: 2026, month: 8, day: 1 })
 
 const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIMonthPicker :default-value="billingMonth" v-slot="{ value, months, view }">
+  <UIMonthPicker v-model="billingMonth" v-slot="{ value, months, view }">
     <UIMonthPickerAnchor>
       <UIMonthPickerInput hidden />
       <UIDatePickerValue :value="value" granularity="month" placeholder="월 선택" />

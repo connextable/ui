@@ -9,12 +9,15 @@ import {
   UIEditableSubmitTrigger,
   UIFormActions,
 } from "@connextable/ui";
+import { ref } from "vue";
 
 const policies = { validate: (draft: string) => draft.trim().length >= 3 };
+
+const text = ref("제품 설계");
 </script>
 
 <template>
-  <UIEditable default-value="제품 설계" label="작업 이름" :policies="policies" v-slot="{ value, draft, editing }">
+  <UIEditable v-model="text" label="작업 이름" :policies="policies" v-slot="{ value, draft, editing }">
     <UIEditableArea>
       <UIEditablePreview as="button" type="button">{{ value }}</UIEditablePreview>
       <UIEditableInput aria-label="새 작업 이름" />

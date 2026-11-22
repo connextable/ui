@@ -620,7 +620,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "checkbox-group-readonly", title: "읽기 전용 그룹", description: "이미 선택된 항목을 그대로 표시합니다." },
       { id: "checkbox-group-submit", title: "선택값 배열 제출", description: "체크한 항목만 Field의 이름으로 읽습니다.", section: "form" },
       { id: "checkbox-group-disabled", title: "일부 옵션만 비활성화", description: "선택을 막을 항목의 UICheckboxGroupItem에 disabled를 지정합니다." },
-      { id: "checkbox-group-initial", title: "일부 항목을 선택한 상태로 시작", description: "default-value로 메일과 앱을 초기 선택합니다." },
+      { id: "checkbox-group-initial", title: "일부 항목을 선택한 상태로 시작", description: "v-model에 연결한 배열에 메일과 앱을 넣으면 처음부터 선택되어 있습니다." },
       { id: "checkbox-group-required", title: "알림 채널을 하나 이상 선택", description: "폼 스키마에서 최소 선택 개수를 지정합니다. 비워서 제출한 뒤 채널 하나를 선택하고 다시 제출합니다.", section: "form" },
     ],
   },

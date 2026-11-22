@@ -15,16 +15,17 @@ import {
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
-const reportingPeriod = {
+import { ref } from "vue";
+const reportingPeriod = ref({
   start: { year: 2026, month: 4, day: 1 },
   end: { year: 2026, month: 4, day: 1 },
-}
+})
 
 const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIMonthRangePicker :default-value="reportingPeriod" v-slot="{ value, months, view }">
+  <UIMonthRangePicker v-model="reportingPeriod" v-slot="{ value, months, view }">
     <UIMonthRangePickerAnchor>
       <UIMonthRangePickerStartInput hidden />
       <UIMonthRangePickerEndInput hidden />

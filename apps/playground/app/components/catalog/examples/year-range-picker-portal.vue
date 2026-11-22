@@ -16,16 +16,17 @@ import {
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
-const roadmap = {
+import { ref } from "vue";
+const roadmap = ref({
   start: { year: 2026, month: 1, day: 1 },
   end: { year: 2030, month: 1, day: 1 },
-}
+})
 
 const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIYearRangePicker :default-value="roadmap" v-slot="{ value, years }">
+  <UIYearRangePicker v-model="roadmap" v-slot="{ value, years }">
     <UIYearRangePickerAnchor>
       <UIYearRangePickerStartInput hidden />
       <UIYearRangePickerEndInput hidden />

@@ -9,6 +9,7 @@ import {
 } from "@connextable/ui";
 
 import { Check, ChevronRight } from "@lucide/vue";
+import { ref } from "vue";
 
 const nodes = [
   { id: "asia", parentID: null },
@@ -21,9 +22,11 @@ const nodes = [
 ];
 const labels: Record<string, string> = { asia: "아시아", kr: "한국", jp: "일본", seoul: "서울", busan: "부산", tokyo: "도쿄", osaka: "오사카" };
 const levels = ["권역", "국가", "도시"];
+
+const region = ref<string | null>("seoul");
 </script>
 <template>
-  <UICascadeList :nodes="nodes" default-value="seoul" label="배송 지역" v-slot="{ columns }">
+  <UICascadeList :nodes="nodes" v-model="region" label="배송 지역" v-slot="{ columns }">
     <UICascadeListValue v-slot="{ valuePath }">{{ valuePath.length ? valuePath.map(id => labels[id]).join(' / ') : '배송 지역 선택' }}</UICascadeListValue>
     <UICascadeListColumn v-for="(_, depth) in columns" :key="depth" :depth="depth" :label="levels[depth]" v-slot="{ items }">
       <UICascadeListItem v-for="item in items" :key="item" :value="item">{{ labels[item] }}

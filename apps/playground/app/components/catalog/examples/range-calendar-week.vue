@@ -9,17 +9,18 @@ import {
   UIRangeCalendarPreviousWeek,
   useUITemporalDisplay,
 } from "@connextable/ui";
+import { ref } from "vue";
 
-const stay = {
+const stay = ref({
   start: { year: 2026, month: 8, day: 22 },
   end: { year: 2026, month: 8, day: 25 },
-}
+})
 
 const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIRangeCalendar default-view="week" :default-value="stay" v-slot="{ dates, view }">
+  <UIRangeCalendar default-view="week" v-model="stay" v-slot="{ dates, view }">
     <UIRangeCalendarContent>
       <header>
         <UIRangeCalendarPreviousWeek aria-label="이전 주"><ChevronLeft :size="16" aria-hidden="true" /></UIRangeCalendarPreviousWeek>

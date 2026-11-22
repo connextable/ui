@@ -10,6 +10,7 @@ import {
   UICascadeSelectTrigger,
   UICascadeSelectValue,
 } from "@connextable/ui";
+import { ref } from "vue";
 
 const nodes = [
   { id: "asia", parentID: null },
@@ -27,9 +28,11 @@ const labels: Record<string, string> = {
   jp: "일본", tokyo: "도쿄", europe: "유럽", fr: "프랑스", paris: "파리",
 };
 const label = (id: string) => labels[id] ?? id;
+
+const region = ref<string | null>("seoul");
 </script>
 <template>
-  <UICascadeSelect :nodes="nodes" :text-value="label" default-value="seoul" v-slot="{ columns }">
+  <UICascadeSelect :nodes="nodes" :text-value="label" v-model="region" v-slot="{ columns }">
     <UICascadeSelectTrigger><UICascadeSelectValue placeholder="도시 선택" /></UICascadeSelectTrigger>
     <UICascadeSelectContent>
       <UICascadeSelectColumn v-for="(_, depth) in columns" :key="depth" :depth="depth" v-slot="{ items }">

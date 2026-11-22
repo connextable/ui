@@ -1,21 +1,28 @@
 <script setup lang="ts">
-import { UIButton, UICheckbox, UIDataStatus, UIScrollArea } from "@connextable/ui";
+import { UIButton, UICheckbox, type UICheckboxValue, UIDataStatus, UIScrollArea } from "@connextable/ui";
 import { computed, ref } from "vue";
 
+const selected = ref<string[]>([]);
 const requests = [
   "11월 정산 보고서", "연말 배송 일정", "반품 처리 안내", "신제품 촬영 일정", "홈페이지 배너 시안",
   "거래처 계약 갱신", "결제 오류 안내", "예약 화면 개선안", "고객지원 답변 양식", "개인정보 처리 안내",
   "내부 접근 권한 점검", "문서 보관 정책", "장비 구매 요청", "품질 검사 기록", "파트너용 제품 가이드",
-].map((title, index) => ({ title, ready: index % 3 !== 1 }));
+].map((title, index) => ({
+  title,
+  ready: index % 3 !== 1,
+  checked: computed({
+    get: () => selected.value.includes(title),
+    set(checked: UICheckboxValue) {
+      selected.value = checked === true
+        ? [...selected.value, title]
+        : selected.value.filter(item => item !== title);
+    },
+  }),
+}));
 const filterOpen = ref(false);
 const summaryOpen = ref(false);
-const readyOnly = ref(false);
-const selected = ref<string[]>([]);
-const visible = computed(() => readyOnly.value ? requests.filter(request => request.ready) : requests);
-
-function toggle(title: string, checked: boolean) {
-  selected.value = checked ? [...selected.value, title] : selected.value.filter(item => item !== title);
-}
+const readyOnly = ref<UICheckboxValue>(false);
+const visible = computed(() => readyOnly.value === true ? requests.filter(request => request.ready) : requests);
 </script>
 
 <template>
@@ -28,15 +35,14 @@ function toggle(title: string, checked: boolean) {
             @click="filterOpen = !filterOpen">{{ filterOpen ? '필터 접기' : '필터 펼치기' }}</UIButton>
         </div>
         <div v-show="filterOpen" :id="`${viewportId}-filters`" class="review-queue__details">
-          <UICheckbox label="승인 대기만 보기" :model-value="readyOnly" @update:model-value="readyOnly = $event === true" />
+          <UICheckbox v-model="readyOnly" label="승인 대기만 보기" />
         </div>
       </div>
     </template>
 
     <ul class="review-queue__list">
       <li v-for="request in visible" :key="request.title">
-        <UICheckbox :label="request.title" :model-value="selected.includes(request.title)"
-          @update:model-value="toggle(request.title, $event === true)" />
+        <UICheckbox v-model="request.checked.value" :label="request.title" />
         <UIDataStatus :tone="request.ready ? 'accent' : 'neutral'">{{ request.ready ? '승인 대기' : '검토 중' }}</UIDataStatus>
       </li>
     </ul>

@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { UITabs, UITabsContent, UITabsList, UITabsTrigger } from "@connextable/ui";
+import { ref } from "vue";
+
+const activeTab = ref("summary");
 </script>
 
 <template>
-  <UITabs :items="['summary', 'history']" default-value="summary" activation-mode="manual">
+  <UITabs :items="['summary', 'history']" v-model="activeTab" activation-mode="manual">
     <UITabsList label="문서 정보">
       <UITabsTrigger value="summary">요약</UITabsTrigger>
       <UITabsTrigger value="history">변경 내역</UITabsTrigger>

@@ -30,11 +30,13 @@ function apply(value: string) {
   if (value === "left" || value === "center") align.value = value;
   if (value === "bold" || value === "italic" || value === "underline") formats.value[value] = !formats.value[value];
 }
+
+const activeItem = ref<string | null>("bold");
 </script>
 
 <template>
   <div class="toolbar-example" :data-orientation="props.orientation">
-    <UIToolbar :items="items" :orientation="props.orientation" :disabled-items="props.disabledItems" default-value="bold" label="문단 서식" @invoke="apply">
+    <UIToolbar :items="items" :orientation="props.orientation" :disabled-items="props.disabledItems" v-model="activeItem" label="문단 서식" @invoke="apply">
       <UIToolbarItem v-for="tool in formatting" :key="tool.id" :value="tool.id" :aria-label="tool.label" :aria-pressed="formats[tool.id]">
         <component :is="tool.icon" :size="16" aria-hidden="true" />
       </UIToolbarItem>

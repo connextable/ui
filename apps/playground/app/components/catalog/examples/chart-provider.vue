@@ -7,7 +7,7 @@ import {
   useUIChart,
   useUIChartContext,
 } from "@connextable/ui";
-import { defineComponent, h } from "vue";
+import { computed, defineComponent, h } from "vue";
 
 const channels = [
   { id: "search", label: "검색", value: 52 },
@@ -17,7 +17,7 @@ const channels = [
 const channelIds = channels.map(({ id }) => id);
 const legend = channels.map(({ label, value }) => ({ label, value: `${value}%` }));
 const entry = { id: "entry", kind: "donut", data: channels, valueField: "value", labelField: "label", innerRadius: 0.64, outerRadius: 0.88 } as const;
-const { controller, dispatch } = useUIChart<string>({
+const { controller, dispatch, snapshot } = useUIChart<string>({
   defaultSelection: { type: "points", ids: ["search"] },
   definition: {
     coordinate: { kind: "radial" },
@@ -25,6 +25,15 @@ const { controller, dispatch } = useUIChart<string>({
   },
 });
 const Chart = createUIChartComponents(controller);
+const selectedChannels = computed({
+  get() {
+    const selection = snapshot.value.state.selection;
+    return selection.type === "points" ? selection.ids : [];
+  },
+  set(ids: readonly string[]) {
+    dispatch({ type: "set-selection", selection: { type: "points", ids } });
+  },
+});
 
 const ChannelShare = defineComponent({
   setup() {
@@ -43,12 +52,11 @@ const ChannelShare = defineComponent({
 
 <template>
   <div class="ui-field">
-    <Chart.Provider v-slot="{ state }">
+    <Chart.Provider>
       <UIToggleGroup
+        v-model="selectedChannels"
         :items="channelIds"
-        :model-value="state.selection.type === 'points' ? state.selection.ids : []"
         label="방문 경로"
-        @update:model-value="ids => dispatch({ type: 'set-selection', selection: { type: 'points', ids } })"
       >
         <UIToggleGroupItem v-for="channel in channels" :key="channel.id" :value="channel.id">{{ channel.label }}</UIToggleGroupItem>
       </UIToggleGroup>

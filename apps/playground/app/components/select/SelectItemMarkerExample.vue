@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { UISelect, UISelectContent, UISelectItem, UISelectTrigger } from "@connextable/ui";
+import { ref } from "vue";
 
 const options = [
   { value: "review", label: "검토 중", color: "#aa671d" },
   { value: "ready", label: "준비 완료", color: "#246a60" },
 ];
+
+const selected = ref<string | null>("review");
 </script>
 
 <template>
-  <UISelect :options="options" aria-label="상태" default-value="review">
+  <UISelect :options="options" aria-label="상태" v-model="selected">
     <UISelectTrigger />
     <UISelectContent>
       <UISelectItem

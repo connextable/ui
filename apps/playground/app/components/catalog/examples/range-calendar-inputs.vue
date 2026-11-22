@@ -17,10 +17,10 @@ import {
 } from "@connextable/ui";
 import { ref } from "vue";
 
-const stay = {
+const stay = ref({
   start: { year: 2026, month: 8, day: 22 },
   end: { year: 2026, month: 8, day: 25 },
-};
+});
 const submitted = ref("");
 
 const display = useUITemporalDisplay();
@@ -28,7 +28,7 @@ const display = useUITemporalDisplay();
 
 <template>
   <UIForm @submit="({ formData }) => { submitted = [formData.get('start'), formData.get('end')].join(' – ') }">
-    <UIRangeCalendar :default-value="stay" v-slot="{ value, dates, view }" label="숙박 기간">
+    <UIRangeCalendar v-model="stay" v-slot="{ value, dates, view }" label="숙박 기간">
       <UIRangeCalendarStartInput name="start" hidden />
       <UIRangeCalendarEndInput name="end" hidden />
       <UIDateRangePickerValue :value="value" />

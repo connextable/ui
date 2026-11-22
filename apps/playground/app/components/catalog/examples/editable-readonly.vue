@@ -5,10 +5,13 @@ import {
   UIEditableInput,
   UIEditablePreview,
 } from "@connextable/ui";
+import { ref } from "vue";
+
+const text = ref("11월 정산 배포");
 
 </script>
 <template>
-  <UIEditable readonly default-value="11월 정산 배포" v-slot="{ value }">
+  <UIEditable readonly v-model="text" v-slot="{ value }">
     <UIEditableArea><UIEditablePreview>{{ value }}</UIEditablePreview><UIEditableInput />
     </UIEditableArea>
   </UIEditable>

@@ -8,18 +8,25 @@ import {
   UIFormFieldGroup,
   UIFormSubmit,
 } from "@connextable/ui";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 type Range = NonNullable<InstanceType<typeof UITimeRangeField>["$props"]["modelValue"]>;
-const range = ref<Range>({ start: { hour: 9, minute: 0, second: 0, millisecond: 0 }, end: { hour: 17, minute: 30, second: 0, millisecond: 0 } });
+const initialRange: Range = {
+  start: { hour: 9, minute: 0, second: 0, millisecond: 0 },
+  end: { hour: 17, minute: 30, second: 0, millisecond: 0 },
+};
+const range = ref<Range | null>(initialRange);
+const fieldValues = computed({
+  get: () => range.value ?? initialRange,
+  set: (value: Range) => { range.value = value; },
+});
 const submitted = ref("");
 </script>
 
 <template>
   <UIForm @submit="({ formData }) => { submitted = Array.from(formData.values()).map(String).join(' ~ ') }">
-    <UIFormFieldGroup v-model="range" label="알림 운영 시간" name="period" v-slot="{ field }">
-      <UITimeRangeField precision="minute" :default-value="range" start-label="시작" end-label="종료"
-        @update:model-value="value => { if (value) range = value }">
+    <UIFormFieldGroup v-model="fieldValues" label="알림 운영 시간" name="period" v-slot="{ field }">
+      <UITimeRangeField v-model="range" precision="minute" start-label="시작" end-label="종료">
         <UITimeRangeFieldStartInput :name="field('start').name" />
         <UITimeRangeFieldEndInput :name="field('end').name" />
       </UITimeRangeField>
