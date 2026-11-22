@@ -14,7 +14,7 @@
 
 | 확인 범위 | 상태 적용부 |
 | --- | --- |
-| Input, Editable, PIN, Tags, Number, Quantity, SpinButton | 입력값, 내부 액션, 지우기 버튼 |
+| Input, Editable, PIN, Tags, Number, Quantity, SpinButton, GridEditor | 입력값, 내부 액션, 지우기 버튼 |
 | Checkbox, CheckboxGroup, CheckboxTree, RadioGroup, Switch, ToggleButton, ToggleGroup | 체크·선택 표시와 값 변경 |
 | Select, Combobox, TreeSelect, Listbox, CascadeSelect, CascadeList, Transfer | 검색 입력, 선택값, 목록의 조작 상태 |
 | Slider, MultiThumbSlider, Rating, ColorPicker | 손잡이, 단계, 색상 값과 상태 표면 |
@@ -28,3 +28,10 @@
 - 대기열 동시 실행과 진행률, 대기 중인 전송 취소, 실패한 파일 재시도, 완료 후 초기화를 확인한다.
 - 대표 네이티브 및 사용자 정의 입력을 렌더링해 상태 속성, 포커스, 클릭·키 입력 때의 값, 배경과 커서를 확인한다.
 - 코드 블록, Disclosure, Accordion, CheckboxTree, TreeView, TreeSelect의 초기 열린 상태와 이후 토글을 확인한다.
+
+## 입력 상태 점검 결과
+
+- 공개 값 입력·선택 컴포넌트 46개를 기본·읽기 전용·비활성 상태로 서버 렌더링해 실제 입력 요소와 위젯에 상태가 전달되는지 확인했다.
+- PIN은 공통 상태 해석을 사용한다. 두 상태를 함께 켜면 비활성이 우선한다. 브라우저에서 읽기 전용 전환 후 포커스와 기존 값을 유지하고, 키 입력과 지우기를 막으며, 비활성 전환 후 Tab 순서에서 빠지는 것을 확인했다.
+- 기본 Editable 미리보기 버튼은 `disabled`를 네이티브 버튼에 전달한다. 셀 편집기 `UIGridEditor`는 네이티브 `readonly`와 `disabled`를 지원한다. 브라우저에서 일반 셀 편집과 저장을 확인했다.
+- PIN, 라디오 그룹, 토글 버튼의 기본 예제에서 두 상태를 바꾸고, 복사할 코드에서 해당 속성을 확인할 수 있다. 폼 필드의 상태 상속과 PIN·Editable·셀 편집기의 상태를 회귀 테스트에 포함했다.

@@ -2,9 +2,44 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createSSRApp, h } from "vue";
 import { renderToString } from "vue/server-renderer";
-import { UICalendar, UICheckboxTree, UIDisclosure, UIDisclosureContent, UIFileInput, UIFileUploadQueue, UISelect } from "@connextable/ui";
+import { UICalendar, UICheckboxTree, UIDisclosure, UIDisclosureContent, UIEditable, UIFileInput, UIFileUploadQueue, UIForm, UIFormField, UIGridEditor, UIPinInput, UISelect } from "@connextable/ui";
 
 const render = (component, props, children) => renderToString(createSSRApp({ render: () => h(component, props, children) }));
+
+test("PIN cells inherit readonly, keep their values and defer to disabled", async () => {
+  const pin = { length: 4, modelValue: "2846", clearable: true };
+  const readonly = await render(UIForm, null, () => h(UIFormField, { name: "pin", readonly: true }, () => h(UIPinInput, pin)));
+  const cells = html => [...html.matchAll(/<input[^>]+data-scope="pin-input"[^>]*>/g)].map(([input]) => input);
+  assert.deepEqual(cells(readonly).map(input => input.match(/\bvalue="(\d)"/)?.[1]), ["2", "8", "4", "6"]);
+  for (const input of cells(readonly)) {
+    assert.match(input, /\sreadonly[ >]/);
+    assert.doesNotMatch(input, /\sdisabled[ >]/);
+  }
+  assert.doesNotMatch(readonly, /인증 코드 지우기/);
+
+  const disabled = await render(UIPinInput, { ...pin, readonly: true, disabled: true });
+  assert.equal(cells(disabled).length, 4);
+  for (const input of cells(disabled)) {
+    assert.match(input, /\sdisabled[ >]/);
+    assert.doesNotMatch(input, /\sreadonly[ >]/);
+  }
+  assert.doesNotMatch(disabled, /인증 코드 지우기/);
+});
+
+test("a disabled editable value renders an inactive preview button", async () => {
+  const disabled = await render(UIEditable, { modelValue: "확정 값", disabled: true });
+  assert.match(disabled, /<button[^>]*\sdisabled[^>]*data-part="preview"[^>]*>확정 값<\/button>/);
+});
+
+test("grid cell editors expose native readonly and disabled without losing the displayed value", async () => {
+  const readonly = await render(UIGridEditor, { modelValue: "예정", readonly: true });
+  assert.match(readonly, /<input[^>]*\sreadonly[\s>]/);
+  assert.match(readonly, /value="예정"/);
+
+  const disabled = await render(UIGridEditor, { modelValue: "확정", disabled: true });
+  assert.match(disabled, /<input[^>]*\sdisabled[\s>]/);
+  assert.match(disabled, /value="확정"/);
+});
 
 test("read-only file controls keep names and focus while disabled actions cannot be triggered", async () => {
   const file = new File(["memo"], "memo.txt");

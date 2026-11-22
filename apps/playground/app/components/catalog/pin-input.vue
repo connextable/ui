@@ -12,6 +12,8 @@ const selectedLength = ref<string | null>("6");
 const length = computed(() => selectedLength.value === "4" ? 4 : 6);
 const mask = ref(false);
 const clearable = ref(false);
+const readonly = ref(false);
+const disabled = ref(false);
 watch(length, count => { code.value = code.value.slice(0, count); });
 
 const attributes = computed(() => ({
@@ -19,6 +21,8 @@ const attributes = computed(() => ({
   length: length.value,
   mask: mask.value || undefined,
   clearable: clearable.value || undefined,
+  readonly: readonly.value || undefined,
+  disabled: disabled.value || undefined,
 }));
 const source = computed(() => vueExampleCode("UIPinInput", {
   script: [
@@ -39,6 +43,8 @@ const source = computed(() => vueExampleCode("UIPinInput", {
       </PlaygroundExampleControl>
       <UISwitch v-model="mask" size="sm" label="mask" />
       <UISwitch v-model="clearable" size="sm" label="clearable" />
+      <UISwitch v-model="readonly" size="sm" label="readonly" />
+      <UISwitch v-model="disabled" size="sm" label="disabled" />
     </template>
     <UIPinInput v-model="code" v-bind="attributes" />
     <template #footer><output>{{ code.length }} / {{ length }}자리 입력</output></template>

@@ -59,6 +59,10 @@
     cursor: default;
   }
 
+  :where(input[data-scope][data-part]:not([type="file"], [type="hidden"], [type="range"]), textarea[data-scope][data-part]):disabled {
+    background: var(--ui-input-state-surface, var(--ui-color-surface-muted));
+  }
+
   :where([data-scope="pin-input"][data-part="root"],
     [data-scope="toggle-group"][data-part="root"],
     [data-scope="pagination"][data-part="root"],

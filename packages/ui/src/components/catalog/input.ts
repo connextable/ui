@@ -1,6 +1,7 @@
 import { ComboboxEditor } from "@sectile/vue/combobox";
 import { EditableArea, EditableInput, EditablePreview, EditableRoot, type EditableRootSlotProps } from "@sectile/vue/editable";
-import { h } from "vue";
+import { defineComponent, h } from "vue";
+import { controlFlag } from "../clear/clearable";
 import { withClearableControl, withClearableModel, type ClearableComponent } from "../clear/with-clearable";
 import { CascadeListComposition } from "./cascade-composition";
 import { ComboboxComposition } from "./combobox-composition";
@@ -13,15 +14,22 @@ export const UICascadeList: ClearableComponent<typeof CascadeListComposition> = 
 export const UICombobox: ClearableComponent<typeof ComboboxComposition> = withClearableModel(ComboboxComposition, null, { clearInput: true });
 export { UIComboboxInput } from "./combobox-composition";
 export const UIComboboxEditor: typeof ComboboxEditor = withClearableControl(ComboboxEditor, "input");
-export const UIEditable: ClearableComponent<typeof EditableRoot> = withClearableModel(EditableRoot, "", {
-  ...group, label: "값 지우기",
-  defaultParts: () => [h(EditableArea, null, () => [
-    h(EditablePreview, { as: "button", type: "button" }, {
-      default: (state: EditableRootSlotProps) => state.value || "편집",
-    }),
-    h(EditableInput),
-  ])],
-});
+const EditableComposition = defineComponent({
+  inheritAttrs: false,
+  setup(_, { attrs, slots }) {
+    return () => h(EditableRoot, attrs, slots.default || controlFlag(attrs.asChild ?? attrs["as-child"]) ? slots : {
+      default: (state: EditableRootSlotProps) => h(EditableArea, null, () => [
+        h(EditablePreview, {
+          as: "button", type: "button", disabled: state.disabled,
+          "aria-description": state.readonly && !state.disabled ? "읽기 전용" : undefined,
+        }, () => state.value || "편집"),
+        h(EditableInput),
+      ]),
+    });
+  },
+}) as unknown as typeof EditableRoot;
+
+export const UIEditable: ClearableComponent<typeof EditableRoot> = withClearableModel(EditableComposition, "", { ...group, label: "값 지우기" });
 export const UIListbox: ClearableComponent<typeof ListboxComposition> = withClearableModel(ListboxComposition,
   attrs => (attrs.selectionMode ?? attrs["selection-mode"]) === "multiple" ? [] : "", group);
 export const UICheckboxGroup: ClearableComponent<typeof CheckboxGroupComposition> = withClearableModel(CheckboxGroupComposition, [], group);
