@@ -38,7 +38,8 @@ function normalize(text: string, kind: TemporalInputKind, precision: TimeFieldPr
     const format = kind === "date-time-date"
       ? resolvedFormat(formatter?.dateTimeFieldFormat("millisecond"))?.date
       : resolvedFormat(formatter?.dateFieldFormat());
-    if (parseDateFieldValue(input, format).ok) return input;
+    if (parseDateFieldValue(text, format).ok) return text;
+    if (input !== text && parseDateFieldValue(input, format).ok) return input;
     return date && /^[.\s]*$/.test(date.tail) ? formatDateFieldValue(date.date, format) : undefined;
   }
 
@@ -52,7 +53,8 @@ function normalize(text: string, kind: TemporalInputKind, precision: TimeFieldPr
     (precision === "millisecond" || time.millisecond === 0) &&
     (precision !== "minute" || time.second === 0);
   if (onlyTime) {
-    if (parseTimeFieldValue(input, timeFormat).ok) return input;
+    if (parseTimeFieldValue(text, timeFormat).ok) return text;
+    if (input !== text && parseTimeFieldValue(input, timeFormat).ok) return input;
     return fitsPrecision ? formatTimeFieldValue(time, timeFormat) : undefined;
   }
 
@@ -61,7 +63,8 @@ function normalize(text: string, kind: TemporalInputKind, precision: TimeFieldPr
     time: timeFormat,
     separator: "T",
   });
-  if (parseDateTimeFieldValue(input, dateTimeFormat).ok) return input;
+  if (parseDateTimeFieldValue(text, dateTimeFormat).ok) return text;
+  if (input !== text && parseDateTimeFieldValue(input, dateTimeFormat).ok) return input;
   return date && fitsPrecision && time ? formatDateTimeFieldValue({ date: date.date, time }, dateTimeFormat) : undefined;
 }
 

@@ -20,10 +20,12 @@ import {
 import { YearPickerInput } from "@sectile/vue/temporal/year-picker";
 import { YearRangePickerStartInput, YearRangePickerEndInput } from "@sectile/vue/temporal/year-range-picker";
 import { withTemporalEditing } from "./temporal-input";
+import { TemporalInputFormatProvider, temporalInputFormatsKey, type UITemporalInputFormats } from "./temporal-input-format";
 import { defaultTemporalFormatting, temporalDisplayFormatsKey, useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
 import type { DateValue } from "@sectile/temporal/date-field";
 
 export { useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
+export type { UITemporalInputFormats } from "./temporal-input-format";
 export { default as UICalendarPeriodHeader } from "./UICalendarPeriodHeader.vue";
 export { default as UIDatePickerValue } from "./UIDatePickerValue.vue";
 export { default as UIDateRangePickerValue } from "./UIDateRangePickerValue.vue";
@@ -78,12 +80,25 @@ export const UITemporalProvider = defineComponent({
   props: {
     formatting: Object as PropType<Partial<TemporalFormatterOptions>>,
     formats: Object as PropType<UITemporalDisplayFormats>,
+    inputFormats: Object as PropType<UITemporalInputFormats>,
     referenceDate: Object as PropType<DateValue>,
     referenceInstant: Number,
   },
   setup(props, { slots }) {
     const inherited = useTemporalFormatter();
     const inheritedFormats = inject(temporalDisplayFormatsKey, undefined);
+    const inheritedInputFormats = inject(temporalInputFormatsKey, undefined);
+    const inputFormats = computed(() => {
+      const parent = inheritedInputFormats?.value;
+      const local = props.inputFormats;
+      if (!local) return parent;
+      return {
+        date: local.date ? { ...parent?.date, ...local.date } : parent?.date,
+        time: local.time ? { ...parent?.time, ...local.time } : parent?.time,
+        dateTime: local.dateTime ? { ...parent?.dateTime, ...local.dateTime } : parent?.dateTime,
+      };
+    });
+    provide(temporalInputFormatsKey, inputFormats);
     provide(temporalDisplayFormatsKey, computed(() => props.formats
       ? { ...inheritedFormats?.value, ...props.formats }
       : inheritedFormats?.value));
@@ -91,11 +106,13 @@ export const UITemporalProvider = defineComponent({
     return () => h(TemporalProvider, {
       referenceDate: props.referenceDate,
       referenceInstant: props.referenceInstant,
-      formatting: props.formatting || !inherited.value ? {
+      formatting: props.formatting || !inherited.value || inputFormats.value ? {
         locale: props.formatting?.locale ?? inherited.value?.locale ?? defaultTemporalFormatting.locale,
         timeZone: props.formatting?.timeZone ?? inherited.value?.timeZone ?? defaultTemporalFormatting.timeZone,
       } : undefined,
-    }, slots);
+    }, {
+      default: () => h(TemporalInputFormatProvider, null, slots),
+    });
   },
 });
 

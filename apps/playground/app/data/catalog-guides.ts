@@ -96,6 +96,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     examples: [
       { id: "temporal-provider-format", title: "같은 시각의 지역별 기준일", description: "같은 기준 시각이 서울과 뉴욕에서 각각 어떤 날짜인지 표시합니다.", parts: ["useUITemporalDisplay", "useUITemporalReferenceDate"] },
       { id: "temporal-provider-locale", title: "입력의 언어와 시간제 변경", description: "한국어 24시간제와 미국 영어 12시간제를 전환합니다. 날짜 순서와 시간 표기가 바뀐 뒤에도 같은 예약값을 편집할 수 있습니다.", parts: ["UIDateField", "UITimeField"] },
+      { id: "temporal-provider-input-formats", title: "입력 순서와 구분자 지정", description: "날짜에 25/08/2026, 예약 일시에 06.45 오후 · 25/08/2026을 입력하고 Enter를 누릅니다. 서식을 전환하거나 예약 일시를 제출해 확정한 값을 확인합니다.", parts: ["UIDateField", "UITimeField", "UIDateTimeField"] },
       { id: "temporal-provider-nested", title: "기준일 재정의", description: "안쪽 Provider의 기준 날짜를 따로 지정합니다." },
     ],
     title: "달력의 기준 날짜 지정",
@@ -103,7 +104,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       "reference-date": "날짜 입력과 달력의 공통 기준일입니다.",
       formatting: "locale과 timeZone으로 날짜 순서, 숫자, 시간제와 기준일의 시간대를 설정합니다. 기본값은 한국어 24시간제와 Asia/Seoul입니다.",
-      formats: "yearMonth, year, month, day, weekday, date, dateTime에 Intl 서식 옵션을 지정합니다. 달력과 선택값 표시에 적용되며, 직접 편집하는 입력은 locale의 서식을 사용합니다.",
+      formats: "yearMonth, year, month, day, weekday, date, dateTime에 Intl 옵션을 지정해 달력과 선택값의 표시를 바꿉니다.",
+      "input-formats": "date의 order·separator, time의 hourCycle·separator·fractionSeparator·dayPeriodPosition·dayPeriods, dateTime의 order·separator를 지정합니다. 생략한 옵션은 상위 Provider 또는 로케일에서 가져오며, 입력 안내와 값 확정에도 적용됩니다.",
       useUITemporalDisplay: "사용자 정의 달력 슬롯과 선택값 표시에도 같은 로케일과 서식을 적용합니다.",
     },
   },
