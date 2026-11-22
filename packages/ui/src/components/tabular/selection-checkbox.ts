@@ -1,8 +1,9 @@
 import { createDataGridComponents } from "@sectile/vue/data-grid";
 import { createDataTableComponents } from "@sectile/vue/data-table";
-import { createDataTreeGridComponents } from "@sectile/vue/data-tree-grid";
+import { createDataTreeGridComponents, type DataTreeGridBulkSelectionControlProps, type DataTreeGridComponents, type DataTreeGridController } from "@sectile/vue/data-tree-grid";
 import { defineComponent, h, mergeProps, type Component } from "vue";
 import UICheckboxBox from "../selection/UICheckboxBox.vue";
+import { createGroupSelectionControl, type UIDataTreeGridComponentOptions } from "./tree-grid-selection";
 
 function styleSelectionControl<Part extends Component>(Control: Part, tag: "input" | "button"): Part {
   return defineComponent({
@@ -45,11 +46,24 @@ export const createUIDataGridComponents: typeof createDataGridComponents = (cont
   };
 };
 
-export const createUIDataTreeGridComponents: typeof createDataTreeGridComponents = (controller) => {
+export function createUIDataTreeGridComponents<LeafCells extends object, GroupCells extends object>(
+  controller: DataTreeGridController<LeafCells, GroupCells>,
+  { loadGroupLeafIDs, onGroupSelectionError }: UIDataTreeGridComponentOptions = {},
+): DataTreeGridComponents<LeafCells, GroupCells> {
   const parts = createDataTreeGridComponents(controller);
+  const bulk = styleSelectionControl(parts.BulkSelectionControl, "button");
+  const group = loadGroupLeafIDs && createGroupSelectionControl(controller, loadGroupLeafIDs, onGroupSelectionError);
   return {
     ...parts,
     RowSelectionControl: styleSelectionControl(parts.RowSelectionControl, "input"),
-    BulkSelectionControl: styleSelectionControl(parts.BulkSelectionControl, "button"),
+    BulkSelectionControl: group ? defineComponent({
+      inheritAttrs: false,
+      setup(_, { attrs, slots }) {
+        return () => {
+          const target = attrs.target as DataTreeGridBulkSelectionControlProps["target"] | undefined;
+          return h((target?.kind === "group-leaves" ? group : bulk) as Component, attrs, slots);
+        };
+      },
+    }) as typeof parts.BulkSelectionControl : bulk,
   };
-};
+}

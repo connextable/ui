@@ -103,6 +103,34 @@ const table = useUIDataTable({
 
 모든 행을 한 번에 반환할 때는 두 개수를 생략할 수 있습니다. 일부 행만 반환할 때는 전체 개수 또는 `"unknown"`을 전달합니다. 트리의 `matchingLeafCount`는 그룹을 제외한 전체 결과 개수이고, `visibleRowCount`는 그룹 행을 포함해 현재 펼침 상태에서 표시되는 전체 행 개수입니다. 서버가 전체 응답과 열 스키마를 관리하는 경우 `source`에 직접 연결할 수 있습니다.
 
+### 원격 트리 그리드 그룹 선택
+
+`createUIDataTreeGridComponents`에 `loadGroupLeafIDs`를 연결하고 그룹 체크박스의 `target`을 `{ kind: 'group-leaves', groupID }`로 지정합니다. 서버는 현재 쿼리에 맞는 전체 하위 리프 ID를 반환합니다. 접힌 행과 다른 페이지에 있는 행의 ID도 포함합니다.
+
+```ts
+const DataTreeGrid = createUIDataTreeGridComponents(tree, {
+  async loadGroupLeafIDs({ groupID, query }, { signal }) {
+    const response = await fetch("/api/report-group-leaves", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ groupID, query }),
+      signal,
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json() as string[];
+  },
+});
+```
+
+```vue
+<DataTreeGrid.BulkSelectionControl
+  :target="{ kind: 'group-leaves', groupID: row.id }"
+  aria-label="그룹의 하위 보고서 선택"
+/>
+```
+
+트리 그리드가 행 선택과 그룹의 미선택·일부 선택·전체 선택을 동기화합니다. 그룹을 해제해도 그룹 밖의 선택은 유지됩니다. 선택 ID는 기존 `rowSelection` 모델에 저장되므로 컨트롤러의 `limits.maxSelectionIDs`가 적용됩니다. `onGroupSelectionError`에는 ID 조회나 선택 반영에서 발생한 오류가 전달됩니다.
+
 ## 날짜와 시간 선택
 
 달력, 피커, 범위 입력은 기본 입력부와 버튼, 선택 목록을 제공합니다. 예를 들어 일시 범위는 아래처럼 연결합니다.

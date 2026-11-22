@@ -45,7 +45,7 @@
 
 ### Sectile에 전달할 재현 근거
 
-설치된 Sectile 그리드 연결의 `group-leaves` 대상은 그룹 체크 상태를 `unchecked`로 설정한다. 로드되지 않은 하위 행을 포함하는 일괄 선택은 컨트롤러가 요청을 전달하고 앱이나 데이터 소스가 대상 범위를 확정한다. [그룹 선택 예제](/components/data-tree-grid#data-tree-grid-group-selection)는 전체 하위 ID가 있는 경우의 제어형 선택을 보여 준다. 행 하나를 선택하면 그룹이 `mixed`, 모두 선택하면 `true`, 전체 해제하면 `false`로 표시된다.
+설치된 Sectile 그리드 연결의 `group-leaves`는 그룹을 `unchecked`로 표시하고 `request-bulk-selection`을 전달한다. [그룹 선택 예제](/components/data-tree-grid#data-tree-grid-group-selection)는 `loadGroupLeafIDs`로 접혀 있는 하위 ID를 포함한 멤버십을 읽고, 공통 `BulkSelectionControl`에서 일부 선택·전체 선택·해제를 처리한다.
 
 ### 전체 카탈로그 재점검
 

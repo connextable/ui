@@ -248,7 +248,7 @@ const tabularParts: Readonly<Record<string, string>> = {
 const suffixes = Object.keys(roles).sort((a, b) => b.length - a.length);
 
 export function describeCatalogPart(part: string): string | undefined {
-  if (part === "DataTreeGrid.BulkSelectionControl") return "그룹의 하위 행이나 현재 검색 결과를 대상으로 일괄 선택 요청을 보냅니다. group-leaves의 상태 표시는 주요 API에서 확인할 수 있습니다.";
+  if (part === "DataTreeGrid.BulkSelectionControl") return "현재 검색 결과 전체를 선택하거나 해제합니다. loadGroupLeafIDs를 연결하면 원격 그룹의 전체·일부 선택 상태를 표시하고 접힌 하위 행까지 제어합니다.";
   if (partRoles[part]) return partRoles[part];
   const tabularPart = /^(?:DataTable|DataGrid|DataTreeGrid)\.(.+)$/.exec(part)?.[1];
   if (tabularPart) return tabularParts[tabularPart];

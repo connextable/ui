@@ -164,7 +164,7 @@
 - [x] `UIDataTable` · 로컬 데이터 기본 구성, 원격 정렬·필터·선택·고정·페이지
 - [x] `UIDataGrid` · 셀 커서, 검증과 취소, 스프레드시트 동작
 - [x] `UIDataTreeGrid` · 그룹·자식·비동기 로드와 선택·편집
-  - 전체 하위 ID를 알고 있는 예제에서 제어형 선택 상태를 연결했다. 한 행 선택 시 `aria-checked="mixed"`, 전체 선택 시 `true`, 전체 해제 시 `false`를 확인했다. 원격 `group-leaves` 요청의 상태 계산 범위는 주요 API에 설명한다.
+  - 원격 그룹 예제에서 `loadGroupLeafIDs`로 하위 ID를 받은 뒤 공통 컨트롤이 `mixed`, `true`, `false`를 표시한다. 접힌 하위 행과 그룹 밖의 선택은 예제에서 각각 확인할 수 있다.
 - [x] `UIChart` · 기본 단일 시리즈, 상세 40개 예제의 속성 및 사용 사례
 - [x] `UISequenceReorder` · 포인터·키보드, 핸들, 취소·확정, 잠금
 - [x] `UITreeReorder` · 그룹 안팎 이동, 용량·유형 제한, 빈 그룹·취소

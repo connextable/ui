@@ -20,6 +20,7 @@ export {
   createUIDataGridComponents,
   createUIDataTreeGridComponents,
 } from "./selection-checkbox";
+export type { UIDataTreeGridComponentOptions, UIDataTreeGridGroupLeavesRequest } from "./tree-grid-selection";
 export {
   useDataTable as useUIDataTable,
   useDataTableContext as useUIDataTableContext,
