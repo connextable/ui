@@ -332,7 +332,9 @@ export const UITimePickerColumn = defineComponent({
     const centerSelection = () => {
       if (listbox.value) centerSelectedTimeChoice(listbox.value);
     };
-    watch([listbox, () => scrollState.value.height], centerSelection, { flush: "post" });
+    watch([() => listbox.value, () => scrollState.value.height > 0], ([column, visible]) => {
+      if (column && visible) centerSelectedTimeChoice(column);
+    }, { flush: "post" });
     watch(listbox, (column, _, onCleanup) => {
       if (!column) return;
       const activeChoice = new MutationObserver(() => {
