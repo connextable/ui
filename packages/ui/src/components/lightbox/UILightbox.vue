@@ -3,7 +3,7 @@ import {
   DialogClose, DialogContent, DialogOverlay, DialogPortal, DialogRoot, DialogTitle,
 } from "@sectile/vue/dialog";
 import { ChevronLeft, ChevronRight, X } from "@lucide/vue";
-import { computed, ref, shallowRef, useId, useTemplateRef, watch } from "vue";
+import { computed, ref, shallowRef, useTemplateRef, watch } from "vue";
 import UIButton from "../button/UIButton.vue";
 import LightboxThumbnail from "./LightboxThumbnail.vue";
 import type { UILightboxItem } from "./lightbox-types";
@@ -35,13 +35,16 @@ defineSlots<{
   actions?(scope: { item: UILightboxItem; index: number; total: number }): unknown;
 }>();
 
+const gallery = useTemplateRef<HTMLElement>("gallery");
+const overlay = useTemplateRef<HTMLElement>("overlay");
+const panel = useTemplateRef<HTMLElement>("panel");
 const visual = useTemplateRef<HTMLElement>("visual");
 const photo = useTemplateRef<HTMLImageElement>("photo");
 const video = useTemplateRef<HTMLVideoElement>("video");
 const strip = useTemplateRef<HTMLElement>("strip");
 const opener = shallowRef<HTMLElement>();
 const mediaFailed = ref(false);
-const transition = useLightboxTransition(useId());
+const transition = useLightboxTransition();
 const selectedIndex = computed(() =>
   Math.max(0, Math.min(items.length - 1, Number.isFinite(index.value) ? Math.trunc(index.value) : 0)),
 );
@@ -57,7 +60,7 @@ const canGoForward = computed(() => items.length > 1 && (loop || selectedIndex.v
 
 watch([mediaKey, displayedOpen], ([key, isOpen], [previousKey]) => {
   video.value?.pause();
-  if (!isOpen) transition.stop(false);
+  if (!isOpen && !transition.isClosing()) transition.stop(false);
   if (key !== previousKey || isOpen) mediaFailed.value = false;
 }, { flush: "sync" });
 
@@ -66,50 +69,82 @@ watch([selectedIndex, displayedOpen], () => {
   strip.value?.querySelector('[aria-current="true"]')?.scrollIntoView({ block: "nearest", inline: "nearest" });
 }, { flush: "post" });
 
+function photoThumbnail(element: Element | null | undefined, item: UILightboxItem) {
+  if (item.kind !== "image") return;
+  const image = element?.querySelector("img");
+  if (image?.getAttribute("src") === item.src && image.complete && image.naturalWidth) return image;
+}
+
 function openAt(position: number, event?: Event) {
   if (!Number.isInteger(position) || !items[position]) return;
-  const interrupted = transition.stop();
+  transition.stop();
   if (displayedOpen.value) {
-    goTo(position, undefined, interrupted);
+    goTo(position);
     return;
   }
 
   opener.value = event?.currentTarget instanceof HTMLElement ? event.currentTarget : undefined;
-  const item = items[position];
-  const origin = opener.value?.querySelector("img");
+  const origin = photoThumbnail(opener.value, items[position]);
   const show = () => {
     index.value = position;
     open.value = true;
   };
-  if (motion && !interrupted && item.kind === "image"
-    && origin?.getAttribute("src") === item.src && origin.naturalWidth) {
-    transition.start("open", origin, show, () => photo.value);
+  if (motion) {
+    transition.start("open", show, { media: origin }, () => ({
+      media: origin ? photo.value : null,
+      panel: panel.value,
+      overlay: overlay.value,
+    }));
   } else {
     show();
   }
 }
 
-function goTo(position: number, direction?: "next" | "previous", interrupted = transition.stop()) {
+function goTo(position: number, direction?: "next" | "previous") {
+  transition.stop();
   const from = selectedIndex.value;
   if (!items[position] || position === from) return;
   const select = () => { index.value = position; };
-  if (motion && !interrupted) {
-    transition.start(direction ?? (position > from ? "next" : "previous"), visual.value, select, () => visual.value);
+  if (motion && visual.value) {
+    transition.start(direction ?? (position > from ? "next" : "previous"), select,
+      { media: visual.value }, () => ({ media: visual.value }));
   } else {
     select();
   }
 }
 
 function move(offset: -1 | 1) {
-  const interrupted = transition.stop();
+  transition.stop();
   if (offset === -1 ? !canGoBack.value : !canGoForward.value) return;
   const position = (selectedIndex.value + offset + items.length) % items.length;
-  goTo(position, offset === 1 ? "next" : "previous", interrupted);
+  goTo(position, offset === 1 ? "next" : "previous");
 }
 
 function onDialogOpenChange(value: boolean) {
-  if (!value) transition.stop(false);
-  open.value = value;
+  if (value) {
+    open.value = true;
+    return;
+  }
+  if (transition.isClosing()) return;
+  transition.stop(false);
+  const hide = () => { open.value = false; };
+  if (!motion || !current.value) {
+    hide();
+    return;
+  }
+
+  const item = current.value;
+  const thumbnail = photoThumbnail(gallery.value?.children[selectedIndex.value], item)
+    ?? photoThumbnail(opener.value, item);
+  const bounds = thumbnail?.getBoundingClientRect();
+  const destination = bounds && bounds.bottom > 0 && bounds.top < (thumbnail?.ownerDocument.documentElement.clientHeight ?? 0)
+    ? thumbnail
+    : undefined;
+  transition.start("close", hide, {
+    media: destination ? photo.value : null,
+    panel: panel.value,
+    overlay: overlay.value,
+  }, () => ({ media: destination }));
 }
 
 function onKeydown(event: KeyboardEvent) {
@@ -150,7 +185,7 @@ function onPointerUp(event: PointerEvent) {
   <DialogRoot :open="displayedOpen" :label="label" :restore-focus-target="opener"
     :close-on-interact-outside="closeOnInteractOutside" unmount-on-exit @update:open="onDialogOpenChange">
     <slot :items="items" :open-at="openAt">
-      <div class="ui-lightbox__gallery">
+      <div ref="gallery" class="ui-lightbox__gallery">
         <button v-for="(item, position) in items" :key="item.id" type="button" class="ui-lightbox__trigger"
           aria-haspopup="dialog" @click="openAt(position, $event)">
           <LightboxThumbnail :item="item" class="ui-lightbox__cover" />
@@ -159,9 +194,11 @@ function onPointerUp(event: PointerEvent) {
       </div>
     </slot>
     <DialogPortal>
-      <DialogOverlay class="ui-lightbox__overlay" />
-      <DialogContent class="ui-lightbox__panel" @keydown="onKeydown">
-        <template v-if="current">
+      <DialogOverlay as-child>
+        <div ref="overlay" class="ui-lightbox__overlay" :data-motion="motion ? undefined : 'off'" />
+      </DialogOverlay>
+      <DialogContent as-child>
+        <div v-if="current" ref="panel" class="ui-lightbox__panel" :data-motion="motion ? undefined : 'off'" @keydown="onKeydown">
           <header class="ui-lightbox__header">
             <div class="ui-lightbox__heading">
               <DialogTitle>{{ label }}</DialogTitle>
@@ -223,7 +260,7 @@ function onPointerUp(event: PointerEvent) {
               <LightboxThumbnail :item="item" />
             </button>
           </div>
-        </template>
+        </div>
       </DialogContent>
     </DialogPortal>
   </DialogRoot>
@@ -442,5 +479,10 @@ function onPointerUp(event: PointerEvent) {
   .ui-lightbox__panel {
     transition: none;
   }
+}
+
+.ui-lightbox__overlay[data-motion="off"],
+.ui-lightbox__panel[data-motion="off"] {
+  transition: none;
 }
 </style>

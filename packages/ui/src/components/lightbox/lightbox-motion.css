@@ -1,73 +1,91 @@
+/* Capture the dialog and backdrop at their final opacity for the native crossfade. */
+:root:is([data-ui-lightbox-transition="open"], [data-ui-lightbox-transition="close"])
+  :is(.ui-lightbox__panel, .ui-lightbox__overlay) {
+  transition: none;
+}
+
 @layer ui.motion {
-  :root:is(
-    :active-view-transition-type(ui-lightbox-open),
-    :active-view-transition-type(ui-lightbox-next),
-    :active-view-transition-type(ui-lightbox-previous)
-  ) {
+  :root[data-ui-lightbox-transition] {
     view-transition-name: none;
 
     &::view-transition {
       pointer-events: none;
     }
 
-    &::view-transition-group(.ui-lightbox-media) {
+    &::view-transition-group(ui-lightbox-overlay) {
+      z-index: 1;
+    }
+
+    &::view-transition-group(ui-lightbox-panel) {
+      z-index: 2;
+    }
+
+    &::view-transition-group(ui-lightbox-media) {
+      z-index: 3;
+    }
+  }
+
+  :root:is([data-ui-lightbox-transition="open"], [data-ui-lightbox-transition="close"]) {
+    &::view-transition-group(ui-lightbox-overlay),
+    &::view-transition-group(ui-lightbox-panel),
+    &::view-transition-group(ui-lightbox-media) {
+      animation-duration: calc(var(--ui-motion-standard) * 1.5);
+      animation-timing-function: ease-in-out;
+    }
+
+    &::view-transition-old(ui-lightbox-media),
+    &::view-transition-new(ui-lightbox-media) {
+      block-size: 100%;
+      object-fit: cover;
+    }
+  }
+
+  :root[data-ui-lightbox-transition]::view-transition-image-pair(ui-lightbox-media) {
+    overflow: clip;
+  }
+
+  :root:is([data-ui-lightbox-transition="next"], [data-ui-lightbox-transition="previous"]) {
+    &::view-transition-group(ui-lightbox-media) {
       animation-duration: var(--ui-motion-standard);
-      animation-timing-function: var(--ui-ease-out);
     }
 
-    &::view-transition-image-pair(.ui-lightbox-media) {
-      overflow: clip;
+    &::view-transition-old(ui-lightbox-media) {
+      animation: ui-lightbox-out var(--ui-motion-standard) ease-out both;
+    }
+
+    &::view-transition-new(ui-lightbox-media) {
+      animation: ui-lightbox-in var(--ui-motion-standard) ease-out both;
     }
   }
 
-  :root:active-view-transition-type(ui-lightbox-open) .ui-lightbox__panel {
-    transition: none;
-  }
-
-  :root:active-view-transition-type(ui-lightbox-next) {
+  :root[data-ui-lightbox-transition="next"],
+  :root:dir(rtl)[data-ui-lightbox-transition="previous"] {
     --ui-lightbox-slide-direction: 1;
   }
 
-  :root:active-view-transition-type(ui-lightbox-previous) {
+  :root[data-ui-lightbox-transition="previous"],
+  :root:dir(rtl)[data-ui-lightbox-transition="next"] {
     --ui-lightbox-slide-direction: -1;
-  }
-
-  :root:dir(rtl):active-view-transition-type(ui-lightbox-next) {
-    --ui-lightbox-slide-direction: -1;
-  }
-
-  :root:dir(rtl):active-view-transition-type(ui-lightbox-previous) {
-    --ui-lightbox-slide-direction: 1;
-  }
-
-  :root:is(:active-view-transition-type(ui-lightbox-next), :active-view-transition-type(ui-lightbox-previous)) {
-    &::view-transition-old(.ui-lightbox-media) {
-      animation: ui-lightbox-out var(--ui-motion-fast) var(--ui-ease-out) both;
-    }
-
-    &::view-transition-new(.ui-lightbox-media) {
-      animation: ui-lightbox-in var(--ui-motion-standard) var(--ui-ease-out) both;
-    }
   }
 
   @keyframes ui-lightbox-out {
     to {
       opacity: 0;
-      transform: translateX(calc(-4% * var(--ui-lightbox-slide-direction)));
+      transform: translateX(calc(-12% * var(--ui-lightbox-slide-direction)));
     }
   }
 
   @keyframes ui-lightbox-in {
     from {
       opacity: 0;
-      transform: translateX(calc(4% * var(--ui-lightbox-slide-direction)));
+      transform: translateX(calc(12% * var(--ui-lightbox-slide-direction)));
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    ::view-transition-group(.ui-lightbox-media),
-    ::view-transition-old(.ui-lightbox-media),
-    ::view-transition-new(.ui-lightbox-media) {
+    :root[data-ui-lightbox-transition]::view-transition-group(*),
+    :root[data-ui-lightbox-transition]::view-transition-old(*),
+    :root[data-ui-lightbox-transition]::view-transition-new(*) {
       animation-duration: 0s;
     }
   }
