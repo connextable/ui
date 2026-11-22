@@ -1448,7 +1448,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "month-range-picker-portal", title: "월 범위 포털", description: "범위 입력에 연결된 월 목록을 포털에 표시합니다.", parts: ["UIMonthRangePickerPortal"] },
     ],
     title: "보고서의 시작 월과 종료 월 선택",
-    description: "월 선택기에서 시작 월과 종료 월을 누르면 두 입력에 범위가 반영됩니다. 위쪽 버튼으로 연도를 바꿉니다.",
+    description: "월 선택기에서 시작 월과 종료 월을 고릅니다. 같은 해의 범위는 시작 쪽에만 연도를 표시합니다. 위쪽 버튼으로 연도를 바꿉니다.",
     api: {
       "default-value": "시작 월과 종료 월을 담는 범위입니다.",
       "#default": "선택할 수 있는 월 목록과 현재 보기 상태를 받습니다.",
