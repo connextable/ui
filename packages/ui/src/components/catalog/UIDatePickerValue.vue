@@ -24,13 +24,12 @@ const selected = computed(() => value ? format(value, granularity) : undefined);
 .ui-picker-value {
   display: grid;
   min-inline-size: 0;
-  min-block-size: var(--ui-control-height-small);
+  min-block-size: var(--ui-inset-size);
   align-items: center;
   padding-inline: var(--ui-space-xs);
   text-align: center;
-  font-size: var(--ui-font-size-body-sm);
   font-variant-numeric: tabular-nums;
 }
 
-.ui-picker-value__placeholder { color: var(--ui-color-text-muted); }
+.ui-picker-value__placeholder { color: var(--ui-color-placeholder); }
 </style>

@@ -1,3 +1,9 @@
+input.ui-temporal-input {
+  inline-size: min(100%, var(--ui-temporal-input-width, 16rem));
+  min-inline-size: 0;
+  font-variant-numeric: tabular-nums;
+}
+
 :where(
   [data-part="anchor"]:is(
     [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"],
@@ -5,35 +11,31 @@
   ),
   [data-scope="time-picker"][data-part="root"]
 ) {
-  --ui-picker-padding: calc((var(--ui-control-height) - var(--ui-control-height-small)) / 2 - 1px);
+  padding: var(--ui-frame-padding);
 
-  min-block-size: 0;
+  & input.ui-temporal-input {
+    --ui-field-inner-padding: 0 max(0px, calc(var(--ui-control-size-padding-inline) - var(--ui-inset-distance)));
+    --ui-field-inner-height: var(--ui-inset-size);
+    --ui-field-inner-radius: var(--ui-inset-radius);
 
-  & input[data-scope]:not([type="hidden"]) {
-    min-block-size: var(--ui-control-height-small);
-    background-color: transparent;
-
-    &::placeholder {
-      color: var(--ui-color-text-muted);
-    }
-  }
-
-  & > :where([data-part^="end-"], [data-part="date-input"] + [data-part="time-input"], label + label):not(:focus-visible) {
-    box-shadow: none;
+    inline-size: 100%;
   }
 
   & > [data-part="trigger"]:not([hidden]) {
     display: grid;
     place-items: center;
     box-sizing: border-box;
-    inline-size: var(--ui-control-height-small);
-    block-size: var(--ui-control-height-small);
+    inline-size: var(--ui-inset-size);
+    block-size: var(--ui-inset-size);
     min-inline-size: 0;
     min-block-size: 0;
     align-self: start;
     justify-self: end;
     padding: 0;
+    border-color: transparent;
+    border-radius: var(--ui-inset-radius);
     background: transparent;
+    color: var(--ui-color-text-muted);
 
     & > svg:only-child {
       inline-size: var(--ui-control-size-icon, 1.125rem);
@@ -49,19 +51,32 @@
     &:active:not(:disabled, [aria-disabled="true"]) {
       background: var(--ui-color-surface-active);
     }
+
+    &[aria-expanded="true"]:enabled {
+      background: var(--ui-color-accent-soft);
+      color: var(--ui-color-accent);
+    }
+
+    &:disabled {
+      color: var(--ui-color-disabled);
+    }
   }
 }
 
 :where([data-scope="date-range"], [data-scope="month-range-picker"], [data-scope="year-range-picker"], [data-scope="date-time-range"])[data-part="anchor"]
-  :where(input[data-part^="start-"], input[data-part^="end-"]) {
-  padding-inline: var(--ui-space-xs);
+  input.ui-temporal-input:where([data-part^="start-"], [data-part^="end-"]) {
+  --ui-field-inner-padding: 0 var(--ui-space-xs);
   text-align: center;
+}
+
+[data-scope="date-time"][data-part="anchor"]:has(> [data-part="date-input"] + [data-part="time-input"]) > .ui-temporal-input {
+  --ui-field-inner-padding: 0 var(--ui-space-xs);
 }
 
 :where([data-scope="date-range"], [data-scope="month-range-picker"], [data-scope="year-range-picker"], [data-scope="date-time-range"])[data-part="anchor"]:has(
   > input[data-part="start-input"]:not([hidden], [type="hidden"]) ~ input[data-part="end-input"]:not([hidden], [type="hidden"]),
   > input[data-part="start-date-time-input"]:not([hidden], [type="hidden"]) ~ input[data-part="end-date-time-input"]:not([hidden], [type="hidden"]),
-  > :is(label, [role="group"]):has(> input[data-part="start-date-input"]) ~ :is(label, [role="group"]):has(> input[data-part="end-date-input"])
+  > :is(label, [role="group"]) > input[data-part="end-date-input"]
 ) {
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
 
@@ -88,7 +103,7 @@
 }
 
 [data-scope="date-time-range"][data-part="anchor"]:has(> :is(label, [role="group"]) > input[data-part="start-date-input"]) {
-  --ui-picker-width: 31rem;
+  --ui-picker-width: 35rem;
 
   > :is(label, [role="group"]) {
     display: grid;
@@ -187,7 +202,6 @@
 :is([data-scope="date-range-field"], [data-scope="time-range-field"], [data-scope="date-time-range-field"])[data-part="root"]:has(
   > input[data-part="start-input"] ~ input[data-part="end-input"]
 ) {
-  --ui-range-field-inset: calc((var(--ui-control-height) - var(--ui-control-height-small)) / 2);
   --ui-range-field-width: 15rem;
 
   display: grid;
@@ -196,18 +210,17 @@
   column-gap: var(--ui-space-2xs);
   row-gap: var(--ui-space-sm);
   inline-size: min(100%, var(--ui-range-field-width));
+  padding: 0;
 
   &[data-scope="date-range-field"] { --ui-range-field-width: 21rem; }
   &[data-scope="date-time-range-field"] { --ui-range-field-width: 27rem; }
 
   &::before {
     grid-area: 1 / 1 / 2 / -1;
-    block-size: var(--ui-control-height);
+    block-size: var(--ui-control-size-height);
     box-sizing: border-box;
-    border: 1px solid var(--ui-color-border);
-    border-radius: var(--ui-radius-md);
-    background: var(--ui-color-surface);
     content: "";
+    pointer-events: none;
   }
 
   &::after {
@@ -219,21 +232,32 @@
   }
 
   > input {
+    --ui-field-inner-padding: 0 var(--ui-space-xs);
+    --ui-field-inner-height: var(--ui-inset-size);
+    --ui-field-inner-radius: var(--ui-inset-radius);
+
     position: relative;
     grid-row: 1;
-    inline-size: calc(100% - var(--ui-range-field-inset));
-    min-block-size: var(--ui-control-height-small);
-    padding-inline: var(--ui-space-xs);
-    border-color: transparent;
-    border-radius: calc(var(--ui-radius-md) - var(--ui-range-field-inset));
-    background: transparent;
-    font-size: var(--ui-font-size-body-sm);
+    inline-size: calc(100% - var(--ui-inset-distance));
     text-align: center;
 
     &[data-part="start-input"] { grid-column: 1; justify-self: end; }
     &[data-part="end-input"] { grid-column: 3; }
-    &[aria-invalid="true"] { border-color: var(--ui-color-danger); }
   }
 
   > output { grid-column: 1 / -1; }
+}
+
+:where(
+  [data-scope$="-range-field"][data-part="root"],
+  [data-part="anchor"]:has(> .ui-temporal-input ~ .ui-temporal-input),
+  [data-scope="date-time-range"][data-part="anchor"]:has(> [role="group"] > .ui-temporal-input)
+) .ui-temporal-input:focus-visible {
+  --ui-field-segment-shadow: var(--ui-focus-ring);
+
+  &[aria-invalid="true"] { --ui-field-segment-shadow: var(--ui-focus-ring-danger); }
+
+  @media (forced-colors: active) {
+    --ui-field-inner-outline: 1px solid Highlight;
+  }
 }

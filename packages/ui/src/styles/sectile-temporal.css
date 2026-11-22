@@ -5,21 +5,12 @@
     [data-scope^="year-"][data-scope$="-picker"]
   )[data-part="anchor"],
   [data-scope="time-picker"][data-part="root"] {
-    --ui-picker-padding: var(--ui-space-2xs);
-    --ui-picker-inner-radius: calc(var(--ui-radius-md) - var(--ui-picker-padding) - 1px);
-
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: var(--ui-picker-padding);
-    box-sizing: border-box;
+    gap: var(--ui-frame-padding);
     inline-size: min(100%, var(--ui-picker-width, 12rem));
     min-inline-size: 0;
-    min-block-size: var(--ui-control-height);
-    padding: var(--ui-picker-padding);
-    border: 1px solid var(--ui-color-border);
-    border-radius: var(--ui-radius-md);
-    background: var(--ui-color-surface);
   }
 
   :where([data-scope="year-picker"])[data-part="anchor"] {
@@ -57,57 +48,6 @@
 
   [data-scope="date-time-range"][data-part="anchor"]:has(> .ui-date-time-range-value[data-layout="stacked"]) {
     --ui-picker-width: 16rem;
-  }
-
-  :where([data-part="anchor"], [data-scope="time-picker"][data-part="root"]):where(
-    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"], [data-scope$="-picker"]
-  )
-    input[data-scope]:not([type="hidden"]) {
-    inline-size: 100%;
-    min-inline-size: 0;
-    min-block-size: calc(var(--ui-control-height) - 2 * var(--ui-picker-padding) - 2px);
-    padding-inline: var(--ui-space-sm);
-    border-color: transparent;
-    border-radius: var(--ui-picker-inner-radius);
-    font-size: var(--ui-font-size-body-sm);
-    font-variant-numeric: tabular-nums;
-  }
-
-  :where([data-scope$="-picker"], [data-scope="date-range"], [data-scope="date-time"])[data-part="anchor"] > :where(
-    [data-part^="end-"], [data-part="date-input"] + [data-part="time-input"]
-  ) {
-    box-shadow: -1px 0 0 var(--ui-color-divider);
-  }
-
-  :where([data-part="anchor"], [data-scope="time-picker"][data-part="root"]):where(
-    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"], [data-scope$="-picker"]
-  ) > :where([data-part="trigger"]) {
-    inline-size: var(--ui-control-height-small);
-    min-inline-size: 0;
-    block-size: 100%;
-    padding: 0;
-    border-color: transparent;
-    border-radius: var(--ui-picker-inner-radius);
-    background: var(--ui-color-surface-muted);
-    color: var(--ui-color-text-muted);
-  }
-
-  :where([data-part="anchor"], [data-scope="time-picker"][data-part="root"]):where(
-    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"], [data-scope$="-picker"]
-  ) > :where([data-part="trigger"]):is(:hover:not(:disabled), [aria-expanded="true"]) {
-    background: var(--ui-color-accent-soft);
-    color: var(--ui-color-accent);
-  }
-
-  :where([data-scope="date-field"], [data-scope="time-field"], [data-scope="date-time-field"],
-    [data-scope="date-range-field"], [data-scope="time-range-field"], [data-scope="date-time-range-field"],
-    [data-scope="date"], [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"]):where(input:not([type="hidden"])) {
-    min-inline-size: 0;
-    font-variant-numeric: tabular-nums;
-  }
-
-  input:where([data-scope="date"], [data-scope^="date-"], [data-scope^="time-"])[aria-invalid="true"]:not([type="hidden"]) {
-    border-color: var(--ui-color-danger);
   }
 
   :where([data-scope="calendar"], [data-scope="range-calendar"],

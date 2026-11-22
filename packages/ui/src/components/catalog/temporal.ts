@@ -1,4 +1,4 @@
-import { computed, defineComponent, h, inject, mergeProps, nextTick, provide, type Component, type PropType } from "vue";
+import { computed, defineComponent, h, inject, mergeProps, nextTick, provide, type PropType } from "vue";
 import { TemporalProvider, useTemporalFormatter, type TemporalFormatterOptions } from "@sectile/vue/temporal/temporal-provider";
 import { DateField } from "@sectile/vue/temporal/date-field";
 import { DateRangeFieldStartInput, DateRangeFieldEndInput } from "@sectile/vue/temporal/date-range-field";
@@ -9,6 +9,7 @@ import { DateTimePickerDateTimeInput, DateTimePickerDateInput, DateTimePickerTim
 import {
   DateTimeRangePickerStartDateInput, DateTimeRangePickerEndDateInput,
   DateTimeRangePickerStartTimeInput, DateTimeRangePickerEndTimeInput,
+  DateTimeRangePickerStartDateTimeInput, DateTimeRangePickerEndDateTimeInput,
   DateTimeRangePickerGrid, DateTimeRangePickerCell, DateTimeRangePickerMonthCell,
 } from "@sectile/vue/temporal/date-time-range-picker";
 import { TimeField } from "@sectile/vue/temporal/time-field";
@@ -23,7 +24,7 @@ import {
 } from "@sectile/vue/temporal/time-picker";
 import { YearPickerInput } from "@sectile/vue/temporal/year-picker";
 import { YearRangePickerStartInput, YearRangePickerEndInput, YearRangePickerGrid, YearRangePickerCell } from "@sectile/vue/temporal/year-range-picker";
-import { withTemporalEditing } from "./temporal-input";
+import { withTemporalEditing, withTemporalInputAppearance } from "./temporal-input";
 import { TemporalInputFormatProvider, temporalInputFormatsKey, type UITemporalInputFormats } from "./temporal-input-format";
 import { withRangeGridPresentation, withRangeCellPresentation } from "./temporal-range-presentation";
 import { defaultTemporalFormatting, temporalDisplayFormatsKey, useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
@@ -69,23 +70,18 @@ export const UIMonthRangePickerCell: typeof MonthRangePickerCell = withRangeCell
 export const UIYearRangePickerGrid: typeof YearRangePickerGrid = withRangeGridPresentation(YearRangePickerGrid, "year-range-picker");
 export const UIYearRangePickerCell: typeof YearRangePickerCell = withRangeCellPresentation(YearRangePickerCell);
 
-function withPickerPlaceholder<T extends Component>(part: T, placeholder: string): T {
-  return defineComponent({
-    inheritAttrs: false,
-    setup(_, { attrs, slots }) {
-      return () => h(part, { placeholder, ...attrs }, slots);
-    },
-  }) as unknown as T;
-}
-
-export const UIDateRangePickerStartInput = withPickerPlaceholder(DateRangePickerStartInput, "시작일");
-export const UIDateRangePickerEndInput = withPickerPlaceholder(DateRangePickerEndInput, "종료일");
-export const UIMonthPickerInput = withPickerPlaceholder(MonthPickerInput, "월 선택");
-export const UIMonthRangePickerStartInput = withPickerPlaceholder(MonthRangePickerStartInput, "시작 월");
-export const UIMonthRangePickerEndInput = withPickerPlaceholder(MonthRangePickerEndInput, "종료 월");
-export const UIYearPickerInput = withPickerPlaceholder(YearPickerInput, "연도 선택");
-export const UIYearRangePickerStartInput = withPickerPlaceholder(YearRangePickerStartInput, "시작 연도");
-export const UIYearRangePickerEndInput = withPickerPlaceholder(YearRangePickerEndInput, "종료 연도");
+export const UIDateRangePickerStartInput = withTemporalInputAppearance(DateRangePickerStartInput, "시작일");
+export const UIDateRangePickerEndInput = withTemporalInputAppearance(DateRangePickerEndInput, "종료일");
+export const UIDateTimeRangePickerStartDateTimeInput: typeof DateTimeRangePickerStartDateTimeInput =
+  withTemporalInputAppearance(DateTimeRangePickerStartDateTimeInput);
+export const UIDateTimeRangePickerEndDateTimeInput: typeof DateTimeRangePickerEndDateTimeInput =
+  withTemporalInputAppearance(DateTimeRangePickerEndDateTimeInput);
+export const UIMonthPickerInput = withTemporalInputAppearance(MonthPickerInput, "월 선택");
+export const UIMonthRangePickerStartInput = withTemporalInputAppearance(MonthRangePickerStartInput, "시작 월");
+export const UIMonthRangePickerEndInput = withTemporalInputAppearance(MonthRangePickerEndInput, "종료 월");
+export const UIYearPickerInput = withTemporalInputAppearance(YearPickerInput, "연도 선택");
+export const UIYearRangePickerStartInput = withTemporalInputAppearance(YearRangePickerStartInput, "시작 연도");
+export const UIYearRangePickerEndInput = withTemporalInputAppearance(YearRangePickerEndInput, "종료 연도");
 
 export type { DateValue as UIDateValue } from "@sectile/vue/temporal/calendar";
 export {
@@ -243,8 +239,6 @@ export {
   DateTimeRangePickerAnchor as UIDateTimeRangePickerAnchor,
   DateTimeRangePickerPortal as UIDateTimeRangePickerPortal,
   DateTimeRangePickerContent as UIDateTimeRangePickerContent,
-  DateTimeRangePickerStartDateTimeInput as UIDateTimeRangePickerStartDateTimeInput,
-  DateTimeRangePickerEndDateTimeInput as UIDateTimeRangePickerEndDateTimeInput,
   DateTimeRangePickerPreviousWeek as UIDateTimeRangePickerPreviousWeek,
   DateTimeRangePickerNextWeek as UIDateTimeRangePickerNextWeek,
   DateTimeRangePickerPreviousMonth as UIDateTimeRangePickerPreviousMonth,

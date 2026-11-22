@@ -102,21 +102,6 @@ function focusFromFrame(event: MouseEvent) {
   padding-inline-end: var(--ui-frame-padding);
 }
 
-.ui-input__control {
-  flex: 1 1 0;
-  min-inline-size: 0;
-  padding: 0;
-  border: 0;
-  outline: none;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-}
-
-.ui-input__control:where(input) {
-  min-block-size: 0;
-}
-
 .ui-input:where(textarea),
 .ui-input__control:where(textarea) {
   resize: vertical;

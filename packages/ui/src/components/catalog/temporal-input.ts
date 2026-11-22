@@ -7,6 +7,23 @@ import { defineComponent, h, mergeProps, shallowRef, type Component } from "vue"
 type TemporalInputKind = "date" | "date-time-date" | "time" | "date-time-time" | "date-time";
 type Formatter = ReturnType<typeof useTemporalFormatter>["value"];
 
+const fieldAppearance = {
+  class: "ui-field-control ui-temporal-input",
+  "data-ui-control-size": "md",
+  "data-variant": "outline",
+};
+
+export function withTemporalInputAppearance<T extends Component>(part: T, placeholder?: string): T {
+  const metadata = part as T & { __sectileSubmissionPart?: number };
+  return defineComponent({
+    inheritAttrs: false,
+    __sectileSubmissionPart: metadata.__sectileSubmissionPart,
+    setup(_, { attrs, slots }) {
+      return () => h(part, mergeProps(fieldAppearance, { placeholder }, attrs), slots);
+    },
+  }) as unknown as T;
+}
+
 function datePrefix(text: string) {
   const separated = /^(\d{4})(?:[./-]\s*|년\s*|\s+)(\d{1,2})(?:[./-]\s*|월\s*|\s+)(\d{1,2})일?/.exec(text);
   const compact = separated ?? /^(\d{4})(\d{2})(\d{2})/.exec(text);
@@ -126,7 +143,7 @@ export function withTemporalEditing<T extends Component>(
       }
 
       let composing = false;
-      return () => h(part, mergeProps(defaults, attrs, {
+      return () => h(part, mergeProps(fieldAppearance, defaults, attrs, {
         ref: control,
         onCompositionstart: () => { composing = true; },
         onCompositionend: () => { composing = false; },

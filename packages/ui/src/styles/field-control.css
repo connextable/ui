@@ -3,6 +3,9 @@
 }
 
 :is(.ui-field-control, :where(
+  [data-part="anchor"]:is([data-scope^="date"], [data-scope^="month-"][data-scope$="-picker"], [data-scope^="year-"][data-scope$="-picker"]),
+  [data-scope="time-picker"][data-part="root"],
+  [data-scope$="-range-field"][data-part="root"]:has(> input.ui-temporal-input[data-part="start-input"] ~ input.ui-temporal-input[data-part="end-input"]),
   input[data-scope="combobox"][data-part="input"],
   input[data-scope="tree-select"][data-part="input"],
   input:is([data-scope="number-field"], [data-scope="quantity-field"], [data-scope="spin-button"])[data-part="input"]:not(
@@ -11,21 +14,34 @@
     [data-scope="spin-button"][data-part="root"]:has(> [data-part="increment"], > [data-part="decrement"]) input
   )
 )) {
+  --ui-field-border: var(--ui-color-border);
+  --ui-field-surface: var(--ui-color-surface);
+  --ui-field-shadow: none;
+  --ui-field-outline: none;
+
   box-sizing: border-box;
   min-block-size: var(--ui-control-size-height, var(--ui-control-height));
-  border: var(--ui-frame-border-width) solid var(--ui-color-border);
-  border-radius: var(--ui-control-size-radius, var(--ui-control-radius));
-  background: var(--ui-color-surface);
   color: var(--ui-color-text);
   font: 500 var(--ui-control-size-font, var(--ui-font-size-body))/1.35 var(--ui-font-sans);
-  transition:
-    background-color var(--ui-motion-fast) var(--ui-ease-out),
-    border-color var(--ui-motion-fast) var(--ui-ease-out),
-    box-shadow var(--ui-motion-fast) var(--ui-ease-out);
+
+  /* A range row paints its first grid row so slotted output sits outside the field. */
+  &:not(:where([data-scope$="-range-field"][data-part="root"])),
+  &:where([data-scope$="-range-field"][data-part="root"])::before {
+    border: var(--ui-frame-border-width) solid var(--ui-field-border);
+    border-radius: var(--ui-control-size-radius, var(--ui-control-radius));
+    background: var(--ui-field-surface);
+    box-shadow: var(--ui-field-shadow);
+    outline: var(--ui-field-outline);
+    outline-offset: var(--ui-focus-ring-offset);
+    transition:
+      background-color var(--ui-motion-fast) var(--ui-ease-out),
+      border-color var(--ui-motion-fast) var(--ui-ease-out),
+      box-shadow var(--ui-motion-fast) var(--ui-ease-out);
+  }
 
   &[data-variant="soft"] {
-    border-color: transparent;
-    background: var(--ui-color-surface-muted);
+    --ui-field-border: transparent;
+    --ui-field-surface: var(--ui-color-surface-muted);
   }
 
   &::placeholder,
@@ -34,47 +50,76 @@
     opacity: 1;
   }
 
-  &:is([data-ui-readonly], [readonly], :has(> [readonly])) {
-    border-color: var(--ui-color-border);
-    background: var(--ui-color-surface-readonly);
+  &:is([data-ui-readonly], [readonly], [aria-readonly="true"], [data-readonly],
+    :has(> :is(input, textarea)[readonly]:not([hidden], [type="hidden"])):not(:has(> [data-part="trigger"]:enabled))
+  ) {
+    --ui-field-border: var(--ui-color-border);
+    --ui-field-surface: var(--ui-color-surface-readonly);
     caret-color: transparent;
     cursor: default;
   }
 
-  &:hover:where(:not(:disabled, :focus, [data-ui-readonly], [readonly], :has(> :is(input, textarea):is(:disabled, :focus, [readonly])))) {
-    border-color: var(--ui-color-border-hover);
+  &:hover:where(:not(:disabled, :focus-within, [data-ui-readonly], [readonly], [aria-readonly="true"], [data-readonly],
+    :has(> :is(input, textarea):is(:disabled, [readonly]):not([hidden], [type="hidden"])):not(:has(> [data-part="trigger"]:enabled))
+  )) {
+    --ui-field-border: var(--ui-color-border-hover);
   }
 
-  &:is(:disabled, :has(> :is(input, textarea):disabled)) {
-    border-color: var(--ui-color-border);
-    background: var(--ui-color-surface-muted);
+  &:is(:disabled, [data-disabled], :has(> :is(input, textarea):disabled, > [data-part="trigger"]:disabled)) {
+    --ui-field-border: var(--ui-color-border);
+    --ui-field-surface: var(--ui-color-surface-muted);
     color: var(--ui-color-disabled);
     cursor: default;
   }
 
-  &:is(:focus-visible, :has(> :focus-visible)),
-  &:is([data-state="open"], [aria-expanded="true"]):where(:not(.ui-select-trigger)) {
-    border-color: var(--ui-color-focus);
+  &:is(:focus-visible, :has(> :focus-visible, > :is(label, [role="group"]) > .ui-temporal-input:focus-visible)),
+  &:is([data-state="open"], [aria-expanded="true"], :has(> [data-part="trigger"][aria-expanded="true"])):where(:not(.ui-select-trigger)) {
+    --ui-field-border: var(--ui-color-focus);
   }
 
-  &:is(:focus-visible, :has(> :focus-visible)) {
-    outline: var(--ui-focus-ring-width) solid transparent;
-    outline-offset: var(--ui-focus-ring-offset);
-    box-shadow: var(--ui-focus-ring);
+  &:is(:focus-visible, :has(> :focus-visible, > :is(label, [role="group"]) > .ui-temporal-input:focus-visible)) {
+    --ui-field-outline: var(--ui-focus-ring-width) solid transparent;
+    --ui-field-shadow: var(--ui-focus-ring);
   }
 
-  &:is([aria-invalid="true"], :has(> [aria-invalid="true"])) {
-    border-color: var(--ui-color-danger);
+  &:is([aria-invalid="true"], :has(> [aria-invalid="true"], > :is(label, [role="group"]) > .ui-temporal-input[aria-invalid="true"])) {
+    --ui-field-border: var(--ui-color-danger);
   }
 
-  &:is([aria-invalid="true"], :has(> [aria-invalid="true"])):is(:focus-visible, :has(> :focus-visible)) {
-    box-shadow: var(--ui-focus-ring-danger);
+  &:is([aria-invalid="true"], :has(> [aria-invalid="true"], > :is(label, [role="group"]) > .ui-temporal-input[aria-invalid="true"])) {
+    &:is(:focus-visible, :has(> :focus-visible, > :is(label, [role="group"]) > .ui-temporal-input:focus-visible)) {
+      --ui-field-shadow: var(--ui-focus-ring-danger);
+    }
   }
 
   @media (forced-colors: active) {
-    &:is(:focus-visible, :has(> :focus-visible)) {
-      outline-color: Highlight;
+    &:is(:focus-visible, :has(> :focus-visible, > :is(label, [role="group"]) > .ui-temporal-input:focus-visible)) {
+      --ui-field-outline: var(--ui-focus-ring-width) solid Highlight;
     }
+  }
+}
+
+:is(
+  .ui-input__control,
+  :where(
+    [data-part="anchor"]:is([data-scope^="date"], [data-scope^="month-"][data-scope$="-picker"], [data-scope^="year-"][data-scope$="-picker"]),
+    [data-scope="time-picker"][data-part="root"]
+  ) .ui-temporal-input,
+  :where([data-scope$="-range-field"][data-part="root"]:has(> input.ui-temporal-input[data-part="start-input"] ~ input.ui-temporal-input[data-part="end-input"])) > .ui-temporal-input
+) {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  padding: var(--ui-field-inner-padding, 0);
+  border: 0;
+  border-radius: var(--ui-field-inner-radius, 0);
+  outline: var(--ui-field-inner-outline, none);
+  box-shadow: var(--ui-field-segment-shadow, none);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+
+  &:where(input) {
+    min-block-size: var(--ui-field-inner-height, 0);
   }
 }
 

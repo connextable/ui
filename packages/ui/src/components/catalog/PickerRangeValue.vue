@@ -33,9 +33,8 @@ defineProps<{
   align-items: center;
   column-gap: var(--ui-space-xs);
   min-inline-size: 0;
-  min-block-size: var(--ui-control-height-small);
+  min-block-size: var(--ui-inset-size);
   padding-inline: var(--ui-space-xs);
-  font-size: var(--ui-font-size-body-sm);
   font-variant-numeric: tabular-nums;
   text-align: center;
 }
@@ -53,7 +52,7 @@ defineProps<{
 }
 
 .ui-picker-range-value__placeholder {
-  color: var(--ui-color-text-muted);
+  color: var(--ui-color-placeholder);
 }
 
 .ui-picker-range-value__placeholder[data-whole] {

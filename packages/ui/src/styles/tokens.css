@@ -63,7 +63,10 @@
 
 :where([data-ui-control-size],
   input[data-scope="combobox"][data-part="input"],
-  input[data-scope="tree-select"][data-part="input"]
+  input[data-scope="tree-select"][data-part="input"],
+  [data-part="anchor"]:is([data-scope^="date"], [data-scope^="month-"][data-scope$="-picker"], [data-scope^="year-"][data-scope$="-picker"]),
+  [data-scope="time-picker"][data-part="root"],
+  [data-scope$="-range-field"][data-part="root"]:has(> input.ui-temporal-input[data-part="start-input"] ~ input.ui-temporal-input[data-part="end-input"])
 ) {
   --ui-control-size-height: var(--ui-control-height);
   --ui-control-size-padding-block: 0.375rem;
@@ -100,6 +103,9 @@
 
 /* Resolve on each frame so its children inherit the geometry of their immediate parent. */
 :where(.ui-inset-frame, .ui-tags-input__chip, .ui-number-control, .ui-quantity-control, .ui-color-sample,
+  [data-part="anchor"]:is([data-scope^="date"], [data-scope^="month-"][data-scope$="-picker"], [data-scope^="year-"][data-scope$="-picker"]),
+  [data-scope="time-picker"][data-part="root"],
+  [data-scope$="-range-field"][data-part="root"]:has(> input.ui-temporal-input[data-part="start-input"] ~ input.ui-temporal-input[data-part="end-input"]),
   [data-scope="toggle-group"][data-part="root"], [data-scope="tabs"][data-part="list"],
   .ui-select-content, .ui-navigation-popover__surface,
   :is([data-scope="menu-button"], [data-scope="context-menu"], [data-scope="combobox"], [data-scope="tree-select"], [data-scope="cascade-select"])[data-part="content"],
