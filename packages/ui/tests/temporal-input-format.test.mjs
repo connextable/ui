@@ -5,6 +5,7 @@ import { renderToString } from "vue/server-renderer";
 import {
   UIDateField, UIDateRangeField, UIDateRangeFieldStartInput, UIDateRangeFieldEndInput,
   UIDateTimeField, UIDateTimePicker, UIDateTimePickerDateInput, UIDateTimePickerTimeInput,
+  UIDateTimeRangePicker, UIDateTimeRangePickerStartTimeInput, UIDateTimeRangePickerEndTimeInput,
   UITemporalProvider, UITimeField, UITimePicker, UITimePickerInput,
 } from "@connextable/ui";
 
@@ -57,4 +58,25 @@ test("custom formats reach the SSR input values and placeholders of fields and p
   assertInput(html, "picker-time", "05.30.12,345 PM", "hh.mm.ss,SSS AM/PM");
   assertInput(html, "time-picker", "05.30.12 PM", "hh.mm.ss AM/PM");
   assertInput(html, "nested-date", "22-08-2026", "DD-MM-YYYY");
+});
+
+test("split date-time ranges use the requested time precision and inherit the input format", async () => {
+  const start = { date, time: { ...time, hour: 9, second: 0, millisecond: 0 } };
+  const end = { date, time: { ...start.time, hour: 17 } };
+  const html = await renderToString(createSSRApp({
+    render: () => h(UITemporalProvider, { inputFormats }, () => [
+      h(UIDateTimeRangePicker, { defaultValue: { start, end }, timePrecision: "minute" }, () => [
+        h(UIDateTimeRangePickerStartTimeInput, { id: "start-time" }),
+        h(UIDateTimeRangePickerEndTimeInput, { id: "end-time" }),
+        h(UITimeField, { id: "nested-time", defaultValue: time, precision: "millisecond" }),
+      ]),
+      h(UIDateTimeRangePicker, { defaultValue: { start, end: { date, time } } }, () =>
+        h(UIDateTimeRangePickerEndTimeInput, { id: "precise-end-time" })),
+    ]),
+  }));
+
+  assertInput(html, "start-time", "09.30 AM", "hh.mm AM/PM");
+  assertInput(html, "end-time", "05.30 PM", "hh.mm AM/PM");
+  assertInput(html, "nested-time", "05.30.12,345 PM", "hh.mm.ss,SSS AM/PM");
+  assertInput(html, "precise-end-time", "05.30.12,345 PM", "hh.mm.ss,SSS AM/PM");
 });

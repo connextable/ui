@@ -3,7 +3,7 @@ import { createDateFieldFormat, type DateFieldFormat, type DateFieldFormatOption
 import { createDateTimeFieldFormat, type DateTimeFieldFormatOptions } from "@sectile/temporal/date-time-field";
 import { createTimeFieldFormat, type TimeFieldFormat, type TimeFieldHourCycle, type TimeFieldPrecision } from "@sectile/temporal/time-field";
 import { useTemporalFormatter, useTemporalReferenceDate, type TemporalFormatter } from "@sectile/vue/temporal/temporal-provider";
-import { computed, defineComponent, getCurrentInstance, inject, provide, type ComponentInternalInstance, type ComputedRef, type InjectionKey } from "vue";
+import { computed, defineComponent, getCurrentInstance, inject, provide, type ComponentInternalInstance, type ComputedRef, type InjectionKey, type PropType } from "vue";
 
 export interface UITemporalInputFormats {
   date?: {
@@ -110,28 +110,46 @@ interface SectileTemporalContext {
 
 type ProviderInstance = ComponentInternalInstance & { provides: Record<symbol, SectileTemporalContext | undefined> };
 
+function provideTemporalFormatter(transform: (formatter: TemporalFormatter) => TemporalFormatter) {
+  const formatter = useTemporalFormatter();
+  const referenceDate = useTemporalReferenceDate();
+  let provider = (getCurrentInstance()?.parent as ProviderInstance | undefined)?.provides;
+  // Sectile 0.21 keeps this injection key private. Match the public refs of
+  // the nearest scope and preserve the rest of its context.
+  while (provider) {
+    const context = provider;
+    const key = Object.getOwnPropertySymbols(context).find(symbol =>
+      context[symbol]?.formatter === formatter && context[symbol]?.referenceDate === referenceDate);
+    if (key !== undefined) {
+      provide(key, {
+        ...context[key],
+        formatter: computed(() => formatter.value && transform(formatter.value)),
+      });
+      return true;
+    }
+    provider = Object.getPrototypeOf(provider);
+  }
+  return false;
+}
+
+export const TemporalFormatterScope = defineComponent({
+  props: {
+    transform: { type: Function as PropType<(formatter: TemporalFormatter) => TemporalFormatter>, required: true },
+  },
+  setup(props, { slots }) {
+    const formatter = useTemporalFormatter();
+    provideTemporalFormatter(formatter => props.transform(formatter));
+    return () => slots.default?.(formatter);
+  },
+});
+
 export const TemporalInputFormatProvider = defineComponent({
   setup(_, { slots }) {
     const formats = inject(temporalInputFormatsKey, undefined);
-    const formatter = useTemporalFormatter();
-    const referenceDate = useTemporalReferenceDate();
-    const provider = (getCurrentInstance()?.parent as ProviderInstance | undefined)?.provides;
-    // Sectile 0.21 keeps this injection key private. Match the public refs to
-    // extend its nearest scope while preserving the real field and picker owners.
-    const key = provider && Object.getOwnPropertySymbols(provider).find(symbol =>
-      provider[symbol]?.formatter === formatter && provider[symbol]?.referenceDate === referenceDate);
-    const context = key === undefined ? undefined : provider?.[key];
-    if (key !== undefined && context) {
-      provide(key, {
-        ...context,
-        formatter: computed(() => {
-          const options = formats?.value;
-          return formatter.value && options ? withInputFormats(formatter.value, options) : formatter.value;
-        }),
-      });
-    }
+    const connected = provideTemporalFormatter(formatter =>
+      formats?.value ? withInputFormats(formatter, formats.value) : formatter);
     return () => {
-      if (!context && formats?.value) throw new Error("UITemporalProvider could not connect inputFormats to Sectile.");
+      if (!connected && formats?.value) throw new Error("UITemporalProvider could not connect inputFormats to Sectile.");
       return slots.default?.();
     };
   },

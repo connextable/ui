@@ -13,6 +13,7 @@ import {
   DateTimeRangePickerStartTimeInput, DateTimeRangePickerEndTimeInput,
   DateTimeRangePickerStartDateTimeInput, DateTimeRangePickerEndDateTimeInput,
   DateTimeRangePickerGrid, DateTimeRangePickerCell, DateTimeRangePickerMonthCell,
+  type DateTimeRangePickerRootSlotProps,
 } from "@sectile/vue/temporal/date-time-range-picker";
 import { TimeField } from "@sectile/vue/temporal/time-field";
 import { TimeRangeFieldRoot, TimeRangeFieldStartInput, TimeRangeFieldEndInput } from "@sectile/vue/temporal/time-range-field";
@@ -30,10 +31,11 @@ import { withClearableControl, withClearableModel, type ClearableComponent } fro
 import UIScrollFade from "../scroll/UIScrollFade.vue";
 import { useUIScrollArea } from "../scroll/useUIScrollArea";
 import { withTemporalEditing, withTemporalInputAppearance } from "./temporal-input";
-import { TemporalInputFormatProvider, temporalInputFormatsKey, type UITemporalInputFormats } from "./temporal-input-format";
+import { TemporalFormatterScope, TemporalInputFormatProvider, temporalInputFormatsKey, type UITemporalInputFormats } from "./temporal-input-format";
 import { withRangeGridPresentation, withRangeCellPresentation } from "./temporal-range-presentation";
 import { defaultTemporalFormatting, temporalDisplayFormatsKey, useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
 import type { DateValue } from "@sectile/temporal/date-field";
+import type { TimeFieldPrecision } from "@sectile/temporal/time-field";
 
 export { useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
 export type { UITemporalInputFormats } from "./temporal-input-format";
@@ -105,7 +107,43 @@ export const UIDateRangePicker: ClearableComponent<typeof DateRangePickerRoot> =
 export const UIDateRangePickerAnchor: typeof DateRangePickerAnchor = withClearableControl(DateRangePickerAnchor, "anchor");
 export const UIDateTimePicker: ClearableComponent<typeof DateTimePickerRoot> = withClearableModel(DateTimePickerRoot, null);
 export const UIDateTimePickerAnchor: typeof DateTimePickerAnchor = withClearableControl(DateTimePickerAnchor, "anchor");
-export const UIDateTimeRangePicker: ClearableComponent<typeof DateTimeRangePickerRoot> = withClearableModel(DateTimeRangePickerRoot, null, { label: "범위 지우기" });
+
+type DateTimeRangePickerInstance = InstanceType<typeof DateTimeRangePickerRoot>;
+
+const DateTimeRangePicker = defineComponent({
+  inheritAttrs: false,
+  props: {
+    timePrecision: String as PropType<TimeFieldPrecision>,
+  },
+  setup(props, { attrs, slots }) {
+    const formatter = useTemporalFormatter();
+    const renderWithTimePrecision = () => h(TemporalFormatterScope, {
+      transform: base => ({
+        ...base,
+        // Sectile requests millisecond precision for the split time inputs.
+        timeFieldFormat: precision => base.timeFieldFormat(precision === "millisecond" ? props.timePrecision : precision),
+      }),
+    }, {
+      default: (inherited: ReturnType<typeof useTemporalFormatter>) => h(DateTimeRangePickerRoot, attrs, {
+        ...slots,
+        default: (state: DateTimeRangePickerRootSlotProps) => h(TemporalFormatterScope, {
+          transform: base => inherited.value ?? base,
+        }, { default: () => slots.default?.(state) }),
+      }),
+    });
+
+    return () => {
+      if (!props.timePrecision) return h(DateTimeRangePickerRoot, attrs, slots);
+      return formatter.value ? renderWithTimePrecision() : h(TemporalProvider, {
+        formatting: defaultTemporalFormatting,
+      }, { default: renderWithTimePrecision });
+    };
+  },
+}) as unknown as new () => Omit<DateTimeRangePickerInstance, "$props"> & {
+  $props: DateTimeRangePickerInstance["$props"] & { timePrecision?: TimeFieldPrecision };
+};
+
+export const UIDateTimeRangePicker: ClearableComponent<typeof DateTimeRangePicker> = withClearableModel(DateTimeRangePicker, null, { label: "범위 지우기" });
 export const UIDateTimeRangePickerAnchor: typeof DateTimeRangePickerAnchor = withClearableControl(DateTimeRangePickerAnchor, "anchor");
 export const UITimePicker: ClearableComponent<typeof TimePickerRoot> = withClearableModel(TimePickerRoot, null, {
   placement: "end", expose: ["element", "focus", "select", "requestClose", "selectChoice"],

@@ -39,7 +39,7 @@ const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIDateTimeRangePicker :default-value="initialRange" v-slot="{ dates, months, view, viewMode }">
+  <UIDateTimeRangePicker :default-value="initialRange" time-precision="minute" v-slot="{ dates, months, view, viewMode }">
     <UIDateTimeRangePickerAnchor>
       <div role="group" aria-label="시작 일시">
         <UIDateTimeRangePickerStartDateInput aria-label="시작 날짜" />
