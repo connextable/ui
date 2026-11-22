@@ -14,6 +14,7 @@ export { default as UITabularColumnHeading } from "./UITabularColumnHeading.vue"
 export { default as UITabularFilterPopover } from "./UITabularFilterPopover.vue";
 export { default as UITabularEditTrigger } from "./UITabularEditTrigger.vue";
 export { UIDataTable, UIDataGrid, type UIDataColumn, type UIDataRow } from "./local-data";
+export { createUITabularSource, type UITabularSourceOptions, type UITabularSourceResult } from "./source";
 export {
   createUIDataTableComponents,
   createUIDataGridComponents,

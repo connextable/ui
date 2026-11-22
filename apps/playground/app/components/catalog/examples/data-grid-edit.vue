@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIDataActions, UITabularEditTrigger, createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
+import { UIDataActions, UITabularEditTrigger, createUIDataGridComponents, createUITabularSource, useUIDataGrid } from "@connextable/ui";
 
 import { onScopeDispose, ref } from "vue";
 
@@ -10,18 +10,9 @@ let tasks = [
 ] satisfies { kind: "leaf"; id: string; cells: { task: string; status: string } }[];
 
 const grid = useUIDataGrid({
-  source: (request) => ({
-    ...request,
-    rows: tasks,
-    viewRevision: request.requestID,
-    matchingLeafCount: { kind: "known", value: tasks.length },
-    visibleRowCount: { kind: "known", value: tasks.length },
-    columnSchema: {
-      revision: request.columnSchemaRevision,
-      columns: [{ id: "task" }, { id: "status", capabilities: ["edit"] }],
-      headers: [],
-    },
-    removedRowIDs: [],
+  source: createUITabularSource({
+    columns: [{ id: "task" }, { id: "status", capabilities: ["edit"] }],
+    load: () => ({ rows: tasks }),
   }),
 });
 const unsubscribe = grid.subscribeCommands((command) => {

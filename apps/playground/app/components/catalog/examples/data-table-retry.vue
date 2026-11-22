@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { UIButton, UIDataActions, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataActions, createUIDataTableComponents, createUITabularSource, useUIDataTable } from "@connextable/ui";
 
 const failNext = ref(false);
 const rows = [
@@ -9,20 +9,17 @@ const rows = [
 ] as const;
 
 const table = useUIDataTable({
-  source: async (request, { signal }) => {
-    const fail = failNext.value;
-    failNext.value = false;
-    await new Promise<void>((resolve) => setTimeout(resolve, 400));
-    signal.throwIfAborted();
-    if (fail) throw new Error("일시적으로 응답하지 않습니다.");
-    return {
-      ...request, rows, viewRevision: request.requestID,
-      matchingLeafCount: { kind: "known", value: rows.length },
-      visibleRowCount: { kind: "known", value: rows.length },
-      columnSchema: { revision: request.columnSchemaRevision, columns: [{ id: "service" }, { id: "status" }], headers: [] },
-      removedRowIDs: [],
-    };
-  },
+  source: createUITabularSource({
+    columns: [{ id: "service" }, { id: "status" }],
+    async load(_request, { signal }) {
+      const fail = failNext.value;
+      failNext.value = false;
+      await new Promise<void>((resolve) => setTimeout(resolve, 400));
+      signal.throwIfAborted();
+      if (fail) throw new Error("일시적으로 응답하지 않습니다.");
+      return { rows };
+    },
+  }),
 });
 const Table = createUIDataTableComponents(table);
 const failed = computed(() => table.status.value === "error");

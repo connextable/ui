@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { ChevronRight } from "@lucide/vue";
-import { UIDataActions, UITabularRows, createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/ui";
+import { UIDataActions, UITabularRows, createUIDataTreeGridComponents, createUITabularSource, useUIDataTreeGrid } from "@connextable/ui";
 
 const departments = [
   { id: "product", name: "제품", projects: ["접근성 검토", "검색 개선", "온보딩"] },
   { id: "operations", name: "운영", projects: ["백업 점검", "문의 응답"] },
 ] as const;
 
-const tree = useUIDataTreeGrid({
-  source: async (request, { signal }) => {
+const source = createUITabularSource({
+  columns: [{ id: "name" }, { id: "summary" }],
+  async load(request, { signal }) {
     if (request.expansion.length) await new Promise<void>((resolve) => setTimeout(resolve, 450));
     signal.throwIfAborted();
     const rows = departments.flatMap((department) => {
@@ -24,15 +25,10 @@ const tree = useUIDataTreeGrid({
       }));
       return expanded ? [group, ...children] : [group];
     });
-    return {
-      ...request, rows, viewRevision: request.requestID,
-      matchingLeafCount: { kind: "known", value: 5 },
-      visibleRowCount: { kind: "known", value: rows.length },
-      columnSchema: { revision: request.columnSchemaRevision, columns: [{ id: "name" }, { id: "summary" }], headers: [] },
-      removedRowIDs: [],
-    };
+    return { rows, matchingLeafCount: 5 };
   },
 });
+const tree = useUIDataTreeGrid({ source });
 const Tree = createUIDataTreeGridComponents(tree);
 </script>
 

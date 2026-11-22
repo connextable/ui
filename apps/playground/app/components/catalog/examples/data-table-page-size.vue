@@ -1,29 +1,24 @@
 <script setup lang="ts">
-import { UIButton, UIDataSurface, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataSurface, createUIDataTableComponents, createUITabularSource, useUIDataTable } from "@connextable/ui";
 
 const total = 37;
 const sizes = [4, 8, 12];
 const pageAccess = (page: number, itemsPerPage: number) => ({
   kind: "page" as const, page, itemsPerPage, visibleRowCount: null, pagination: null,
 });
-const table = useUIDataTable({
-  defaultAccessState: pageAccess(3, sizes[0]!),
-  source: request => {
+const source = createUITabularSource({
+  columns: [{ id: "title" }],
+  load(request) {
     const { page, itemsPerPage } = request.access.kind === "page" ? request.access : pageAccess(1, sizes[0]!);
     const start = (page - 1) * itemsPerPage;
     const rows = Array.from({ length: Math.min(itemsPerPage, total - start) }, (_, index) => {
       const id = start + index + 1;
       return { id: String(id), kind: "leaf" as const, cells: { title: `정산 내역 #${id}` } };
     });
-    return {
-      ...request, rows, viewRevision: request.requestID,
-      matchingLeafCount: { kind: "known", value: total },
-      visibleRowCount: { kind: "known", value: total },
-      columnSchema: { revision: request.columnSchemaRevision, columns: [{ id: "title" }], headers: [] },
-      removedRowIDs: [],
-    };
+    return { rows, matchingLeafCount: total, visibleRowCount: total };
   },
 });
+const table = useUIDataTable({ source, defaultAccessState: pageAccess(3, sizes[0]!) });
 const Table = createUIDataTableComponents(table);
 
 function setSize(size: number, page: number, previousSize: number) {
