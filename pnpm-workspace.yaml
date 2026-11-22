@@ -11,5 +11,8 @@ catalog:
 allowBuilds:
   esbuild@0.28.2: true
 
-patchedDependencies:
-  '@sectile/dom@0.21.0': patches/@sectile__dom@0.21.0.patch
+minimumReleaseAgeExclude:
+  - '@sectile/core@0.16.1'
+  - '@sectile/dom@0.22.0'
+  - '@sectile/temporal@0.16.0'
+  - '@sectile/vue@0.22.0'

@@ -186,9 +186,6 @@ catalogs:
       specifier: 3.3.14
       version: 3.3.14
 
-patchedDependencies:
-  '@sectile/dom@0.21.0': 0af3a0d1f82745113517bd6bd5e7039b9613785d60ce0dfeeb66f37345b79839
-
 importers:
 
   .: {}
@@ -245,8 +242,8 @@ importers:
         specifier: 0.16.1
         version: 0.16.1
       '@sectile/core':
-        specifier: 0.16.0
-        version: 0.16.0
+        specifier: 0.16.1
+        version: 0.16.1
       '@sectile/form':
         specifier: 0.15.2
         version: 0.15.2
@@ -254,14 +251,14 @@ importers:
         specifier: 0.17.1
         version: 0.17.1(@sectile/virtual@0.16.1)
       '@sectile/temporal':
-        specifier: 0.15.1
-        version: 0.15.1
+        specifier: 0.16.0
+        version: 0.16.0
       '@sectile/virtual':
         specifier: 0.16.1
         version: 0.16.1
       '@sectile/vue':
-        specifier: 0.21.0
-        version: 0.21.0(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.15.1)(@sectile/virtual@0.16.1)(vue@3.5.45(typescript@6.0.3))
+        specifier: 0.22.0
+        version: 0.22.0(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.16.0)(@sectile/virtual@0.16.1)(vue@3.5.45(typescript@6.0.3))
       vue-router:
         specifier: ^5.5.1
         version: 5.5.1(@vue/compiler-sfc@3.5.45)(esbuild@0.28.2)(rolldown@1.2.19)(rollup@4.68.7)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2))(vue@3.5.45(typescript@6.0.3))
@@ -1141,18 +1138,18 @@ packages:
     resolution: {integrity: sha512-che+WTAFi7OREKkv1eQVhTJxl06NKU1nkkMK6ITuZajOJuruYW1eAZ1OOmyKihe9h3g1e5YT4gaSjJbLegfkXg==}
     engines: {node: '>=24'}
 
-  '@sectile/core@0.16.0':
-    resolution: {integrity: sha512-nU7YlyB0UC4aZZZyn/+ioQ18x2vtK+jVm11b6OC4eIVMA5upRbz3Sdkx1PictnfkkzE1oj3qb9KFwW6f3TV3/A==}
+  '@sectile/core@0.16.1':
+    resolution: {integrity: sha512-6EmlkyJIUkwEERXmbjC4P0Y6iIrPlTY2LcvfJi/liDo5Z548rcGG4qJ07CCp3aS65no6A2JOi3aXjq4t8DheGA==}
     engines: {node: '>=24'}
 
-  '@sectile/dom@0.21.0':
-    resolution: {integrity: sha512-KQv9ELksT6v0gwGzZOvZ40x6PTSkF3JIGJFy3goPXtDWlDeWR60J5i42o5USjKIyt2Wk13U2I4Tjm00Vgvm4BA==}
+  '@sectile/dom@0.22.0':
+    resolution: {integrity: sha512-8sCIXyVMD2ddFZ/fJFzBrHVJcgd5ktX/dF/oRoPrKPJ9m4zK+E2h8RUMnA0TTRBx594IPqSQs+YH1E6PSTCFLA==}
     engines: {node: '>=24'}
     peerDependencies:
       '@sectile/chart': ^0.16.1
       '@sectile/form': ^0.15.2
       '@sectile/tabular': ^0.17.1
-      '@sectile/temporal': ^0.15.1
+      '@sectile/temporal': ^0.16.0
       '@sectile/virtual': ^0.16.1
     peerDependenciesMeta:
       '@sectile/chart':
@@ -1179,22 +1176,22 @@ packages:
       '@sectile/virtual':
         optional: true
 
-  '@sectile/temporal@0.15.1':
-    resolution: {integrity: sha512-KqM3S/LjTZfm/t/+ckzi6eW7gASkpsktXIkwAhbfHVRNZl2H/Vp2uA3eOfI4T5RENkxnSLJe/MNa9K1M+5iZRw==}
+  '@sectile/temporal@0.16.0':
+    resolution: {integrity: sha512-RlXGM/r0/44hn3maJgdCdG+TNVn22lMQNqBfBKjJe9/zJijfGfootkuK83a+jbGjUCA82tGCr3UWZomJ92cO9A==}
     engines: {node: '>=24'}
 
   '@sectile/virtual@0.16.1':
     resolution: {integrity: sha512-SZBfUk6lj1MVOJN+wXBHnKiBMw84spDgV6mU1tRVaoOiP5xXw955HglZqtievYEyChcOajsVB+aTZHMbY623Dw==}
     engines: {node: '>=24'}
 
-  '@sectile/vue@0.21.0':
-    resolution: {integrity: sha512-gXp5JSVbuLDBDEBdShj34eJ7bsdwHbfATvnvJ0dDXUv52pAXzw1n7dfiMceG6W8itUY6pSM4joaEcJIE84ACgg==}
+  '@sectile/vue@0.22.0':
+    resolution: {integrity: sha512-kDIDlbBCukGRtx5Kv92TCfJYFXJbFl9fXf3WNiCp3WK8OoZt1vnZ2DCH/p+h3aA9xF4mSkWfMZTI1DWKL+GseQ==}
     engines: {node: '>=24'}
     peerDependencies:
       '@sectile/chart': ^0.16.1
       '@sectile/form': ^0.15.2
       '@sectile/tabular': ^0.17.1
-      '@sectile/temporal': ^0.15.1
+      '@sectile/temporal': ^0.16.0
       '@sectile/virtual': ^0.16.1
       vue: ^3.5.41
     peerDependenciesMeta:
@@ -4442,48 +4439,48 @@ snapshots:
 
   '@sectile/chart@0.16.1':
     dependencies:
-      '@sectile/core': 0.16.0
+      '@sectile/core': 0.16.1
 
-  '@sectile/core@0.16.0': {}
+  '@sectile/core@0.16.1': {}
 
-  '@sectile/dom@0.21.0(patch_hash=0af3a0d1f82745113517bd6bd5e7039b9613785d60ce0dfeeb66f37345b79839)(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.15.1)(@sectile/virtual@0.16.1)':
+  '@sectile/dom@0.22.0(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.16.0)(@sectile/virtual@0.16.1)':
     dependencies:
-      '@sectile/core': 0.16.0
+      '@sectile/core': 0.16.1
     optionalDependencies:
       '@sectile/chart': 0.16.1
       '@sectile/form': 0.15.2
       '@sectile/tabular': 0.17.1(@sectile/virtual@0.16.1)
-      '@sectile/temporal': 0.15.1
+      '@sectile/temporal': 0.16.0
       '@sectile/virtual': 0.16.1
 
   '@sectile/form@0.15.2':
     dependencies:
-      '@sectile/core': 0.16.0
+      '@sectile/core': 0.16.1
 
   '@sectile/tabular@0.17.1(@sectile/virtual@0.16.1)':
     dependencies:
-      '@sectile/core': 0.16.0
+      '@sectile/core': 0.16.1
     optionalDependencies:
       '@sectile/virtual': 0.16.1
 
-  '@sectile/temporal@0.15.1':
+  '@sectile/temporal@0.16.0':
     dependencies:
-      '@sectile/core': 0.16.0
+      '@sectile/core': 0.16.1
 
   '@sectile/virtual@0.16.1':
     dependencies:
-      '@sectile/core': 0.16.0
+      '@sectile/core': 0.16.1
 
-  '@sectile/vue@0.21.0(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.15.1)(@sectile/virtual@0.16.1)(vue@3.5.45(typescript@6.0.3))':
+  '@sectile/vue@0.22.0(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.16.0)(@sectile/virtual@0.16.1)(vue@3.5.45(typescript@6.0.3))':
     dependencies:
-      '@sectile/core': 0.16.0
-      '@sectile/dom': 0.21.0(patch_hash=0af3a0d1f82745113517bd6bd5e7039b9613785d60ce0dfeeb66f37345b79839)(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.15.1)(@sectile/virtual@0.16.1)
+      '@sectile/core': 0.16.1
+      '@sectile/dom': 0.22.0(@sectile/chart@0.16.1)(@sectile/form@0.15.2)(@sectile/tabular@0.17.1(@sectile/virtual@0.16.1))(@sectile/temporal@0.16.0)(@sectile/virtual@0.16.1)
       vue: 3.5.45(typescript@6.0.3)
     optionalDependencies:
       '@sectile/chart': 0.16.1
       '@sectile/form': 0.15.2
       '@sectile/tabular': 0.17.1(@sectile/virtual@0.16.1)
-      '@sectile/temporal': 0.15.1
+      '@sectile/temporal': 0.16.0
       '@sectile/virtual': 0.16.1
 
   '@shikijs/core@4.6.0':
