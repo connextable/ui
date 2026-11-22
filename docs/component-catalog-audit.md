@@ -1,6 +1,25 @@
 # 컴포넌트 카탈로그 점검
 
-2026-11-21에 로컬 Playground 사이드바가 제공한 컴포넌트 페이지 90개와 예제 560개를 확인했다. 브라우저에서 기본 화면의 제목, 예제 영역, 페이지와 예제의 가로 넘침, 노출된 기본 셀렉트와 이름 없는 아이콘 버튼을 조사했다. 기본 화면은 CSS 뷰포트 1910px와 582px에서, 좁은 화면은 391px에서 관찰했다.
+## 기본 사용 API 전수 점검
+
+공통 카탈로그 예제 82개와 전용 페이지 11개의 기본 예제를 공개 루트 및 구성 요소와 대조했다. 값과 설정으로 정해지는 구조, 앱이 제공해야 하는 콘텐츠, 예제에서만 추가한 출력이나 레이아웃을 확인했다. 이 항목은 기본 사용 API 소스 점검이며, 페이지별 모든 동작의 브라우저 점검은 별도다.
+
+| 영역 | 확인한 결과 |
+| --- | --- |
+| 동작·입력 | `UIButton`, `UIInput`, `UINumberField`, `UITagsInput`, `UIFileInput`, `UISlider`, `UIMultiThumbSlider`에는 기본 구성이 있다. `UIEditable`, `UIPinInput`, `UISpinButton`, `UIQuantityField`는 내부 요소를 루트의 기본 구성으로 옮겼다. `UIToolbar`는 버튼과 액션을, `UIForm`은 스키마와 필드 배치를, `UIFileUpload`는 업로드 로직을 받는다. 파일 선택과 업로드를 묶는 공통 흐름은 추가 검토 대상으로 남았다. |
+| 선택 | `UICheckbox`, `UIRadioGroup`, `UISwitch`, `UISelect`, `UITransfer`에는 기본 표시가 있다. `UICheckboxGroup`, `UIToggleGroup`, `UIListbox`는 옵션에서 항목을, `UICombobox`는 검색 데이터에서 입력과 결과를, `UIRating`은 값마다 별을 그리도록 바꿨다. `UITreeSelect`, `UICheckboxTree`, `UICascadeSelect`, `UICascadeList`는 노드의 레이블, 하위 항목 토글, 선택 경로 표시까지 공통 구성으로 옮길 수 있다. `UIColorPicker`에는 색 영역·손잡이·색상 조절·텍스트 입력을 함께 제공할 기본 구성이 필요하다. |
+| 날짜·시간 | `UICalendar`, `UIRangeCalendar`, `UIDateField`, `UIDateRangeField`, `UIDatePicker`, `UIDateRangePicker`, `UIDateTimeField`, `UIDateTimeRangeField`, `UIDateTimePicker`, `UIDateTimeRangePicker`, `UITimeField`, `UITimePicker`, `UITimeRangeField`, `UIMonthPicker`, `UIMonthRangePicker`, `UIYearPicker`, `UIYearRangePicker`의 기본 예제는 루트로 동작한다. `UITemporalProvider` 기본 예제에 남은 달력 셀 조립은 기준일 설정을 설명하는 데 필요하지 않다. |
+| 탐색 | `UIAnchor`, `UIPagination`에는 완성된 기본 구성이 있다. `UITabs`, `UIStepper`는 항목 구성과 패널 배치를 내부화하고 본문을 슬롯으로 받을 수 있다. `UITreeView`는 노드와 펼침 표시를 공통 구성으로 제공할 수 있다. `UINavigationMenu`, `UIMenu`, `UIMenuButton`, `UIContextMenu`, `UIMenubar`는 링크·명령·구분선 데이터에서 기본 목록을 그리고 사용자 정의 동작을 슬롯으로 받을 수 있다. |
+| 오버레이 | `UILightbox`는 미디어 데이터로 탐색과 화면을 구성한다. `UIDialog`, `UIAlertDialog`, `UIDrawer`, `UISheet`, `UIPopover`는 앱에서 트리거와 본문을 지정하면서 포털·배경·제목·닫기 버튼을 라이브러리 기본 구성으로 제공할 수 있다. `UITooltip` 기본 예제는 트리거와 설명 외에 콘텐츠 및 화살표까지 배치한다. `UIToast` 예제는 제목, 닫기, 뷰포트를 직접 조립한다. |
+| 레이아웃·상태 | `UIDashboard`, `UIScrollArea`, `UIImage`, `UISpinner`, `UIProgress`는 본문 또는 설정을 받아 기본 표시를 제공한다. `UIDisclosure`, `UIAccordion`, `UICarousel`, `UIFeed`, `UIWindowSplitter`에서 앱이 제공하는 실제 콘텐츠와 공통 헤더·컨트롤·구분선을 구분할 수 있다. `UIMeter`, `UIMeterGroup`, `UITimer`는 값·구간·시간 데이터로 막대나 시간 항목을 구성할 수 있다. |
+| 표·데이터·가상화 | `UIDataTable`, `UIDataGrid`, `UIDataTreeGrid`는 열과 데이터에서 표를 구성하고 셀 표시를 바꿀 수 있다. `UIGrid`, `UITreeGrid`는 행·셀 구조를 조립한다. `UIChart`는 차트 타입과 축·계열을, `UISequenceReorder`, `UITreeReorder`는 이동할 항목과 그룹 구조를 표현한다. `UIVirtualList`, `UIVirtualGrid`, `UIVirtualMasonry`, `UIVirtualSpatial`은 데이터와 표시 슬롯을 받는다. `UIVirtualizer`는 범용 배치와 렌더링 제어를 제공하는 저수준 구성이다. |
+| 기반 | `UIPrimitive`는 요소를 지정하고, `UIHostProvider`는 하위 컴포넌트에 포털 위치와 쓰기 방향을 전달한다. |
+
+수량 필드의 `UIQuantityFieldValue`는 직접 조립한 기존 화면에서 확정값을 꺼내는 슬롯이다. 기본 예제는 루트의 `v-model`로 수치와 기준 단위를 받고, 표시 단위 선택이 필요한 경우 `display-units`를 전달한다. PIN 입력은 `length`로 자리 수를 지정한다. 나머지 컴포넌트의 기본 구성 후보는 위 표에 남겼다.
+
+## 2026-11-21 브라우저 점검
+
+로컬 Playground 사이드바가 제공한 컴포넌트 페이지 90개와 예제 560개를 확인했다. 브라우저에서 기본 화면의 제목, 예제 영역, 페이지와 예제의 가로 넘침, 노출된 기본 셀렉트와 이름 없는 아이콘 버튼을 조사했다. 기본 화면은 CSS 뷰포트 1910px와 582px에서, 좁은 화면은 391px에서 관찰했다.
 
 차트와 가상화의 지연 예제 73개는 각 예제 앵커로 이동한 뒤 실제 콘텐츠가 들어오는지 확인했다. 아래 ‘조작 확인’은 문제를 재현하고 해당 동작을 다시 확인한 화면을 뜻한다. 기본 레이아웃 점검은 모든 브라우저와 모든 상태 조합의 조작을 포함하지 않는다.
 
