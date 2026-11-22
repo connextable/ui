@@ -1,48 +1,15 @@
 <script setup lang="ts">
-import {
-  UIAccordion,
-  UIAccordionContent,
-  UIAccordionHeader,
-  UIAccordionItem,
-  UIAccordionTrigger,
-} from "@connextable/ui";
+import { UIAccordion } from "@connextable/ui";
+import { ref } from "vue";
 
+const openSection = ref<string | readonly string[]>("general");
 const items = [
-  { id: "general", title: "기본 설정", label: "기본 언어", value: "한국어" },
-  { id: "deployments", title: "배포 설정", label: "배포 브랜치", value: "main" },
-  { id: "retention", title: "보관 설정", label: "활동 기록 보관 기간", value: "90일" },
+  { value: "general", label: "기본 설정", description: "기본 언어는 한국어입니다." },
+  { value: "deployments", label: "배포 설정", description: "배포 브랜치는 main입니다." },
+  { value: "retention", label: "보관 설정", description: "활동 기록을 90일간 보관합니다." },
 ];
 </script>
 
 <template>
-  <UIAccordion
-    :items="items.map(({ id }) => id)"
-    type="single"
-    collapsible
-  >
-    <UIAccordionItem v-for="item in items" :key="item.id" :value="item.id">
-      <UIAccordionHeader><UIAccordionTrigger>{{ item.title }}</UIAccordionTrigger></UIAccordionHeader>
-      <UIAccordionContent>
-        <dl class="settings-preview"><dt>{{ item.label }}</dt><dd>{{ item.value }}</dd></dl>
-      </UIAccordionContent>
-    </UIAccordionItem>
-  </UIAccordion>
+  <UIAccordion v-model="openSection" :items="items" type="single" collapsible />
 </template>
-
-<style scoped>
-.settings-preview {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--ui-space-sm);
-  margin: 0;
-  font-size: var(--ui-font-size-body-sm);
-}
-
-.settings-preview dd {
-  margin: 0;
-  color: var(--ui-color-text);
-  font-weight: 550;
-}
-</style>

@@ -223,6 +223,22 @@
     font-variant-numeric: tabular-nums;
   }
 
+  :where(.ui-meter__heading, .ui-meter__scale) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--ui-space-sm);
+  }
+
+  :where(.ui-meter__heading) > [data-part="value-text"] {
+    order: 0;
+  }
+
+  :where(.ui-meter__scale) {
+    color: var(--ui-color-text-muted);
+    font-size: var(--ui-font-size-metadata);
+  }
+
   :where([data-scope="meter"], [data-scope="meter-group"]):where([data-part="track"]) {
     position: relative;
     overflow: hidden;

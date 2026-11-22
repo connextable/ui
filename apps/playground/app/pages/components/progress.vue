@@ -4,7 +4,6 @@ import ProgressCountExampleSource from "~/components/examples/ProgressCountExamp
 import ProgressValueExample from "~/components/examples/ProgressValueExample.vue";
 import ProgressValueExampleSource from "~/components/examples/ProgressValueExample.vue?example-code&raw";
 import ProgressExample from "~/components/examples/ProgressExample.vue";
-import source from "~/components/examples/ProgressExample.vue?example-code&raw";
 import ProgressIndeterminateExample from "~/components/examples/ProgressIndeterminateExample.vue";
 import indeterminateSource from "~/components/examples/ProgressIndeterminateExample.vue?example-code&raw";
 
@@ -12,22 +11,16 @@ definePageMeta({
   title: "UIProgress",
   category: "상태 표시",
   description: "전체 항목 중 완료된 비율을 진행 바로 표시합니다.",
+  componentParts: ["UIProgressTrack", "UIProgressIndicator", "UIProgressValueText"],
 });
 </script>
 
 <template>
   <div style="--playground-preview-inline-size: 20rem">
     <PlaygroundExampleSection id="usage" title="기본 사용법">
-      <PlaygroundExample :heading-level="3"
-        id="progress-example"
-        title="검사 진행률"
-        description="value에 현재 진행률을 전달합니다. 버튼을 누르면 진행 바가 채워집니다."
-        :source="source"
-      >
-        <ProgressExample />
-      </PlaygroundExample>
+      <ProgressExample />
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="examples" title="동작별 예제">
+    <PlaygroundExampleSection id="examples" title="진행 상태와 값 표시">
       <PlaygroundExample :heading-level="3"
         id="progress-indeterminate"
         title="진행률을 알 수 없는 상태"
@@ -45,5 +38,6 @@ definePageMeta({
         <ProgressValueExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
+    <PlaygroundParts :parts="['UIProgressTrack', 'UIProgressIndicator', 'UIProgressValueText']" />
   </div>
 </template>

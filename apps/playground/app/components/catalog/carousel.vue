@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import {
-  UICarousel,
-  UICarouselNext,
-  UICarouselPrevious,
-  UICarouselSlide,
-  UICarouselTrack,
-} from "@connextable/ui";
+import { UICarousel } from "@connextable/ui";
 import { ref } from "vue";
 
 const slides = [
@@ -18,16 +12,5 @@ const activeSlide = ref<string | null>("foundation");
 </script>
 
 <template>
-  <UICarousel :slides="slides.map(({ id }) => id)" v-model="activeSlide" label="디자인 시스템 둘러보기"
-    :get-slide-label="(_id, index) => slides[index]?.title ?? ''"
-    :get-indicator-label="(_id, index) => `${slides[index]?.title ?? ''} 슬라이드`">
-    <UICarouselTrack>
-      <UICarouselSlide v-for="slide in slides" :key="slide.id" :value="slide.id">
-        <strong>{{ slide.title }}</strong>
-        <span>{{ slide.description }}</span>
-      </UICarouselSlide>
-    </UICarouselTrack>
-    <UICarouselPrevious />
-    <UICarouselNext />
-  </UICarousel>
+  <UICarousel v-model="activeSlide" :slides="slides" label="디자인 시스템 둘러보기" indicators />
 </template>

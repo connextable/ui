@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  UIWindowSplitter,
-  UIWindowSplitterHandle,
-  UIWindowSplitterPane,
-} from "@connextable/ui";
+import { UIWindowSplitter } from "@connextable/ui";
 
 import { ref } from "vue";
 import { FileCode2, Folder } from "@lucide/vue";
@@ -27,7 +23,7 @@ const selected = ref<keyof typeof sources>("App.vue");
 
 <template>
   <UIWindowSplitter v-model="size" class="split-example" orientation="horizontal" :min="22" :max="72" label="프로젝트와 편집기 너비 조정">
-    <UIWindowSplitterPane side="before" class="split-example__pane">
+    <template #before>
       <header class="split-example__header"><strong>프로젝트</strong></header>
       <div class="split-example__files">
         <span class="split-example__folder"><Folder :size="16" aria-hidden="true" /> src</span>
@@ -40,12 +36,11 @@ const selected = ref<keyof typeof sources>("App.vue");
           @click="selected = file"
         ><FileCode2 :size="15" aria-hidden="true" /> <span>{{ file }}</span></button>
       </div>
-    </UIWindowSplitterPane>
-    <UIWindowSplitterHandle />
-    <UIWindowSplitterPane side="after" class="split-example__pane">
+    </template>
+    <template #after>
       <header class="split-example__header"><strong>{{ selected }}</strong><small>읽기 전용</small></header>
       <pre tabindex="0" :aria-label="`${selected} 소스`"><code>{{ sources[selected] }}</code></pre>
-    </UIWindowSplitterPane>
+    </template>
   </UIWindowSplitter>
 </template>
 
@@ -55,7 +50,7 @@ const selected = ref<keyof typeof sources>("App.vue");
   min-block-size: 13rem;
 }
 
-.split-example__pane {
+.split-example :deep([data-part="pane"]) {
   padding: 0;
 }
 

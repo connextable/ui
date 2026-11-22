@@ -987,9 +987,11 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   carousel: {
     title: "슬라이드 전환",
-    description: "slides의 각 id를 슬라이드에 연결합니다. 이전과 다음 버튼으로 한 장씩 이동합니다.",
+    description: "slides에 항목을 전달합니다. 이전·다음 버튼과 표시점을 눌러 이동합니다.",
     api: {
-      slides: "슬라이드와 이동 표시에서 공유할 식별자입니다.",
+      slides: "슬라이드의 id, 제목과 설명을 지정합니다.",
+      indicators: "슬라이드 이동 표시점을 표시합니다.",
+      "#slide": "현재 slide 데이터로 본문을 직접 구성합니다.",
       "default-value": "처음 표시할 슬라이드의 id입니다.",
       "v-model": "현재 슬라이드 id를 외부 상태에 연결합니다.",
       "Slide / Indicator value": "슬라이드와 이동 표시를 같은 항목에 연결합니다.",
@@ -1067,11 +1069,11 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "meter-group-threshold", section: "usage-options", title: "항목의 합계가 임계값을 넘을 때", description: "미디어 사용량을 늘려 전체 사용량 표시와 임계 상태를 확인합니다." },
     ],
     title: "저장 용량을 항목별로 표시",
-    description: "max로 전체 용량을, items로 각 항목의 사용량을 전달합니다. 같은 id를 막대 구간과 범례에 연결합니다.",
+    description: "max로 전체 용량을, items로 각 항목의 사용량을 전달하면 막대 구간과 범례가 함께 표시됩니다.",
     api: {
       items: "구간별 id, 이름, 값의 배열을 전달합니다.",
       max: "전체 눈금의 크기입니다.",
-      "Segment / Item id": "막대 구간과 범례를 같은 항목에 연결합니다.",
+      "format-value / format-total": "개별 구간과 합계에 표시할 포맷을 지정합니다.",
     },
   },
   pagination: {
@@ -1151,7 +1153,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "min / max": "손잡이가 이동할 수 있는 비율의 경계입니다.",
       "step / page-step": "기본 이동 간격은 0.1%p입니다. step으로 간격을 지정하고 page-step으로 Page Up과 Page Down에서 이동할 단계 수를 지정합니다.",
       "format-value": "스크린 리더가 현재 비율을 읽을 때 사용할 문구를 지정합니다.",
-      "Pane side": "구분선 앞과 뒤의 두 패널을 구분합니다.",
+      "#before / #after": "구분선 앞과 뒤에 배치할 내용을 지정합니다.",
+      "#grip": "구분선의 그립 모양을 직접 구성합니다.",
       "Handle thumb / #default": "기본값은 구분선입니다. thumb을 지정하면 그립을 표시하고, 기본 슬롯으로 아이콘이나 다른 표시를 구성할 수 있습니다. 슬롯에서 value와 percentage를 읽을 수 있습니다.",
     },
   },

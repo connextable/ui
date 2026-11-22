@@ -121,6 +121,17 @@
     margin: 0;
   }
 
+  :where(.ui-feed-entry__header) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ui-space-xs);
+  }
+
+  :where(.ui-feed-entry__header) time {
+    margin-inline-start: auto;
+  }
+
   :where([data-scope="feed"][data-part="item"]) :where(p, small, time) {
     color: var(--ui-color-text-muted);
   }
