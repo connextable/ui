@@ -36,7 +36,19 @@
 }
 
 .ui-clearable-control--trigger {
-  --ui-clear-offset: calc(var(--ui-control-size-padding-inline) + var(--ui-control-size-icon) + var(--ui-space-xs));
+  --ui-clear-offset: calc(
+    var(--ui-frame-border-width) + var(--ui-control-size-padding-inline) +
+    var(--ui-control-size-icon) + var(--ui-space-xs)
+  );
+
+  &:has(> .ui-clear-button) > .ui-popup-trigger:has(> .ui-popup-trigger__indicator) {
+    padding-inline-end: var(--ui-control-size-padding-inline);
+
+    > .ui-popup-trigger__indicator {
+      box-sizing: content-box;
+      padding-inline-start: calc(var(--ui-clear-size) + var(--ui-space-xs));
+    }
+  }
 }
 
 .ui-clearable-group {
