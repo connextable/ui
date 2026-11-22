@@ -457,8 +457,7 @@ function onPointerCancel(event: PointerEvent) {
 .ui-lightbox__stage {
   position: relative;
   min-inline-size: 0;
-  background: var(--ui-lightbox-stage-background, #151b1f);
-  color: #fff;
+  background: var(--ui-lightbox-stage-background, transparent);
 }
 
 .ui-lightbox__visual {
@@ -583,11 +582,6 @@ function onPointerCancel(event: PointerEvent) {
 
 @media (max-width: 47.999rem), (max-height: 32rem) and (pointer: coarse) {
   .ui-lightbox__panel {
-    --ui-color-text: #fff;
-    --ui-color-text-muted: #c9d2d8;
-    --ui-color-focus: #bfe6f4;
-    --ui-color-surface-hover: #283139;
-    --ui-color-surface-active: #35434c;
     --ui-lightbox-edge-left: max(var(--ui-space-md), env(safe-area-inset-left));
     --ui-lightbox-edge-right: max(var(--ui-space-md), env(safe-area-inset-right));
 
@@ -602,7 +596,6 @@ function onPointerCancel(event: PointerEvent) {
     border: 0;
     border-radius: 0;
     overflow: hidden;
-    background: var(--ui-lightbox-stage-background, #151b1f);
     box-shadow: none;
   }
 
