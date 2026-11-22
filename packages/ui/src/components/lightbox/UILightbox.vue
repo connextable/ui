@@ -3,7 +3,7 @@ import {
   DialogClose, DialogContent, DialogOverlay, DialogPortal, DialogRoot, DialogTitle,
 } from "@sectile/vue/dialog";
 import { ChevronLeft, ChevronRight, X } from "@lucide/vue";
-import { computed, ref, shallowRef, useTemplateRef, watch } from "vue";
+import { computed, nextTick, ref, shallowRef, useTemplateRef, watch, type CSSProperties } from "vue";
 import UIButton from "../button/UIButton.vue";
 import LightboxThumbnail from "./LightboxThumbnail.vue";
 import type { UILightboxItem } from "./lightbox-types";
@@ -44,6 +44,7 @@ const video = useTemplateRef<HTMLVideoElement>("video");
 const strip = useTemplateRef<HTMLElement>("strip");
 const opener = shallowRef<HTMLElement>();
 const mediaFailed = ref(false);
+const photoProjection = shallowRef<CSSProperties>();
 const transition = useLightboxTransition();
 const selectedIndex = computed(() =>
   Math.max(0, Math.min(items.length - 1, Number.isFinite(index.value) ? Math.trunc(index.value) : 0)),
@@ -61,7 +62,10 @@ const canGoForward = computed(() => items.length > 1 && (loop || selectedIndex.v
 watch([mediaKey, displayedOpen], ([key, isOpen], [previousKey, wasOpen]) => {
   clearSwipe();
   video.value?.pause();
-  if (!isOpen && (wasOpen || !key) && !transition.isClosing()) transition.stop(false);
+  if (!isOpen && (wasOpen || !key)) {
+    photoProjection.value = undefined;
+    if (!transition.isClosing()) transition.stop(false);
+  }
   if (key !== previousKey || isOpen) mediaFailed.value = false;
 }, { flush: "sync" });
 
@@ -86,24 +90,42 @@ function openAt(position: number, event?: Event) {
 
   opener.value = event?.currentTarget instanceof HTMLElement ? event.currentTarget : undefined;
   const origin = photoThumbnail(opener.value, items[position]);
-  const show = () => {
-    index.value = position;
-    open.value = true;
-  };
-  if (motion) {
-    transition.start("open", show, { media: origin }, async () => {
-      const image = origin ? photo.value : null;
-      // The dialog mounts a new image on each open, even when the thumbnail is loaded.
-      if (image) await image.decode().catch(() => undefined);
-      return {
-        media: image === photo.value && image?.naturalWidth ? image : null,
-        panel: panel.value,
-        overlay: overlay.value,
-      };
-    });
-  } else {
-    show();
+  const bounds = origin && motion && transition.canStart(origin.ownerDocument, origin)
+    ? origin.getBoundingClientRect()
+    : undefined;
+  const pending: CSSProperties | undefined = bounds?.width && bounds.height ? { visibility: "hidden" } : undefined;
+  index.value = position;
+  photoProjection.value = pending;
+  open.value = true;
+  if (bounds && pending) void zoomFromThumbnail(bounds, pending);
+}
+
+async function zoomFromThumbnail(bounds: DOMRect, pending: CSSProperties) {
+  await nextTick();
+  if (photoProjection.value !== pending) return;
+  const image = photo.value;
+  const scope = visual.value;
+  if (!image || !scope) {
+    photoProjection.value = undefined;
+    return;
   }
+
+  // Start the displayed photo at the thumbnail's position within the media stage.
+  const stage = scope.getBoundingClientRect();
+  const projection = {
+    left: `${bounds.left - stage.left}px`,
+    top: `${bounds.top - stage.top}px`,
+    width: `${bounds.width}px`,
+    height: `${bounds.height}px`,
+  };
+  photoProjection.value = projection;
+  await nextTick();
+  if (photoProjection.value !== projection) return;
+
+  transition.start("open", () => { photoProjection.value = undefined; }, { media: image }, async () => {
+    await image.decode().catch(() => undefined);
+    return { media: image === photo.value && image.naturalWidth ? image : null };
+  }, scope);
 }
 
 function goTo(position: number, direction?: "next" | "previous") {
@@ -112,6 +134,7 @@ function goTo(position: number, direction?: "next" | "previous") {
   if (!items[position] || position === from) return;
   const select = () => {
     clearSwipe();
+    photoProjection.value = undefined;
     index.value = position;
   };
   if (motion && visual.value) {
@@ -139,6 +162,7 @@ function onDialogOpenChange(value: boolean) {
   }
   if (transition.isClosing()) return;
   transition.stop(false);
+  photoProjection.value = undefined;
   clearSwipe();
   const hide = () => { open.value = false; };
   if (!motion || !current.value) {
@@ -292,7 +316,8 @@ function onPointerCancel(event: PointerEvent) {
                   {{ labels?.error ?? "미디어를 불러오지 못했습니다." }}
                 </p>
                 <img v-else-if="current.kind === 'image'" :key="mediaKey" ref="photo" :src="current.src"
-                  :alt="current.alt" draggable="false" @error="mediaFailed = true" />
+                  :alt="current.alt" :style="photoProjection" :data-projected="photoProjection ? '' : undefined"
+                  draggable="false" @error="mediaFailed = true" />
                 <video v-else :key="mediaKey" ref="video" :aria-label="current.label" :poster="current.poster"
                   :muted="current.muted" :loop="current.loop" :crossorigin="current.crossorigin"
                   controls playsinline preload="metadata" @error="mediaFailed = true">
@@ -454,6 +479,11 @@ function onPointerCancel(event: PointerEvent) {
   border-radius: var(--ui-radius-lg);
 }
 
+.ui-lightbox__stage:has(> .ui-lightbox__visual[data-ui-lightbox-transition="open"]),
+.ui-lightbox__visual[data-ui-lightbox-transition="open"] {
+  overflow: visible;
+}
+
 .ui-lightbox__stage {
   position: relative;
   min-inline-size: 0;
@@ -478,6 +508,14 @@ function onPointerCancel(event: PointerEvent) {
   max-block-size: 100%;
   margin: auto;
   object-fit: contain;
+}
+
+.ui-lightbox__visual img[data-projected] {
+  inset: auto;
+  max-inline-size: none;
+  max-block-size: none;
+  margin: 0;
+  object-fit: cover;
 }
 
 .ui-lightbox__visual[data-swipe] img {

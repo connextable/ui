@@ -1,5 +1,5 @@
-/* Capture the dialog and backdrop at their final opacity for the native crossfade. */
-:root:is([data-ui-lightbox-transition="open"], [data-ui-lightbox-transition="close"])
+/* Capture the dialog and backdrop at their final opacity for the closing crossfade. */
+:root[data-ui-lightbox-transition="close"]
   :is(.ui-lightbox__panel, .ui-lightbox__overlay) {
   transition: none;
 }
@@ -25,7 +25,8 @@
     }
   }
 
-  :root:is([data-ui-lightbox-transition="open"], [data-ui-lightbox-transition="close"]) {
+  [data-ui-lightbox-transition="open"],
+  :root[data-ui-lightbox-transition="close"] {
     &::view-transition-group(ui-lightbox-overlay),
     &::view-transition-group(ui-lightbox-panel),
     &::view-transition-group(ui-lightbox-media) {
@@ -44,11 +45,11 @@
     overflow: clip;
   }
 
-  .ui-lightbox__visual[data-ui-lightbox-transition] {
-    &::view-transition {
-      pointer-events: none;
-    }
+  .ui-lightbox__visual[data-ui-lightbox-transition]::view-transition {
+    pointer-events: none;
+  }
 
+  .ui-lightbox__visual:is([data-ui-lightbox-transition="next"], [data-ui-lightbox-transition="previous"]) {
     &::view-transition-group(ui-lightbox-media) {
       animation-duration: var(--ui-motion-standard);
     }
@@ -93,4 +94,8 @@
       animation-duration: 0s;
     }
   }
+}
+
+.ui-lightbox__visual[data-ui-lightbox-transition="open"] {
+  view-transition-name: none;
 }

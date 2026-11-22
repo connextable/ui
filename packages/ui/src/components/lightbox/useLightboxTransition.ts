@@ -29,6 +29,11 @@ function nameSnapshots(elements: LightboxSnapshots) {
 export function useLightboxTransition() {
   let active: TransitionRun | undefined;
 
+  function canStart(owner: Document, scope?: TransitionScope) {
+    return typeof (scope ?? owner).startViewTransition === "function" && !owner.fullscreenElement
+      && !owner.defaultView?.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
   function stop(commitPending = true) {
     const run = active;
     if (!run) return;
@@ -47,8 +52,7 @@ export function useLightboxTransition() {
   ) {
     const owner = before.media?.ownerDocument ?? before.panel?.ownerDocument ?? document;
     const host = scope ?? owner;
-    if (typeof host.startViewTransition !== "function" || owner.fullscreenElement
-      || owner.defaultView?.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (typeof host.startViewTransition !== "function" || !canStart(owner, scope)) {
       update();
       return;
     }
@@ -93,5 +97,5 @@ export function useLightboxTransition() {
   }
 
   onBeforeUnmount(() => stop(false));
-  return { start, stop, isClosing: () => active?.direction === "close" };
+  return { start, stop, canStart, isClosing: () => active?.direction === "close" };
 }
