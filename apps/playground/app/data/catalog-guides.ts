@@ -653,7 +653,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "examples", title: "실전 예제", section: "usage-options" },
     ],
     examples: [
-      { id: "file-upload-group", section: "usage-options", title: "여러 파일의 전송 대기열", description: "세 파일을 차례로 전송하고 각 파일의 진행 상태를 확인합니다." },
+      { id: "file-upload-group", section: "usage-options", title: "여러 파일의 전송 대기열", description: "UIFileUploadQueue에 파일 목록과 어댑터를 전달합니다. 전송을 시작한 뒤 파일별로 취소하거나 다시 시도할 수 있습니다.", parts: ["UIFileUploadQueue"] },
       { id: "file-upload-cancel", section: "usage-options", title: "직접 만든 어댑터에서 전송 취소", description: "전송을 시작하고 취소해 보세요. UIFileUploadAdapter를 직접 구현하면 dispose에서 타이머나 SDK 연결을 정리할 수 있습니다." },
       { id: "file-upload-retry", section: "usage-options", title: "실패 후 다시 전송", description: "첫 시도는 실패합니다. 다시 시도하면 같은 파일의 전송을 완료합니다." },
     ],
@@ -664,6 +664,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       adapter: "createUIFileUploadAdapter로 만든 어댑터나 직접 구현한 UIFileUploadAdapter를 전달합니다.",
       size: "다른 입력과 같은 sm, md, lg 크기를 지정합니다. 기본값은 md입니다.",
       "auto-start": "파일을 연결하면 어댑터를 바로 실행합니다.",
+      readonly: "연결된 파일과 상태를 읽을 수 있습니다. 업로드, 취소, 교체 조작을 잠급니다.",
+      disabled: "업로드, 취소, 교체 조작을 비활성화합니다.",
       "#picker": "파일 선택·교체 버튼을 직접 구성합니다. 현재 파일을 file로 받고, 선택하기 전에는 null을 받습니다.",
       "#status": "현재 업로드 상태에 맞춰 행 안에 짧은 상태 문구를 표시합니다.",
     },

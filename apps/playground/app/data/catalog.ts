@@ -365,6 +365,7 @@ export const catalog: readonly CatalogEntry[] = [
     category: "입력·폼",
     description: "선택한 파일을 업로드하고 진행 상태를 표시합니다.",
     parts: [
+      "UIFileUploadQueue",
       "createUIFileUploadAdapter",
       "useUIFileUpload",
       "useUIFileUploadGroup",

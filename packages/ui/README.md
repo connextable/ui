@@ -63,6 +63,14 @@ const upload = createUIFileUploadAdapter({ url: "/api/uploads" });
 
 별도 SDK를 쓸 때는 `createUIFileUploadAdapter(({ file, signal, reportProgress }) => …)` 형태로 완료 값이나 Promise를 반환합니다. SDK에 `signal`을 연결하고, 전송이 진행될 때 `reportProgress({ loaded, total })`를 호출합니다. 작업 종료 시 동기 정리가 필요하면 `UIFileUploadAdapter`를 직접 구현하고 `{ result, dispose }`를 반환합니다.
 
+여러 파일은 `UIFileUploadQueue`에 `{ id, file }` 목록으로 전달합니다. 각 `id`는 대기열 내에서 고유해야 합니다. 컴포넌트가 진행률, 취소, 재시도, 완료 후 초기화를 표시합니다. `concurrency`는 동시 전송 수이며 기본값은 3입니다.
+
+```vue
+<UIFileUploadQueue :items="attachments" :adapter="upload" :concurrency="2" />
+```
+
+외부 버튼에서도 컴포넌트 ref의 `start()`, `cancel()`, `reset()`을 호출할 수 있습니다. `start`와 `cancel`에 ID 배열을 넘기면 해당 파일에만 적용됩니다. `getItem(id)`로 완료 결과를 읽습니다. `readonly`와 `disabled`는 새로운 조작을 제한하며 이미 시작한 전송은 계속 처리합니다.
+
 ## 표와 그리드에 데이터 연결하기
 
 로컬 데이터는 `UIDataTable`과 `UIDataGrid`의 `columns`, `rows`에 바로 전달합니다. 서버에서 행을 요청하는 화면은 `createUITabularSource`로 응답을 만들어 `useUIDataTable`, `useUIDataGrid`, `useUIDataTreeGrid`의 `source`에 연결합니다.

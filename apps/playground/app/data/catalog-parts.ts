@@ -202,6 +202,7 @@ const partRoles: Readonly<Record<string, string>> = {
   trackGridLayoutStrategy: "행과 열을 기준으로 현재 뷰포트의 항목 배치를 계산합니다.",
   createUIStandardQuantityPolicies: "기준 단위와 단위계를 사용해 수량을 해석하고 환산합니다.",
   createUIFileUploadAdapter: "HTTP 주소나 파일을 받아 처리하는 함수로 업로드 어댑터를 만듭니다.",
+  UIFileUploadQueue: "파일 목록과 어댑터를 받아 대기열, 진행률, 취소 및 재시도 버튼을 표시합니다.",
   useUIFileUpload: "하나의 파일과 전송 어댑터를 연결해 진행 상태와 동작을 제공합니다.",
   useUIFileUploadGroup: "여러 파일의 업로드 상태를 그룹으로 연결합니다.",
   useUIDataTable: "데이터 소스를 Vue에서 사용할 테이블 컨트롤러로 연결합니다.",
