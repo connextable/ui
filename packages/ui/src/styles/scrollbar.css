@@ -5,25 +5,33 @@
 
   &[data-ui-scrollbar="centered"] {
     scrollbar-gutter: stable both-edges;
+
+    @supports selector(::-webkit-scrollbar) {
+      /* Reserve equal space on both sides even where native scrollbars overlay the content. */
+      scrollbar-width: auto;
+      scrollbar-color: auto;
+    }
   }
 }
 
-@supports not (scrollbar-color: auto) {
-  :where(.ui-scrollbar)::-webkit-scrollbar {
-    width: var(--ui-scrollbar-size);
-    height: var(--ui-scrollbar-size);
-  }
+:where(.ui-scrollbar)::-webkit-scrollbar {
+  width: var(--ui-scrollbar-size);
+  height: var(--ui-scrollbar-size);
+}
 
-  :where(.ui-scrollbar)::-webkit-scrollbar-thumb {
-    border-radius: var(--ui-scrollbar-size);
-    background: var(--ui-scrollbar-thumb);
-  }
+:where(.ui-scrollbar)::-webkit-scrollbar-thumb {
+  border-radius: var(--ui-scrollbar-size);
+  background: var(--ui-scrollbar-thumb);
+}
 
-  :where(.ui-scrollbar)::-webkit-scrollbar-track {
-    background: var(--ui-scrollbar-track);
-  }
+:where(.ui-scrollbar)::-webkit-scrollbar-track {
+  background: var(--ui-scrollbar-track);
 }
 
 @media (forced-colors: active) {
-  :where(.ui-scrollbar) { scrollbar-color: auto; }
+  :where(.ui-scrollbar) {
+    scrollbar-color: auto;
+
+    &[data-ui-scrollbar="centered"] { scrollbar-width: thin; }
+  }
 }
