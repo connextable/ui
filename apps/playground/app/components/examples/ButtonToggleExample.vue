@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { UISwitch, UIToggleButton } from "@connextable/ui";
+import { Pin } from "@lucide/vue";
 import { computed, ref } from "vue";
 import { vueExampleCode } from "~/utils/vue-example-code";
 
@@ -8,8 +9,8 @@ const readonly = ref(false);
 const disabled = ref(false);
 const attributes = computed(() => ({ variant: "outline" as const, readonly: readonly.value || undefined, disabled: disabled.value || undefined }));
 const source = computed(() => vueExampleCode("UIToggleButton", {
-  script: ['import { UIToggleButton } from "@connextable/ui";', 'import { ref } from "vue";', "", `const pinned = ref(${pinned.value});`],
-  attributes: { "v-model": "pinned", ...attributes.value },
+  script: ['import { UIToggleButton } from "@connextable/ui";', 'import { Pin } from "@lucide/vue";', 'import { ref } from "vue";', "", `const pinned = ref(${pinned.value});`],
+  attributes: { "v-model": "pinned", ...attributes.value, icon: { expression: "Pin" } },
   children: ["상단에 고정"],
 }));
 </script>
@@ -26,6 +27,6 @@ const source = computed(() => vueExampleCode("UIToggleButton", {
       <UISwitch v-model="readonly" size="sm" label="readonly" />
       <UISwitch v-model="disabled" size="sm" label="disabled" />
     </template>
-    <UIToggleButton v-model="pinned" v-bind="attributes">상단에 고정</UIToggleButton>
+    <UIToggleButton v-model="pinned" v-bind="attributes" :icon="Pin">상단에 고정</UIToggleButton>
   </PlaygroundExample>
 </template>

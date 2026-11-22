@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { FlaskConical, Server, Terminal } from "@lucide/vue";
 import { UICombobox } from "@connextable/ui";
 import { ref } from "vue";
 
 const environment = ref<string | null>(null);
 const environments = [
-  { id: "production", label: "운영" },
-  { id: "stage", label: "검증" },
-  { id: "development", label: "개발" },
+  { id: "production", label: "운영", icon: Server },
+  { id: "stage", label: "검증", icon: FlaskConical },
+  { id: "development", label: "개발", icon: Terminal },
 ];
 const policies = {
   matches: (label: string, query: string) => label.toLowerCase().includes(query.trim().toLowerCase()),

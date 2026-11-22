@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIRating, UIRatingItem } from "@connextable/ui";
+import { UIRating } from "@connextable/ui";
 import { Heart } from "@lucide/vue";
 import { ref } from "vue";
 
@@ -9,9 +9,5 @@ const rating = ref("3");
 </script>
 
 <template>
-  <UIRating :items="scores" v-model="rating" aria-label="만족도">
-    <UIRatingItem v-for="score in scores" :key="score" :value="score" :aria-label="`${score}점`">
-      <Heart :size="18" aria-hidden="true" />
-    </UIRatingItem>
-  </UIRating>
+  <UIRating v-model="rating" :items="scores" :icon="Heart" aria-label="만족도" />
 </template>

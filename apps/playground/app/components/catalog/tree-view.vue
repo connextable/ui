@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import { FileCode, Folder, FolderCode, PanelsTopLeft } from "@lucide/vue";
 import { UITreeView } from "@connextable/ui";
 import { ref } from "vue";
 
 const nodes = [
-  { id: "atlas", parentID: null, label: "아틀라스 작업 공간" },
-  { id: "apps", parentID: "atlas", label: "앱" },
-  { id: "dashboard", parentID: "apps", label: "대시보드" },
-  { id: "overview", parentID: "dashboard", label: "Overview.vue" },
-  { id: "settings", parentID: "dashboard", label: "Settings.vue" },
-  { id: "packages", parentID: "atlas", label: "패키지" },
-  { id: "tokens", parentID: "packages", label: "tokens.ts" },
+  { id: "atlas", parentID: null, label: "아틀라스 작업 공간", icon: FolderCode },
+  { id: "apps", parentID: "atlas", label: "앱", icon: Folder },
+  { id: "dashboard", parentID: "apps", label: "대시보드", icon: PanelsTopLeft },
+  { id: "overview", parentID: "dashboard", label: "Overview.vue", icon: FileCode },
+  { id: "settings", parentID: "dashboard", label: "Settings.vue", icon: FileCode },
+  { id: "packages", parentID: "atlas", label: "패키지", icon: Folder },
+  { id: "tokens", parentID: "packages", label: "tokens.ts", icon: FileCode },
 ];
 const expanded = ref(["atlas", "apps", "dashboard", "packages"]);
 const selected = ref<readonly string[]>(["settings"]);

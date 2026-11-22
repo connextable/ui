@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { FolderOpen, Plus, Save } from "@lucide/vue";
 import { UIMenu } from "@connextable/ui";
 import { ref } from "vue";
 
 const commands = [
-  { id: "new-project", parentID: null, label: "새 프로젝트" },
-  { id: "open-project", parentID: null, label: "프로젝트 열기" },
-  { id: "save-project", parentID: null, label: "프로젝트 저장" },
+  { id: "new-project", parentID: null, label: "새 프로젝트", icon: Plus },
+  { id: "open-project", parentID: null, label: "프로젝트 열기", icon: FolderOpen },
+  { id: "save-project", parentID: null, label: "프로젝트 저장", icon: Save },
 ];
 const lastAction = ref("");
 </script>

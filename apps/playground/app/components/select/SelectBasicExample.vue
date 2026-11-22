@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { UISelect, UISwitch } from "@connextable/ui";
+import { AlignJustify, List } from "@lucide/vue";
 import { computed, ref } from "vue";
 import { vueExampleCode } from "~/utils/vue-example-code";
 
-const options = [
-  { value: "comfortable", label: "여백 넓게" },
-  { value: "compact", label: "촘촘하게" },
-];
+const icons = { AlignJustify, List };
+const choices = [
+  { value: "comfortable", label: "여백 넓게", icon: "List" },
+  { value: "compact", label: "촘촘하게", icon: "AlignJustify" },
+] as const;
+const options = choices.map(choice => ({ ...choice, icon: icons[choice.icon] }));
 const density = ref<string | null>("comfortable");
 const clearable = ref(true);
 const readonly = ref(false);
@@ -19,10 +22,11 @@ const attributes = computed(() => ({
 const code = computed(() => vueExampleCode("UISelect", {
   script: [
     'import { UISelect } from "@connextable/ui";',
+    'import { AlignJustify, List } from "@lucide/vue";',
     'import { ref } from "vue";',
     "",
     "const options = [",
-    ...options.map(({ value, label }) => `  { value: "${value}", label: "${label}" },`),
+    ...choices.map(({ value, label, icon }) => `  { value: "${value}", label: "${label}", icon: ${icon} },`),
     "];",
     'const density = ref<string | null>("comfortable");',
   ],
@@ -34,7 +38,7 @@ const code = computed(() => vueExampleCode("UISelect", {
   <PlaygroundExample
     id="select-example"
     title="항목 선택과 해제"
-    description="options로 선택지를 전달합니다. clearable을 켜면 선택을 지워 미선택 상태로 돌아갈 수 있습니다."
+    description="options에 지정한 아이콘은 목록과 선택값에 함께 표시됩니다. clearable을 켜면 선택을 지울 수 있습니다."
     :code="code"
     :heading-level="3"
   >

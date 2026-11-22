@@ -33,11 +33,17 @@ export function buttonExampleCode(
     ...(declarations.length ? ["", ...declarations] : []),
   ];
   const children = [
-    ...(icon ? [`<${icon} />`] : []),
-    ...(leading ? ["<template #leading>", `  <${leading} />`, "</template>"] : []),
     ...(label ? [editableLabel ? "{{ label }}" : vueAttribute(label)] : []),
-    ...(trailing ? ["<template #trailing>", `  <${trailing} />`, "</template>"] : []),
     ...(loadingSpinner ? ["<template #loading>", `  <UISpinner variant="${loadingSpinner}" />`, "</template>"] : []),
   ];
-  return vueExampleCode(component, { script, attributes: props, children });
+  const leadingIcon = icon ?? leading;
+  return vueExampleCode(component, {
+    script,
+    attributes: {
+      ...props,
+      icon: leadingIcon ? { expression: leadingIcon } : undefined,
+      "trailing-icon": trailing ? { expression: trailing } : undefined,
+    },
+    children,
+  });
 }

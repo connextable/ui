@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { ArrowUpRight } from "@lucide/vue";
+import { ArrowUpRight, Receipt } from "@lucide/vue";
 import { UIButton, UIDataLabel, UIDataSurface, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
 
 const rows = [
@@ -37,7 +37,7 @@ const Table = createUIDataTableComponents(table);
           </Table.HeaderRow>
         </Table.Header>
         <Table.Body v-slot="{ row }">
-          <Table.Cell column="name"><UIDataLabel :label="row.cells.name" :detail="String(row.id)" /></Table.Cell>
+          <Table.Cell column="name"><UIDataLabel :label="row.cells.name" :detail="String(row.id)" :icon="Receipt" /></Table.Cell>
           <Table.Cell column="amount" data-ui-tabular-align="end" data-ui-tabular-numeric>{{ won.format(row.cells.amount) }}원</Table.Cell>
           <Table.Cell column="note" data-ui-tabular-align="end">
             <UIButton size="sm" variant="ghost" icon-only :aria-label="`${row.cells.name} 상세`"

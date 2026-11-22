@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { UIDataStatus, UIDataSurface, UITabularRows, createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/ui";
-import { ChevronRight } from "@lucide/vue";
+import { ChevronRight, CircleCheck, TriangleAlert } from "@lucide/vue";
 
 const regions = [
   { id: "kr", name: "한국", cities: [{ name: "서울", alerts: 2 }, { name: "부산", alerts: 0 }] },
@@ -52,7 +52,7 @@ const Tree = createUIDataTreeGridComponents(tree);
                 {{ row.cells.name }}
               </Tree.Cell>
               <Tree.Cell :row-i-d="row.id" column="alerts" data-ui-tabular-align="end" data-ui-tabular-numeric>
-                <UIDataStatus :tone="row.cells.alerts ? 'warning' : 'success'">
+                <UIDataStatus :tone="row.cells.alerts ? 'warning' : 'success'" :icon="row.cells.alerts ? TriangleAlert : CircleCheck">
                   {{ row.cells.alerts ? `${row.cells.alerts}건` : "정상" }}
                 </UIDataStatus>
               </Tree.Cell>

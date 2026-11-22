@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { UIButton, UISheet } from "@connextable/ui";
+import { ArrowDownUp } from "@lucide/vue";
 import { ref } from "vue";
 
 const choices = ["최근 수정순", "이름순", "생성일순"];
@@ -14,6 +15,7 @@ function choose(value: string, close: () => void) {
 <template>
   <UISheet
     :trigger-label="`정렬 · ${chosen}`"
+    :trigger-icon="ArrowDownUp"
     side="bottom"
     swipe-to-dismiss
     title="문서 정렬"

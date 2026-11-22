@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { UIRadioGroup, UISwitch } from "@connextable/ui";
+import { AlignJustify, List } from "@lucide/vue";
 import { computed, ref } from "vue";
 import { vueExampleCode } from "~/utils/vue-example-code";
 
-const options = [
-  { value: "compact", label: "간결하게" },
-  { value: "comfortable", label: "여유 있게" },
-];
+const icons = { AlignJustify, List };
+const choices = [
+  { value: "compact", label: "간결하게", icon: "AlignJustify" },
+  { value: "comfortable", label: "여유 있게", icon: "List" },
+] as const;
+const options = choices.map(choice => ({ ...choice, icon: icons[choice.icon] }));
 const density = ref("compact");
 const horizontal = ref(false);
 const clearable = ref(false);
@@ -22,10 +25,11 @@ const attributes = computed(() => ({
 const code = computed(() => vueExampleCode("UIRadioGroup", {
   script: [
     'import { UIRadioGroup } from "@connextable/ui";',
+    'import { AlignJustify, List } from "@lucide/vue";',
     'import { ref } from "vue";',
     "",
     "const options = [",
-    ...options.map(({ value, label }) => `  { value: "${value}", label: "${label}" },`),
+    ...choices.map(({ value, label, icon }) => `  { value: "${value}", label: "${label}", icon: ${icon} },`),
     "];",
     'const density = ref("compact");',
   ],
@@ -37,7 +41,7 @@ const code = computed(() => vueExampleCode("UIRadioGroup", {
   <PlaygroundExample
     id="radio-example"
     title="한 항목 선택"
-    description="options로 선택지를 전달합니다. 읽기 전용과 전체 그룹 비활성을 설정해 선택 동작을 비교할 수 있습니다."
+    description="options에 선택할 값과 이름을 넣고, icon으로 항목을 구분합니다. 읽기 전용과 비활성 상태에서도 현재 값을 확인할 수 있습니다."
     :code="code"
     :heading-level="3"
     wide

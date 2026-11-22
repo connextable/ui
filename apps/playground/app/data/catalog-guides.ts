@@ -79,7 +79,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "사이트 헤더에서 페이지 탐색",
     description: "상위 분류가 헤더에 나란히 표시됩니다. 컴포넌트에서 데이터 표현으로 옮기면 같은 패널이 새 분류의 링크를 표시합니다.",
     api: {
-      items: "각 항목의 id, label과 목적지(href 또는 to), 하위 항목(children)을 지정합니다. disabled인 항목은 이동할 수 없습니다.",
+      items: "각 항목의 id, label과 목적지(href 또는 to), 하위 항목(children)을 지정합니다. icon은 분류나 링크 이름 앞에 표시할 Vue 컴포넌트입니다.",
       current: "현재 페이지 링크의 id입니다.",
       "v-model:open": "팝오버의 열림 상태를 연결합니다.",
       "#label": "상위 분류의 entry와 open 상태를 받아 버튼의 이름이나 아이콘을 구성합니다.",
@@ -162,6 +162,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "href에 경로와 섹션 ID를 함께 전달하면 지정한 문서의 섹션으로 이동합니다.",
     api: {
       href: "링크의 목적지입니다.",
+      icon: { type: "Component", description: "링크 텍스트 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "basic-example", title: "디자인 토큰 페이지로 이동" } },
       to: "Nuxt 경로 문자열 또는 라우트 객체입니다. href보다 우선합니다.",
       external: "Nuxt에서 정적 파일이나 별도 앱으로 이동할 때 지정합니다.",
       current: "현재 위치를 접근성 트리에 전달합니다.",
@@ -203,6 +204,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "v-model:open": "확인 창의 열린 상태를 외부 상태와 연결합니다.",
       label: "제목에서 이름을 제공하기 어려울 때 사용할 접근성 이름입니다.",
       "trigger-label / title / description": "열기 버튼, 확인 창 제목과 설명에 표시할 문구를 지정합니다.",
+      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
       "#actions": "취소와 확인 버튼을 배치하고, 슬롯의 close로 확인 창을 닫습니다.",
       "Content #footer-leading": "하단 왼쪽에 상태나 보조 콘텐츠를 배치합니다.",
     },
@@ -219,6 +221,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "default-open": "외부에서 상태를 제어하지 않을 때의 초기 상태입니다.",
       "restore-focus-target": "컴포넌트 바깥에서 열었다면 닫은 후 포커스를 돌려줄 요소를 전달합니다.",
       "trigger-label / title / description": "열기 버튼과 대화상자의 제목·설명을 설정합니다.",
+      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
       "#body": "제목과 설명 아래에 대화상자의 실제 내용을 배치합니다.",
       "show-close": "기본 닫기 버튼의 표시 여부를 지정합니다. 기본값은 true입니다.",
       "Content close-label": "기본 닫기 버튼의 접근성 이름입니다.",
@@ -251,6 +254,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "화면 가장자리와 간격을 둔 오른쪽 패널에서 배포 조건을 선택합니다. 적용을 누르면 선택한 조건 수가 버튼에 표시됩니다.",
     api: {
       side: "패널이 표시될 화면 가장자리를 지정합니다.",
+      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
       "v-model:open": "패널이 열린 상태를 외부에 연결합니다.",
       "Content show-close": "오른쪽 위의 기본 닫기 버튼을 표시합니다. 기본값은 true입니다.",
       "Content close-label": "기본 닫기 버튼의 접근성 이름입니다.",
@@ -274,6 +278,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
     api: {
       side: "시트가 들어오는 방향입니다. 기본값은 bottom입니다.",
+      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
       "swipe-to-dismiss": "시트를 화면 가장자리 방향으로 밀어 닫을 수 있게 합니다.",
       "size / block": "size는 sm, md, lg 중 하나를 선택합니다. 기본값은 md입니다. block을 지정하면 안전 영역과 바깥 여백을 뺀 가용 너비를 채웁니다.",
       "panel-class": "시트 패널에 CSS 클래스를 적용합니다.",
@@ -287,6 +292,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "열 표시를 눌러 재고나 보관 위치를 켜고 끕니다. 팝오버를 열어 둔 채 바뀐 표를 확인하고 완료로 닫습니다.",
     api: {
       "trigger-label": "기본 트리거 버튼의 텍스트입니다.",
+      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
       "#trigger": "팝오버를 여는 버튼을 직접 구성합니다.",
       "#body": "트리거 옆에 표시할 내용을 배치합니다. 슬롯의 close()를 호출하면 팝오버를 닫습니다.",
       side: "팝오버가 놓일 방향입니다.",
@@ -330,6 +336,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "저장 완료 알림 띄우기",
     description: "버튼을 여러 번 눌러 알림을 쌓을 수 있습니다. 스택에 마우스를 올리거나 키보드로 포커스를 옮기면 전체 알림이 펼쳐집니다.",
     api: {
+      icon: "알림 제목 옆에 표시할 Vue 아이콘 컴포넌트입니다. 생략하면 성공 알림에 기본 체크 아이콘을 표시합니다.",
       "Viewport position": "top 또는 bottom을 start·center·end와 조합합니다. 기본값은 bottom-end입니다. start와 end는 글의 방향을 따릅니다.",
       "Viewport expand": "항상 스택을 펼쳐 표시합니다. 기본 스택은 마우스를 올리거나 키보드 포커스가 들어오면 펼쳐집니다.",
       "Viewport label": "키보드로 알림 영역에 이동했을 때 보조 기술이 읽는 이름입니다.",
@@ -376,7 +383,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "단계별로 지역 고르기",
     description: "id와 parentID로 계층을 지정하면 목록이 열별로 표시됩니다. 도시 하나를 선택하거나 선택을 지워 보세요.",
     api: {
-      nodes: "id와 parentID로 표현한 계층 데이터입니다.",
+      nodes: "id와 parentID로 계층을 지정합니다. 노드에 icon을 넣으면 열의 항목 이름 앞에 표시합니다.",
       "v-model": "선택한 노드의 id를 연결합니다. 선택이 없으면 null입니다.",
       "column-labels": "각 열의 접근성 이름을 순서대로 지정합니다.",
       "text-value": "노드 id에 해당하는 표시 이름을 반환합니다.",
@@ -396,7 +403,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "목록을 열어 계층 안에서 선택",
     description: "트리거에서 지역 목록을 열고 각 열의 항목을 선택합니다. 다음 열에는 선택한 항목의 하위 항목이 나타납니다.",
     api: {
-      nodes: "각 선택 항목의 식별자와 그 부모 관계입니다.",
+      nodes: "id와 parentID로 계층을 지정합니다. 노드에 icon을 넣으면 선택 목록의 항목 이름 앞에 표시합니다.",
       "v-model": "선택한 노드의 id를 연결합니다. 선택이 없으면 null입니다.",
       placeholder: "선택하지 않았을 때 표시할 안내입니다.",
       clearable: "선택을 지울 수 있는 버튼을 표시합니다.",
@@ -464,9 +471,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "toggle-group-disabled", section: "usage-options", title: "특정 항목 비활성", description: "가운데 정렬 버튼을 비활성화합니다." },
     ],
     title: "버튼 그룹에서 옵션 선택",
-    description: "options에 버튼의 값과 이름을 전달하고 v-model로 눌린 항목을 읽습니다.",
+    description: "options에 값과 이름을 넣고 icon으로 왼쪽·가운데·오른쪽 정렬을 구분합니다. v-model로 눌린 항목을 읽습니다.",
     api: {
-      options: "버튼의 값, 표시 이름과 비활성 상태를 지정합니다.",
+      options: "value, label, 선택 사항인 icon과 disabled로 버튼을 구성합니다.",
       "v-model": "그룹이 채택한 선택값을 연결합니다.",
       "Item value": "이 토글 버튼에 해당하는 항목의 id입니다.",
     },
@@ -501,7 +508,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "열린 목록에서 하나 선택",
     description: "목록에 포커스를 두고 방향키로 항목을 탐색합니다. selection-mode를 single로 지정하면 한 번에 한 값만 선택할 수 있습니다.",
     api: {
-      options: "항목의 값, 표시 이름과 비활성 상태를 지정합니다.",
+      options: "value, label, 선택 사항인 icon과 disabled로 항목을 구성합니다.",
       "selection-mode": "한 번에 선택할 수 있는 항목 수를 정합니다.",
       "Item value": "목록 항목을 items의 값에 연결합니다.",
     },
@@ -526,12 +533,13 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "rating-clear", section: "usage-options", title: "평가 지우기", description: "선택한 별점을 미평가 상태로 되돌립니다." },
       { id: "rating-readonly", section: "usage-options", title: "읽기 전용 별점", description: "이미 매겨진 별점을 유지합니다." },
       { id: "rating-disabled", section: "usage-options", title: "특정 점수 비활성", description: "5점을 선택할 수 없게 제한합니다." },
-      { id: "rating-icons", section: "examples-2", title: "하트 아이콘으로 평가 표시", description: "각 항목에 하트를 넣으면 선택한 점수까지 하트가 채워집니다." },
+      { id: "rating-icons", section: "examples-2", title: "하트 아이콘으로 평가 표시", description: "icon에 Heart를 전달하면 선택한 점수까지 하트가 채워집니다." },
     ],
     title: "별점 매기기",
     description: "별을 눌러 점수를 고릅니다. 선택한 점수까지 별이 채워집니다.",
     api: {
       items: "선택 가능한 별점 값입니다.",
+      icon: { type: "Component", default: "Star", description: "각 점수에 사용할 모양입니다.", example: { id: "rating-icons", title: "하트 아이콘으로 평가 표시" } },
       clearable: "선택된 별점을 해제할 수 있게 합니다.",
       "default-value": "처음 표시할 별점입니다.",
     },
@@ -597,7 +605,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "여러 단계 사이를 이동",
     description: "items로 단계의 이름과 설명을 전달합니다. 기본 이전·다음 버튼으로 이동하면 현재 단계의 설명이 표시됩니다.",
     api: {
-      items: "단계의 value, label, description과 disabled를 지정합니다.",
+      items: "단계의 value, label, description과 disabled를 지정합니다. icon은 단계 이름 옆에 표시합니다.",
       "v-model": "현재 단계의 식별자입니다.",
       "#panel": "현재 단계의 item으로 설명 영역을 직접 구성합니다.",
     },
@@ -607,7 +615,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "검색해서 항목 선택",
     description: "items에 항목을 전달하면 입력과 결과 목록이 함께 나타납니다. ‘검증’을 입력하고 결과를 선택해 보세요.",
     api: {
-      items: "검색할 항목입니다. 각 항목에 고유한 id와 표시할 label을 전달합니다.",
+      items: "검색할 항목마다 고유한 id와 label을 전달합니다. icon은 검색 결과의 항목 이름 앞에 표시합니다.",
       "policies.matches": "항목의 이름과 검색어를 받아 결과에 포함할지 결정합니다. 생략하면 모든 items가 결과에 포함됩니다.",
       "v-model": "선택한 항목의 id입니다. 선택이 비어 있으면 null입니다.",
       "v-model:input-value": "입력창의 텍스트를 외부 상태에 연결합니다.",
@@ -711,7 +719,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "하위 항목을 묶어 선택",
     description: "알림 채널을 선택하면 하위 항목이 함께 선택됩니다. 아래 항목 하나만 해제해 상위 항목의 혼합 상태를 확인할 수 있습니다.",
     api: {
-      nodes: "id, parentID와 선택적인 label로 트리 항목을 구성합니다.",
+      nodes: "id, parentID, 선택 사항인 label과 icon으로 트리 항목을 구성합니다. icon은 체크 표시와 항목 이름 사이에 나타납니다.",
       "v-model": "선택된 항목의 id 배열을 연결합니다.",
       clearable: "선택을 지울 수 있는 버튼을 표시합니다.",
       "default-expanded-values": "처음 펼쳐 놓을 상위 항목의 id입니다.",
@@ -736,6 +744,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "v-model:nodes": "두 목록의 부모 노드와 이동할 항목을 포함하는 계층 데이터를 연결합니다.",
       "source-id / target-id": "두 목록이 각각 참조하는 부모 노드의 id입니다.",
       "source-label / target-label": "목록 제목과 접근성 이름을 지정합니다.",
+      "icon-for": { type: "(id: string) => Component | undefined", description: "항목 id에 맞는 아이콘을 반환합니다. 항목을 다른 목록으로 옮겨도 같은 아이콘을 사용합니다.", example: { id: "basic-example", title: "두 목록 사이에서 채널을 이동" } },
       "#default": "직접 구성할 때 sourceItems와 targetItems로 각 목록의 현재 항목을 받습니다.",
       "#item": "기본 목록에서 id와 side를 받아 항목에 표시할 내용을 바꿉니다.",
     },
@@ -755,7 +764,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "계층형 팀 목록에서 선택",
     description: "팀 이름으로 검색하거나 화살표를 눌러 하위 팀을 펼칩니다. 선택한 팀 이름은 입력창에서 확인할 수 있습니다.",
     api: {
-      nodes: "선택할 항목의 id, parentID와 선택적인 label을 전달합니다. 이름으로 검색할 때 label을 사용합니다.",
+      nodes: "id, parentID, 선택 사항인 label과 icon을 전달합니다. 목록에는 아이콘을 표시하고 검색과 선택값에는 label을 사용합니다.",
       "v-model": "선택된 항목의 id 배열을 연결합니다.",
       placeholder: { type: "string", default: "검색 또는 선택", description: "검색어와 선택값이 비어 있을 때 입력에 표시합니다.", example: { id: "basic-example", title: "계층형 팀 목록에서 선택" } },
       clearable: "선택과 검색어를 지울 수 있는 버튼을 표시합니다.",
@@ -774,9 +783,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "tree-view-controlled", section: "examples-2", title: "외부에서 폴더 펼치기", description: "모두 펼치기를 눌러 외부에서 확장 상태를 변경합니다." },
     ],
     title: "폴더의 하위 항목 펼치기",
-    description: "폴더 옆의 버튼을 누르거나 방향키로 계층을 탐색합니다. v-model:expanded-values에 펼쳐진 폴더의 id가 담깁니다.",
+    description: "노드마다 icon을 지정해 폴더와 파일을 구분합니다. 폴더 옆 화살표나 방향키로 하위 항목을 펼칩니다.",
     api: {
-      nodes: "id, parentID와 선택적인 label로 트리 항목을 구성합니다.",
+      nodes: "id, parentID, 선택 사항인 label과 icon으로 트리 항목을 구성합니다. icon으로 Vue 컴포넌트를 전달하면 라벨 앞에 나타납니다.",
       "v-model:expanded-values": "현재 펼쳐진 노드 id를 외부 상태에 연결합니다.",
       "Group for": "하위 그룹이 어느 상위 항목에 속하는지 지정합니다.",
     },
@@ -786,7 +795,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "여러 옵션을 한 그룹에서 선택",
     description: "options로 체크박스의 값과 이름을 지정합니다. 여러 옵션을 선택해 보세요.",
     api: {
-      options: "체크박스의 값, 표시 이름과 비활성 상태를 지정합니다.",
+      options: "value, label, 선택 사항인 icon과 disabled로 체크박스를 구성합니다.",
       "v-model": "선택한 값을 배열로 연결합니다.",
       "Item disabled": "이 항목의 선택을 막습니다.",
     },
@@ -911,7 +920,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "선택한 탭의 내용 표시",
     description: "items로 탭의 이름과 내용을 전달합니다. 탭을 바꾸면 선택된 항목에 해당하는 콘텐츠가 열립니다.",
     api: {
-      items: "탭의 value, label, description과 disabled를 지정합니다.",
+      items: "탭의 value, label, description과 disabled를 지정합니다. icon으로 탭 이름 앞에 아이콘을 표시합니다.",
       "v-model": "선택된 탭의 식별자를 연결합니다.",
       "#panel": "현재 탭의 item으로 콘텐츠를 직접 구성합니다.",
       "activation-mode": "포커스만으로 탭을 활성화할지, 키로 확정할지 지정합니다.",
@@ -940,7 +949,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "명령의 실행 값 받기",
     description: "항목을 누르거나 키보드로 실행해 보세요. invoke 이벤트에서 항목의 id를 받아 원하는 동작에 연결합니다.",
     api: {
-      items: "실행할 명령 id와 계층형 메뉴의 부모 id입니다.",
+      items: "id와 parentID로 명령을 배치합니다. label은 명령 이름, icon은 이름 앞의 아이콘입니다.",
       "@invoke": "실행한 명령의 id를 반환합니다.",
     },
   },
@@ -961,7 +970,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "대상 파일의 이름 변경과 복제",
     description: "파일에서 우클릭하거나 Shift+F10을 눌러 메뉴를 여세요. 이름 변경, 복제, 삭제는 메뉴를 연 파일에 적용됩니다.",
     api: {
-      items: "우클릭 메뉴에 표시할 명령을 지정합니다.",
+      items: "우클릭 메뉴에 표시할 명령을 지정합니다. 항목에 icon을 넣으면 명령 이름 앞에 표시합니다.",
       "@invoke": "사용자가 실행한 명령의 id를 받습니다.",
       "UIContextMenuItem.icon": "명령 이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.",
       "UIContextMenuItem #leading": "상태에 따라 바뀌는 아이콘이나 사용자 정의 아이콘을 넣습니다.",
@@ -980,9 +989,10 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "menu-button-focus", section: "usage-options", title: "메뉴가 닫힐 때 트리거로 돌아가기", description: "메뉴에서 Escape를 누르거나 명령을 실행한 뒤 포커스가 트리거로 돌아오는지 확인합니다." },
     ],
     title: "버튼에 작업 목록 연결",
-    description: "Create 버튼을 열고 명령을 골라 보세요. 명령 항목의 value가 invoke 이벤트에 전달됩니다.",
+    description: "만들기를 열고 이름과 아이콘으로 명령을 찾아 실행합니다. invoke 이벤트에서 명령 id를 받습니다.",
     api: {
-      items: "버튼에서 열리는 메뉴의 명령입니다.",
+      items: "버튼에서 열리는 메뉴의 명령입니다. 각 항목에 label, icon, shortcut을 지정할 수 있습니다.",
+      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
       "@invoke": "누른 메뉴 항목의 id를 받습니다.",
     },
   },
@@ -996,9 +1006,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "menubar-typeahead", section: "usage-options", title: "메뉴 이름으로 탐색", description: "편집 메뉴를 열고 U를 눌러 실행 취소로 이동합니다." },
     ],
     title: "메뉴 모음에 명령 배치",
-    description: "최상위 메뉴와 그 하위 명령을 parentID로 연결합니다. File, Edit, Help 사이를 이동한 뒤 원하는 명령을 실행합니다.",
+    description: "최상위 메뉴와 그 하위 명령을 parentID로 연결합니다. 파일과 편집 메뉴를 열어 명령을 실행합니다.",
     api: {
-      items: "최상위 메뉴와 하위 명령의 id 및 부모 관계입니다.",
+      items: "id와 parentID로 최상위 메뉴와 하위 명령을 구성합니다. icon으로 명령 이름 앞에 아이콘을 표시합니다.",
       "text-value": "각 id의 이름을 키보드 탐색에 사용할 텍스트로 변환합니다.",
       "Content for": "이 콘텐츠가 속한 상위 메뉴 id입니다.",
     },
@@ -1007,6 +1017,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "한 섹션씩 펼치기",
     description: "type을 single로 설정해 한 번에 한 섹션만 표시합니다. collapsible을 지정하면 열린 섹션을 다시 눌러 모두 접을 수 있습니다.",
     api: {
+      items: "value와 label로 섹션을 구성합니다. icon은 섹션 이름 앞에 표시합니다.",
       type: "single은 한 섹션, multiple은 여러 섹션을 펼칠 수 있습니다.",
       collapsible: "열린 섹션을 닫아 선택이 없는 상태를 허용합니다.",
       "Item value": "이 섹션에 연결할 items의 식별자입니다.",
@@ -1056,7 +1067,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "릴리스 타임라인에서 배포 경과 읽기",
     description: "결제 오류로 복구한 시점부터 수정 버전을 다시 배포한 시점까지 살펴봅니다. 항목에 포커스를 두고 Page Up 또는 Page Down으로 앞뒤 활동을 읽을 수 있습니다.",
     api: {
-      items: "피드에 렌더링하는 항목의 식별자입니다.",
+      items: "활동의 id와 제목을 지정합니다. icon은 항목 제목 앞에 표시합니다.",
       "set-size": "전체 피드의 항목 수입니다.",
       "get-position": "항목 id의 전체 피드 내 위치를 반환합니다.",
       "request-window": "현재 목록의 앞이나 뒤 항목이 필요할 때 방향, 기준 항목, 리비전, 요청 번호를 전달합니다.",
@@ -1278,6 +1289,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     api: {
       "columns / rows": "열의 id와 표시 이름, 행의 id와 열 id별 cells를 지정합니다.",
       "#cell": "row, column, value를 받아 셀의 내용을 직접 렌더링합니다.",
+      "UIDataLabel icon": { owner: "UIDataLabel", label: "icon", type: "Component", description: "행의 이름 앞에 아이콘을 표시합니다.", example: { id: "data-table-row-details", title: "행별 상세 조회" } },
       source: "정렬, 필터, 페이지 등 현재 요청을 받아 해당 행과 열 스키마를 반환합니다. 비동기 소스는 두 번째 인자의 signal로 이전 요청의 취소를 확인할 수 있습니다.",
       defaultAccessState: "페이지 또는 범위 접근의 초기 상태입니다. 페이지 번호는 1부터 시작합니다.",
       "Body #default": "자동 모드에서는 각 row를 받습니다. manual 모드에서는 rows를 받아 Row와 Cell을 직접 구성합니다.",
@@ -1337,6 +1349,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       rowSelection: { type: "Ref<DataTreeGridRowSelection>", description: "외부 선택 상태를 연결합니다. 제어형으로 사용할 경우 onRowSelectionChange에서 단일 행과 일괄 선택의 변경값을 반영합니다.", example: { id: "data-tree-grid-group-selection", title: "원격 그룹 전체와 일부 선택" } },
       "Body #default": { description: "현재 행을 row로 제공합니다. 기본 행 렌더링에서 각 열에 DataTreeGrid.Cell을 배치합니다. 행을 직접 배치할 때는 manual과 Row의 row-i-d를 사용합니다.", example: { id: "basic-example", title: "서비스의 하위 행 표시" } },
       RowDisclosure: { description: "그룹 행을 펼치고 접습니다. Body의 기본 행 안에서 쓰면 현재 행 ID를 사용합니다. 직접 배치한 Row에서는 row-i-d를 전달할 수 있습니다.", example: { id: "basic-example", title: "서비스의 하위 행 표시" } },
+      "UIDataStatus icon": { owner: "UIDataStatus", label: "icon", type: "Component", description: "기본 상태 점 자리에 아이콘을 표시합니다.", example: { id: "data-tree-grid-summary", title: "그룹의 합계와 하위 지점 비교" } },
       "BulkSelectionControl target": { type: "{ kind: 'all-matching' } | { kind: 'group-leaves'; groupID: string }", description: "all-matching은 현재 검색 결과 전체를 제어합니다. loadGroupLeafIDs가 연결된 group-leaves는 그룹 전체의 체크 상태를 표시하고 다른 그룹의 선택을 유지합니다. 일부 선택 상태에서 누르면 그룹을 모두 선택합니다.", example: { id: "data-tree-grid-group-selection", title: "원격 그룹 전체와 일부 선택" } },
       loadGroupLeafIDs: { group: "데이터 소스와 컨트롤러", type: "(request, { signal }) => readonly string[] | PromiseLike<readonly string[]>", description: "createUIDataTreeGridComponents의 옵션입니다. 현재 쿼리에 해당하는 그룹의 모든 하위 리프 ID를 반환합니다. 접히거나 다른 페이지에 있는 행도 포함합니다.", example: { id: "data-tree-grid-group-selection", title: "원격 그룹 전체와 일부 선택" } },
       onGroupSelectionError: { group: "이벤트와 명령", type: "(error, request) => void", description: "그룹의 하위 ID 요청이나 선택 반영이 실패하면 호출합니다. 기존 선택을 유지하고 체크박스로 다시 시도할 수 있습니다." },

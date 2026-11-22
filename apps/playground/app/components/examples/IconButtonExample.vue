@@ -37,7 +37,7 @@ const code = computed(() => buttonExampleCode(
   <PlaygroundExample
     id="UIIconButton"
     title="UIIconButton"
-    description="기본 슬롯에 아이콘을 넣고 aria-label에 동작 이름을 지정합니다. loading을 켜면 기본 UISpinner가 표시되며, loading 슬롯으로 바꿀 수 있습니다."
+    description="icon으로 아이콘을 지정하고 aria-label에 동작 이름을 붙입니다. loading을 켜면 기본 UISpinner가 표시되며, loading 슬롯으로 바꿀 수 있습니다."
     :code="code"
     :heading-level="3"
   >
@@ -53,8 +53,7 @@ const code = computed(() => buttonExampleCode(
         <UISelect v-model="spinnerValue" :options="spinners" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
     </template>
-    <UIIconButton :aria-label="icon.label" :size="size" :loading="loading">
-      <component :is="icon.component" />
+    <UIIconButton :aria-label="icon.label" :size="size" :loading="loading" :icon="icon.component">
       <template v-if="spinner" #loading><UISpinner :variant="spinner" /></template>
     </UIIconButton>
   </PlaygroundExample>

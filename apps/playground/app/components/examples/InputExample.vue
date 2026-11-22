@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Folder } from "@lucide/vue";
 import { UIInput, UISelect, UISwitch } from "@connextable/ui";
 import { computed, ref } from "vue";
 import { vueExampleCode } from "~/utils/vue-example-code";
@@ -25,11 +26,12 @@ const presentation = computed(() => ({
 const code = computed(() => vueExampleCode("UIInput", {
   script: [
     'import { UIInput } from "@connextable/ui";',
+    'import { Folder } from "@lucide/vue";',
     'import { ref } from "vue";',
     "",
     `const name = ref(${JSON.stringify(initialValue)});`,
   ],
-  attributes: { "v-model": "name", ...presentation.value },
+  attributes: { "v-model": "name", ...presentation.value, icon: { expression: "Folder" } },
 }));
 </script>
 
@@ -51,7 +53,7 @@ const code = computed(() => vueExampleCode("UIInput", {
       <UISwitch v-model="clearable" size="sm" label="clearable" />
       <UISwitch v-model="disabled" size="sm" label="disabled" />
     </template>
-    <UIInput v-model="name" v-bind="presentation" />
+    <UIInput v-model="name" v-bind="presentation" :icon="Folder" />
     <template #footer><output aria-live="off">{{ name || "입력값 없음" }}</output></template>
   </PlaygroundExample>
 </template>

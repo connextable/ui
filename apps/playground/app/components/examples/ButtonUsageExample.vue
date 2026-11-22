@@ -23,7 +23,7 @@ const topics = {
   icons: {
     id: "button-leading-icon",
     title: "앞·뒤 아이콘",
-    description: "leading과 trailing 슬롯에 아이콘을 넣습니다. 두 위치를 함께 사용할 수도 있습니다.",
+    description: "icon으로 라벨 앞, trailing-icon으로 라벨 뒤에 아이콘을 배치합니다. 두 위치를 함께 사용할 수도 있습니다.",
   },
   loading: {
     id: "button-loading",
@@ -131,10 +131,10 @@ const code = computed(() => buttonExampleCode(attributes.value, {
       <PlaygroundExampleControl v-if="props.topic === 'size'" v-slot="{ labelId }" label="size">
         <UISelect v-model="size" :options="sizeOptions" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <PlaygroundExampleControl v-if="props.topic === 'icons'" v-slot="{ labelId }" label="leading">
+      <PlaygroundExampleControl v-if="props.topic === 'icons'" v-slot="{ labelId }" label="icon">
         <UISelect v-model="leading" :options="iconOptions" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <PlaygroundExampleControl v-if="props.topic === 'icons'" v-slot="{ labelId }" label="trailing">
+      <PlaygroundExampleControl v-if="props.topic === 'icons'" v-slot="{ labelId }" label="trailing-icon">
         <UISelect v-model="trailing" :options="iconOptions" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
       <template v-if="props.topic === 'loading'">
@@ -143,10 +143,12 @@ const code = computed(() => buttonExampleCode(attributes.value, {
       </template>
       <UISwitch v-if="props.topic === 'disabled'" v-model="disabled" label="disabled" size="sm" />
     </template>
-    <UIButton v-bind="attributes">
-      <template v-if="leadingIcon" #leading><component :is="icons[leadingIcon]" /></template>
+    <UIButton
+      v-bind="attributes"
+      :icon="leadingIcon ? icons[leadingIcon] : undefined"
+      :trailing-icon="trailingIcon ? icons[trailingIcon] : undefined"
+    >
       {{ buttonLabel }}
-      <template v-if="trailingIcon" #trailing><component :is="icons[trailingIcon]" /></template>
     </UIButton>
   </PlaygroundExample>
 </template>

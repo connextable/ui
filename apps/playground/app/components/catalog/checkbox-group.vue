@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { Bell, Mail, MessageSquare } from "@lucide/vue";
 import { UICheckboxGroup } from "@connextable/ui";
 import { ref } from "vue";
 
 const items = [
-  { value: "email", label: "이메일" },
-  { value: "sms", label: "문자" },
-  { value: "app", label: "앱 푸시" },
+  { value: "email", label: "이메일", icon: Mail },
+  { value: "sms", label: "문자", icon: MessageSquare },
+  { value: "app", label: "앱 푸시", icon: Bell },
 ];
 
 const selected = ref<readonly string[]>(["sms"]);

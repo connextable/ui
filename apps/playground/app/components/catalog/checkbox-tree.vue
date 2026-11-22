@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { Bell, Mail, Smartphone } from "@lucide/vue";
 import { UICheckboxTree } from "@connextable/ui";
 import { ref } from "vue";
 
 const nodes = [
-  { id: "notifications", parentID: null, label: "알림 채널" },
-  { id: "email", parentID: "notifications", label: "이메일" },
-  { id: "mobile", parentID: "notifications", label: "모바일" },
+  { id: "notifications", parentID: null, label: "알림 채널", icon: Bell },
+  { id: "email", parentID: "notifications", label: "이메일", icon: Mail },
+  { id: "mobile", parentID: "notifications", label: "모바일", icon: Smartphone },
 ];
 
 const channels = ref<readonly string[]>(["email"]);

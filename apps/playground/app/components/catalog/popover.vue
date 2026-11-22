@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { UIButton, UICheckboxGroup, UIPopover } from "@connextable/ui";
+import { Columns3 } from "@lucide/vue";
 import { ref, useId } from "vue";
 
 const titleID = useId();
@@ -18,7 +19,7 @@ const products = [
   <div class="inventory">
     <div class="inventory__toolbar">
       <strong :id="titleID">상품 재고</strong>
-      <UIPopover trigger-label="열 표시" title="표시할 열" side="bottom" align="end">
+      <UIPopover trigger-label="열 표시" :trigger-icon="Columns3" title="표시할 열" side="bottom" align="end">
         <template #body="{ close }">
           <UICheckboxGroup v-model="visibleColumns" :options="columns" label="표시할 열" />
           <UIButton size="sm" @click="close()">완료</UIButton>

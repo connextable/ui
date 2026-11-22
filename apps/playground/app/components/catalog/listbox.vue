@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { FlaskConical, Server, Terminal } from "@lucide/vue";
 import { UIListbox } from "@connextable/ui";
 import { ref } from "vue";
 
 const options = [
-  { value: "production", label: "운영" },
-  { value: "staging", label: "검증" },
-  { value: "development", label: "개발" },
+  { value: "production", label: "운영", icon: Server },
+  { value: "staging", label: "검증", icon: FlaskConical },
+  { value: "development", label: "개발", icon: Terminal },
 ];
 
 const selected = ref("production");

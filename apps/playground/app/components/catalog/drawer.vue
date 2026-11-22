@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { UIButton, UICheckbox, UIDrawer } from "@connextable/ui";
+import { ListFilter } from "@lucide/vue";
 import { computed, ref } from "vue";
 
 const activeOnly = ref(false);
@@ -16,6 +17,7 @@ function applyFilters(close: () => void) {
 <template>
   <UIDrawer
     :trigger-label="applied ? `배포 필터 · ${applied}개` : '배포 필터'"
+    :trigger-icon="ListFilter"
     side="right"
     :swipe-to-dismiss="false"
     title="배포 필터"
