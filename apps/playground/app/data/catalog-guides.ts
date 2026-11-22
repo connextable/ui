@@ -29,7 +29,7 @@ const treeReorderBoardExamples = [
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   lightbox: {
     title: "사진과 영상이 있는 관찰 기록 열기",
-    description: "썸네일을 눌러 해당 자료부터 엽니다. 미디어 위 화살표나 방향키로 이동하고, 터치 화면에서는 사진을 좌우로 밀어 넘깁니다. 작은 화면에서는 전체 화면으로 열리고 하단 썸네일을 숨깁니다.",
+    description: "썸네일을 눌러 해당 자료부터 엽니다. 화살표, 방향키, 좌우 스와이프로 탐색하며 마지막 자료에서 다음으로 가면 첫 자료가 나옵니다. 작은 화면에서는 전체 화면으로 열리고 하단 썸네일을 숨깁니다.",
     sections: [
       { id: "examples", title: "미디어 구성", section: "media" },
       { id: "lightbox-behavior", title: "탐색과 전환", section: "behavior" },
@@ -45,7 +45,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       items: "고유 id와 표시 이름을 지정합니다. 사진에는 src와 alt를, 동영상에는 sources와 선택적으로 poster, tracks, muted, loop를 지정합니다.",
       "v-model:open": "보기 창의 열림 상태를 연결합니다.",
       "v-model:index": "현재 미디어의 위치를 0부터 공유합니다.",
-      loop: "첫 항목과 마지막 항목 사이를 이어서 탐색합니다.",
+      loop: "첫 항목과 마지막 항목 사이를 이어서 탐색합니다. 기본값은 true입니다. 양 끝에서 멈추려면 false로 지정합니다.",
       thumbnails: "데스크톱에서 하단 썸네일을 표시합니다. 기본값은 true입니다.",
       motion: "View Transition을 사용합니다. 모션 감소 설정이 켜져 있으면 즉시 전환합니다.",
       "close-on-interact-outside": "배경을 눌러 창을 닫을지 지정합니다. 기본값은 true입니다.",

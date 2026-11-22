@@ -10,7 +10,7 @@ import type { UILightboxItem } from "./lightbox-types";
 import { useLightboxTransition } from "./useLightboxTransition";
 
 const {
-  items, label = "미디어 보기", labels, loop = false, thumbnails = true, motion = true,
+  items, label = "미디어 보기", labels, loop = true, thumbnails = true, motion = true,
   closeOnInteractOutside = true,
 } = defineProps<{
   items: readonly UILightboxItem[];
