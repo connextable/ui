@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import { applyTagsInputEvent, type TagsInputState } from "@sectile/core/tags-input";
-import { X } from "@lucide/vue";
 import {
-  TagsInputClear,
   TagsInputInput,
   TagsInputRoot,
   type TagsInputRootProps,
   type TagsInputRootSlotProps,
 } from "@sectile/vue/tags-input";
 import { computed, ref } from "vue";
+import { UITagsInputClear } from "../clear/selection-clear-parts";
+import type { ClearableProps } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
 import UITagChips from "./UITagChips.vue";
 
 defineOptions({ inheritAttrs: false });
-const props = withDefaults(defineProps<TagsInputRootProps & {
+const props = withDefaults(defineProps<TagsInputRootProps & ClearableProps & {
   size?: "sm" | "md" | "lg";
   variant?: "outline" | "soft";
   placeholder?: string;
-  clearable?: boolean;
   splitPaste?: boolean;
   reorderable?: boolean;
 }>(), { size: "md", variant: "outline", disabled: undefined, readonly: undefined, required: undefined });
@@ -30,7 +29,7 @@ defineSlots<{
 }>();
 
 const rootProps = computed(() => {
-  const { size, variant, placeholder, clearable, splitPaste, reorderable, ...nativeProps } = props;
+  const { size, variant, placeholder, clearable, clearLabel, splitPaste, reorderable, ...nativeProps } = props;
   return definedControlAttrs({
     ...nativeProps,
     removeLabel: nativeProps.removeLabel ?? ((tag: string) => `${tag} 삭제`),
@@ -73,11 +72,6 @@ function paste(event: ClipboardEvent, scope: TagsInputRootSlotProps) {
   notice.value = skipped ? `${added}개 추가 · ${skipped}개 제외` : `${added}개 추가`;
 }
 
-function clearFocus(event: MouseEvent) {
-  const button = event.currentTarget;
-  if (!(button instanceof HTMLElement)) return;
-  button.closest(".ui-tags-input")?.querySelector<HTMLInputElement>('[data-part="input"]')?.focus();
-}
 </script>
 
 <template>
@@ -104,11 +98,10 @@ function clearFocus(event: MouseEvent) {
         :aria-describedby="$attrs['aria-describedby']"
         @paste="paste($event, state)"
       />
-      <TagsInputClear
+      <UITagsInputClear
         v-if="clearable && state.value.length && !state.readonly && !state.disabled"
-        aria-label="태그 모두 지우기"
-        @click="clearFocus"
-      ><X aria-hidden="true" /></TagsInputClear>
+        :aria-label="clearLabel"
+      />
       <span v-if="splitPaste" class="ui-tags-input__announcement" role="status">{{ notice }}</span>
     </template>
   </TagsInputRoot>

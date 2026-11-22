@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { SelectTrigger, type SelectRootSlotProps } from "@sectile/vue/select";
+import UIControlClearFrame from "../clear/UIControlClearFrame.vue";
 import UIPopupTriggerContent from "../catalog/UIPopupTriggerContent.vue";
 import { definedControlAttrs } from "../control-attrs";
 import UISelectValue from "./UISelectValue.vue";
@@ -33,27 +34,29 @@ function triggerBindings(attrs: Record<string, unknown>) {
 </script>
 
 <template>
-  <SelectTrigger
-    v-bind="triggerBindings($attrs)"
-    v-slot="state"
-    class="ui-field-control ui-popup-trigger ui-select-trigger"
-    :data-size="size"
-    :data-ui-control-size="size"
-    :data-ui-readonly="readonly || undefined"
-    :data-variant="variant ?? 'outline'"
-  >
-    <UIPopupTriggerContent :hide-indicator="readonly">
-      <template v-if="$slots.leading" #leading><slot name="leading" /></template>
-      <slot v-bind="state">
-        <UISelectValue>
-          <template v-if="$slots.value" #default="scope">
-            <slot name="value" v-bind="scope" />
-          </template>
-        </UISelectValue>
-      </slot>
-      <template v-if="$slots.trailing" #trailing><slot name="trailing" /></template>
-    </UIPopupTriggerContent>
-  </SelectTrigger>
+  <UIControlClearFrame indicator :size="size">
+    <SelectTrigger
+      v-bind="triggerBindings($attrs)"
+      v-slot="state"
+      class="ui-field-control ui-popup-trigger ui-select-trigger"
+      :data-size="size"
+      :data-ui-control-size="size"
+      :data-ui-readonly="readonly || undefined"
+      :data-variant="variant ?? 'outline'"
+    >
+      <UIPopupTriggerContent :hide-indicator="readonly">
+        <template v-if="$slots.leading" #leading><slot name="leading" /></template>
+        <slot v-bind="state">
+          <UISelectValue>
+            <template v-if="$slots.value" #default="scope">
+              <slot name="value" v-bind="scope" />
+            </template>
+          </UISelectValue>
+        </slot>
+        <template v-if="$slots.trailing" #trailing><slot name="trailing" /></template>
+      </UIPopupTriggerContent>
+    </SelectTrigger>
+  </UIControlClearFrame>
 </template>
 
 <style scoped>

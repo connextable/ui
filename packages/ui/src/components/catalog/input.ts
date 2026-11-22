@@ -1,5 +1,35 @@
+import { CascadeListRoot } from "@sectile/vue/cascade-list";
+import { CheckboxGroupRoot } from "@sectile/vue/checkbox-group";
+import { CheckboxTreeRoot } from "@sectile/vue/checkbox-tree";
+import { ComboboxEditor, ComboboxInput, ComboboxRoot } from "@sectile/vue/combobox";
+import { EditableRoot } from "@sectile/vue/editable";
+import { ListboxRoot } from "@sectile/vue/listbox";
+import { PinInputRoot } from "@sectile/vue/pin-input";
+import { QuantityFieldRoot } from "@sectile/vue/quantity-field";
+import { ToggleGroupRoot } from "@sectile/vue/toggle-group";
+import { withClearableControl, withClearableModel, type ClearableComponent } from "../clear/with-clearable";
+
+const group = { placement: "beside" } as const;
+export const UICascadeList: ClearableComponent<typeof CascadeListRoot> = withClearableModel(CascadeListRoot, null, group);
+export const UICombobox: ClearableComponent<typeof ComboboxRoot> = withClearableModel(ComboboxRoot, null, { clearInput: true });
+export const UIComboboxInput: typeof ComboboxInput = withClearableControl(ComboboxInput, "input");
+export const UIComboboxEditor: typeof ComboboxEditor = withClearableControl(ComboboxEditor, "input");
+export const UIEditable: ClearableComponent<typeof EditableRoot> = withClearableModel(EditableRoot, "", { ...group, label: "값 지우기" });
+export const UIListbox: ClearableComponent<typeof ListboxRoot> = withClearableModel(ListboxRoot,
+  attrs => (attrs.selectionMode ?? attrs["selection-mode"]) === "multiple" ? [] : "", group);
+export const UICheckboxGroup: ClearableComponent<typeof CheckboxGroupRoot> = withClearableModel(CheckboxGroupRoot, [], group);
+export const UICheckboxTree: ClearableComponent<typeof CheckboxTreeRoot> = withClearableModel(CheckboxTreeRoot, [], {
+  ...group, expose: ["element", "focus"],
+});
+export const UIToggleGroup: ClearableComponent<typeof ToggleGroupRoot> = withClearableModel(ToggleGroupRoot, [], group);
+export const UIPinInput: ClearableComponent<typeof PinInputRoot> = withClearableModel(PinInputRoot, "", {
+  label: "인증 코드 지우기", placement: "end",
+});
+export const UIQuantityField: ClearableComponent<typeof QuantityFieldRoot> = withClearableModel(QuantityFieldRoot, null, {
+  ...group, label: "수량 지우기",
+});
+
 export {
-  CascadeListRoot as UICascadeList,
   CascadeListValue as UICascadeListValue,
   CascadeListColumn as UICascadeListColumn,
   CascadeListItem as UICascadeListItem,
@@ -26,7 +56,6 @@ export {
 } from "@sectile/vue/color-picker";
 export { default as UINumberField } from "../text-input/UINumberField.vue";
 export {
-  EditableRoot as UIEditable,
   EditableArea as UIEditableArea,
   EditablePreview as UIEditablePreview,
   EditableInput as UIEditableInput,
@@ -35,17 +64,15 @@ export {
   EditableCancelTrigger as UIEditableCancelTrigger,
 } from "@sectile/vue/editable";
 export {
-  ListboxRoot as UIListbox,
   ListboxItem as UIListboxItem,
   ListboxItemText as UIListboxItemText,
   ListboxItemIndicator as UIListboxItemIndicator,
 } from "@sectile/vue/listbox";
 export {
-  RatingRoot as UIRating,
   RatingItem as UIRatingItem,
   RatingIndicator as UIRatingIndicator,
-  RatingClear as UIRatingClear,
 } from "@sectile/vue/rating";
+export { UIRating, UIRatingClear } from "../selection/rating";
 export {
   SliderRoot as UISlider,
   SliderRange as UISliderRange,
@@ -67,16 +94,12 @@ export {
   StepperNext as UIStepperNext,
 } from "@sectile/vue/stepper";
 export {
-  ComboboxRoot as UICombobox,
   ComboboxResults as UIComboboxResults,
-  ComboboxEditor as UIComboboxEditor,
-  ComboboxInput as UIComboboxInput,
   ComboboxContent as UIComboboxContent,
   ComboboxItem as UIComboboxItem,
   ComboboxEmpty as UIComboboxEmpty,
 } from "@sectile/vue/combobox";
 export {
-  CheckboxTreeRoot as UICheckboxTree,
   CheckboxTreeItem as UICheckboxTreeItem,
   CheckboxTreeDisclosure as UICheckboxTreeDisclosure,
 } from "@sectile/vue/checkbox-tree";
@@ -95,7 +118,6 @@ export {
 } from "@sectile/vue/tree-view";
 export { UICheckboxTreeGroup, UITreeSelectGroup, UITreeViewGroup } from "./tree-groups";
 export {
-  CheckboxGroupRoot as UICheckboxGroup,
   CheckboxGroupItem as UICheckboxGroupItem,
 } from "@sectile/vue/checkbox-group";
 export { default as UICheckboxGroupIndicator } from "../selection/UICheckboxGroupIndicator.vue";
@@ -106,11 +128,9 @@ export {
 export { UIMultiThumbSlider } from "./multi-thumb-slider";
 export { default as UIMultiThumbSliderThumb } from "./UIMultiThumbSliderThumb.vue";
 export {
-  PinInputRoot as UIPinInput,
   PinInputInput as UIPinInputInput,
 } from "@sectile/vue/pin-input";
 export {
-  QuantityFieldRoot as UIQuantityField,
   QuantityFieldInput as UIQuantityFieldInput,
   QuantityFieldUnitSelect as UIQuantityFieldUnitSelect,
   QuantityFieldValue as UIQuantityFieldValue,

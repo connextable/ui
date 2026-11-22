@@ -13,6 +13,10 @@ input.ui-temporal-input {
 ) {
   padding: var(--ui-frame-padding);
 
+  &:has(> .ui-clear-button) {
+    inline-size: min(100%, calc(var(--ui-picker-width, 12rem) + 2rem + var(--ui-frame-padding)));
+  }
+
   & input.ui-temporal-input {
     --ui-field-inner-padding: 0 max(0px, calc(var(--ui-control-size-padding-inline) - var(--ui-inset-distance)));
     --ui-field-inner-height: var(--ui-inset-size);
@@ -73,11 +77,16 @@ input.ui-temporal-input {
   --ui-field-inner-padding: 0 var(--ui-space-xs);
 }
 
+[data-scope="date-time"][data-part="anchor"]:has(> [data-part="date-input"] + [data-part="time-input"]) {
+  --ui-picker-clear-column: 4;
+}
+
 :where([data-scope="date-range"], [data-scope="month-range-picker"], [data-scope="year-range-picker"], [data-scope="date-time-range"])[data-part="anchor"]:has(
   > input[data-part="start-input"]:not([hidden], [type="hidden"]) ~ input[data-part="end-input"]:not([hidden], [type="hidden"]),
   > input[data-part="start-date-time-input"]:not([hidden], [type="hidden"]) ~ input[data-part="end-date-time-input"]:not([hidden], [type="hidden"]),
   > :is(label, [role="group"]) > input[data-part="end-date-input"]
 ) {
+  --ui-picker-clear-column: 5;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
 
   &::before {
@@ -214,6 +223,17 @@ input.ui-temporal-input {
 
   &[data-scope="date-range-field"] { --ui-range-field-width: 21rem; }
   &[data-scope="date-time-range-field"] { --ui-range-field-width: 27rem; }
+
+  &:has(> .ui-clear-button) {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+    inline-size: min(100%, calc(var(--ui-range-field-width) + 2rem + var(--ui-inset-distance)));
+
+    > .ui-clear-button {
+      grid-area: 1 / 4;
+      z-index: 0;
+      margin-inline-end: var(--ui-inset-distance);
+    }
+  }
 
   &::before {
     grid-area: 1 / 1 / 2 / -1;

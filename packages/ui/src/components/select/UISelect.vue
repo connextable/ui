@@ -2,6 +2,7 @@
 import { provideFormControlReset, useFormFieldDefaults } from "@sectile/vue/form-boundary";
 import { SelectRoot, type SelectRootProps, type SelectRootSlotProps } from "@sectile/vue/select";
 import { computed, provide, ref, useId, watch, type AriaAttributes } from "vue";
+import { provideClearable, useClearableValue, type ClearableProps } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
 import { useSelectionOptions } from "../selection/selection-options";
 import UISelectContent from "./UISelectContent.vue";
@@ -17,8 +18,8 @@ type SelectPosition = Pick<SelectRootProps,
 
 const props = withDefaults(defineProps<Pick<SelectRootProps,
   "modelValue" | "defaultValue" | "open" | "defaultOpen" | "disabled" | "readonly" |
-  "formOptions" | "renderedItems" | "textValue" | "typeaheadTimeoutMs" | "unmountOnExit" | "policies"
-> & {
+  "formOptions" | "renderedItems" | "textValue" | "typeaheadTimeoutMs" | "unmountOnExit" | "policies" | "name" | "form" | "required"
+> & ClearableProps & {
   id?: string;
   ariaLabel?: string;
   ariaLabelledby?: string;
@@ -28,7 +29,7 @@ const props = withDefaults(defineProps<Pick<SelectRootProps,
   size?: "sm" | "md" | "lg";
   placeholder?: string;
   position?: SelectPosition | boolean;
-}>(), { size: "md", placeholder: "선택", open: undefined, disabled: undefined, readonly: undefined, position: true });
+}>(), { size: "md", placeholder: "선택", open: undefined, disabled: undefined, readonly: undefined, required: undefined, position: true });
 
 const emit = defineEmits<{
   "update:modelValue": [value: string | null];
@@ -43,8 +44,14 @@ const isReadonly = computed(() => props.readonly ?? fieldDefaults?.value.readonl
 const initialOpen = Boolean(props.defaultOpen);
 const localOpen = ref(!isReadonly.value && initialOpen);
 const menuOpen = computed(() => !isReadonly.value && (props.open ?? localOpen.value));
+const selection = useClearableValue(
+  () => props.modelValue,
+  props.defaultValue ?? null,
+  value => emit("update:modelValue", value),
+);
 
 provideFormControlReset(() => {
+  selection.reset();
   if (props.open === undefined) localOpen.value = !isReadonly.value && initialOpen;
 });
 watch(isReadonly, (readonly) => {
@@ -56,6 +63,18 @@ function updateOpen(open: boolean) {
   if (props.open === undefined) localOpen.value = open;
   emit("update:open", open);
 }
+
+provideClearable({
+  enabled: () => props.clearable,
+  label: () => props.clearLabel,
+  disabled: () => props.options.length ? props.disabled : true,
+  readonly: () => isReadonly.value,
+  hasValue: () => selection.value.value !== null,
+  clear() {
+    selection.set(null);
+    if (menuOpen.value) updateOpen(false);
+  },
+});
 
 const { values, disabledValues } = useSelectionOptions(() => props.options);
 const textValue = computed(() => {
@@ -87,13 +106,13 @@ provide(selectKey, {
 <template>
   <div class="ui-select">
     <SelectRoot
-      v-bind="{ ...positioning, ...definedControlAttrs({ disabled: options.length === 0 ? true : disabled, readonly }) }"
+      v-bind="{ ...positioning, ...definedControlAttrs({ disabled: options.length === 0 ? true : disabled, readonly, name, form, required }) }"
       v-slot="state"
       :label="ariaLabel"
       :items="values"
       :disabled-items="disabledValues"
       :text-value="textValue"
-      :model-value="modelValue"
+      :model-value="selection.value.value"
       :default-value="defaultValue"
       :open="menuOpen"
       :form-options="formOptions"
@@ -101,7 +120,7 @@ provide(selectKey, {
       :typeahead-timeout-ms="typeaheadTimeoutMs"
       :unmount-on-exit="unmountOnExit"
       :policies="policies"
-      @update:model-value="emit('update:modelValue', $event)"
+      @update:model-value="selection.set"
       @update:open="updateOpen"
       @highlight="emit('highlight', $event)"
     >

@@ -82,7 +82,7 @@
   background: var(--ui-color-surface-readonly);
 }
 
-.ui-tags-input :is([data-part="item-delete"], [data-scope="tags-input"][data-part="clear"]),
+.ui-tags-input [data-part="item-delete"],
 .ui-tags-input__chip :is(.ui-tags-input__handle, .ui-reorder-handle-visual, .ui-tags-input__delete-visual) {
   box-sizing: border-box;
   display: inline-flex;
@@ -103,32 +103,32 @@
   transition: background-color var(--ui-motion-fast) var(--ui-ease-out), color var(--ui-motion-fast) var(--ui-ease-out);
 }
 
-.ui-tags-input :is([data-part="item-delete"], [data-scope="tags-input"][data-part="clear"]) {
+.ui-tags-input [data-part="item-delete"] {
   cursor: pointer;
 }
 
-.ui-tags-input :is([data-part="item-delete"], [data-scope="tags-input"][data-part="clear"], .ui-tags-input__handle) svg,
+.ui-tags-input :is([data-part="item-delete"], .ui-tags-input__handle) svg,
 .ui-tags-input__icon {
   flex: none;
   inline-size: 1em;
   block-size: 1em;
 }
 
-.ui-tags-input :is([data-part="item-delete"], [data-scope="tags-input"][data-part="clear"]):focus-visible {
+.ui-tags-input [data-part="item-delete"]:focus-visible {
   outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
   outline-offset: var(--ui-focus-ring-offset);
 }
 
-.ui-tags-input :is([data-part="item-delete"], [data-scope="tags-input"][data-part="clear"]):hover:not(:disabled) {
+.ui-tags-input [data-part="item-delete"]:hover:not(:disabled) {
   background: var(--ui-color-surface-hover);
   color: var(--ui-color-text);
 }
 
-.ui-tags-input :is([data-part="item-delete"], [data-scope="tags-input"][data-part="clear"]):active:not(:disabled) {
+.ui-tags-input [data-part="item-delete"]:active:not(:disabled) {
   background: var(--ui-color-surface-active);
 }
 
-.ui-tags-input :is([data-part="item-delete"], [data-scope="tags-input"][data-part="clear"]):disabled {
+.ui-tags-input [data-part="item-delete"]:disabled {
   color: var(--ui-color-disabled);
   cursor: default;
 }

@@ -2,6 +2,7 @@
 import { ChevronDown } from "@lucide/vue";
 import { TreeSelectInput } from "@sectile/vue/tree-select";
 import { nextTick, type VNode } from "vue";
+import UIFieldClear from "../clear/UIFieldClear.vue";
 
 defineOptions({ inheritAttrs: false });
 const props = defineProps<{
@@ -89,6 +90,7 @@ function endComposition(event: CompositionEvent) {
       @compositionstart="startComposition"
       @compositionend="endComposition"
     ><slot /></TreeSelectInput>
+    <UIFieldClear v-if="!asChild" />
     <ChevronDown :size="16" aria-hidden="true" />
   </div>
 </template>

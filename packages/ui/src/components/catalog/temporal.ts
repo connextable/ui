@@ -1,29 +1,32 @@
 import { computed, defineComponent, h, inject, mergeProps, nextTick, provide, type PropType } from "vue";
 import { TemporalProvider, useTemporalFormatter, type TemporalFormatterOptions } from "@sectile/vue/temporal/temporal-provider";
 import { DateField } from "@sectile/vue/temporal/date-field";
-import { DateRangeFieldStartInput, DateRangeFieldEndInput } from "@sectile/vue/temporal/date-range-field";
-import { DatePickerInput } from "@sectile/vue/temporal/date-picker";
+import { CalendarRoot } from "@sectile/vue/temporal/calendar";
+import { DateRangeFieldRoot, DateRangeFieldStartInput, DateRangeFieldEndInput } from "@sectile/vue/temporal/date-range-field";
+import { DatePickerRoot, DatePickerAnchor, DatePickerInput } from "@sectile/vue/temporal/date-picker";
 import { DateTimeField } from "@sectile/vue/temporal/date-time-field";
-import { DateTimeRangeFieldStartInput, DateTimeRangeFieldEndInput } from "@sectile/vue/temporal/date-time-range-field";
-import { DateTimePickerDateTimeInput, DateTimePickerDateInput, DateTimePickerTimeInput } from "@sectile/vue/temporal/date-time-picker";
+import { DateTimeRangeFieldRoot, DateTimeRangeFieldStartInput, DateTimeRangeFieldEndInput } from "@sectile/vue/temporal/date-time-range-field";
+import { DateTimePickerRoot, DateTimePickerAnchor, DateTimePickerDateTimeInput, DateTimePickerDateInput, DateTimePickerTimeInput } from "@sectile/vue/temporal/date-time-picker";
 import {
+  DateTimeRangePickerRoot, DateTimeRangePickerAnchor,
   DateTimeRangePickerStartDateInput, DateTimeRangePickerEndDateInput,
   DateTimeRangePickerStartTimeInput, DateTimeRangePickerEndTimeInput,
   DateTimeRangePickerStartDateTimeInput, DateTimeRangePickerEndDateTimeInput,
   DateTimeRangePickerGrid, DateTimeRangePickerCell, DateTimeRangePickerMonthCell,
 } from "@sectile/vue/temporal/date-time-range-picker";
 import { TimeField } from "@sectile/vue/temporal/time-field";
-import { TimeRangeFieldStartInput, TimeRangeFieldEndInput } from "@sectile/vue/temporal/time-range-field";
-import { DateRangePickerStartInput, DateRangePickerEndInput, DateRangePickerGrid, DateRangePickerCell, DateRangePickerMonthCell } from "@sectile/vue/temporal/date-range-picker";
-import { MonthPickerInput } from "@sectile/vue/temporal/month-picker";
-import { MonthRangePickerStartInput, MonthRangePickerEndInput, MonthRangePickerGrid, MonthRangePickerCell } from "@sectile/vue/temporal/month-range-picker";
+import { TimeRangeFieldRoot, TimeRangeFieldStartInput, TimeRangeFieldEndInput } from "@sectile/vue/temporal/time-range-field";
+import { DateRangePickerRoot, DateRangePickerAnchor, DateRangePickerStartInput, DateRangePickerEndInput, DateRangePickerGrid, DateRangePickerCell, DateRangePickerMonthCell } from "@sectile/vue/temporal/date-range-picker";
+import { MonthPickerRoot, MonthPickerAnchor, MonthPickerInput } from "@sectile/vue/temporal/month-picker";
+import { MonthRangePickerRoot, MonthRangePickerAnchor, MonthRangePickerStartInput, MonthRangePickerEndInput, MonthRangePickerGrid, MonthRangePickerCell } from "@sectile/vue/temporal/month-range-picker";
 import { RangeCalendarRoot, RangeCalendarGrid, RangeCalendarCell, RangeCalendarMonthCell } from "@sectile/vue/temporal/range-calendar";
 import {
-  TimePickerColumn, TimePickerContent, TimePickerInput,
+  TimePickerRoot, TimePickerColumn, TimePickerContent, TimePickerInput,
   type TimePickerColumnProps, type TimePickerColumnSlotProps, type TimePickerContentSlotProps,
 } from "@sectile/vue/temporal/time-picker";
-import { YearPickerInput } from "@sectile/vue/temporal/year-picker";
-import { YearRangePickerStartInput, YearRangePickerEndInput, YearRangePickerGrid, YearRangePickerCell } from "@sectile/vue/temporal/year-range-picker";
+import { YearPickerRoot, YearPickerAnchor, YearPickerInput } from "@sectile/vue/temporal/year-picker";
+import { YearRangePickerRoot, YearRangePickerAnchor, YearRangePickerStartInput, YearRangePickerEndInput, YearRangePickerGrid, YearRangePickerCell } from "@sectile/vue/temporal/year-range-picker";
+import { withClearableControl, withClearableModel, type ClearableComponent } from "../clear/with-clearable";
 import { withTemporalEditing, withTemporalInputAppearance } from "./temporal-input";
 import { TemporalInputFormatProvider, temporalInputFormatsKey, type UITemporalInputFormats } from "./temporal-input-format";
 import { withRangeGridPresentation, withRangeCellPresentation } from "./temporal-range-presentation";
@@ -37,11 +40,16 @@ export { default as UIDatePickerValue } from "./UIDatePickerValue.vue";
 export { default as UIDateRangePickerValue } from "./UIDateRangePickerValue.vue";
 export { default as UIDateTimeRangePickerValue } from "./UIDateTimeRangePickerValue.vue";
 
-export const UIDateField: typeof DateField = withTemporalEditing(DateField, "date");
+const fieldOptions = { placement: "inset", expose: ["element", "focus", "select"] } as const;
+const rangeOptions = { placement: "end", label: "범위 지우기" } as const;
+
+export const UIDateField: ClearableComponent<typeof DateField> =
+  withClearableModel(withTemporalEditing(DateField, "date"), null, fieldOptions);
 export const UIDateRangeFieldStartInput = withTemporalEditing(DateRangeFieldStartInput, "date");
 export const UIDateRangeFieldEndInput = withTemporalEditing(DateRangeFieldEndInput, "date");
 export const UIDatePickerInput = withTemporalEditing(DatePickerInput, "date");
-export const UIDateTimeField: typeof DateTimeField = withTemporalEditing(DateTimeField, "date-time", { precision: "minute" });
+export const UIDateTimeField: ClearableComponent<typeof DateTimeField> =
+  withClearableModel(withTemporalEditing(DateTimeField, "date-time", { precision: "minute" }), null, fieldOptions);
 export const UIDateTimeRangeFieldStartInput = withTemporalEditing(DateTimeRangeFieldStartInput, "date-time");
 export const UIDateTimeRangeFieldEndInput = withTemporalEditing(DateTimeRangeFieldEndInput, "date-time");
 export const UIDateTimePickerDateTimeInput = withTemporalEditing(DateTimePickerDateTimeInput, "date-time");
@@ -51,8 +59,10 @@ export const UIDateTimeRangePickerStartDateInput = withTemporalEditing(DateTimeR
 export const UIDateTimeRangePickerEndDateInput = withTemporalEditing(DateTimeRangePickerEndDateInput, "date");
 export const UIDateTimeRangePickerStartTimeInput = withTemporalEditing(DateTimeRangePickerStartTimeInput, "time");
 export const UIDateTimeRangePickerEndTimeInput = withTemporalEditing(DateTimeRangePickerEndTimeInput, "time");
-export const UITimeField: typeof TimeField = withTemporalEditing(TimeField, "time", { precision: "minute" });
-export const UITimePickerInput = withTemporalEditing(TimePickerInput, "time");
+export const UITimeField: ClearableComponent<typeof TimeField> =
+  withClearableModel(withTemporalEditing(TimeField, "time", { precision: "minute" }), null, fieldOptions);
+// TimePicker installs a reset owner of its own. The input connects the UI model's reset to that field.
+export const UITimePickerInput = withTemporalEditing(TimePickerInput, "time", { reconnectFormReset: true });
 export const UITimeRangeFieldStartInput = withTemporalEditing(TimeRangeFieldStartInput, "time");
 export const UITimeRangeFieldEndInput = withTemporalEditing(TimeRangeFieldEndInput, "time");
 
@@ -82,6 +92,30 @@ export const UIMonthRangePickerEndInput = withTemporalInputAppearance(MonthRange
 export const UIYearPickerInput = withTemporalInputAppearance(YearPickerInput, "연도 선택");
 export const UIYearRangePickerStartInput = withTemporalInputAppearance(YearRangePickerStartInput, "시작 연도");
 export const UIYearRangePickerEndInput = withTemporalInputAppearance(YearRangePickerEndInput, "종료 연도");
+
+export const UICalendar: ClearableComponent<typeof CalendarRoot> = withClearableModel(CalendarRoot, null, { placement: "beside" });
+export const UIDateRangeField: ClearableComponent<typeof DateRangeFieldRoot> = withClearableModel(DateRangeFieldRoot, null, rangeOptions);
+export const UITimeRangeField: ClearableComponent<typeof TimeRangeFieldRoot> = withClearableModel(TimeRangeFieldRoot, null, rangeOptions);
+export const UIDateTimeRangeField: ClearableComponent<typeof DateTimeRangeFieldRoot> = withClearableModel(DateTimeRangeFieldRoot, null, rangeOptions);
+export const UIDatePicker: ClearableComponent<typeof DatePickerRoot> = withClearableModel(DatePickerRoot, null);
+export const UIDatePickerAnchor: typeof DatePickerAnchor = withClearableControl(DatePickerAnchor, "anchor");
+export const UIDateRangePicker: ClearableComponent<typeof DateRangePickerRoot> = withClearableModel(DateRangePickerRoot, null, { label: "범위 지우기" });
+export const UIDateRangePickerAnchor: typeof DateRangePickerAnchor = withClearableControl(DateRangePickerAnchor, "anchor");
+export const UIDateTimePicker: ClearableComponent<typeof DateTimePickerRoot> = withClearableModel(DateTimePickerRoot, null);
+export const UIDateTimePickerAnchor: typeof DateTimePickerAnchor = withClearableControl(DateTimePickerAnchor, "anchor");
+export const UIDateTimeRangePicker: ClearableComponent<typeof DateTimeRangePickerRoot> = withClearableModel(DateTimeRangePickerRoot, null, { label: "범위 지우기" });
+export const UIDateTimeRangePickerAnchor: typeof DateTimeRangePickerAnchor = withClearableControl(DateTimeRangePickerAnchor, "anchor");
+export const UITimePicker: ClearableComponent<typeof TimePickerRoot> = withClearableModel(TimePickerRoot, null, {
+  placement: "end", expose: ["element", "focus", "select", "requestClose", "selectChoice"],
+});
+export const UIMonthPicker: ClearableComponent<typeof MonthPickerRoot> = withClearableModel(MonthPickerRoot, null);
+export const UIMonthPickerAnchor: typeof MonthPickerAnchor = withClearableControl(MonthPickerAnchor, "anchor");
+export const UIMonthRangePicker: ClearableComponent<typeof MonthRangePickerRoot> = withClearableModel(MonthRangePickerRoot, null, { label: "범위 지우기" });
+export const UIMonthRangePickerAnchor: typeof MonthRangePickerAnchor = withClearableControl(MonthRangePickerAnchor, "anchor");
+export const UIYearPicker: ClearableComponent<typeof YearPickerRoot> = withClearableModel(YearPickerRoot, null);
+export const UIYearPickerAnchor: typeof YearPickerAnchor = withClearableControl(YearPickerAnchor, "anchor");
+export const UIYearRangePicker: ClearableComponent<typeof YearRangePickerRoot> = withClearableModel(YearRangePickerRoot, null, { label: "범위 지우기" });
+export const UIYearRangePickerAnchor: typeof YearRangePickerAnchor = withClearableControl(YearRangePickerAnchor, "anchor");
 
 export type { DateValue as UIDateValue } from "@sectile/vue/temporal/calendar";
 export {
@@ -132,7 +166,6 @@ export const UITemporalProvider = defineComponent({
 });
 
 export {
-  CalendarRoot as UICalendar,
   CalendarContent as UICalendarContent,
   CalendarGrid as UICalendarGrid,
   CalendarCell as UICalendarCell,
@@ -165,7 +198,7 @@ export {
 
 // Sectile's range calendar shares the date range picker's positioning options.
 // Keep inline content in flow by default, including after hydration.
-export const UIRangeCalendar = defineComponent({
+const InlineRangeCalendar = defineComponent({
   name: "UIRangeCalendar",
   inheritAttrs: false,
   __sectileFormLabelMode: "labelledby",
@@ -173,13 +206,9 @@ export const UIRangeCalendar = defineComponent({
     return () => h(RangeCalendarRoot, { position: false, ...attrs }, slots);
   },
 }) as typeof RangeCalendarRoot;
+export const UIRangeCalendar: ClearableComponent<typeof RangeCalendarRoot> = withClearableModel(InlineRangeCalendar, null, { placement: "beside", label: "범위 지우기" });
 export {
-  DateRangeFieldRoot as UIDateRangeField,
-} from "@sectile/vue/temporal/date-range-field";
-export {
-  DatePickerRoot as UIDatePicker,
   DatePickerTrigger as UIDatePickerTrigger,
-  DatePickerAnchor as UIDatePickerAnchor,
   DatePickerPortal as UIDatePickerPortal,
   DatePickerContent as UIDatePickerContent,
   DatePickerGrid as UIDatePickerGrid,
@@ -196,9 +225,7 @@ export {
   DatePickerYearViewTrigger as UIDatePickerYearViewTrigger,
 } from "@sectile/vue/temporal/date-picker";
 export {
-  DateRangePickerRoot as UIDateRangePicker,
   DateRangePickerTrigger as UIDateRangePickerTrigger,
-  DateRangePickerAnchor as UIDateRangePickerAnchor,
   DateRangePickerPortal as UIDateRangePickerPortal,
   DateRangePickerContent as UIDateRangePickerContent,
   DateRangePickerPreviousWeek as UIDateRangePickerPreviousWeek,
@@ -212,12 +239,7 @@ export {
   DateRangePickerYearViewTrigger as UIDateRangePickerYearViewTrigger,
 } from "@sectile/vue/temporal/date-range-picker";
 export {
-  DateTimeRangeFieldRoot as UIDateTimeRangeField,
-} from "@sectile/vue/temporal/date-time-range-field";
-export {
-  DateTimePickerRoot as UIDateTimePicker,
   DateTimePickerTrigger as UIDateTimePickerTrigger,
-  DateTimePickerAnchor as UIDateTimePickerAnchor,
   DateTimePickerPortal as UIDateTimePickerPortal,
   DateTimePickerContent as UIDateTimePickerContent,
   DateTimePickerGrid as UIDateTimePickerGrid,
@@ -234,9 +256,7 @@ export {
   DateTimePickerYearViewTrigger as UIDateTimePickerYearViewTrigger,
 } from "@sectile/vue/temporal/date-time-picker";
 export {
-  DateTimeRangePickerRoot as UIDateTimeRangePicker,
   DateTimeRangePickerTrigger as UIDateTimeRangePickerTrigger,
-  DateTimeRangePickerAnchor as UIDateTimeRangePickerAnchor,
   DateTimeRangePickerPortal as UIDateTimeRangePickerPortal,
   DateTimeRangePickerContent as UIDateTimeRangePickerContent,
   DateTimeRangePickerPreviousWeek as UIDateTimeRangePickerPreviousWeek,
@@ -250,7 +270,6 @@ export {
   DateTimeRangePickerYearViewTrigger as UIDateTimeRangePickerYearViewTrigger,
 } from "@sectile/vue/temporal/date-time-range-picker";
 export {
-  TimePickerRoot as UITimePicker,
   TimePickerItem as UITimePickerItem,
   TimePickerTrigger as UITimePickerTrigger,
   TimePickerAnchor as UITimePickerAnchor,
@@ -343,12 +362,7 @@ export const UITimePickerColumn = defineComponent({
 };
 
 export {
-  TimeRangeFieldRoot as UITimeRangeField,
-} from "@sectile/vue/temporal/time-range-field";
-export {
-  MonthPickerRoot as UIMonthPicker,
   MonthPickerTrigger as UIMonthPickerTrigger,
-  MonthPickerAnchor as UIMonthPickerAnchor,
   MonthPickerPortal as UIMonthPickerPortal,
   MonthPickerContent as UIMonthPickerContent,
   MonthPickerGrid as UIMonthPickerGrid,
@@ -357,18 +371,14 @@ export {
   MonthPickerNextYear as UIMonthPickerNextYear,
 } from "@sectile/vue/temporal/month-picker";
 export {
-  MonthRangePickerRoot as UIMonthRangePicker,
   MonthRangePickerTrigger as UIMonthRangePickerTrigger,
-  MonthRangePickerAnchor as UIMonthRangePickerAnchor,
   MonthRangePickerPortal as UIMonthRangePickerPortal,
   MonthRangePickerContent as UIMonthRangePickerContent,
   MonthRangePickerPreviousYear as UIMonthRangePickerPreviousYear,
   MonthRangePickerNextYear as UIMonthRangePickerNextYear,
 } from "@sectile/vue/temporal/month-range-picker";
 export {
-  YearPickerRoot as UIYearPicker,
   YearPickerTrigger as UIYearPickerTrigger,
-  YearPickerAnchor as UIYearPickerAnchor,
   YearPickerPortal as UIYearPickerPortal,
   YearPickerContent as UIYearPickerContent,
   YearPickerGrid as UIYearPickerGrid,
@@ -377,9 +387,7 @@ export {
   YearPickerNextPage as UIYearPickerNextPage,
 } from "@sectile/vue/temporal/year-picker";
 export {
-  YearRangePickerRoot as UIYearRangePicker,
   YearRangePickerTrigger as UIYearRangePickerTrigger,
-  YearRangePickerAnchor as UIYearRangePickerAnchor,
   YearRangePickerPortal as UIYearRangePickerPortal,
   YearRangePickerContent as UIYearRangePickerContent,
   YearRangePickerPreviousPage as UIYearRangePickerPreviousPage,

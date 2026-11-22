@@ -1,8 +1,10 @@
 import { createDateFieldFormat, formatDateFieldValue, parseDateFieldValue } from "@sectile/temporal/date-field";
 import { createTimeFieldFormat, formatTimeFieldValue, parseTimeFieldValue, type TimeFieldPrecision } from "@sectile/temporal/time-field";
 import { createDateTimeFieldFormat, formatDateTimeFieldValue, parseDateTimeFieldValue } from "@sectile/temporal/date-time-field";
+import { provideFormControlReset } from "@sectile/vue/form-boundary";
 import { useTemporalFormatter } from "@sectile/vue/temporal/temporal-provider";
 import { defineComponent, h, mergeProps, shallowRef, type Component } from "vue";
+import { useFieldClear } from "../clear/clearable";
 
 type TemporalInputKind = "date" | "date-time-date" | "time" | "date-time-time" | "date-time";
 type Formatter = ReturnType<typeof useTemporalFormatter>["value"];
@@ -88,7 +90,7 @@ function normalize(text: string, kind: TemporalInputKind, precision: TimeFieldPr
 export function withTemporalEditing<T extends Component>(
   part: T,
   kind: TemporalInputKind,
-  defaults: { precision?: TimeFieldPrecision } = {},
+  { reconnectFormReset, ...defaults }: { precision?: TimeFieldPrecision; reconnectFormReset?: boolean } = {},
 ): T {
   const metadata = part as T & { __sectileFormLabelMode?: "labelledby"; __sectileSubmissionPart?: number };
   return defineComponent({
@@ -96,6 +98,10 @@ export function withTemporalEditing<T extends Component>(
     __sectileFormLabelMode: metadata.__sectileFormLabelMode,
     __sectileSubmissionPart: metadata.__sectileSubmissionPart,
     setup(_, { attrs, slots, expose }) {
+      if (reconnectFormReset) {
+        const reset = useFieldClear()?.reset;
+        if (reset) provideFormControlReset(reset);
+      }
       const formatter = useTemporalFormatter();
       const control = shallowRef<{ element?: HTMLInputElement; $el?: unknown }>();
       const element = () => control.value?.element ?? (control.value?.$el instanceof HTMLInputElement ? control.value.$el : null);

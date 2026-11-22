@@ -1,5 +1,9 @@
+import { CascadeSelectRoot } from "@sectile/vue/cascade-select";
+import { withClearableModel, type ClearableComponent } from "../clear/with-clearable";
+
+export const UICascadeSelect: ClearableComponent<typeof CascadeSelectRoot> = withClearableModel(CascadeSelectRoot, null);
+
 export {
-  CascadeSelectRoot as UICascadeSelect,
   CascadeSelectValue as UICascadeSelectValue,
   CascadeSelectContent as UICascadeSelectContent,
   CascadeSelectColumn as UICascadeSelectColumn,

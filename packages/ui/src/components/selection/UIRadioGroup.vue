@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot, type RadioGroupItemSlotProps } from "@sectile/vue/radio-group";
 import { useId } from "vue";
+import UIFieldClear from "../clear/UIFieldClear.vue";
+import { provideClearable, useClearableValue, type ClearableProps } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
 import { useSelectionOptions, type SelectionOption } from "./selection-options";
 
@@ -15,8 +17,10 @@ const {
   orientation = "vertical",
   disabled = undefined,
   readonly = undefined,
+  clearable,
+  clearLabel,
   ...controlProps
-} = defineProps<{
+} = defineProps<ClearableProps & {
   label: string;
   options: readonly UIRadioGroupOption[];
   variant?: "plain" | "card";
@@ -34,11 +38,26 @@ defineSlots<{
 }>();
 const id = useId();
 const { values, disabledValues } = useSelectionOptions(() => options);
+const selection = useClearableValue(
+  () => controlProps.modelValue,
+  controlProps.defaultValue ?? "",
+  value => emit("update:modelValue", value),
+);
+provideClearable({
+  enabled: () => clearable,
+  label: () => clearLabel,
+  disabled: () => disabled,
+  readonly: () => readonly,
+  hasValue: () => selection.value.value !== "",
+  clear: () => selection.set(""),
+  reset: selection.reset,
+});
 </script>
 
 <template>
   <div class="ui-radio-group">
     <span :id="`${id}-label`" class="ui-radio-group__label"><slot name="label">{{ label }}</slot></span>
+    <UIFieldClear />
     <RadioGroupRoot
       v-bind="definedControlAttrs({
         ...$attrs,
@@ -51,7 +70,8 @@ const { values, disabledValues } = useSelectionOptions(() => options);
       :items="values"
       :disabled-items="disabledValues"
       :orientation="orientation"
-      @update:model-value="emit('update:modelValue', $event)"
+      :model-value="selection.value.value"
+      @update:model-value="selection.set"
     >
       <RadioGroupItem
         v-for="(option, index) in options"
@@ -87,6 +107,13 @@ const { values, disabledValues } = useSelectionOptions(() => options);
   display: grid;
   gap: 0.5rem;
   min-inline-size: 0;
+}
+
+.ui-radio-group:has(> .ui-clear-button) {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+
+  > .ui-radio-group__options { grid-column: 1 / -1; }
 }
 
 .ui-radio-group__label {

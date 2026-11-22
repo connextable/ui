@@ -6,10 +6,11 @@ import {
   type TreeSelectRootProps,
   type TreeSelectSlots,
 } from "@sectile/vue/tree-select";
-import { ref, useTemplateRef } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
+import { provideClearable, useClearableValue, type ClearableProps } from "../clear/clearable";
 
 defineOptions({ inheritAttrs: false });
-const props = withDefaults(defineProps<TreeSelectRootProps<ID>>(), {
+const props = withDefaults(defineProps<TreeSelectRootProps<ID> & ClearableProps>(), {
   position: true,
   open: undefined,
   disabled: undefined,
@@ -19,7 +20,38 @@ const props = withDefaults(defineProps<TreeSelectRootProps<ID>>(), {
 const emit = defineEmits<TreeSelectEmits<ID>>();
 defineSlots<TreeSelectSlots<ID>>();
 
+const rootProps = computed(() => {
+  const { clearable: _clearable, clearLabel: _clearLabel, ...nativeProps } = props;
+  return nativeProps as TreeSelectRootProps<ID>;
+});
 const localOpen = ref(props.defaultOpen ?? false);
+const selection = useClearableValue(
+  () => props.modelValue,
+  props.defaultValue ?? [],
+  value => emit("update:modelValue", value),
+);
+const search = useClearableValue(
+  () => props.query,
+  props.defaultQuery ?? "",
+  value => emit("update:query", value),
+);
+
+provideClearable({
+  enabled: () => props.clearable,
+  label: () => props.clearLabel,
+  disabled: () => props.disabled,
+  readonly: () => props.readonly,
+  hasValue: () => selection.value.value.length > 0 || search.value.value !== "",
+  clear() {
+    if (selection.value.value.length) selection.set([]);
+    if (search.value.value !== "") search.set("");
+    if (props.open ?? localOpen.value) updateOpen(false);
+  },
+  reset() {
+    selection.reset();
+    search.reset();
+  },
+});
 
 function updateOpen(open: boolean) {
   if (props.open === undefined) localOpen.value = open;
@@ -76,15 +108,17 @@ defineExpose({
 <template>
   <TreeSelectRoot
     ref="tree"
-    v-bind="{ ...$attrs, ...props }"
+    v-bind="{ ...$attrs, ...rootProps }"
     v-slot="state"
+    :model-value="selection.value.value"
+    :query="search.value.value"
     :open="props.open ?? localOpen"
     :position="false"
     :data-ui-tree-select-positioned="props.position || undefined"
-    @update:model-value="emit('update:modelValue', $event)"
+    @update:model-value="selection.set"
     @update:expanded-values="emit('update:expandedValues', $event)"
     @update:highlighted-value="emit('update:highlightedValue', $event)"
-    @update:query="emit('update:query', $event)"
+    @update:query="search.set"
     @update:open="updateOpen"
     @click="openFromInput"
     @input="openFromSearch"

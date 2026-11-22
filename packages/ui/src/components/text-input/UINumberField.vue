@@ -1,18 +1,30 @@
 <script setup lang="ts">
 import { NumberField, type NumberFieldExpose, type NumberFieldProps } from "@sectile/vue/number-field";
-import { ref, useId, useTemplateRef } from "vue";
+import { provideFormControlReset, useFormFieldDefaults } from "@sectile/vue/form-boundary";
+import { computed, nextTick, ref, useId, useTemplateRef, watch } from "vue";
+import UIClearButton from "../clear/UIClearButton.vue";
+import type { ClearableProps } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
 
 defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "for" });
 
-const { unit, disabled = undefined, readonly = undefined, required = undefined, ...fieldProps } =
-  defineProps<NumberFieldProps & { unit?: string }>();
+const { unit, clearable, clearLabel, disabled = undefined, readonly = undefined, required = undefined, ...fieldProps } =
+  defineProps<NumberFieldProps & ClearableProps & { unit?: string }>();
 const emit = defineEmits<{ "update:modelValue": [value: string | null] }>();
 
 const control = useTemplateRef<InstanceType<typeof NumberField>>("control");
 const pointerFocus = ref(false);
 const unitId = useId();
 const unavailable = { status: "rejected", reason: "unavailable" } as const;
+const defaults = useFormFieldDefaults();
+const initialText = fieldProps.defaultValue ?? "";
+const text = ref(fieldProps.modelValue === undefined ? initialText : fieldProps.modelValue ?? "");
+const canClear = computed(() => clearable && text.value !== "" &&
+  !(disabled ?? defaults?.value.disabled) && !(readonly ?? defaults?.value.readonly));
+watch(() => fieldProps.modelValue, value => {
+  if (value !== undefined) text.value = value ?? "";
+});
+provideFormControlReset(() => { text.value = fieldProps.modelValue === undefined ? initialText : fieldProps.modelValue ?? ""; });
 
 defineExpose<NumberFieldExpose>({
   getText: () => control.value?.getText() ?? null,
@@ -39,6 +51,24 @@ function focusInput() {
   const input = control.value?.$el;
   if (input instanceof HTMLInputElement) input.focus();
 }
+
+function syncText(event: Event) {
+  if (event.target instanceof HTMLInputElement) text.value = event.target.value;
+}
+
+function updateValue(value: string | null) {
+  text.value = value ?? "";
+  emit("update:modelValue", value);
+}
+
+async function clear() {
+  if (!canClear.value) return;
+  const result = await control.value?.clear();
+  if (result?.status !== "accepted") return;
+  await nextTick();
+  text.value = control.value?.getText() ?? "";
+  focusInput();
+}
 </script>
 
 <template>
@@ -55,8 +85,11 @@ function focusInput() {
     <NumberField
       ref="control"
       v-bind="inputBindings($attrs)"
-      @update:model-value="emit('update:modelValue', $event)"
+      @update:model-value="updateValue"
+      @input="syncText"
+      @change="syncText"
     />
     <span v-if="unit" :id="unitId" class="ui-numeric-unit">{{ unit }}</span>
+    <UIClearButton v-if="canClear" :label="clearLabel ?? '수량 지우기'" @click="clear" />
   </span>
 </template>

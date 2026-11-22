@@ -1,6 +1,9 @@
 <script setup lang="ts" generic="Value extends string | number = string">
 import { TextField, type TextFieldProps } from "@sectile/vue/text";
-import { useTemplateRef } from "vue";
+import { provideFormControlReset, useFormFieldDefaults } from "@sectile/vue/form-boundary";
+import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
+import UIClearButton from "../clear/UIClearButton.vue";
+import type { ClearableProps } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
 
 defineOptions({ inheritAttrs: false });
@@ -9,8 +12,8 @@ defineSlots<{
   trailing?(): unknown;
 }>();
 
-const { size = "md", variant = "outline", disabled = undefined, readonly = undefined, ...fieldProps } = defineProps<
-  Omit<TextFieldProps, "modelValue" | "name" | "form" | "required"> & {
+const { size = "md", variant = "outline", disabled = undefined, readonly = undefined, clearable, clearLabel, ...fieldProps } = defineProps<
+  Omit<TextFieldProps, "modelValue" | "name" | "form" | "required"> & ClearableProps & {
     id?: string;
     modelValue?: Value;
     size?: "sm" | "md" | "lg";
@@ -21,13 +24,39 @@ const { size = "md", variant = "outline", disabled = undefined, readonly = undef
 const emit = defineEmits<{ "update:modelValue": [value: Value] }>();
 const control = useTemplateRef<InstanceType<typeof TextField>>("control");
 defineExpose({ control, focus });
+const defaults = useFormFieldDefaults();
+const initialText = String(fieldProps.defaultValue ?? "");
+const text = ref(String(fieldProps.modelValue ?? initialText));
+const canClear = computed(() => clearable && text.value !== "" &&
+  !(disabled ?? defaults?.value.disabled) && !(readonly ?? defaults?.value.readonly));
+watch(() => fieldProps.modelValue, value => {
+  if (value !== undefined) text.value = String(value);
+});
+provideFormControlReset(() => { text.value = String(fieldProps.modelValue ?? initialText); });
+
+function syncText(event: Event) {
+  const input = event.target;
+  if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) text.value = input.value;
+}
+
+async function clear() {
+  if (!canClear.value || !control.value?.clear()) return;
+  text.value = "";
+  await nextTick();
+  const input = control.value?.$el;
+  if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) text.value = input.value;
+  focus({ preventScroll: true });
+}
 
 function inputBindings(attrs: Record<string, unknown>) {
   const { class: _class, style: _style, ...inputAttrs } = attrs;
   return {
     ...inputAttrs,
     ...definedControlAttrs({ ...fieldProps, disabled, readonly }),
-    "onUpdate:modelValue": (next: string | number) => emit("update:modelValue", next as Value),
+    "onUpdate:modelValue": (next: string | number) => {
+      text.value = String(next);
+      emit("update:modelValue", next as Value);
+    },
   };
 }
 
@@ -52,17 +81,19 @@ function focusFromFrame(event: MouseEvent) {
 
 <template>
   <div
-    v-if="$slots.leading || $slots.trailing"
+    v-if="$slots.leading || $slots.trailing || clearable"
     class="ui-field-control ui-inset-frame ui-input ui-input--with-slots"
     :class="$attrs.class"
     :style="$attrs.style"
     :data-size="size"
     :data-ui-control-size="size"
     :data-variant="variant"
+    :data-clearable="clearable || undefined"
     @click="focusFromFrame"
   >
     <div v-if="$slots.leading" class="ui-input__slot ui-input__slot--leading"><slot name="leading" /></div>
-    <TextField ref="control" v-bind="inputBindings($attrs)" class="ui-input__control" />
+    <TextField ref="control" v-bind="inputBindings($attrs)" class="ui-input__control" @input="syncText" @change="syncText" />
+    <UIClearButton v-if="canClear" :label="clearLabel" @click="clear" />
     <div v-if="$slots.trailing" class="ui-input__slot ui-input__slot--trailing"><slot name="trailing" /></div>
   </div>
   <TextField
@@ -75,6 +106,8 @@ function focusFromFrame(event: MouseEvent) {
     :data-size="size"
     :data-ui-control-size="size"
     :data-variant="variant"
+    @input="syncText"
+    @change="syncText"
   />
 </template>
 
@@ -100,6 +133,14 @@ function focusFromFrame(event: MouseEvent) {
 
 .ui-input--with-slots:has(> .ui-input__slot--trailing > :is(button, .ui-button)) {
   padding-inline-end: var(--ui-frame-padding);
+}
+
+.ui-input--with-slots:has(> .ui-clear-button):not(:has(> .ui-input__slot--trailing)) {
+  padding-inline-end: var(--ui-frame-padding);
+}
+
+.ui-input[data-clearable] input::-webkit-search-cancel-button {
+  display: none;
 }
 
 .ui-input:where(textarea),

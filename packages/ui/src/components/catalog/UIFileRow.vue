@@ -161,14 +161,14 @@ function formatSize(bytes: number) {
   z-index: 1;
 }
 
-.ui-file-row__actions :deep(.ui-button) {
+.ui-file-row__actions :deep(.ui-button:not(.ui-clear-button)) {
   min-block-size: 0;
   block-size: var(--ui-inset-size);
   border-radius: var(--ui-inset-radius);
   white-space: nowrap;
 }
 
-.ui-file-row__actions :deep(.ui-button[data-ui-control-shape="square"]) {
+.ui-file-row__actions :deep(.ui-button[data-ui-control-shape="square"]:not(.ui-clear-button)) {
   inline-size: var(--ui-inset-size);
   min-inline-size: 0;
 }

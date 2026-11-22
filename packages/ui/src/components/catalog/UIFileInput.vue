@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronRight, Paperclip, X } from "@lucide/vue";
+import { ChevronRight, Paperclip } from "@lucide/vue";
 import {
   FileInputClear,
   FileInputDropzone,
@@ -13,18 +13,20 @@ import {
 } from "@sectile/vue/form/file-input";
 import { computed, ref, useId, useTemplateRef } from "vue";
 import UIButton from "../button/UIButton.vue";
+import UIClearButton from "../clear/UIClearButton.vue";
+import type { ClearableProps } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
 import UIFileRow from "./UIFileRow.vue";
 
 defineOptions({ inheritAttrs: false });
-const props = withDefaults(defineProps<FileInputRootProps & {
+const props = withDefaults(defineProps<FileInputRootProps & ClearableProps & {
   label?: string;
   hint?: string;
   pickerLabel?: string;
   variant?: "compact" | "dropzone";
   preview?: boolean;
   size?: "sm" | "md" | "lg";
-}>(), { disabled: undefined, readonly: undefined, required: undefined, variant: "compact", size: "md" });
+}>(), { disabled: undefined, readonly: undefined, required: undefined, variant: "compact", size: "md", clearable: true });
 
 defineSlots<{
   default?(state: FileInputSlotProps): unknown;
@@ -32,7 +34,7 @@ defineSlots<{
 
 const picker = useTemplateRef<InstanceType<typeof FileInputRoot>>("picker");
 const rootProps = computed(() => {
-  const { label, hint, pickerLabel, variant, preview, size, ...nativeProps } = props;
+  const { label, hint, pickerLabel, variant, preview, size, clearable, clearLabel, ...nativeProps } = props;
   return definedControlAttrs(nativeProps);
 });
 const id = useId();
@@ -132,10 +134,8 @@ defineExpose({
               </UIButton>
             </FileInputTrigger>
           </template>
-          <template v-if="state.files[0] && !state.disabled && !state.readonly" #actions>
-            <UIButton size="sm" variant="ghost" icon-only :aria-label="`${state.files[0].name} 제거`" @click="remove(0, state)">
-              <template #leading><X /></template>
-            </UIButton>
+          <template v-if="clearable && state.files[0] && !state.disabled && !state.readonly" #actions>
+            <UIClearButton :label="clearLabel ?? `${state.files[0].name} 제거`" @click="remove(0, state)" />
           </template>
         </UIFileRow>
         <small v-if="hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>
@@ -164,7 +164,7 @@ defineExpose({
           </FileInputTrigger>
         </FileInputDropzone>
         <div
-          v-if="variant === 'compact' || state.files.length > 1 && !state.readonly && !state.disabled"
+          v-if="variant === 'compact' || clearable && state.files.length > 1 && !state.readonly && !state.disabled"
           class="ui-file-input__options"
           :data-layout="variant"
         >
@@ -185,8 +185,8 @@ defineExpose({
                 {{ state.files.length ? `${state.files.length}개 선택됨` : '선택한 파일 없음' }}
               </span>
             </template>
-            <FileInputClear v-if="state.files.length > 1 && !state.readonly && !state.disabled" as-child>
-              <UIButton size="sm" variant="ghost" @click="focusTrigger">모두 지우기</UIButton>
+            <FileInputClear v-if="clearable && state.files.length > 1 && !state.readonly && !state.disabled" as-child>
+              <UIClearButton :label="clearLabel ?? '파일 모두 지우기'" @click="focusTrigger" />
             </FileInputClear>
           </div>
           <small v-if="variant === 'compact' && hint" :id="`${id}-hint`" class="ui-file-input__hint">{{ hint }}</small>
@@ -198,10 +198,8 @@ defineExpose({
       <TransitionGroup v-if="!inlineFile" tag="ul" name="ui-file" class="ui-file-input__files" aria-label="선택한 파일">
         <li v-for="({ file, key }, index) in fileRows(state.files)" :key="key">
           <UIFileRow :file="file" :size="size" :preview="preview">
-            <template v-if="!state.disabled && !state.readonly" #actions>
-              <UIButton size="sm" variant="ghost" icon-only :aria-label="`${file.name} 제거`" @click="remove(index, state)">
-                <template #leading><X /></template>
-              </UIButton>
+            <template v-if="clearable && !state.disabled && !state.readonly" #actions>
+              <UIClearButton :label="`${file.name} 제거`" @click="remove(index, state)" />
             </template>
           </UIFileRow>
         </li>

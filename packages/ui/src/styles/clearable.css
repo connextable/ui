@@ -1,0 +1,88 @@
+.ui-clear-button.ui-button {
+  --ui-control-size-height: var(--ui-clear-size, 2rem);
+  --ui-control-size-padding-block: 0;
+  --ui-button-icon-radius: var(--ui-radius-sm);
+
+  flex: none;
+  min-inline-size: var(--ui-control-size-height);
+  min-block-size: var(--ui-control-size-height);
+  color: var(--ui-color-text-muted);
+}
+
+.ui-clear-button--when-available:disabled {
+  display: none;
+}
+
+.ui-clearable-control {
+  --ui-clear-size: 2rem;
+  --ui-clear-offset: var(--ui-frame-padding);
+
+  position: relative;
+  display: grid;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding: 0;
+
+  > .ui-clear-button {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: var(--ui-clear-offset);
+    translate: 0 -50%;
+  }
+
+  &:has(> .ui-clear-button) > :is(input, [role="combobox"], .ui-popup-trigger, .ui-input--with-slots) {
+    padding-inline-end: calc(var(--ui-clear-offset) + var(--ui-clear-size) + var(--ui-space-xs));
+  }
+}
+
+.ui-clearable-control--trigger {
+  --ui-clear-offset: calc(var(--ui-control-size-padding-inline) + var(--ui-control-size-icon) + var(--ui-space-xs));
+}
+
+.ui-clearable-group {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ui-space-xs);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+
+  > :first-child { min-inline-size: 0; }
+}
+
+.ui-number-control:has(> .ui-clear-button) {
+  align-items: center;
+  padding-inline-end: var(--ui-frame-padding);
+
+  > .ui-numeric-unit { padding-inline-end: var(--ui-space-sm); }
+}
+
+.ui-clearable-control--temporal {
+  inline-size: min(100%, var(--ui-temporal-input-width, 16rem));
+
+  > input.ui-temporal-input { inline-size: 100%; }
+}
+
+.ui-tree-select-field:has(> .ui-clear-button) > input {
+  padding-inline-end: calc(var(--ui-control-height-small) + var(--ui-space-md) + 2rem);
+}
+
+.ui-tree-select-field > .ui-clear-button {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: calc(var(--ui-control-padding-inline) + 1.25rem);
+  translate: 0 -50%;
+}
+
+:where(
+  [data-part="anchor"]:is([data-scope^="date"], [data-scope^="month-"], [data-scope^="year-"]),
+  [data-scope="time-picker"][data-part="root"]
+):has(> .ui-clear-button) {
+  > .ui-clear-button {
+    grid-row: 1;
+    grid-column: var(--ui-picker-clear-column, 3);
+  }
+}
+
+:where([data-scope="pin-input"], [data-scope="rating"])[data-part="root"] > .ui-clear-button {
+  align-self: center;
+}
