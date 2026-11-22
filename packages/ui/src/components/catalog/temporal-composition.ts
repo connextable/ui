@@ -5,7 +5,7 @@ import { useTemporalReferenceDate } from "@sectile/vue/temporal/temporal-provide
 import {
   DatePickerCell, DatePickerContent, DatePickerGrid, DatePickerMonthCell,
   DatePickerNextMonth, DatePickerNextWeek, DatePickerNextYear,
-  DatePickerPreviousMonth, DatePickerPreviousWeek, DatePickerPreviousYear,
+  DatePickerPortal, DatePickerPreviousMonth, DatePickerPreviousWeek, DatePickerPreviousYear,
   DatePickerTrigger, DatePickerYearViewTrigger, type DatePickerRootSlotProps,
 } from "@sectile/vue/temporal/date-picker";
 import { MonthPickerCell } from "@sectile/vue/temporal/month-picker";
@@ -31,6 +31,7 @@ interface CalendarComposition {
   anchor?: Component;
   content?: Component;
   inputs?: readonly Component[];
+  alternateInputs?: readonly [Component] | readonly [Component, Component, Component, Component];
   grid?: Component;
   cell?: Component;
   monthCell?: Component;
@@ -99,7 +100,7 @@ const CalendarTimeControl = defineComponent({
 });
 
 export function withCalendarDefaults<Root extends Component, Extra = object>(root: Root, options: CalendarComposition): CalendarFormComponent<Root, Extra> {
-  const { kind = "day", anchor, content = DatePickerContent, inputs = [], grid = DatePickerGrid, cell = DatePickerCell, monthCell, yearCell, timePicker, timeChoices, inlineTime } = options;
+  const { kind = "day", anchor, content = DatePickerContent, inputs = [], alternateInputs, grid = DatePickerGrid, cell = DatePickerCell, monthCell, yearCell, timePicker, timeChoices, inlineTime } = options;
   const range = inputs.length === 2 && kind !== "date-time";
   const metadata = root as Root & { __sectileFormLabelMode?: "for" | "labelledby" };
   return defineComponent({
@@ -113,6 +114,8 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
       endTime: Object as PropType<TimeValue | null>,
       timePolicies: Object as PropType<TimeFieldPolicies>,
       timeChoices: { type: Boolean, default: true },
+      inputLayout: String as PropType<"split" | "combined" | "summary">,
+      portal: Boolean,
       editable: Boolean,
     },
     emits: ["update:highlightedValue", "update:time", "update:startTime", "update:endTime"],
@@ -193,18 +196,36 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
           : range ? (kind === "day" ? labels.range : `${labels[kind]} ${labels.rangeUnit}`) : labels[kind];
         const triggerLabel = `${String(attrs.label ?? groupLabel)} ${labels.open}`;
         const granularity = kind === "month" || kind === "year" ? kind : "day";
-        const summary = options.summary && !(kind !== "date-time-range" && props.editable);
+        const combinedDateTime = kind === "date-time" && props.inputLayout === "combined";
+        const splitDateTimeRange = kind === "date-time-range" && props.inputLayout === "split";
+        const summary = options.summary && !(kind === "date-time-range" ? splitDateTimeRange : props.editable);
         const placeholder = `${groupLabel} ${labels.choose}`;
-        const renderInputs = () => inputs.map((input, index) => {
-          const segment = kind === "date-time" ? (index ? "time" : "date") : range ? (index ? "end" : "start") : undefined;
-          const name = props.name && segment ? encodeFormFieldPath(appendFormFieldPath(props.name, [segment])) : props.name;
-          const label = kind === "date-time" ? (index ? labels.time : labels.day)
-            : range ? `${index ? labels.end : labels.start} ${granularity === "day" ? labels.day : labels[granularity]}` : groupLabel;
+        function renderInput(input: Component, label: string, path: string[] = []) {
+          const name = props.name && path.length ? encodeFormFieldPath(appendFormFieldPath(props.name, path)) : props.name;
           return h(input, {
             ...definedControlAttrs({ name, form: props.form }),
             hidden: summary || !anchor || undefined,
             "aria-label": label,
           });
+        }
+        function renderPickerInputs() {
+          if (combinedDateTime && alternateInputs?.[0]) return renderInput(alternateInputs[0], groupLabel);
+          if (splitDateTimeRange && alternateInputs?.length === 4) {
+            const [startDate, startTime, endDate, endTime] = alternateInputs;
+            const group = (endpoint: "start" | "end", date: Component, time: Component) =>
+              h("div", { role: "group", "aria-label": `${labels[endpoint]} ${labels.dateTime}` }, [
+                renderInput(date, `${labels[endpoint]} ${labels.day}`, [endpoint, "date"]),
+                renderInput(time, `${labels[endpoint]} ${labels.time}`, [endpoint, "time"]),
+              ]);
+            return [group("start", startDate, startTime), group("end", endDate, endTime)];
+          }
+          return renderInputs();
+        }
+        const renderInputs = () => inputs.map((input, index) => {
+          const segment = kind === "date-time" ? (index ? "time" : "date") : range ? (index ? "end" : "start") : undefined;
+          const label = kind === "date-time" ? (index ? labels.time : labels.day)
+            : range ? `${index ? labels.end : labels.start} ${granularity === "day" ? labels.day : labels[granularity]}` : groupLabel;
+          return renderInput(input, label, segment ? [segment] : []);
         });
         if (!anchor) {
           const clock = inlineTime === "single" && props.time !== undefined
@@ -238,17 +259,18 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
             h(timeChoices, { label, endpoint, precision: attrs.timePrecision ?? attrs["time-precision"] ?? "minute" }),
           ]);
         }
+        const popup = () => h(content, {
+          "aria-label": groupLabel,
+          class: showTimes ? "ui-temporal-picker__with-time" : undefined,
+          "data-time-layout": showTimes ? range ? "range" : "single" : undefined,
+        }, () => [range ? renderTime("start") : undefined, calendar(state, labels), renderTime(range ? "end" : undefined)]);
         return [
           h(anchor, inputStateAttrs(state.disabled, state.readonly), () => [
-            ...renderInputs(),
+            renderPickerInputs(),
             value,
             h(DatePickerTrigger, { "aria-label": triggerLabel }, () => h(CalendarDays, { size: 18, "aria-hidden": true })),
           ]),
-          h(content, {
-            "aria-label": groupLabel,
-            class: showTimes ? "ui-temporal-picker__with-time" : undefined,
-            "data-time-layout": showTimes ? range ? "range" : "single" : undefined,
-          }, () => [range ? renderTime("start") : undefined, calendar(state, labels), renderTime(range ? "end" : undefined)]),
+          props.portal ? h(DatePickerPortal, null, popup) : popup(),
         ];
       }
 

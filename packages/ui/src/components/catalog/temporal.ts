@@ -159,11 +159,14 @@ export const UIDateRangePicker: ClearableComponent<CalendarFormComponent<typeof 
 }), null, { label: "범위 지우기" });
 export const UIDateTimePickerAnchor: typeof DateTimePickerAnchor = withClearableControl(DateTimePickerAnchor, "anchor");
 const DateTimePicker: ReturnType<typeof withPickerInputPrecision<typeof DateTimePickerRoot>> = withPickerInputPrecision(DateTimePickerRoot);
-type DateTimeChoicesOptions = { timeChoices?: boolean };
+type DateTimePickerOptions<Layout extends string> = { timeChoices?: boolean; inputLayout?: Layout; portal?: boolean };
+type SingleDateTimePickerOptions = DateTimePickerOptions<"split" | "combined">;
+type RangeDateTimePickerOptions = DateTimePickerOptions<"summary" | "split">;
 export const UIDateTimePickerTimeChoices: typeof DateTimePickerTimeChoices = withStyledTimeChoices(DateTimePickerTimeChoices);
 export const UIDateTimeRangePickerTimeChoices: typeof DateTimeRangePickerTimeChoices = withStyledTimeChoices(DateTimeRangePickerTimeChoices);
-export const UIDateTimePicker: ClearableComponent<CalendarFormComponent<typeof DateTimePicker, DateTimeChoicesOptions>> = withClearableModel(withCalendarDefaults<typeof DateTimePicker, DateTimeChoicesOptions>(DateTimePicker, {
+export const UIDateTimePicker: ClearableComponent<CalendarFormComponent<typeof DateTimePicker, SingleDateTimePickerOptions>> = withClearableModel(withCalendarDefaults<typeof DateTimePicker, SingleDateTimePickerOptions>(DateTimePicker, {
   kind: "date-time", anchor: UIDateTimePickerAnchor, inputs: [UIDateTimePickerDateInput, UIDateTimePickerTimeInput],
+  alternateInputs: [UIDateTimePickerDateTimeInput],
   timeChoices: UIDateTimePickerTimeChoices,
 }), null);
 const DateTimeRangePicker: ReturnType<typeof withPickerInputPrecision<typeof DateTimeRangePickerRoot>> = withPickerInputPrecision(DateTimeRangePickerRoot);
@@ -292,9 +295,10 @@ export const UICalendar: ClearableComponent<CalendarFormComponent<typeof Calenda
   content: UICalendarContent, inputs: [CalendarInput], timePicker: UITimePicker, inlineTime: "single",
 }), null, { label: "날짜 지우기" });
 
-export const UIDateTimeRangePicker: ClearableComponent<CalendarFormComponent<typeof DateTimeRangePicker, DateTimeChoicesOptions>> = withClearableModel(withCalendarDefaults<typeof DateTimeRangePicker, DateTimeChoicesOptions>(DateTimeRangePicker, {
+export const UIDateTimeRangePicker: ClearableComponent<CalendarFormComponent<typeof DateTimeRangePicker, RangeDateTimePickerOptions>> = withClearableModel(withCalendarDefaults<typeof DateTimeRangePicker, RangeDateTimePickerOptions>(DateTimeRangePicker, {
   kind: "date-time-range", anchor: UIDateTimeRangePickerAnchor, content: UIDateTimeRangePickerContent,
   inputs: [UIDateTimeRangePickerStartDateTimeInput, UIDateTimeRangePickerEndDateTimeInput], summary: true,
+  alternateInputs: [UIDateTimeRangePickerStartDateInput, UIDateTimeRangePickerStartTimeInput, UIDateTimeRangePickerEndDateInput, UIDateTimeRangePickerEndTimeInput],
   grid: UIDateTimeRangePickerGrid, cell: UIDateTimeRangePickerCell, monthCell: UIDateTimeRangePickerMonthCell,
   timeChoices: UIDateTimeRangePickerTimeChoices,
 }), null, { label: "범위 지우기" });

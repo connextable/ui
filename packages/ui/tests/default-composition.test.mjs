@@ -6,7 +6,7 @@ import {
   UICalendar, UIDatePicker, UIDateRangeField, UIDateRangePicker,
   UIDateTimePicker, UIDateTimeRangeField, UIDateTimeRangePicker,
   UIForm, UIFormField, UIMonthPicker, UIMonthRangePicker, UIRangeCalendar,
-  UITimePicker, UITimeRangeField, UIYearPicker, UIYearRangePicker,
+  UITemporalProvider, UITimePicker, UITimeRangeField, UIYearPicker, UIYearRangePicker,
 } from "@connextable/ui";
 
 const date = { year: 2026, month: 8, day: 22 };
@@ -64,6 +64,27 @@ test("month and year pickers can expose native editable text without changing th
     }
     assert.match(await render(component, { modelValue }), /<input[^>]+\shidden/);
   }
+});
+
+test("alternate date-time input layouts keep the calendar, time options and named inputs", async () => {
+  const single = await render(UITemporalProvider, { formatting: { locale: "ko-KR-u-hc-h23" } }, () => h(UIDateTimePicker, {
+    modelValue: dateTime, inputLayout: "combined", open: true, name: "appointment",
+  }));
+  assert.match(single, /<input[^>]+name="appointment"[^>]+value="[^"]*09:30"/);
+  assert.equal([...single.matchAll(/<input\b[^>]*type="text"/g)].length, 1);
+  assert.equal([...single.matchAll(/role="listbox"/g)].length, 2);
+
+  const range = await render(UITemporalProvider, { formatting: { locale: "ko-KR-u-hc-h23" } }, () => h(UIDateTimeRangePicker, {
+    modelValue: period, inputLayout: "split", open: true, name: "booking",
+  }));
+  const inputs = [...range.matchAll(/<input\b[^>]*type="text"[^>]*>/g)].map(match => match[0]);
+  assert.equal(inputs.length, 4);
+  assert.match(inputs[0], /name="booking\.start\.date"/);
+  assert.match(inputs[1], /name="booking\.start\.time"[^>]+value="09:30"/);
+  assert.match(inputs[2], /name="booking\.end\.date"/);
+  assert.match(inputs[3], /name="booking\.end\.time"[^>]+value="17:30"/);
+  assert.ok(inputs.every(input => !/\shidden(?=[\s=>])/.test(input)));
+  assert.equal([...range.matchAll(/role="listbox"/g)].length, 4);
 });
 
 test("inline calendars include year/month navigation and opt in to independent time models", async () => {

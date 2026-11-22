@@ -1,6 +1,6 @@
 import { okResult } from "@sectile/core/result";
 import { createDateFieldFormat, type DateFieldFormat, type DateFieldFormatOptions } from "@sectile/temporal/date-field";
-import { createDateTimeFieldFormat, type DateTimeFieldFormatOptions } from "@sectile/temporal/date-time-field";
+import { createDateTimeFieldFormat, type DateTimeFieldFormatOptions, type DateTimeRange, type DateTimeValue } from "@sectile/temporal/date-time-field";
 import { createTimeFieldFormat, type TimeFieldFormat, type TimeFieldHourCycle, type TimeFieldPrecision } from "@sectile/temporal/time-field";
 import type { DateTimePickerRoot, DateTimePickerRootSlotProps } from "@sectile/vue/temporal/date-time-picker";
 import type { DateTimeRangePickerRoot, DateTimeRangePickerRootSlotProps } from "@sectile/vue/temporal/date-time-range-picker";
@@ -163,18 +163,29 @@ type PickerWithInputPrecision<Root extends DateTimeRoot> = new () => Omit<Instan
   $props: InstanceType<Root>["$props"] & { timePrecision?: TimeFieldPrecision };
 };
 
+function pickerInputPrecision(value: DateTimeValue | DateTimeRange | null | undefined, requested: TimeFieldPrecision): TimeFieldPrecision {
+  if (!value || requested === "millisecond") return requested;
+  const times = "start" in value ? [value.start.time, value.end.time] : [value.time];
+  if (times.some(time => time.millisecond !== 0)) return "millisecond";
+  return times.some(time => time.second !== 0) ? "second" : requested;
+}
+
 export function withPickerInputPrecision<Root extends DateTimeRoot>(root: Root): PickerWithInputPrecision<Root> {
   return defineComponent({
     inheritAttrs: false,
-    props: { timePrecision: String as PropType<TimeFieldPrecision> },
+    props: { timePrecision: { type: String as PropType<TimeFieldPrecision>, default: "minute" } },
     setup(props, { attrs, slots }) {
       const formatter = useTemporalFormatter();
+      const inputPrecision = computed(() => {
+        const value = (attrs.modelValue === undefined ? attrs.defaultValue ?? attrs["default-value"] : attrs.modelValue) as DateTimeValue | DateTimeRange | null | undefined;
+        return pickerInputPrecision(value, props.timePrecision);
+      });
       const renderWithInputPrecision = () => h(TemporalFormatterScope, {
         transform: base => ({
           ...base,
           // The native picker inputs request the Provider's millisecond format.
-          timeFieldFormat: precision => base.timeFieldFormat(precision === "millisecond" ? props.timePrecision : precision),
-          dateTimeFieldFormat: precision => base.dateTimeFieldFormat(precision === "millisecond" ? props.timePrecision : precision),
+          timeFieldFormat: precision => base.timeFieldFormat(precision === "millisecond" ? inputPrecision.value : precision),
+          dateTimeFieldFormat: precision => base.dateTimeFieldFormat(precision === "millisecond" ? inputPrecision.value : precision),
         }),
       }, {
         default: (inherited: ReturnType<typeof useTemporalFormatter>) => h(root as Component, attrs, {
@@ -185,12 +196,9 @@ export function withPickerInputPrecision<Root extends DateTimeRoot>(root: Root):
         }),
       });
 
-      return () => {
-        if (!props.timePrecision) return h(root as Component, attrs, slots);
-        return formatter.value ? renderWithInputPrecision() : h(TemporalProvider, {
-          formatting: defaultTemporalFormatting,
-        }, { default: renderWithInputPrecision });
-      };
+      return () => formatter.value ? renderWithInputPrecision() : h(TemporalProvider, {
+        formatting: defaultTemporalFormatting,
+      }, { default: renderWithInputPrecision });
     },
   }) as unknown as PickerWithInputPrecision<Root>;
 }
