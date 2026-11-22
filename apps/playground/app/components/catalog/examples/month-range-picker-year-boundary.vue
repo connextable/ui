@@ -24,7 +24,7 @@ const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIMonthRangePicker :default-value="reportingPeriod" v-slot="{ value, months, view }">
+  <UIMonthRangePicker :default-value="reportingPeriod" clearable v-slot="{ value, months, view }">
     <UIMonthRangePickerAnchor>
       <UIMonthRangePickerStartInput hidden />
       <UIMonthRangePickerEndInput hidden />

@@ -1294,7 +1294,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "date-range-field": {
     examples: [
       { id: "date-range-field-bounds", title: "입력할 수 있는 기간 경계", description: "시작일을 8월 20일 이전이나 종료일을 30일 이후로 확정할 수 없습니다." },
-      { id: "date-range-field-clear", title: "편집 중 한쪽 날짜를 비우기", description: "종료일을 지운 뒤 범위값이 어떻게 바뀌는지 확인합니다." },
+      { id: "date-range-field-clear", title: "날짜 범위 지우기", description: "X 버튼으로 시작일과 종료일을 함께 비웁니다." },
       { id: "date-range-field-order", title: "시작보다 이른 종료일 입력", description: "종료일을 시작일보다 이르게 바꾸고 하단에서 확정된 범위를 확인합니다." },
       { id: "date-range-field-submit", title: "시작일과 종료일을 같은 폼 필드로 제출", description: "FieldGroup이 만든 경로로 두 날짜를 제출합니다.", section: "form" },
     ],

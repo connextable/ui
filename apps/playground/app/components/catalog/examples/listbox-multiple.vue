@@ -9,7 +9,7 @@ const selected = ref<string | readonly string[]>([]);
 
 <template>
   <div>
-    <UIListbox v-model="selected" :items="channels" selection-mode="multiple" aria-label="알림 수단">
+    <UIListbox v-model="selected" :items="channels" selection-mode="multiple" aria-label="알림 수단" clearable>
       <UIListboxItem v-for="channel in channels" :key="channel" :value="channel">
         <UIListboxItemText>{{ channel }}</UIListboxItemText>
         <UIListboxItemIndicator><Check :size="16" aria-hidden="true" /></UIListboxItemIndicator>

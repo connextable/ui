@@ -6,14 +6,14 @@ import {
 } from "@connextable/ui";
 
 import { ref } from 'vue'
-const range = ref({
+const range = ref<{ start: { year: number; month: number; day: number }; end: { year: number; month: number; day: number } } | null>({
   start: { year: 2026, month: 8, day: 22 },
   end: { year: 2026, month: 8, day: 25 },
 })
 </script>
 
 <template>
-  <UIDateRangeField v-model="range" start-label="시작" end-label="종료">
+  <UIDateRangeField v-model="range" start-label="시작" end-label="종료" clearable>
     <UIDateRangeFieldStartInput name="start" />
     <UIDateRangeFieldEndInput name="end" />
   </UIDateRangeField>

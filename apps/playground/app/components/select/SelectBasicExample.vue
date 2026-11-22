@@ -10,5 +10,5 @@ const density = ref<string | null>("comfortable");
 </script>
 
 <template>
-  <UISelect v-model="density" :options="options" aria-label="화면 밀도" />
+  <UISelect v-model="density" :options="options" aria-label="화면 밀도" clearable />
 </template>

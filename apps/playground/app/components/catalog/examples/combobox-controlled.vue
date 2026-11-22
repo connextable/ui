@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {
-  UIButton,
   UICombobox,
   UIComboboxContent,
   UIComboboxInput,
@@ -19,7 +18,7 @@ const policies = { matches: (label: string, query: string) => label.includes(que
 
 <template>
   <div class="example-selection">
-    <UICombobox v-model="value" :items="timeZones" :policies="policies" label="시간대">
+    <UICombobox v-model="value" :items="timeZones" :policies="policies" label="시간대" clearable>
       <UIComboboxInput placeholder="도시 검색" />
       <UIComboboxContent>
         <UIComboboxResults v-slot="{ items }">
@@ -31,7 +30,6 @@ const policies = { matches: (label: string, query: string) => label.includes(que
     </UICombobox>
     <div class="example-selection__output">
       <output>{{ value ?? "선택 없음" }}</output>
-      <UIButton size="sm" variant="ghost" :disabled="value === null" @click="value = null">선택 해제</UIButton>
     </div>
   </div>
 </template>

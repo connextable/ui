@@ -16,7 +16,7 @@ const max = { hour: 17, minute: 0, second: 0, millisecond: 0 };
 </script>
 
 <template>
-  <UITimePicker label="시간 선택" :default-value="initial" precision="minute" :policies="{ min, max }">
+  <UITimePicker label="시간 선택" :default-value="initial" precision="minute" :policies="{ min, max }" clearable>
     <UITimePickerInput label="시작 시간" />
     <UITimePickerTrigger aria-label="시작 시간 선택"><Clock :size="16" aria-hidden="true" /></UITimePickerTrigger>
     <UITimePickerContent v-slot="{ columns }">

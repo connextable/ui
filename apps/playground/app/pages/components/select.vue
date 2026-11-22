@@ -51,7 +51,7 @@ const parts = {
       <PlaygroundExample :heading-level="3"
         id="select-example"
         title="기본 사용법"
-        description="options로 목록을 만들고 v-model로 선택값을 연결합니다."
+        description="options로 목록을 만들고 v-model로 선택값을 연결합니다. clearable을 지정하면 X 버튼으로 미선택 상태로 돌아갑니다."
         :source="basicSource"
       >
         <SelectBasicExample />
