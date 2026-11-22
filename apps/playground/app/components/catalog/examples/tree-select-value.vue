@@ -11,8 +11,8 @@ const nodes = [
 </script>
 
 <template>
-  <UITreeSelect v-slot="{ value }" :nodes="nodes" :default-expanded-values="['design']" selection-mode="single">
-    <UITreeSelectField aria-label="팀 검색" :selected="!!value.length" :placeholder="value[0] ? labels[value[0]] : '팀을 검색하거나 선택하세요'" />
+  <UITreeSelect v-slot="{ value, query }" :nodes="nodes" :default-expanded-values="['design']" selection-mode="single">
+    <UITreeSelectField aria-label="팀 검색" placeholder="팀을 검색하거나 선택하세요" :query="query" :display-value="value[0] ? labels[value[0]] : ''" />
     <UITreeSelectContent>
       <UITreeSelectItem value="design">
         <UITreeSelectDisclosure for="design" as="button" aria-label="디자인 하위 팀 펼치기 또는 접기" />

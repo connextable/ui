@@ -24,7 +24,7 @@ function teamLabel(id: keyof typeof labels) {
     @search="request => tree?.resolveSearch(request, nodes.filter(node => labels[node.id].includes(request.query)).map(node => node.id))"
     v-slot="{ query, getChildren, value }"
   >
-    <UITreeSelectField aria-label="팀 검색" :selected="!!value.length" :placeholder="value[0] ? teamLabel(value[0]) : '예시: 화면'" />
+    <UITreeSelectField aria-label="팀 검색" placeholder="예시: 화면" :query="query" :display-value="value[0] ? teamLabel(value[0]) : ''" />
     <UITreeSelectContent>
       <template v-if="getChildren(null).includes('design')">
         <UITreeSelectItem value="design">

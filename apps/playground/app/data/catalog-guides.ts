@@ -582,7 +582,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       nodes: "선택할 항목의 id와 parentID를 전달합니다.",
       "selection-mode": "트리에서 한 항목 또는 여러 항목을 선택할지 지정합니다.",
       "default-expanded-values": "처음 표시할 하위 항목의 상위 노드를 지정합니다.",
-      UITreeSelectField: "검색 입력과 열림 상태를 나타내는 화살표를 표시합니다. selected는 선택된 값을 입력에 표시할 때 지정합니다.",
+      UITreeSelectField: "선택한 항목의 표시 이름은 display-value에, 루트 슬롯에서 받은 검색어는 query에 전달합니다.",
     },
   },
   "tree-view": {

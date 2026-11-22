@@ -11,8 +11,8 @@ const labels = { design: "디자인", ui: "제품 디자인", brand: "브랜드"
 </script>
 
 <template>
-  <UITreeSelect :nodes="nodes" :default-expanded-values="['design']" selection-mode="multiple" v-slot="{ value }">
-    <UITreeSelectField aria-label="팀 검색" :selected="!!value.length" :placeholder="value.map(id => labels[id]).join(', ') || '팀을 검색하거나 선택하세요'" />
+  <UITreeSelect :nodes="nodes" :default-expanded-values="['design']" selection-mode="multiple" v-slot="{ value, query }">
+    <UITreeSelectField aria-label="팀 검색" placeholder="팀을 검색하거나 선택하세요" :query="query" :display-value="value.map(id => labels[id]).join(', ')" />
     <UITreeSelectContent>
       <UITreeSelectItem value="design">
         <UITreeSelectDisclosure for="design" as="button" aria-label="디자인 하위 팀 펼치기 또는 접기" />
