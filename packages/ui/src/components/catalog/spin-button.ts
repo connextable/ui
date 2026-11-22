@@ -10,6 +10,7 @@ type DefaultProps = {
   name?: string;
   form?: string;
   required?: boolean;
+  placeholder?: string;
   unit?: string;
   size?: "sm" | "md" | "lg";
   layout?: "stepper" | "field";
@@ -22,6 +23,7 @@ export const UISpinButton = defineComponent({
     name: String,
     form: String,
     required: { type: Boolean, default: undefined },
+    placeholder: String,
     unit: String,
     size: String as PropType<DefaultProps["size"]>,
     layout: String as PropType<DefaultProps["layout"]>,
@@ -29,7 +31,7 @@ export const UISpinButton = defineComponent({
   setup(props, { attrs, slots }) {
     return () => {
       const root: Component = SpinButtonRoot;
-      const { id, name, form, required, unit, size, layout } = props;
+      const { id, name, form, required, placeholder, unit, size, layout } = props;
       const bindings = { ...attrs, "data-ui-control-size": size ?? attrs["data-ui-control-size"], "data-layout": layout ?? attrs["data-layout"] };
       if (slots.default || controlFlag(attrs.asChild ?? attrs["as-child"])) {
         return h(root, { ...bindings, id, name, form, required }, slots);
@@ -39,7 +41,7 @@ export const UISpinButton = defineComponent({
       return h(root, bindings, {
         default: () => {
           const input = h("span", { class: "ui-numeric-value" }, [
-            h(SpinButtonInput, definedControlAttrs({ id, name, form, required })),
+            h(SpinButtonInput, definedControlAttrs({ id, name, form, required, placeholder })),
             unit ? h("span", { class: "ui-numeric-unit", "aria-hidden": "true" }, unit) : null,
           ]);
           const increase = h(SpinButtonIncrement, { label: label + "늘리기" },

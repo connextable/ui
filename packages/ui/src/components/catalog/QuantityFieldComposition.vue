@@ -102,7 +102,7 @@ function updateUnit(value: string | null) {
   >
     <slot v-bind="state">
       <div v-if="!asChild" class="ui-quantity-control">
-        <QuantityFieldInput v-bind="definedControlAttrs({ id, name, form, required, placeholder })" />
+        <QuantityFieldInput v-bind="definedControlAttrs({ id, name, form, required, placeholder: placeholder ?? '수량 입력' })" />
         <DisplayUnitSelect
           v-if="displayUnits?.length && unitOptions.length > 1"
           :options="unitOptions"

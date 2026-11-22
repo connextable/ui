@@ -14,22 +14,29 @@ export const UICascadeList: ClearableComponent<typeof CascadeListComposition> = 
 export const UICombobox: ClearableComponent<typeof ComboboxComposition> = withClearableModel(ComboboxComposition, null, { clearInput: true });
 export { UIComboboxInput } from "./combobox-composition";
 export const UIComboboxEditor: typeof ComboboxEditor = withClearableControl(ComboboxEditor, "input");
+type EditableInstance = InstanceType<typeof EditableRoot>;
+type EditableWithPlaceholder = new () => Omit<EditableInstance, "$props"> & {
+  $props: EditableInstance["$props"] & { placeholder?: string };
+};
+
 const EditableComposition = defineComponent({
   inheritAttrs: false,
-  setup(_, { attrs, slots }) {
+  props: { placeholder: String },
+  setup(props, { attrs, slots }) {
     return () => h(EditableRoot, attrs, slots.default || controlFlag(attrs.asChild ?? attrs["as-child"]) ? slots : {
       default: (state: EditableRootSlotProps) => h(EditableArea, null, () => [
         h(EditablePreview, {
           as: "button", type: "button", disabled: state.disabled,
+          "data-placeholder": !state.value && !!props.placeholder || undefined,
           "aria-description": state.readonly && !state.disabled ? "읽기 전용" : undefined,
-        }, () => state.value || "편집"),
-        h(EditableInput),
+        }, () => state.value || props.placeholder || "편집"),
+        h(EditableInput, { placeholder: props.placeholder }),
       ]),
     });
   },
-}) as unknown as typeof EditableRoot;
+}) as unknown as EditableWithPlaceholder;
 
-export const UIEditable: ClearableComponent<typeof EditableRoot> = withClearableModel(EditableComposition, "", { ...group, label: "값 지우기" });
+export const UIEditable: ClearableComponent<typeof EditableComposition> = withClearableModel(EditableComposition, "", { ...group, label: "값 지우기" });
 export const UIListbox: ClearableComponent<typeof ListboxComposition> = withClearableModel(ListboxComposition,
   attrs => (attrs.selectionMode ?? attrs["selection-mode"]) === "multiple" ? [] : "", group);
 export const UICheckboxGroup: ClearableComponent<typeof CheckboxGroupComposition> = withClearableModel(CheckboxGroupComposition, [], group);

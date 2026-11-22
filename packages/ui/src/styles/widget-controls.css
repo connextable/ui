@@ -38,6 +38,14 @@
   background: var(--ui-color-surface);
 }
 
+:where([data-scope="editable"][data-part="preview"][data-placeholder]),
+:where([data-scope="editable"][data-part="input"], [data-scope="pin-input"][data-part="input"],
+  [data-scope="color-picker"][data-part="text-input"], [data-scope="grid"][data-part="editor"]
+)::placeholder {
+  color: var(--ui-color-placeholder);
+  opacity: 1;
+}
+
 :where([data-scope="editable"]:is([data-part="preview"], [data-part="input"]),
   [data-scope="rating"][data-part="item"],
   [data-scope="stepper"][data-part="step"],

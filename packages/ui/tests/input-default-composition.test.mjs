@@ -3,8 +3,8 @@ import test from "node:test";
 import { createSSRApp, h } from "vue";
 import { renderToString } from "vue/server-renderer";
 import {
-  createUIStandardQuantityPolicies, UICheckboxGroup, UICombobox, UIEditable, UIListbox,
-  UIPinInput, UIPinInputInput, UIQuantityField, UIQuantityFieldInput, UIRating, UISpinButton, UIToggleGroup,
+  createUIStandardQuantityPolicies, UICheckboxGroup, UIColorPicker, UICombobox, UIEditable, UIFileUpload, UIListbox, UINumberField,
+  UIPinInput, UIPinInputInput, UIQuantityField, UIQuantityFieldInput, UIRating, UISpinButton, UIToggleGroup, UITreeSelect,
 } from "@connextable/ui";
 
 function render(component, props, slots) {
@@ -63,4 +63,48 @@ test("editable and numeric roots supply the common input and actions", async () 
   assert.match(spinButton, /role="spinbutton"/);
   assert.match(spinButton, /aria-label="늘리기"/);
   assert.match(spinButton, /aria-label="줄이기"/);
+});
+
+test("composed editors pass placeholders to their inputs without using them as values", async () => {
+  const pin = await render(UIPinInput, { length: 4, label: "인증 코드" });
+  assert.equal([...pin.matchAll(/<input[^>]+placeholder="–"/g)].length, 4);
+  const masked = await render(UIPinInput, { length: 4, mask: true, placeholder: "·" });
+  assert.equal([...masked.matchAll(/<input[^>]+placeholder="·"/g)].length, 4);
+
+  const editable = await render(UIEditable, { placeholder: "회의 제목" });
+  assert.match(editable, /<button[^>]+data-placeholder[^>]*>회의 제목<\/button>/);
+  assert.match(editable, /<input[^>]+placeholder="회의 제목"/);
+  assert.doesNotMatch(editable, /value="회의 제목"/);
+  const titled = await render(UIEditable, { defaultValue: "주간 회의", placeholder: "회의 제목" });
+  assert.match(titled, /<button[^>]+>주간 회의<\/button>/);
+
+  for (const [component, props] of [
+    [UINumberField, {}], [UIQuantityField, { unit: "metre" }], [UISpinButton, { min: "0", max: "100" }],
+  ]) {
+    const input = await render(component, { ...props, placeholder: "예: 12.5" });
+    assert.match(input, /<input[^>]+placeholder="예: 12.5"/);
+  }
+  const color = await render(UIColorPicker, { defaultValue: "#4168be", defaultFormat: "hex", draft: "" });
+  assert.match(color, /<input[^>]+placeholder="예: #4168be"/i);
+});
+
+test("empty search fields have a default prompt and accept an explicit override", async () => {
+  for (const [component, props] of [
+    [UICombobox, { items: [{ id: "a", label: "디자인" }] }],
+    [UITreeSelect, { nodes: [{ id: "a", parentID: null, label: "디자인" }] }],
+  ]) {
+    assert.match(await render(component, props), /<input[^>]+placeholder="검색 또는 선택"/);
+    assert.match(await render(component, { ...props, placeholder: "팀 검색" }), /<input[^>]+placeholder="팀 검색"/);
+    assert.match(await render(component, { ...props, placeholder: "" }), /<input[^>]+\bplaceholder(?:="")?(?=[\s>])/);
+  }
+});
+
+test("an empty file upload describes whether a file can be picked", async () => {
+  const adapter = () => { throw new Error("An empty upload should not execute the adapter"); };
+  assert.match((await render(UIFileUpload, { adapter })).replace(/<!--.*?-->/g, ""), /<strong[^>]*>파일 선택<\/strong>/);
+  for (const props of [{ file: null }, { readonly: true }]) {
+    const html = await render(UIFileUpload, { ...props, adapter });
+    assert.match(html.replace(/<!--.*?-->/g, ""), /<strong[^>]*>선택한 파일 없음<\/strong>/);
+    assert.doesNotMatch(html, /<button[^>]+aria-label="파일 선택"/);
+  }
 });

@@ -127,6 +127,11 @@
   inline-size: min(100%, 14rem);
   padding-inline: var(--ui-control-size-padding-inline, var(--ui-control-padding-inline));
   font-variant-numeric: tabular-nums;
+
+  &::placeholder {
+    color: var(--ui-color-placeholder);
+    opacity: 1;
+  }
 }
 
 :where(

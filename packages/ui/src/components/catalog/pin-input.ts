@@ -5,6 +5,11 @@ import { controlFlag, useFieldClear } from "../clear/clearable";
 import { withClearableModel, type ClearableComponent } from "../clear/with-clearable";
 import { useInputState } from "../control-attrs";
 
+type PinInputInstance = InstanceType<typeof PinInputRoot>;
+type PinInputWithPlaceholder = new () => Omit<PinInputInstance, "$props"> & {
+  $props: PinInputInstance["$props"] & { placeholder?: string };
+};
+
 const inputSelector = '[data-scope="pin-input"][data-part="input"]';
 const rootSelector = '[data-scope="pin-input"][data-part="root"]';
 
@@ -12,6 +17,7 @@ const PinInputComposition = defineComponent({
   inheritAttrs: false,
   __sectileFormLabelMode: "labelledby",
   props: {
+    placeholder: { type: String, default: "–" },
     readonly: { type: Boolean, default: undefined },
     disabled: { type: Boolean, default: undefined },
   },
@@ -20,7 +26,7 @@ const PinInputComposition = defineComponent({
     const clear = useFieldClear();
     const { readonly, disabled, editable, attrs: stateAttrs } = useInputState(props);
     let currentState: PinInputRootSlotProps | undefined;
-    let defaultParts: { count: number; name: string; cells: VNode[] } | undefined;
+    let defaultParts: { count: number; name: string; placeholder: string; cells: VNode[] } | undefined;
 
     function paste(event: ClipboardEvent, index: number, count: number, state: PinInputRootSlotProps) {
       if (!editable.value || state.disabled || state.readonly || !event.clipboardData) return;
@@ -45,17 +51,19 @@ const PinInputComposition = defineComponent({
     function defaultCells() {
       const count = typeof attrs.length === "number" ? attrs.length : 6;
       const name = typeof attrs.label === "string" ? attrs.label : "인증 코드";
+      const { placeholder } = props;
       // Keep the cells and their paste handlers stable when the slot state changes.
-      if (defaultParts?.count === count && defaultParts.name === name) return defaultParts.cells;
+      if (defaultParts?.count === count && defaultParts.name === name && defaultParts.placeholder === placeholder) return defaultParts.cells;
       const cells = Array.from({ length: count }, (_, index) => h(PinInputInput, {
         key: index,
         index,
+        placeholder,
         "aria-label": `${name} ${count}자리 중 ${index + 1}번째`,
         onPaste: (event: ClipboardEvent) => {
           if (currentState) paste(event, index, count, currentState);
         },
       }));
-      defaultParts = { count, name, cells };
+      defaultParts = { count, name, placeholder, cells };
       return cells;
     }
 
@@ -79,8 +87,8 @@ const PinInputComposition = defineComponent({
       });
     };
   },
-}) as unknown as typeof PinInputRoot;
+}) as unknown as PinInputWithPlaceholder;
 
-export const UIPinInput: ClearableComponent<typeof PinInputRoot> = withClearableModel(PinInputComposition, "", {
+export const UIPinInput: ClearableComponent<typeof PinInputComposition> = withClearableModel(PinInputComposition, "", {
   label: "인증 코드 지우기",
 });

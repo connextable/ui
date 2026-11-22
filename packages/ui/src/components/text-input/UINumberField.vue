@@ -9,7 +9,7 @@ import { definedControlAttrs, useInputState } from "../control-attrs";
 defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "for" });
 
 const { unit, clearable, clearLabel, disabled = undefined, readonly = undefined, required = undefined, ...fieldProps } =
-  defineProps<NumberFieldProps & ClearableProps & { unit?: string }>();
+  defineProps<NumberFieldProps & ClearableProps & { unit?: string; placeholder?: string }>();
 const emit = defineEmits<{ "update:modelValue": [value: string | null] }>();
 
 const control = useTemplateRef<InstanceType<typeof NumberField>>("control");

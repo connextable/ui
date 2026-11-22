@@ -2,7 +2,10 @@
 import { nextTick, onMounted, useTemplateRef } from "vue";
 import { useInputState } from "../control-attrs";
 
-const props = withDefaults(defineProps<{ readonly?: boolean; disabled?: boolean }>(), { readonly: undefined, disabled: undefined });
+const props = withDefaults(defineProps<{ readonly?: boolean; disabled?: boolean; placeholder?: string }>(), {
+  readonly: undefined,
+  disabled: undefined,
+});
 const value = defineModel<string>({ required: true });
 const input = useTemplateRef("input");
 const { readonly, disabled, attrs } = useInputState(props);
@@ -19,7 +22,7 @@ onMounted(async () => {
 <template>
   <input
     ref="input" v-model="value" class="ui-grid-editor" type="text" tabindex="-1"
-    v-bind="attrs" :readonly="readonly" :disabled="disabled" data-scope="grid" data-part="editor" @click.stop
+    v-bind="attrs" :readonly="readonly" :disabled="disabled" :placeholder="placeholder" data-scope="grid" data-part="editor" @click.stop
   >
 </template>
 

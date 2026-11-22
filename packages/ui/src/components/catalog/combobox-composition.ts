@@ -30,7 +30,7 @@ export const ComboboxComposition = defineComponent({
       }
       return h(root, attrs, {
         default: () => [
-          h(UIComboboxInput, input),
+          h(UIComboboxInput, { ...input, placeholder: props.placeholder ?? "검색 또는 선택" }),
           h(ComboboxContent, null, () => [
             h(ComboboxResults, null, {
               default: ({ items }: ComboboxResultsSlotProps) => items.map(({ id, label }) =>

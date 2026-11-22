@@ -167,7 +167,7 @@ defineExpose({
     <template v-else>
       <UITreeSelectField
         :aria-label="props.label ?? '항목 검색'"
-        :placeholder="props.placeholder"
+        :placeholder="props.placeholder ?? '검색 또는 선택'"
         :query="state.query"
         :selected="state.value.length > 0"
         :display-value="state.value.map(labelFor).join(', ')"
