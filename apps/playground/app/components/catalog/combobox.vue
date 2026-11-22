@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  UICombobox,
-  UIComboboxContent,
-  UIComboboxEmpty,
-  UIComboboxInput,
-  UIComboboxItem,
-  UIComboboxResults,
-} from "@connextable/ui";
+import { UICombobox } from "@connextable/ui";
 import { useId } from "vue";
 
 const inputId = useId();
@@ -23,16 +16,6 @@ const policies = {
 <template>
   <div class="ui-field">
     <label :for="inputId">실행 환경</label>
-    <UICombobox :items="environments" :policies="policies" label="실행 환경">
-      <UIComboboxInput :id="inputId" placeholder="이름으로 검색" />
-      <UIComboboxContent>
-        <UIComboboxResults v-slot="{ items }">
-          <UIComboboxItem v-for="item in items" :key="item.id" :value="item.id">
-            {{ item.label }}
-          </UIComboboxItem>
-        </UIComboboxResults>
-        <UIComboboxEmpty>일치하는 환경이 없습니다</UIComboboxEmpty>
-      </UIComboboxContent>
-    </UICombobox>
+    <UICombobox :id="inputId" :items="environments" :policies="policies" label="실행 환경" placeholder="이름으로 검색" />
   </div>
 </template>

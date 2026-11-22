@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  UICheckboxGroup,
-  UICheckboxGroupIndicator,
-  UICheckboxGroupItem,
-} from "@connextable/ui";
+import { UICheckboxGroup } from "@connextable/ui";
 
 const items = [
   { value: "email", label: "이메일" },
@@ -13,11 +9,5 @@ const items = [
 </script>
 
 <template>
-  <UICheckboxGroup as="fieldset" :items="items.map(item => item.value)" :default-value="['sms']" name="notificationChannels">
-    <legend>알림 채널</legend>
-    <UICheckboxGroupItem v-for="item in items" :key="item.value" :value="item.value">
-      <UICheckboxGroupIndicator />
-      {{ item.label }}
-    </UICheckboxGroupItem>
-  </UICheckboxGroup>
+  <UICheckboxGroup :options="items" :default-value="['sms']" name="notificationChannels" label="알림 채널" />
 </template>

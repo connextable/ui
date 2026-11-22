@@ -1,26 +1,14 @@
 <script setup lang="ts">
-import {
-  createUIStandardQuantityPolicies,
-  UIQuantityField,
-  UIQuantityFieldInput,
-  UIQuantityFieldValue,
-} from "@connextable/ui";
-
+import { createUIStandardQuantityPolicies, UIQuantityField } from "@connextable/ui";
 import { ref } from "vue";
 
-const result = ref("");
+const value = ref<{ value: string; unit: string } | null>({ value: "1.25", unit: "metre" });
 const policies = createUIStandardQuantityPolicies("metre", "metric");
 </script>
 
 <template>
-  <UIQuantityField :policies="policies" :default-value="{ value: '1.25', unit: 'metre' }" label="길이"
-    @commit="({ value }) => { result = value ? `${value.value} ${value.unit}` : '' }">
-    <div class="ui-quantity-control">
-      <UIQuantityFieldInput />
-      <span class="ui-numeric-unit" aria-hidden="true">m</span>
-    </div>
-    <UIQuantityFieldValue>
-      <output>{{ result || "입력하고 Enter를 눌러 길이를 확정하세요." }}</output>
-    </UIQuantityFieldValue>
-  </UIQuantityField>
+  <div class="ui-field">
+    <UIQuantityField v-model="value" :policies="policies" label="길이" clearable />
+    <output>확정한 길이 {{ value ? `${value.value} ${policies.registry.get(value.unit)?.symbol ?? value.unit}` : "—" }}</output>
+  </div>
 </template>

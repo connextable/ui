@@ -1,24 +1,13 @@
 <script setup lang="ts">
-import {
-  UIListbox,
-  UIListboxItem,
-  UIListboxItemIndicator,
-  UIListboxItemText,
-} from "@connextable/ui";
+import { UIListbox } from "@connextable/ui";
 
-const labels: Record<string, string> = { production: "운영", staging: "검증", development: "개발" };
-const items = Object.keys(labels);
+const options = [
+  { value: "production", label: "운영" },
+  { value: "staging", label: "검증" },
+  { value: "development", label: "개발" },
+];
 </script>
 
 <template>
-  <UIListbox
-    :items="items"
-    selection-mode="single"
-    :default-value="'production'"
-  >
-    <UIListboxItem v-for="item in items" :key="item" :value="item">
-      <UIListboxItemText>{{ labels[item] }}</UIListboxItemText>
-      <UIListboxItemIndicator>선택됨</UIListboxItemIndicator>
-    </UIListboxItem>
-  </UIListbox>
+  <UIListbox :options="options" default-value="production" aria-label="실행 환경" />
 </template>

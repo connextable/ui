@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import {
-  UIToggleGroup,
-  UIToggleGroupItem,
-} from "@connextable/ui";
+import { UIToggleGroup } from "@connextable/ui";
 import { ref } from "vue";
 
-const items = ["left", "center", "right"];
+const options = [
+  { value: "left", label: "왼쪽" },
+  { value: "center", label: "가운데" },
+  { value: "right", label: "오른쪽" },
+];
 const value = ref(["left"]);
 </script>
 
 <template>
-  <UIToggleGroup :items="items" v-model="value" label="텍스트 정렬">
-    <UIToggleGroupItem value="left">왼쪽</UIToggleGroupItem>
-    <UIToggleGroupItem value="center">가운데</UIToggleGroupItem>
-    <UIToggleGroupItem value="right">오른쪽</UIToggleGroupItem>
-  </UIToggleGroup>
+  <UIToggleGroup v-model="value" :options="options" label="텍스트 정렬" />
 </template>

@@ -156,6 +156,7 @@ const partRoles: Readonly<Record<string, string>> = {
   UIComboboxEmpty: "검색에 일치하는 항목이 없을 때 표시됩니다.",
   UIFileInputInput: "브라우저에서 파일 선택을 담당하는 입력입니다.",
   UIQuantityFieldUnitSelect: "같은 수량을 표시할 다른 단위를 선택하는 영역입니다.",
+  UIQuantityFieldValue: "수량 필드를 직접 조립할 때 확정값과 표시 단위를 슬롯으로 읽는 구성 요소입니다.",
   UIVirtualizerItem: "placement를 받아 항목을 스크롤 영역의 해당 좌표에 배치합니다.",
   UIDrawerHandle: "패널을 끌어 닫는 조작 영역을 표시합니다.",
   UISheetHandle: "시트를 가장자리 쪽으로 끌어 닫는 조작 영역입니다.",

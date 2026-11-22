@@ -1,15 +1,6 @@
 <script setup lang="ts">
-import {
-  UIEditable,
-  UIEditableArea,
-  UIEditableInput,
-  UIEditablePreview,
-} from "@connextable/ui";
-
+import { UIEditable } from "@connextable/ui";
 </script>
 <template>
-  <UIEditable label="배포 이름" default-value="11월 정산 배포" v-slot="{ value }">
-    <UIEditableArea><UIEditablePreview as="button" type="button">{{ value }}</UIEditablePreview><UIEditableInput />
-    </UIEditableArea>
-  </UIEditable>
+  <UIEditable label="배포 이름" default-value="11월 정산 배포" />
 </template>

@@ -1,6 +1,8 @@
-import { RatingClear, RatingRoot, type RatingRootSlotProps } from "@sectile/vue/rating";
+import { Star } from "@lucide/vue";
+import { RatingClear, RatingItem, RatingRoot, type RatingRootSlotProps } from "@sectile/vue/rating";
 import { defineComponent, h, isVNode, type VNodeChild } from "vue";
 import { withClearButton } from "../clear/clear-button-part";
+import { controlFlag } from "../clear/clearable";
 import type { ClearableComponent } from "../clear/with-clearable";
 
 export const UIRatingClear: typeof RatingClear = withClearButton(RatingClear, "평가 지우기");
@@ -17,12 +19,17 @@ export const UIRating = defineComponent({
   __sectileFormLabelMode: "labelledby",
   props: { clearLabel: String },
   setup(props, { attrs, slots }) {
-    return () => h(RatingRoot, { ...attrs, items: attrs.items as readonly string[] }, {
-      default: (state: RatingRootSlotProps) => {
-        const children = slots.default?.(state) ?? [];
-        if (!state.clearable || !state.value || state.disabled || state.readonly || containsClear(children)) return children;
-        return [...children, h(UIRatingClear, { "aria-label": props.clearLabel })];
-      },
-    });
+    return () => {
+      const items = attrs.items as readonly string[];
+      if (controlFlag(attrs.asChild ?? attrs["as-child"])) return h(RatingRoot, { ...attrs, items }, slots);
+      return h(RatingRoot, { ...attrs, items }, {
+        default: (state: RatingRootSlotProps) => {
+          const children = slots.default?.(state) ?? items.map(value =>
+            h(RatingItem, { key: value, value, "aria-label": value }, () => h(Star, { size: 18, "aria-hidden": "true" })));
+          if (!state.clearable || !state.value || state.disabled || state.readonly || containsClear(children)) return children;
+          return [...children, h(UIRatingClear, { "aria-label": props.clearLabel })];
+        },
+      });
+    };
   },
 }) as unknown as ClearableComponent<typeof RatingRoot>;

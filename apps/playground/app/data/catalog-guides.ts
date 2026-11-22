@@ -380,9 +380,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "toggle-group-disabled", title: "특정 항목 비활성", description: "가운데 정렬 버튼을 비활성화합니다." },
     ],
     title: "버튼 그룹에서 옵션 선택",
-    description: "items에 항목의 식별자를 전달하고 v-model로 눌린 항목을 읽습니다. 버튼의 value는 식별자와 일치해야 합니다.",
+    description: "options에 버튼의 값과 이름을 전달하고 v-model로 눌린 항목을 읽습니다.",
     api: {
-      items: "토글 그룹이 관리하는 항목의 식별자입니다.",
+      options: "버튼의 값, 표시 이름과 비활성 상태를 지정합니다.",
       "v-model": "그룹이 채택한 선택값을 연결합니다.",
       "Item value": "이 토글 버튼에 해당하는 항목의 id입니다.",
     },
@@ -406,7 +406,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "열린 목록에서 하나 선택",
     description: "목록에 포커스를 두고 방향키로 항목을 탐색합니다. selection-mode를 single로 지정하면 한 번에 한 값만 선택할 수 있습니다.",
     api: {
-      items: "탐색하거나 선택할 값의 배열입니다.",
+      options: "항목의 값, 표시 이름과 비활성 상태를 지정합니다.",
       "selection-mode": "한 번에 선택할 수 있는 항목 수를 정합니다.",
       "Item value": "목록 항목을 items의 값에 연결합니다.",
     },
@@ -460,7 +460,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "v-model": "증감 버튼과 입력이 공유하는 값입니다.",
       "min / max": "값이 움직일 수 있는 범위를 지정합니다.",
       step: "한 번의 증가 또는 감소에 적용하는 값입니다.",
-      "data-layout": "field를 지정하면 증감 버튼을 입력 오른쪽에 세로로 배치합니다.",
+      layout: "field를 지정하면 증감 버튼을 입력 오른쪽에 세로로 배치합니다.",
+      unit: "입력값 옆에 표시할 단위입니다.",
     },
   },
   stepper: {
@@ -480,7 +481,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   combobox: {
     title: "검색해서 항목 선택",
-    description: "items에 각 항목의 id와 label을 전달하고 policies.matches로 검색에 일치하는 조건을 지정합니다. stage를 입력한 뒤 결과를 선택해 보세요.",
+    description: "items에 항목을 전달하면 입력과 결과 목록이 함께 나타납니다. ‘검증’을 입력하고 결과를 선택해 보세요.",
     api: {
       items: "검색할 항목입니다. 각 항목에 고유한 id와 표시할 label을 전달합니다.",
       "policies.matches": "항목의 이름과 검색어를 받아 결과에 포함할지 결정합니다. 생략하면 모든 items가 결과에 포함됩니다.",
@@ -490,6 +491,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "default-value": "외부에서 선택값을 제어하지 않을 때 지정할 초기 항목 id입니다.",
       "default-input-value": "입력창의 초기 텍스트입니다.",
       label: "입력과 결과 목록에 전달할 접근성 이름입니다.",
+      "empty-label": "검색에 일치하는 항목이 없을 때 표시할 문구입니다.",
     },
     examples: [
       { id: "combobox-async-search", title: "응답을 기다리는 검색", description: "검색을 연달아 입력해도 마지막 요청의 결과만 표시합니다." },
@@ -608,9 +610,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "checkbox-group": {
     title: "여러 옵션을 한 그룹에서 선택",
-    description: "그룹의 items에 각 체크박스의 value를 등록합니다. 여러 옵션을 선택해 보세요.",
+    description: "options로 체크박스의 값과 이름을 지정합니다. 여러 옵션을 선택해 보세요.",
     api: {
-      items: "그룹에 포함할 체크박스의 값입니다.",
+      options: "체크박스의 값, 표시 이름과 비활성 상태를 지정합니다.",
       "v-model": "선택한 값을 배열로 연결합니다.",
       "Item disabled": "이 항목의 선택을 막습니다.",
     },
@@ -646,7 +648,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "pin-input-correct", title: "코드의 한 자리만 수정", description: "세 번째 칸에서 Backspace를 누르고 새 숫자를 입력합니다." },
     ],
     title: "여섯 자리 인증 코드 입력",
-    description: "length만큼 Input을 만들고 0부터 시작하는 index를 전달합니다. 숫자를 입력하면 다음 칸으로 이동합니다.",
+    description: "length로 자리 수를 지정합니다. 숫자를 입력하면 다음 칸으로 이동합니다.",
     api: {
       length: "입력할 코드 자리 수를 지정합니다.",
       "Input index": "이 입력 칸이 맡는 0부터 시작하는 인덱스입니다.",
@@ -659,10 +661,13 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "quantity-field-readonly", title: "확정된 길이", description: "값이나 단위 변경을 잠급니다." },
     ],
     title: "단위가 붙은 길이 입력",
-    description: "길이 정책과 초기 단위가 포함된 값을 지정합니다. 화면의 입력을 수정하면 입력 아래의 수량 표기도 함께 바뀝니다.",
+    description: "변환 정책과 초기값을 지정하면 입력 옆에 표시 단위가 나타납니다. 확정한 수량은 v-model로 읽습니다.",
     api: {
       policies: "입력 수량에 적용할 단위 체계와 변환 정책입니다.",
       "default-value": "수치 문자열과 단위로 이루어진 초기 수량입니다.",
+      "v-model": "확정한 수치와 기준 단위를 읽고 변경합니다.",
+      "display-units": "사용자가 바꿀 수 있는 표시 단위의 목록입니다.",
+      "v-model:display-unit": "입력에 표시하는 단위를 읽고 변경합니다.",
     },
   },
   "tags-input": {
