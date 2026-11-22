@@ -169,6 +169,13 @@ input.ui-temporal-input {
   &[data-endpoint="end"] { grid-area: end; }
 }
 
+.ui-calendar-time-range {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--ui-space-md);
+}
+
 @media (width > 42rem) {
   .ui-temporal-picker__time-range .ui-temporal-picker__time .ui-time-picker-column__viewport > [role="listbox"] {
     contain: size;

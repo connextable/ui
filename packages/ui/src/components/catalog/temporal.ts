@@ -25,20 +25,24 @@ import { RangeCalendarRoot, RangeCalendarGrid, RangeCalendarCell, RangeCalendarM
 import {
   TimePickerRoot, TimePickerColumn, TimePickerContent, TimePickerInput,
   TimePickerItem, TimePickerTrigger,
-  type TimePickerColumnProps, type TimePickerColumnSlotProps, type TimePickerContentSlotProps, type TimePickerRootSlotProps,
+  type TimePickerColumnProps, type TimePickerColumnSlotProps, type TimePickerContentSlotProps, type TimePickerExpose, type TimePickerRootSlotProps,
 } from "@sectile/vue/temporal/time-picker";
 import { YearPickerRoot, YearPickerAnchor, YearPickerInput } from "@sectile/vue/temporal/year-picker";
 import { YearRangePickerRoot, YearRangePickerAnchor, YearRangePickerStartInput, YearRangePickerEndInput, YearRangePickerGrid, YearRangePickerCell } from "@sectile/vue/temporal/year-range-picker";
 import { withClearableControl, withClearableModel, type ClearableComponent } from "../clear/with-clearable";
+import { controlFlag, useFieldClear } from "../clear/clearable";
+import UIFieldClear from "../clear/UIFieldClear.vue";
+import { definedControlAttrs } from "../control-attrs";
+import { useCompositeValueForm } from "../form/composite-value";
 import UIScrollFade from "../scroll/UIScrollFade.vue";
 import { useUIScrollArea } from "../scroll/useUIScrollArea";
 import { withTemporalEditing, withTemporalInputAppearance } from "./temporal-input";
-import { withCalendarDefaults, type CalendarFormComponent } from "./temporal-composition";
+import { withCalendarDefaults, type CalendarFormComponent, type CalendarTimeModels, type RangeCalendarTimeModels } from "./temporal-composition";
 import { TemporalFormatterScope, TemporalInputFormatProvider, temporalInputFormatsKey, type UITemporalInputFormats } from "./temporal-input-format";
 import { withRangeGridPresentation, withRangeCellPresentation } from "./temporal-range-presentation";
 import { defaultTemporalFormatting, temporalDisplayFormatsKey, useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
 import type { DateValue } from "@sectile/temporal/date-field";
-import type { TimeFieldPrecision } from "@sectile/temporal/time-field";
+import { createTimeFieldFormat, formatTimeFieldValue, type TimeFieldPrecision, type TimeValue } from "@sectile/temporal/time-field";
 
 export { useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
 export type { UITemporalInputFormats } from "./temporal-input-format";
@@ -127,9 +131,6 @@ function rangeFieldParts(start: Component, end: Component) {
   })];
 }
 
-export const UICalendar: ClearableComponent<CalendarFormComponent<typeof CalendarRoot>> = withClearableModel(withCalendarDefaults(CalendarRoot, {
-  inputs: [CalendarInput],
-}), null, { placement: "beside" });
 export const UIDateRangeField: ClearableComponent<typeof DateRangeFieldRoot> = withClearableModel(DateRangeFieldRoot, null, {
   ...rangeOptions,
   defaultParts: rangeFieldParts(UIDateRangeFieldStartInput, UIDateRangeFieldEndInput),
@@ -196,22 +197,6 @@ export const UIDateTimePicker: ClearableComponent<CalendarFormComponent<typeof D
 const DateTimeRangePicker: DateTimeWithPrecision<typeof DateTimeRangePickerRoot> = withSplitTimePrecision(DateTimeRangePickerRoot);
 
 export const UIDateTimeRangePickerAnchor: typeof DateTimeRangePickerAnchor = withClearableControl(DateTimeRangePickerAnchor, "anchor");
-const InlineTimePicker = defineComponent({
-  inheritAttrs: false,
-  setup(_, { attrs }) {
-    return () => h(UITimePicker, attrs, {
-      default: (state: TimePickerRootSlotProps) => state.parts.map(part => h(UITimePickerColumn, { part, key: part }, {
-        default: renderTimeItems,
-      })),
-    });
-  },
-});
-export const UIDateTimeRangePicker: ClearableComponent<CalendarFormComponent<typeof DateTimeRangePicker>> = withClearableModel(withCalendarDefaults(DateTimeRangePicker, {
-  kind: "date-time-range", anchor: UIDateTimeRangePickerAnchor,
-  inputs: [UIDateTimeRangePickerStartDateTimeInput, UIDateTimeRangePickerEndDateTimeInput], summary: true,
-  grid: UIDateTimeRangePickerGrid, cell: UIDateTimeRangePickerCell, monthCell: UIDateTimeRangePickerMonthCell,
-  timePicker: InlineTimePicker,
-}), null, { label: "범위 지우기" });
 
 function renderTimeItems(state: TimePickerColumnSlotProps) {
   return state.choices.map(choice => h(TimePickerItem, { key: choice.id, value: choice.id }, () => choice.label));
@@ -236,10 +221,94 @@ const TimePickerDefaultParts = defineComponent({
     };
   },
 });
-export const UITimePicker: ClearableComponent<typeof TimePickerRoot> = withClearableModel(TimePickerRoot, null, {
-  placement: "end", expose: ["element", "focus", "select", "requestClose", "selectChoice"],
-  defaultParts: attrs => [h(TimePickerDefaultParts, { label: attrs.label as string | undefined })],
+const InlineTimeField = defineComponent({
+  inheritAttrs: false,
+  props: {
+    name: String, form: String,
+    required: { type: Boolean, default: undefined },
+    readonly: { type: Boolean, default: undefined },
+    disabled: { type: Boolean, default: undefined },
+    value: Object as PropType<TimeValue | null>,
+    precision: String as PropType<TimeFieldPrecision>,
+  },
+  setup(props, { slots }) {
+    const formatter = useTemporalFormatter();
+    const { locale } = useUITemporalDisplay();
+    const renderField = useCompositeValueForm(props, {
+      focus: '[role="listbox"]',
+      get requiredMessage() { return locale.value.startsWith("ko") ? "시간을 선택하세요." : "Choose a time."; },
+      values() {
+        if (!props.value) return [];
+        const precision = props.precision ?? "minute";
+        const format = formatter.value?.timeFieldFormat(precision);
+        return [formatTimeFieldValue(props.value, format?.ok ? format.value : createTimeFieldFormat({ precision }))];
+      },
+    });
+    return () => renderField(bindings => slots.default?.(bindings)[0]);
+  },
 });
+
+type TimePickerInstance = InstanceType<typeof TimePickerRoot>;
+type TimePickerWithInline = new () => Omit<TimePickerInstance, "$props"> & {
+  $props: TimePickerInstance["$props"] & { inline?: boolean };
+};
+
+const TimePickerComposition = defineComponent({
+  inheritAttrs: false,
+  props: { inline: Boolean },
+  setup(props, { attrs, slots, expose }) {
+    const clear = useFieldClear();
+    const picker = shallowRef<TimePickerInstance>();
+    expose({
+      get element() { return picker.value?.element ?? null; },
+      focus(options?: FocusOptions) {
+        if (!props.inline) return picker.value?.focus(options);
+        const root = picker.value?.$el;
+        if (root instanceof HTMLElement) root.querySelector<HTMLElement>('[role="listbox"]')?.focus(options);
+      },
+      select: () => picker.value?.select(),
+      requestClose: () => picker.value?.requestClose(),
+      selectChoice: (...args: Parameters<TimePickerExpose["selectChoice"]>) => picker.value?.selectChoice(...args) ?? false,
+    } satisfies TimePickerExpose);
+
+    function renderPicker(bindings: Record<string, unknown>) {
+      const asChild = controlFlag(attrs.asChild ?? attrs["as-child"]);
+      return h(TimePickerRoot, { ...bindings, ref: picker }, asChild ? slots : {
+        default: (state: TimePickerRootSlotProps) => [
+          slots.default?.(state) ?? (props.inline ? state.parts.map(part => h(UITimePickerColumn, { part, key: part }, {
+            default: renderTimeItems,
+          })) : h(TimePickerDefaultParts, { label: attrs.label as string | undefined })),
+          clear?.enabled.value ? h(UIFieldClear) : null,
+        ],
+      });
+    }
+
+    return () => {
+      if (!props.inline || slots.default || controlFlag(attrs.asChild ?? attrs["as-child"])) return renderPicker(attrs);
+      const { name, form, required, disabled, readonly, ...visual } = attrs;
+      return h(InlineTimeField, definedControlAttrs({
+        name: name as string | undefined, form: form as string | undefined, required: controlFlag(required),
+        disabled: controlFlag(disabled), readonly: controlFlag(readonly),
+        value: attrs.modelValue as TimeValue | null, precision: attrs.precision as TimeFieldPrecision | undefined,
+      }), { default: (bindings: Record<string, unknown>) => renderPicker({ ...visual, ...bindings }) });
+    };
+  },
+}) as unknown as TimePickerWithInline;
+
+export const UITimePicker: ClearableComponent<TimePickerWithInline> = withClearableModel(TimePickerComposition, null, {
+  expose: ["element", "focus", "select", "requestClose", "selectChoice"],
+});
+
+export const UICalendar: ClearableComponent<CalendarFormComponent<typeof CalendarRoot, CalendarTimeModels>> = withClearableModel(withCalendarDefaults<typeof CalendarRoot, CalendarTimeModels>(CalendarRoot, {
+  inputs: [CalendarInput], timePicker: UITimePicker, inlineTime: "single",
+}), null, { placement: "beside" });
+
+export const UIDateTimeRangePicker: ClearableComponent<CalendarFormComponent<typeof DateTimeRangePicker>> = withClearableModel(withCalendarDefaults(DateTimeRangePicker, {
+  kind: "date-time-range", anchor: UIDateTimeRangePickerAnchor,
+  inputs: [UIDateTimeRangePickerStartDateTimeInput, UIDateTimeRangePickerEndDateTimeInput], summary: true,
+  grid: UIDateTimeRangePickerGrid, cell: UIDateTimeRangePickerCell, monthCell: UIDateTimeRangePickerMonthCell,
+  timePicker: UITimePicker,
+}), null, { label: "범위 지우기" });
 export const UIMonthPickerAnchor: typeof MonthPickerAnchor = withClearableControl(MonthPickerAnchor, "anchor");
 export const UIMonthPicker: ClearableComponent<CalendarFormComponent<typeof MonthPickerRoot>> = withClearableModel(withCalendarDefaults(MonthPickerRoot, {
   kind: "month", anchor: UIMonthPickerAnchor, inputs: [UIMonthPickerInput], summary: true,
@@ -260,6 +329,7 @@ export const UIYearRangePicker: ClearableComponent<CalendarFormComponent<typeof 
 }), null, { label: "범위 지우기" });
 
 export type { DateValue as UIDateValue } from "@sectile/vue/temporal/calendar";
+export type { TimeValue as UITimeValue } from "@sectile/temporal/time-field";
 export type { DateTimeValue as UIDateTimeValue, DateTimeRange as UIDateTimeRange } from "@sectile/temporal/date-time-field";
 export {
   useTemporalReferenceDate as useUITemporalReferenceDate,
@@ -349,9 +419,10 @@ const InlineRangeCalendar = defineComponent({
     return () => h(RangeCalendarRoot, { position: false, ...attrs }, slots);
   },
 }) as typeof RangeCalendarRoot;
-export const UIRangeCalendar: ClearableComponent<CalendarFormComponent<typeof RangeCalendarRoot>> = withClearableModel(withCalendarDefaults(InlineRangeCalendar, {
+export const UIRangeCalendar: ClearableComponent<CalendarFormComponent<typeof RangeCalendarRoot, RangeCalendarTimeModels>> = withClearableModel(withCalendarDefaults<typeof RangeCalendarRoot, RangeCalendarTimeModels>(InlineRangeCalendar, {
   inputs: [RangeCalendarStartInput, RangeCalendarEndInput],
   grid: UIRangeCalendarGrid, cell: UIRangeCalendarCell, monthCell: UIRangeCalendarMonthCell,
+  timePicker: UITimePicker, inlineTime: "range",
 }), null, { placement: "beside", label: "범위 지우기" });
 export {
   DatePickerTrigger as UIDatePickerTrigger,

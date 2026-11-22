@@ -5,7 +5,7 @@ import { renderToString } from "vue/server-renderer";
 import {
   UICalendar, UIDatePicker, UIDateRangeField, UIDateRangePicker,
   UIDateTimePicker, UIDateTimeRangeField, UIDateTimeRangePicker,
-  UIMonthPicker, UIMonthRangePicker, UIRangeCalendar,
+  UIForm, UIFormField, UIMonthPicker, UIMonthRangePicker, UIRangeCalendar,
   UITimePicker, UITimeRangeField, UIYearPicker, UIYearRangePicker,
 } from "@connextable/ui";
 
@@ -40,6 +40,40 @@ test("calendar and picker roots provide interactive parts without a default slot
   const clock = await render(UITimePicker, { defaultValue: time, defaultOpen: true });
   assert.match(clock, /aria-haspopup="dialog"/);
   assert.match(clock, /role="listbox"/);
+});
+
+test("inline calendars include year/month navigation and opt in to independent time models", async () => {
+  const dateOnly = await render(UICalendar, { defaultValue: date });
+  assert.match(dateOnly, /data-part="year-view-trigger"/);
+  assert.doesNotMatch(dateOnly, /role="listbox"/);
+
+  const calendar = await render(UICalendar, { name: "date", defaultValue: date, time: null });
+  assert.match(calendar, /<input[^>]+name="date"[^>]+value="2026-08-22"/);
+  assert.equal([...calendar.matchAll(/role="listbox"/g)].length, 2);
+
+  const range = await render(UIRangeCalendar, { defaultValue: dates, startTime: time, endTime });
+  assert.match(range, /data-part="year-view-trigger"/);
+  assert.match(range, /data-endpoint="start"/);
+  assert.match(range, /data-endpoint="end"/);
+  assert.equal([...range.matchAll(/role="listbox"/g)].length, 4);
+});
+
+test("the standalone inline time picker keeps a native submission value and validation target", async () => {
+  const html = await render(UIForm, null, () => h(UIFormField, {
+    name: "arrival", label: "Arrival", labelMode: "labelledby", required: true,
+  }, () => h(UITimePicker, { inline: true, defaultValue: time })));
+  assert.match(html, /<input[^>]+name="arrival"[^>]+value="09:30"/);
+  assert.match(html, /<select[^>]+class="ui-form-constraint"[^>]+required/);
+  assert.doesNotMatch(html, /aria-haspopup="dialog"/);
+});
+
+test("year navigation keeps a year selectable when only part of it is available", async () => {
+  const html = await render(UIRangeCalendar, {
+    defaultView: "year", defaultValue: dates, policies: { min: date, max: endDate },
+  });
+  const yearCells = [...html.matchAll(/<[^>]+role="gridcell"[^>]*>(202[567])년<\//g)];
+  assert.deepEqual(yearCells.map(([, year]) => year), ["2025", "2026", "2027"]);
+  for (const [cell, year] of yearCells) assert.match(cell, new RegExp(`aria-disabled="${year !== "2026"}"`));
 });
 
 test("range fields render both editable endpoints with their labels", async () => {

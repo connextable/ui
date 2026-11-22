@@ -1,5 +1,6 @@
 import { CalendarDays, ChevronDown, ChevronLeft, ChevronRight } from "@lucide/vue";
 import { appendFormFieldPath, encodeFormFieldPath } from "@sectile/form/path";
+import { provideFormBoundary } from "@sectile/vue/form-boundary";
 import { useTemporalReferenceDate } from "@sectile/vue/temporal/temporal-provider";
 import {
   DatePickerCell, DatePickerContent, DatePickerGrid, DatePickerMonthCell,
@@ -12,8 +13,8 @@ import { YearPickerCell, YearPickerNextPage, YearPickerPreviousPage } from "@sec
 import { compareDateValues, type DateRange, type DateValue } from "@sectile/temporal/date-field";
 import type { DateTimeRange, DateTimeValue } from "@sectile/temporal/date-time-field";
 import { applyDateTimeRangePickerEvent, createDateTimeRangePickerState, type DateTimeRangePickerPolicies } from "@sectile/temporal/date-time-range-picker";
-import { compareTimeValues, type TimeValue } from "@sectile/temporal/time-field";
-import { defineComponent, h, shallowRef, type Component } from "vue";
+import { compareTimeValues, type TimeFieldPolicies, type TimeFieldPrecision, type TimeValue } from "@sectile/temporal/time-field";
+import { defineComponent, h, shallowRef, type Component, type PropType } from "vue";
 import { controlFlag } from "../clear/clearable";
 import { definedControlAttrs, inputStateAttrs } from "../control-attrs";
 import UICalendarPeriodHeader from "./UICalendarPeriodHeader.vue";
@@ -35,12 +36,30 @@ interface CalendarComposition {
   monthCell?: Component;
   yearCell?: Component;
   timePicker?: Component;
+  inlineTime?: "single" | "range";
   summary?: boolean;
 }
 
-export type CalendarFormComponent<Root> = Root extends abstract new (...args: never[]) => infer Instance
+type CalendarTimeProps = {
+  timePrecision?: TimeFieldPrecision;
+  timePolicies?: TimeFieldPolicies;
+};
+
+export type CalendarTimeModels = CalendarTimeProps & {
+  time?: TimeValue | null;
+  "onUpdate:time"?: (time: TimeValue | null) => void;
+};
+
+export type RangeCalendarTimeModels = CalendarTimeProps & {
+  startTime?: TimeValue | null;
+  endTime?: TimeValue | null;
+  "onUpdate:startTime"?: (time: TimeValue | null) => void;
+  "onUpdate:endTime"?: (time: TimeValue | null) => void;
+};
+
+export type CalendarFormComponent<Root, Extra = object> = Root extends abstract new (...args: never[]) => infer Instance
   ? Instance extends { $props: infer Props }
-    ? new () => Instance & { $props: Props & { name?: string; form?: string } }
+    ? new () => Instance & { $props: Props & { name?: string; form?: string } & Extra }
     : Root
   : Root;
 
@@ -80,14 +99,30 @@ function rangeTimeBounds(range: DateTimeRange, endpoint: "start" | "end", polici
   return { min, max };
 }
 
-export function withCalendarDefaults<Root extends Component>(root: Root, options: CalendarComposition): CalendarFormComponent<Root> {
-  const { kind = "day", anchor, inputs = [], grid = DatePickerGrid, cell = DatePickerCell, monthCell, yearCell, timePicker } = options;
+const CalendarTimeControl = defineComponent({
+  inheritAttrs: false,
+  props: { picker: { type: [Object, Function] as PropType<Component>, required: true } },
+  setup(props, { attrs }) {
+    provideFormBoundary();
+    return () => h(props.picker, { ...attrs, inline: true });
+  },
+});
+
+export function withCalendarDefaults<Root extends Component, Extra = object>(root: Root, options: CalendarComposition): CalendarFormComponent<Root, Extra> {
+  const { kind = "day", anchor, inputs = [], grid = DatePickerGrid, cell = DatePickerCell, monthCell, yearCell, timePicker, inlineTime } = options;
   const metadata = root as Root & { __sectileFormLabelMode?: "for" | "labelledby" };
   return defineComponent({
     inheritAttrs: false,
     __sectileFormLabelMode: metadata.__sectileFormLabelMode,
-    props: { name: String, form: String },
-    emits: ["update:highlightedValue"],
+    props: {
+      name: String,
+      form: String,
+      time: Object as PropType<TimeValue | null>,
+      startTime: Object as PropType<TimeValue | null>,
+      endTime: Object as PropType<TimeValue | null>,
+      timePolicies: Object as PropType<TimeFieldPolicies>,
+    },
+    emits: ["update:highlightedValue", "update:time", "update:startTime", "update:endTime"],
     setup(props, { attrs, slots, emit }) {
       const reference = useTemporalReferenceDate();
       const display = useUITemporalDisplay();
@@ -120,15 +155,23 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
             : choosingMonth ? state.months.flat().map(value => h(monthCell ?? (kind === "month" ? MonthPickerCell : DatePickerMonthCell), { key: value.month, value }, () => display.month(value)))
             : state.dates.flat().map(value => h(cell, { key: `${value.year}-${value.month}-${value.day}`, value }, () => display.day(value))));
 
-        if (choosingYear || !anchor) {
-          const title = choosingYear ? display.yearRange(state.years[0]?.[0], state.years.at(-1)?.at(-1)) : display.yearMonth(state.view);
+        if (choosingYear) {
+          const title = display.yearRange(state.years[0]?.[0], state.years.at(-1)?.at(-1));
           return [h("header", [previousButton(), h("strong", title), nextButton()]), cells()];
         }
 
+        const policies = attrs.policies as { min?: DateValue | DateTimeValue; max?: DateValue | DateTimeValue } | undefined;
+        const min = selectedDate(policies?.min);
+        const max = selectedDate(policies?.max);
         return h(UICalendarPeriodHeader, {
           class: "ui-temporal-picker__calendar",
-          view: state.view, choosingMonth, yearFirst: kind !== "month",
-          onSelectYear: (year: number) => selectHighlight({ year, month: state.view.month, day: 1 }),
+          "data-view": week ? "week" : undefined,
+          view: state.view, choosingMonth, yearFirst: kind !== "month", disabled: state.disabled, min, max,
+          onSelectYear(year: number) {
+            const target = { year, month: state.view.month, day: 1 };
+            const clamped = min && compareDateValues(target, min) < 0 ? min : max && compareDateValues(target, max) > 0 ? max : target;
+            selectHighlight(clamped);
+          },
         }, {
           previous: previousButton,
           next: nextButton,
@@ -137,6 +180,18 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
             display.yearMonth(state.view), h(ChevronDown, { size: 14, "aria-hidden": true }),
           ]),
         });
+      }
+
+      function inlineClock(state: State, label: string, value: TimeValue | null, update: (value: TimeValue | null) => void, endpoint?: "start" | "end") {
+        if (!timePicker) return;
+        return h("div", { class: "ui-temporal-picker__time", "data-endpoint": endpoint }, [
+          h("span", { class: "ui-field-label", "aria-hidden": true }, label),
+          h(CalendarTimeControl, {
+            picker: timePicker, label, modelValue: value, disabled: state.disabled, readonly: state.readonly,
+            precision: attrs.timePrecision ?? attrs["time-precision"] ?? "minute",
+            policies: props.timePolicies, "onUpdate:modelValue": update,
+          }),
+        ]);
       }
 
       function renderDefault(state: State) {
@@ -158,7 +213,18 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
             "aria-label": label,
           });
         });
-        if (!anchor) return h(DatePickerContent, null, () => [...renderInputs(), calendar(state, labels)]);
+        if (!anchor) {
+          const clock = inlineTime === "single" && props.time !== undefined
+            ? inlineClock(state, labels.time, props.time, time => emit("update:time", time)) : undefined;
+          const start = inlineTime === "range" && props.startTime !== undefined
+            ? inlineClock(state, `${labels.start} ${labels.time}`, props.startTime, time => emit("update:startTime", time), "start") : undefined;
+          const end = inlineTime === "range" && props.endTime !== undefined
+            ? inlineClock(state, `${labels.end} ${labels.time}`, props.endTime, time => emit("update:endTime", time), "end") : undefined;
+          return h(DatePickerContent, null, () => [
+            ...renderInputs(), calendar(state, labels), clock,
+            start || end ? h("div", { class: "ui-calendar-time-range" }, [start, end]) : undefined,
+          ]);
+        }
         const value = !options.summary ? undefined : kind === "date-time-range"
           ? h(UIDateTimeRangePickerValue, {
             value: state.value as DateTimeRange | null,
@@ -177,8 +243,8 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
           const label = `${labels[endpoint]} ${labels.time}`;
           return h("div", { class: "ui-temporal-picker__time", "data-endpoint": endpoint }, [
             h("span", { class: "ui-field-label" }, label),
-            h(timePicker, {
-              label, modelValue: selectedRange[endpoint].time, disabled: state.disabled, readonly: state.readonly,
+            h(CalendarTimeControl, {
+              picker: timePicker, label, modelValue: selectedRange[endpoint].time, disabled: state.disabled, readonly: state.readonly,
               precision: attrs.timePrecision ?? attrs["time-precision"] ?? "minute",
               policies: rangeTimeBounds(selectedRange, endpoint, policies),
               "onUpdate:modelValue": (time: TimeValue | null) => {
@@ -207,9 +273,13 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
 
       return () => {
         if (slots.default || controlFlag(attrs.asChild ?? attrs["as-child"])) {
-          return h(root, { ...attrs, ...definedControlAttrs(props), "onUpdate:highlightedValue": selectHighlight }, slots);
+          return h(root, { ...attrs, ...definedControlAttrs({ name: props.name, form: props.form }), "onUpdate:highlightedValue": selectHighlight }, slots);
         }
         const { "highlighted-value": highlighted, ...bindings } = attrs;
+        if (inlineTime) {
+          delete bindings.timePrecision;
+          delete bindings["time-precision"];
+        }
         return h(root, {
           ...bindings,
           highlightedValue: bindings.highlightedValue ?? highlighted ?? highlight.value ??
@@ -219,5 +289,5 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
         }, { default: renderDefault });
       };
     },
-  }) as unknown as CalendarFormComponent<Root>;
+  }) as unknown as CalendarFormComponent<Root, Extra>;
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ChevronDown, ChevronLeft, ChevronRight } from "@lucide/vue";
+import { provideFormBoundary } from "@sectile/vue/form-boundary";
 import {
   YearPickerRoot,
   YearPickerCell,
@@ -13,21 +14,27 @@ import type { DateValue } from "@sectile/temporal/date-field";
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 import { useUITemporalDisplay } from "./temporal-display";
 
-const { view, choosingMonth = false, yearFirst = false, labels } = defineProps<{
+const { view, choosingMonth = false, yearFirst = false, min, max, labels } = defineProps<{
   view: { year: number; month: number };
   choosingMonth?: boolean;
   yearFirst?: boolean;
+  disabled?: boolean;
   min?: DateValue;
   max?: DateValue;
   labels?: { selectYear?: string; previousYears?: string; nextYears?: string };
 }>();
 
 const emit = defineEmits<{ "select-year": [year: number] }>();
+provideFormBoundary();
 const display = useUITemporalDisplay();
 const selectYearLabel = computed(() => labels?.selectYear ?? (display.locale.value.startsWith("ko") ? "연도 선택" : "Select year"));
 const previousYearsLabel = computed(() => labels?.previousYears ?? (display.locale.value.startsWith("ko") ? "이전 연도 목록" : "Previous years"));
 const nextYearsLabel = computed(() => labels?.nextYears ?? (display.locale.value.startsWith("ko") ? "다음 연도 목록" : "Next years"));
 const currentYear = computed(() => ({ year: view.year, month: 1, day: 1 }));
+const yearPolicies = computed(() => ({
+  min: min && { year: min.year, month: 1, day: 1 },
+  max: max && { year: max.year, month: 1, day: 1 },
+}));
 const highlightedYear = ref(currentYear.value);
 const yearOpen = ref(choosingMonth && yearFirst);
 const period = useTemplateRef<HTMLElement>("period");
@@ -57,7 +64,8 @@ watch([yearOpen, () => choosingMonth], async ([showYears], _, onCleanup) => {
         v-model:open="yearOpen"
         :model-value="currentYear"
         v-model:highlighted-value="highlightedYear"
-        :policies="{ min, max }"
+        :policies="yearPolicies"
+        :disabled="disabled"
         :position="false"
         :label="selectYearLabel"
         v-slot="{ years }"
@@ -109,7 +117,7 @@ watch([yearOpen, () => choosingMonth], async ([showYears], _, onCleanup) => {
     container-type: inline-size;
   }
 
-  .ui-calendar-period[data-year-first]:has(> :is([data-scope="date-range"], [data-scope="date-time-range"])[data-part="grid"]) {
+  .ui-calendar-period[data-year-first]:has(> :is([data-scope="range-calendar"], [data-scope="date-range"], [data-scope="date-time-range"])[data-part="grid"]) {
     --ui-calendar-day-column-gap: 0px;
   }
 
@@ -155,6 +163,11 @@ watch([yearOpen, () => choosingMonth], async ([showYears], _, onCleanup) => {
 
 .ui-calendar-period > :slotted([data-part="grid"]) {
   min-block-size: var(--ui-calendar-period-body);
+}
+
+.ui-calendar-period[data-view="week"],
+.ui-calendar-period[data-view="week"] > :slotted([data-part="grid"]) {
+  min-block-size: 0;
 }
 
 .ui-calendar-period[data-year-first] > :slotted([data-part="grid"]:has(> [data-part="cell"])) {
