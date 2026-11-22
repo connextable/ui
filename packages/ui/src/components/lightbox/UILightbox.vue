@@ -44,6 +44,7 @@ const video = useTemplateRef<HTMLVideoElement>("video");
 const strip = useTemplateRef<HTMLElement>("strip");
 const opener = shallowRef<HTMLElement>();
 const mediaFailed = ref(false);
+const photoRatio = ref(0);
 const photoProjection = shallowRef<CSSProperties>();
 const transition = useLightboxTransition();
 const selectedIndex = computed(() =>
@@ -62,6 +63,7 @@ const canGoForward = computed(() => items.length > 1 && (loop || selectedIndex.v
 watch([mediaKey, displayedOpen], ([key, isOpen], [previousKey, wasOpen]) => {
   clearSwipe();
   video.value?.pause();
+  if (key !== previousKey || !isOpen) photoRatio.value = 0;
   if (!isOpen && (wasOpen || !key)) {
     photoProjection.value = undefined;
     if (!transition.isClosing()) transition.stop(false);
@@ -78,6 +80,11 @@ function photoThumbnail(element: Element | null | undefined, item: UILightboxIte
   if (item.kind !== "image") return;
   const image = element?.querySelector("img");
   if (image?.getAttribute("src") === item.src && image.complete && image.naturalWidth) return image;
+}
+
+function fitPhoto() {
+  const image = photo.value;
+  if (image?.naturalHeight) photoRatio.value = image.naturalWidth / image.naturalHeight;
 }
 
 function openAt(position: number, event?: Event) {
@@ -124,7 +131,10 @@ async function zoomFromThumbnail(bounds: DOMRect, pending: CSSProperties) {
 
   transition.start("open", () => { photoProjection.value = undefined; }, { media: image }, async () => {
     await image.decode().catch(() => undefined);
-    return { media: image === photo.value && image.naturalWidth ? image : null };
+    if (image !== photo.value || !image.naturalWidth) return {};
+    fitPhoto();
+    await nextTick();
+    return { media: image };
   }, scope);
 }
 
@@ -309,6 +319,7 @@ function onPointerCancel(event: PointerEvent) {
           <figure class="ui-lightbox__figure">
             <div class="ui-lightbox__stage">
               <div ref="visual" class="ui-lightbox__visual" :data-swipe="current.kind === 'image' && items.length > 1 || undefined"
+                :style="photoRatio ? { '--ui-lightbox-photo-ratio': photoRatio } : undefined"
                 @pointerdown="onPointerDown" @pointermove="onPointerMove" @pointerup="onPointerUp"
                 @pointercancel="onPointerCancel" @lostpointercapture="onPointerCancel">
                 <p v-if="mediaFailed || (current.kind === 'video' && !current.sources.length)"
@@ -317,7 +328,7 @@ function onPointerCancel(event: PointerEvent) {
                 </p>
                 <img v-else-if="current.kind === 'image'" :key="mediaKey" ref="photo" :src="current.src"
                   :alt="current.alt" :style="photoProjection" :data-projected="photoProjection ? '' : undefined"
-                  draggable="false" @error="mediaFailed = true" />
+                  draggable="false" @load="fitPhoto" @error="mediaFailed = true" />
                 <video v-else :key="mediaKey" ref="video" :aria-label="current.label" :poster="current.poster"
                   :muted="current.muted" :loop="current.loop" :crossorigin="current.crossorigin"
                   controls playsinline preload="metadata" @error="mediaFailed = true">
@@ -415,7 +426,7 @@ function onPointerCancel(event: PointerEvent) {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   gap: var(--ui-space-md);
-  inline-size: min(112rem, calc(100% - 2 * var(--ui-lightbox-inset)));
+  inline-size: calc(100% - 2 * var(--ui-lightbox-inset));
   block-size: calc(100dvh - 2 * var(--ui-lightbox-inset));
   max-block-size: calc(100dvh - 2 * var(--ui-lightbox-inset));
   padding: clamp(0.625rem, 2vw, 1.25rem);
@@ -486,6 +497,7 @@ function onPointerCancel(event: PointerEvent) {
 
 .ui-lightbox__stage {
   position: relative;
+  container-type: size;
   min-inline-size: 0;
   background: var(--ui-lightbox-stage-background, transparent);
 }
@@ -506,6 +518,7 @@ function onPointerCancel(event: PointerEvent) {
   inset: 0;
   max-inline-size: 100%;
   max-block-size: 100%;
+  inline-size: min(100%, calc(100cqb * var(--ui-lightbox-photo-ratio)));
   margin: auto;
   object-fit: contain;
 }
@@ -535,11 +548,6 @@ function onPointerCancel(event: PointerEvent) {
 }
 
 .ui-lightbox__navigation {
-  --ui-color-text: #fff;
-  --ui-color-focus: #bfe6f4;
-  --ui-color-surface-hover: rgb(9 17 22 / 94%);
-  --ui-color-surface-active: #091116;
-
   position: absolute;
   inset: 0;
   display: flex;
@@ -550,7 +558,8 @@ function onPointerCancel(event: PointerEvent) {
 }
 
 .ui-lightbox__navigation .ui-lightbox__arrow {
-  background-color: rgb(9 17 22 / 79%);
+  border-color: var(--ui-color-divider);
+  background-color: color-mix(in srgb, var(--ui-color-surface) 88%, transparent);
   pointer-events: auto;
 }
 
