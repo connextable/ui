@@ -8,7 +8,6 @@ import SelectTypeaheadExampleSource from "~/components/examples/SelectTypeaheadE
 import SelectFormExample from "~/components/form/SelectFormExample.vue";
 import formSource from "~/components/form/SelectFormExample.vue?example-code&raw";
 import SelectBasicExample from "~/components/select/SelectBasicExample.vue";
-import basicSource from "~/components/select/SelectBasicExample.vue?example-code&raw";
 import SelectDisabledOptionExample from "~/components/select/SelectDisabledOptionExample.vue";
 import disabledOptionSource from "~/components/select/SelectDisabledOptionExample.vue?example-code&raw";
 import SelectContentExample from "~/components/select/SelectContentExample.vue";
@@ -48,16 +47,9 @@ const parts = {
 <template>
   <div class="select-page">
     <PlaygroundExampleSection id="usage" title="기본 사용법">
-      <PlaygroundExample :heading-level="3"
-        id="select-example"
-        title="기본 사용법"
-        description="options로 목록을 만들고 v-model로 선택값을 연결합니다. clearable을 지정하면 X 버튼으로 미선택 상태로 돌아갑니다."
-        :source="basicSource"
-      >
-        <SelectBasicExample />
-      </PlaygroundExample>
+      <SelectBasicExample />
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="examples" title="동작별 예제">
+    <PlaygroundExampleSection id="select-states" title="선택 상태와 키보드">
       <PlaygroundExample :heading-level="3"
         id="select-disabled-option"
         title="비활성 옵션"
@@ -66,10 +58,6 @@ const parts = {
       >
         <SelectDisabledOptionExample />
       </PlaygroundExample>
-      <PlaygroundExample id="select-controlled-open" title="열림 상태 제어"
-        description="외부 버튼의 동작을 v-model:open에 연결합니다." :source="SelectControlledOpenExampleSource" :heading-level="3">
-        <SelectControlledOpenExample />
-      </PlaygroundExample>
       <PlaygroundExample id="select-readonly" title="읽기 전용 선택값"
         description="현재 선택을 표시합니다. 트리거를 눌러도 값을 바꾸는 목록은 열리지 않습니다." :source="SelectReadonlyExampleSource" :heading-level="3">
         <SelectReadonlyExample />
@@ -77,6 +65,12 @@ const parts = {
       <PlaygroundExample id="select-typeahead" title="키보드로 이름 검색"
         description="목록을 열고 P 또는 M을 눌러 해당 글자로 시작하는 형식으로 이동합니다." :source="SelectTypeaheadExampleSource" :heading-level="3">
         <SelectTypeaheadExample />
+      </PlaygroundExample>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="examples" title="실전 예제">
+      <PlaygroundExample id="select-controlled-open" title="열림 상태 제어"
+        description="외부 버튼의 동작을 v-model:open에 연결합니다." :source="SelectControlledOpenExampleSource" :heading-level="3">
+        <SelectControlledOpenExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
     <section aria-labelledby="select-parts">

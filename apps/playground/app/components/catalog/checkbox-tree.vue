@@ -1,30 +1,22 @@
 <script setup lang="ts">
-import { UICheckboxTree, UICheckboxTreeDisclosure, UICheckboxTreeGroup, UICheckboxTreeIndicator, UICheckboxTreeItem } from "@connextable/ui";
-import { ChevronRight } from "@lucide/vue";
+import { UICheckboxTree } from "@connextable/ui";
+import { ref } from "vue";
 
 const nodes = [
-  { id: "notifications", parentID: null },
-  { id: "email", parentID: "notifications" },
-  { id: "mobile", parentID: "notifications" },
-] as const;
+  { id: "notifications", parentID: null, label: "알림 채널" },
+  { id: "email", parentID: "notifications", label: "이메일" },
+  { id: "mobile", parentID: "notifications", label: "모바일" },
+];
+
+const channels = ref<readonly string[]>(["email"]);
 </script>
 
 <template>
-  <UICheckboxTree :nodes="nodes" :default-expanded-values="['notifications']" label="알림 채널">
-    <UICheckboxTreeItem value="notifications">
-      <UICheckboxTreeDisclosure for="notifications" as="button" aria-label="알림 채널 펼치기">
-        <ChevronRight :size="16" />
-      </UICheckboxTreeDisclosure>
-      <UICheckboxTreeIndicator />
-      알림 채널
-    </UICheckboxTreeItem>
-    <UICheckboxTreeGroup for="notifications">
-      <UICheckboxTreeItem value="email">
-        <UICheckboxTreeIndicator /> 이메일
-      </UICheckboxTreeItem>
-      <UICheckboxTreeItem value="mobile">
-        <UICheckboxTreeIndicator /> 모바일
-      </UICheckboxTreeItem>
-    </UICheckboxTreeGroup>
-  </UICheckboxTree>
+  <UICheckboxTree
+    v-model="channels"
+    :nodes="nodes"
+    :default-expanded-values="['notifications']"
+    label="알림 채널"
+    clearable
+  />
 </template>

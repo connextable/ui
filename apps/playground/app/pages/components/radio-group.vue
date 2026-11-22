@@ -6,7 +6,6 @@ import RadioGroupDescriptionExampleSource from "~/components/examples/RadioGroup
 import RadioGroupReadonlyExample from "~/components/examples/RadioGroupReadonlyExample.vue";
 import RadioGroupReadonlyExampleSource from "~/components/examples/RadioGroupReadonlyExample.vue?example-code&raw";
 import RadioGroupExample from "~/components/examples/RadioGroupExample.vue";
-import radioGroupExampleSource from "~/components/examples/RadioGroupExample.vue?example-code&raw";
 import RadioGroupDisabledExample from "~/components/examples/RadioGroupDisabledExample.vue";
 import radioGroupDisabledExampleSource from "~/components/examples/RadioGroupDisabledExample.vue?example-code&raw";
 import RadioGroupFormExample from "~/components/form/RadioGroupFormExample.vue";
@@ -22,17 +21,9 @@ definePageMeta({
 <template>
   <div>
     <PlaygroundExampleSection id="usage" title="기본 사용법">
-      <PlaygroundExample :heading-level="3"
-        id="radio-example"
-        title="한 항목 선택"
-        description="v-model로 선택한 값을 연결합니다. 다른 항목을 선택하면 이전 선택이 해제됩니다."
-        :source="radioGroupExampleSource"
-        wide
-      >
-        <RadioGroupExample />
-      </PlaygroundExample>
+      <RadioGroupExample />
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="examples" title="동작별 예제">
+    <PlaygroundExampleSection id="examples" title="옵션 상태와 배치">
       <PlaygroundExample :heading-level="3"
         id="radio-disabled"
         title="비활성 옵션"

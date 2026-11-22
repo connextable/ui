@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { UICombobox } from "@connextable/ui";
-import { useId } from "vue";
+import { ref } from "vue";
 
-const inputId = useId();
+const environment = ref<string | null>(null);
 const environments = [
   { id: "production", label: "운영" },
   { id: "stage", label: "검증" },
@@ -14,8 +14,17 @@ const policies = {
 </script>
 
 <template>
-  <div class="ui-field">
-    <label :for="inputId">실행 환경</label>
-    <UICombobox :id="inputId" :items="environments" :policies="policies" label="실행 환경" placeholder="이름으로 검색" />
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UICombobox
+      v-model="environment"
+      :items="environments"
+      :policies="policies"
+      label="실행 환경"
+      placeholder="이름으로 검색"
+      clearable
+    />
+    <template #footer>
+      <output>{{ environments.find(item => item.id === environment)?.label ?? "선택 없음" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

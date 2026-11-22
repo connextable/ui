@@ -12,5 +12,8 @@ const selected = ref("production");
 </script>
 
 <template>
-  <UIListbox :options="options" v-model="selected" aria-label="실행 환경" />
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIListbox v-model="selected" :options="options" aria-label="실행 환경" />
+    <template #footer><output>{{ options.find(option => option.value === selected)?.label ?? "선택 없음" }}</output></template>
+  </PlaygroundExample>
 </template>

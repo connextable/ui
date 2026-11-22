@@ -4,7 +4,6 @@ import CheckboxReadonlyExampleSource from "~/components/examples/CheckboxReadonl
 import CheckboxIndicatorExample from "~/components/examples/CheckboxIndicatorExample.vue";
 import CheckboxIndicatorExampleSource from "~/components/examples/CheckboxIndicatorExample.vue?example-code&raw";
 import CheckboxExample from "~/components/examples/CheckboxExample.vue";
-import source from "~/components/examples/CheckboxExample.vue?example-code&raw";
 import CheckboxSelectAllExample from "~/components/examples/CheckboxSelectAllExample.vue";
 import selectAllSource from "~/components/examples/CheckboxSelectAllExample.vue?example-code&raw";
 import CheckboxIndeterminateExample from "~/components/examples/CheckboxIndeterminateExample.vue";
@@ -25,24 +24,9 @@ definePageMeta({
 <template>
   <div>
     <PlaygroundExampleSection id="usage" title="기본 사용법">
-      <PlaygroundExample :heading-level="3"
-        id="checkbox-example"
-        title="기본 선택"
-        description="v-model로 선택 여부를 연결합니다."
-        :source="source"
-      >
-        <CheckboxExample />
-      </PlaygroundExample>
+      <CheckboxExample />
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="examples" title="동작별 예제">
-      <PlaygroundExample :heading-level="3"
-        id="checkbox-select-all"
-        title="전체 선택"
-        description="모두 선택을 누르면 두 검사 항목의 선택이 함께 바뀝니다."
-        :source="selectAllSource"
-      >
-        <CheckboxSelectAllExample />
-      </PlaygroundExample>
+    <PlaygroundExampleSection id="checkbox-states" title="선택 상태">
       <PlaygroundExample :heading-level="3"
         id="checkbox-indeterminate"
         title="혼합 상태"
@@ -62,6 +46,17 @@ definePageMeta({
       <PlaygroundExample id="checkbox-readonly" title="읽기 전용"
         description="켜진 상태를 표시합니다. 사용자 입력으로는 상태가 바뀌지 않습니다." :source="CheckboxReadonlyExampleSource" :heading-level="3">
         <CheckboxReadonlyExample />
+      </PlaygroundExample>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="examples" title="실전 예제">
+      <PlaygroundExample
+        id="checkbox-select-all"
+        title="전체 선택"
+        description="모두 선택을 누르면 두 검사 항목의 선택이 함께 바뀝니다."
+        :source="selectAllSource"
+        :heading-level="3"
+      >
+        <CheckboxSelectAllExample />
       </PlaygroundExample>
       <PlaygroundExample id="UICheckboxIndicator" title="UICheckboxIndicator"
         description="indicator 슬롯에서 선택된 체크박스의 기호를 바꿉니다." :source="CheckboxIndicatorExampleSource" :heading-level="3">

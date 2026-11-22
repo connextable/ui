@@ -1,16 +1,28 @@
 <script setup lang="ts" generic="ID extends string = string">
+import { Check } from "@lucide/vue";
 import {
+  TreeSelectContent,
+  TreeSelectItem,
   TreeSelectRoot,
   type TreeSelectEmits,
   type TreeSelectExpose,
   type TreeSelectRootProps,
+  type TreeSelectRootSlotProps,
+  type TreeSelectSearchRequest,
   type TreeSelectSlots,
 } from "@sectile/vue/tree-select";
-import { computed, ref, useTemplateRef } from "vue";
+import { computed, getCurrentInstance, h, ref, useSlots, useTemplateRef } from "vue";
 import { provideClearable, useClearableValue, type ClearableProps } from "../clear/clearable";
+import { renderTreeChoiceRows, type LabeledTreeNode } from "./tree-choice-rows";
+import { UITreeSelectGroup } from "./tree-groups";
+import UITreeSelectDisclosure from "./UITreeSelectDisclosure.vue";
+import UITreeSelectField from "./UITreeSelectField.vue";
 
 defineOptions({ inheritAttrs: false });
-const props = withDefaults(defineProps<TreeSelectRootProps<ID> & ClearableProps>(), {
+const props = withDefaults(defineProps<Omit<TreeSelectRootProps<ID>, "nodes"> & ClearableProps & {
+  nodes: readonly (TreeSelectRootProps<ID>["nodes"][number] & LabeledTreeNode<ID>)[];
+  placeholder?: string;
+}>(), {
   position: true,
   open: undefined,
   disabled: undefined,
@@ -19,9 +31,13 @@ const props = withDefaults(defineProps<TreeSelectRootProps<ID> & ClearableProps>
 });
 const emit = defineEmits<TreeSelectEmits<ID>>();
 defineSlots<TreeSelectSlots<ID>>();
+const slots = useSlots();
+const instance = getCurrentInstance();
+const labels = computed(() => new Map(props.nodes.map(({ id, label }) => [id, label])));
+const labelFor = (id: ID) => labels.value.get(id) ?? id;
 
 const rootProps = computed(() => {
-  const { clearable: _clearable, clearLabel: _clearLabel, ...nativeProps } = props;
+  const { clearable: _clearable, clearLabel: _clearLabel, placeholder: _placeholder, ...nativeProps } = props;
   return nativeProps as TreeSelectRootProps<ID>;
 });
 const localOpen = ref(props.defaultOpen ?? false);
@@ -98,6 +114,28 @@ function openFromSearch(event: Event) {
 }
 
 const tree = useTemplateRef<TreeSelectExpose<ID>>("tree");
+
+function onSearch(request: TreeSelectSearchRequest) {
+  emit("search", request);
+  if (slots.default || props.asChild || props.matches !== undefined || props.results !== undefined || instance?.vnode.props?.onSearch) return;
+
+  const query = request.query.trim().toLocaleLowerCase();
+  const matches = props.nodes.filter(({ id }) => labelFor(id).toLocaleLowerCase().includes(query)).map(({ id }) => id);
+  tree.value?.resolveSearch(request, matches);
+}
+
+function Rows({ state }: { state: TreeSelectRootSlotProps<ID> }) {
+  return renderTreeChoiceRows({
+    item: TreeSelectItem,
+    group: UITreeSelectGroup,
+    disclosure: UITreeSelectDisclosure,
+    label: labelFor,
+    children: state.getChildren,
+    isBranch: state.isBranch,
+    afterLabel: id => state.value.includes(id) ? h(Check, { size: 16, "aria-hidden": "true" }) : null,
+  });
+}
+
 defineExpose({
   get element() { return tree.value?.element ?? null; },
   focus: (options) => tree.value?.focus(options),
@@ -123,6 +161,21 @@ defineExpose({
     @click="openFromInput"
     @input="openFromSearch"
     @compositionend="openFromSearch"
-    @search="emit('search', $event)"
-  ><slot v-bind="state" /></TreeSelectRoot>
+    @search="onSearch"
+  >
+    <slot v-if="$slots.default || props.asChild" v-bind="state" />
+    <template v-else>
+      <UITreeSelectField
+        :aria-label="props.label ?? '항목 검색'"
+        :placeholder="props.placeholder"
+        :query="state.query"
+        :selected="state.value.length > 0"
+        :display-value="state.value.map(labelFor).join(', ')"
+      />
+      <TreeSelectContent>
+        <Rows v-if="state.getChildren(null).length" :state="state" />
+        <p v-else-if="state.query && !state.pending" role="status">검색 결과가 없습니다.</p>
+      </TreeSelectContent>
+    </template>
+  </TreeSelectRoot>
 </template>

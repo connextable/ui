@@ -1,47 +1,28 @@
 <script setup lang="ts">
-import { Check, ChevronRight } from "@lucide/vue";
-import {
-  UICascadeSelect,
-  UICascadeSelectColumn,
-  UICascadeSelectContent,
-  UICascadeSelectItem,
-  UICascadeSelectItemChevron,
-  UICascadeSelectItemIndicator,
-  UICascadeSelectTrigger,
-  UICascadeSelectValue,
-} from "@connextable/ui";
+import { UICascadeSelect } from "@connextable/ui";
 import { ref } from "vue";
 
 const nodes = [
-  { id: "asia", parentID: null },
-  { id: "kr", parentID: "asia" },
-  { id: "seoul", parentID: "kr" },
-  { id: "busan", parentID: "kr" },
-  { id: "jp", parentID: "asia" },
-  { id: "tokyo", parentID: "jp" },
-  { id: "europe", parentID: null },
-  { id: "fr", parentID: "europe" },
-  { id: "paris", parentID: "fr" },
+  { id: "아시아", parentID: null },
+  { id: "대한민국", parentID: "아시아" },
+  { id: "서울", parentID: "대한민국" },
+  { id: "부산", parentID: "대한민국" },
+  { id: "일본", parentID: "아시아" },
+  { id: "도쿄", parentID: "일본" },
+  { id: "유럽", parentID: null },
+  { id: "프랑스", parentID: "유럽" },
+  { id: "파리", parentID: "프랑스" },
 ];
-const labels: Record<string, string> = {
-  asia: "아시아", kr: "대한민국", seoul: "서울", busan: "부산",
-  jp: "일본", tokyo: "도쿄", europe: "유럽", fr: "프랑스", paris: "파리",
-};
-const label = (id: string) => labels[id] ?? id;
-
-const region = ref<string | null>("seoul");
+const region = ref<string | null>("서울");
 </script>
+
 <template>
-  <UICascadeSelect :nodes="nodes" :text-value="label" v-model="region" v-slot="{ columns }">
-    <UICascadeSelectTrigger><UICascadeSelectValue placeholder="도시 선택" /></UICascadeSelectTrigger>
-    <UICascadeSelectContent>
-      <UICascadeSelectColumn v-for="(_, depth) in columns" :key="depth" :depth="depth" v-slot="{ items }">
-        <UICascadeSelectItem v-for="item in items" :key="item" :value="item">
-          {{ label(item) }}
-          <UICascadeSelectItemChevron><ChevronRight :size="16" aria-hidden="true" /></UICascadeSelectItemChevron>
-          <UICascadeSelectItemIndicator><Check :size="16" aria-hidden="true" /></UICascadeSelectItemIndicator>
-        </UICascadeSelectItem>
-      </UICascadeSelectColumn>
-    </UICascadeSelectContent>
-  </UICascadeSelect>
+  <UICascadeSelect
+    v-model="region"
+    :nodes="nodes"
+    :column-labels="['권역', '국가', '도시']"
+    label="배송 지역"
+    placeholder="도시 선택"
+    clearable
+  />
 </template>

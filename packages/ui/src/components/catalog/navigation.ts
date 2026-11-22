@@ -1,5 +1,5 @@
+export { UITabs } from "./tabbed-composition";
 export {
-  TabsRoot as UITabs,
   TabsList as UITabsList,
   TabsTrigger as UITabsTrigger,
   TabsContent as UITabsContent,

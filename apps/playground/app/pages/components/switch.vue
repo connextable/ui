@@ -6,7 +6,6 @@ import SwitchDefaultExampleSource from "~/components/examples/SwitchDefaultExamp
 import SwitchDisabledExample from "~/components/examples/SwitchDisabledExample.vue";
 import SwitchDisabledExampleSource from "~/components/examples/SwitchDisabledExample.vue?example-code&raw";
 import SwitchExample from "~/components/examples/SwitchExample.vue";
-import switchExampleSource from "~/components/examples/SwitchExample.vue?example-code&raw";
 import SwitchSizeExample from "~/components/examples/SwitchSizeExample.vue";
 import switchSizeExampleSource from "~/components/examples/SwitchSizeExample.vue?example-code&raw";
 import SwitchReadonlyExample from "~/components/examples/SwitchReadonlyExample.vue";
@@ -25,16 +24,9 @@ definePageMeta({
 <template>
   <div>
     <PlaygroundExampleSection id="usage" title="기본 사용법">
-      <PlaygroundExample :heading-level="3"
-        id="switch-example"
-        title="댓글 알림 설정"
-        description="v-model에 알림 수신 여부를 연결합니다. 스위치를 누르면 설정이 즉시 바뀝니다."
-        :source="switchExampleSource"
-      >
-        <SwitchExample />
-      </PlaygroundExample>
+      <SwitchExample />
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="examples" title="동작별 예제">
+    <PlaygroundExampleSection id="switch-states" title="초기값과 상태">
       <PlaygroundExample :heading-level="3"
         id="switch-readonly"
         title="읽기 전용"
@@ -51,10 +43,6 @@ definePageMeta({
         description="disabled를 지정한 스위치는 상태 변경 동작을 받지 않습니다." :source="SwitchDisabledExampleSource" :heading-level="3">
         <SwitchDisabledExample />
       </PlaygroundExample>
-      <PlaygroundExample id="UISwitchThumb" title="UISwitchThumb"
-        description="thumb 슬롯으로 켜짐 상태의 표시를 조합합니다." :source="thumbSource" :heading-level="3">
-        <SwitchThumbExample />
-      </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="appearance" title="모양">
       <PlaygroundExample :heading-level="3"
@@ -64,6 +52,12 @@ definePageMeta({
         :source="switchSizeExampleSource"
       >
         <SwitchSizeExample />
+      </PlaygroundExample>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="examples" title="실전 예제">
+      <PlaygroundExample id="UISwitchThumb" title="UISwitchThumb"
+        description="thumb 슬롯으로 켜짐 상태의 표시를 조합합니다." :source="thumbSource" :heading-level="3">
+        <SwitchThumbExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundFormSection>

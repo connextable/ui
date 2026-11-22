@@ -8,9 +8,14 @@ const items = [
   { value: "app", label: "앱 푸시" },
 ];
 
-const selected = ref<readonly string[]>(['sms']);
+const selected = ref<readonly string[]>(["sms"]);
 </script>
 
 <template>
-  <UICheckboxGroup :options="items" v-model="selected" name="notificationChannels" label="알림 채널" />
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UICheckboxGroup v-model="selected" :options="items" name="notificationChannels" label="알림 채널" />
+    <template #footer>
+      <output>{{ items.filter(item => selected.includes(item.value)).map(item => item.label).join(", ") || "선택 없음" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

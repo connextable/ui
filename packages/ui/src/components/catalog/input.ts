@@ -1,15 +1,15 @@
-import { CascadeListRoot } from "@sectile/vue/cascade-list";
-import { CheckboxTreeRoot } from "@sectile/vue/checkbox-tree";
 import { ComboboxEditor } from "@sectile/vue/combobox";
 import { EditableArea, EditableInput, EditablePreview, EditableRoot, type EditableRootSlotProps } from "@sectile/vue/editable";
 import { h } from "vue";
 import { withClearableControl, withClearableModel, type ClearableComponent } from "../clear/with-clearable";
+import { CascadeListComposition } from "./cascade-composition";
 import { ComboboxComposition } from "./combobox-composition";
 import QuantityFieldComposition from "./QuantityFieldComposition.vue";
 import { CheckboxGroupComposition, ListboxComposition, ToggleGroupComposition } from "./selection-composition";
+import { CheckboxTreeComposition } from "./tree-choice-composition";
 
 const group = { placement: "beside" } as const;
-export const UICascadeList: ClearableComponent<typeof CascadeListRoot> = withClearableModel(CascadeListRoot, null, group);
+export const UICascadeList: ClearableComponent<typeof CascadeListComposition> = withClearableModel(CascadeListComposition, null, group);
 export const UICombobox: ClearableComponent<typeof ComboboxComposition> = withClearableModel(ComboboxComposition, null, { clearInput: true });
 export { UIComboboxInput } from "./combobox-composition";
 export const UIComboboxEditor: typeof ComboboxEditor = withClearableControl(ComboboxEditor, "input");
@@ -25,7 +25,7 @@ export const UIEditable: ClearableComponent<typeof EditableRoot> = withClearable
 export const UIListbox: ClearableComponent<typeof ListboxComposition> = withClearableModel(ListboxComposition,
   attrs => (attrs.selectionMode ?? attrs["selection-mode"]) === "multiple" ? [] : "", group);
 export const UICheckboxGroup: ClearableComponent<typeof CheckboxGroupComposition> = withClearableModel(CheckboxGroupComposition, [], group);
-export const UICheckboxTree: ClearableComponent<typeof CheckboxTreeRoot> = withClearableModel(CheckboxTreeRoot, [], {
+export const UICheckboxTree: ClearableComponent<typeof CheckboxTreeComposition> = withClearableModel(CheckboxTreeComposition, [], {
   ...group, expose: ["element", "focus"],
 });
 export const UIToggleGroup: ClearableComponent<typeof ToggleGroupComposition> = withClearableModel(ToggleGroupComposition, [], group);
@@ -40,8 +40,8 @@ export {
   CascadeListItemIndicator as UICascadeListItemIndicator,
   CascadeListItemChevron as UICascadeListItemChevron,
 } from "@sectile/vue/cascade-list";
+export { UIColorPicker } from "./UIColorPicker";
 export {
-  ColorPickerRoot as UIColorPicker,
   ColorPickerLabel as UIColorPickerLabel,
   ColorPickerControl as UIColorPickerControl,
   ColorPickerNativeInput as UIColorPickerNativeInput,
@@ -87,8 +87,8 @@ export {
   SpinButtonDecrement as UISpinButtonDecrement,
 } from "@sectile/vue/spin-button";
 export { UISpinButton } from "./spin-button";
+export { UIStepper } from "./tabbed-composition";
 export {
-  StepperRoot as UIStepper,
   StepperList as UIStepperList,
   StepperStep as UIStepperStep,
   StepperContent as UIStepperContent,
@@ -114,8 +114,8 @@ export {
   TreeSelectContent as UITreeSelectContent,
   TreeSelectItem as UITreeSelectItem,
 } from "@sectile/vue/tree-select";
+export { UITreeView } from "./tree-choice-composition";
 export {
-  TreeViewRoot as UITreeView,
   TreeViewItem as UITreeViewItem,
   TreeViewDisclosure as UITreeViewDisclosure,
 } from "@sectile/vue/tree-view";

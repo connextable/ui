@@ -11,5 +11,10 @@ const value = ref(["left"]);
 </script>
 
 <template>
-  <UIToggleGroup v-model="value" :options="options" label="텍스트 정렬" />
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIToggleGroup v-model="value" :options="options" label="텍스트 정렬" />
+    <template #footer>
+      <output>{{ options.filter(option => value.includes(option.value)).map(option => option.label).join(", ") || "선택 없음" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
