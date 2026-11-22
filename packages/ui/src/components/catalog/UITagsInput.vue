@@ -6,7 +6,9 @@ import {
   type TagsInputRootProps,
   type TagsInputRootSlotProps,
 } from "@sectile/vue/tags-input";
-import { computed, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
+import UIClearButton from "../clear/UIClearButton.vue";
+import { clearFocusTarget } from "../clear/clear-focus";
 import { UITagsInputClear } from "../clear/selection-clear-parts";
 import type { ClearableProps } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
@@ -40,6 +42,13 @@ const notice = ref("");
 function updateValue(value: readonly string[]) {
   notice.value = "";
   emit("update:modelValue", value);
+}
+
+async function clearControlled(event: MouseEvent) {
+  const target = clearFocusTarget(event);
+  updateValue([]);
+  await nextTick();
+  target?.focus({ preventScroll: true });
 }
 
 function paste(event: ClipboardEvent, scope: TagsInputRootSlotProps) {
@@ -98,10 +107,14 @@ function paste(event: ClipboardEvent, scope: TagsInputRootSlotProps) {
         :aria-describedby="$attrs['aria-describedby']"
         @paste="paste($event, state)"
       />
-      <UITagsInputClear
-        v-if="clearable && state.value.length && !state.readonly && !state.disabled"
-        :aria-label="clearLabel"
-      />
+      <template v-if="clearable && state.value.length && !state.readonly && !state.disabled">
+        <UIClearButton
+          v-if="modelValue !== undefined"
+          :label="clearLabel ?? '태그 모두 지우기'"
+          @click="clearControlled"
+        />
+        <UITagsInputClear v-else :aria-label="clearLabel" />
+      </template>
       <span v-if="splitPaste" class="ui-tags-input__announcement" role="status">{{ notice }}</span>
     </template>
   </TagsInputRoot>
