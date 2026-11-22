@@ -270,5 +270,23 @@
       border-start-end-radius: 0;
       border-end-end-radius: 0;
     }
+
+    > :where([data-ui-range-edge], [data-ui-range-anchor]):not([aria-disabled="true"]) {
+      background: var(--ui-color-accent);
+      color: var(--ui-color-on-accent);
+
+      &:focus-visible { outline-color: var(--ui-color-on-accent); }
+    }
+
+    &[data-ui-range-draft] > :where([data-in-range]):not([data-ui-range-anchor], [aria-disabled="true"]) {
+      background: var(--ui-color-surface-muted);
+      color: var(--ui-color-text-muted);
+
+      &:focus-visible { outline-color: var(--ui-color-focus); }
+    }
+
+    > [data-ui-range-anchor]:not([aria-disabled="true"]) {
+      border-radius: var(--ui-control-radius);
+    }
   }
 }

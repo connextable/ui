@@ -6,21 +6,26 @@ import { DatePickerInput } from "@sectile/vue/temporal/date-picker";
 import { DateTimeField } from "@sectile/vue/temporal/date-time-field";
 import { DateTimeRangeFieldStartInput, DateTimeRangeFieldEndInput } from "@sectile/vue/temporal/date-time-range-field";
 import { DateTimePickerDateTimeInput, DateTimePickerDateInput, DateTimePickerTimeInput } from "@sectile/vue/temporal/date-time-picker";
-import { DateTimeRangePickerStartDateInput, DateTimeRangePickerEndDateInput, DateTimeRangePickerStartTimeInput, DateTimeRangePickerEndTimeInput } from "@sectile/vue/temporal/date-time-range-picker";
+import {
+  DateTimeRangePickerStartDateInput, DateTimeRangePickerEndDateInput,
+  DateTimeRangePickerStartTimeInput, DateTimeRangePickerEndTimeInput,
+  DateTimeRangePickerGrid, DateTimeRangePickerCell, DateTimeRangePickerMonthCell,
+} from "@sectile/vue/temporal/date-time-range-picker";
 import { TimeField } from "@sectile/vue/temporal/time-field";
 import { TimeRangeFieldStartInput, TimeRangeFieldEndInput } from "@sectile/vue/temporal/time-range-field";
-import { DateRangePickerStartInput, DateRangePickerEndInput } from "@sectile/vue/temporal/date-range-picker";
+import { DateRangePickerStartInput, DateRangePickerEndInput, DateRangePickerGrid, DateRangePickerCell, DateRangePickerMonthCell } from "@sectile/vue/temporal/date-range-picker";
 import { MonthPickerInput } from "@sectile/vue/temporal/month-picker";
-import { MonthRangePickerStartInput, MonthRangePickerEndInput } from "@sectile/vue/temporal/month-range-picker";
-import { RangeCalendarRoot } from "@sectile/vue/temporal/range-calendar";
+import { MonthRangePickerStartInput, MonthRangePickerEndInput, MonthRangePickerGrid, MonthRangePickerCell } from "@sectile/vue/temporal/month-range-picker";
+import { RangeCalendarRoot, RangeCalendarGrid, RangeCalendarCell, RangeCalendarMonthCell } from "@sectile/vue/temporal/range-calendar";
 import {
   TimePickerColumn, TimePickerContent, TimePickerInput,
   type TimePickerColumnProps, type TimePickerColumnSlotProps, type TimePickerContentSlotProps,
 } from "@sectile/vue/temporal/time-picker";
 import { YearPickerInput } from "@sectile/vue/temporal/year-picker";
-import { YearRangePickerStartInput, YearRangePickerEndInput } from "@sectile/vue/temporal/year-range-picker";
+import { YearRangePickerStartInput, YearRangePickerEndInput, YearRangePickerGrid, YearRangePickerCell } from "@sectile/vue/temporal/year-range-picker";
 import { withTemporalEditing } from "./temporal-input";
 import { TemporalInputFormatProvider, temporalInputFormatsKey, type UITemporalInputFormats } from "./temporal-input-format";
+import { withRangeGridPresentation, withRangeCellPresentation } from "./temporal-range-presentation";
 import { defaultTemporalFormatting, temporalDisplayFormatsKey, useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
 import type { DateValue } from "@sectile/temporal/date-field";
 
@@ -49,6 +54,20 @@ export const UITimeField: typeof TimeField = withTemporalEditing(TimeField, "tim
 export const UITimePickerInput = withTemporalEditing(TimePickerInput, "time");
 export const UITimeRangeFieldStartInput = withTemporalEditing(TimeRangeFieldStartInput, "time");
 export const UITimeRangeFieldEndInput = withTemporalEditing(TimeRangeFieldEndInput, "time");
+
+export const UIRangeCalendarGrid: typeof RangeCalendarGrid = withRangeGridPresentation(RangeCalendarGrid, "range-calendar");
+export const UIRangeCalendarCell: typeof RangeCalendarCell = withRangeCellPresentation(RangeCalendarCell);
+export const UIRangeCalendarMonthCell: typeof RangeCalendarMonthCell = withRangeCellPresentation(RangeCalendarMonthCell);
+export const UIDateRangePickerGrid: typeof DateRangePickerGrid = withRangeGridPresentation(DateRangePickerGrid, "date-range");
+export const UIDateRangePickerCell: typeof DateRangePickerCell = withRangeCellPresentation(DateRangePickerCell);
+export const UIDateRangePickerMonthCell: typeof DateRangePickerMonthCell = withRangeCellPresentation(DateRangePickerMonthCell);
+export const UIDateTimeRangePickerGrid: typeof DateTimeRangePickerGrid = withRangeGridPresentation(DateTimeRangePickerGrid, "date-time-range");
+export const UIDateTimeRangePickerCell: typeof DateTimeRangePickerCell = withRangeCellPresentation(DateTimeRangePickerCell);
+export const UIDateTimeRangePickerMonthCell: typeof DateTimeRangePickerMonthCell = withRangeCellPresentation(DateTimeRangePickerMonthCell);
+export const UIMonthRangePickerGrid: typeof MonthRangePickerGrid = withRangeGridPresentation(MonthRangePickerGrid, "month-range-picker");
+export const UIMonthRangePickerCell: typeof MonthRangePickerCell = withRangeCellPresentation(MonthRangePickerCell);
+export const UIYearRangePickerGrid: typeof YearRangePickerGrid = withRangeGridPresentation(YearRangePickerGrid, "year-range-picker");
+export const UIYearRangePickerCell: typeof YearRangePickerCell = withRangeCellPresentation(YearRangePickerCell);
 
 function withPickerPlaceholder<T extends Component>(part: T, placeholder: string): T {
   return defineComponent({
@@ -135,9 +154,6 @@ export {
 } from "@sectile/vue/temporal/calendar";
 export {
   RangeCalendarContent as UIRangeCalendarContent,
-  RangeCalendarGrid as UIRangeCalendarGrid,
-  RangeCalendarCell as UIRangeCalendarCell,
-  RangeCalendarMonthCell as UIRangeCalendarMonthCell,
   RangeCalendarStartInput as UIRangeCalendarStartInput,
   RangeCalendarEndInput as UIRangeCalendarEndInput,
   RangeCalendarPreviousWeek as UIRangeCalendarPreviousWeek,
@@ -189,9 +205,6 @@ export {
   DateRangePickerAnchor as UIDateRangePickerAnchor,
   DateRangePickerPortal as UIDateRangePickerPortal,
   DateRangePickerContent as UIDateRangePickerContent,
-  DateRangePickerGrid as UIDateRangePickerGrid,
-  DateRangePickerCell as UIDateRangePickerCell,
-  DateRangePickerMonthCell as UIDateRangePickerMonthCell,
   DateRangePickerPreviousWeek as UIDateRangePickerPreviousWeek,
   DateRangePickerNextWeek as UIDateRangePickerNextWeek,
   DateRangePickerPreviousMonth as UIDateRangePickerPreviousMonth,
@@ -230,9 +243,6 @@ export {
   DateTimeRangePickerAnchor as UIDateTimeRangePickerAnchor,
   DateTimeRangePickerPortal as UIDateTimeRangePickerPortal,
   DateTimeRangePickerContent as UIDateTimeRangePickerContent,
-  DateTimeRangePickerGrid as UIDateTimeRangePickerGrid,
-  DateTimeRangePickerCell as UIDateTimeRangePickerCell,
-  DateTimeRangePickerMonthCell as UIDateTimeRangePickerMonthCell,
   DateTimeRangePickerStartDateTimeInput as UIDateTimeRangePickerStartDateTimeInput,
   DateTimeRangePickerEndDateTimeInput as UIDateTimeRangePickerEndDateTimeInput,
   DateTimeRangePickerPreviousWeek as UIDateTimeRangePickerPreviousWeek,
@@ -358,8 +368,6 @@ export {
   MonthRangePickerAnchor as UIMonthRangePickerAnchor,
   MonthRangePickerPortal as UIMonthRangePickerPortal,
   MonthRangePickerContent as UIMonthRangePickerContent,
-  MonthRangePickerGrid as UIMonthRangePickerGrid,
-  MonthRangePickerCell as UIMonthRangePickerCell,
   MonthRangePickerPreviousYear as UIMonthRangePickerPreviousYear,
   MonthRangePickerNextYear as UIMonthRangePickerNextYear,
 } from "@sectile/vue/temporal/month-range-picker";
@@ -380,8 +388,6 @@ export {
   YearRangePickerAnchor as UIYearRangePickerAnchor,
   YearRangePickerPortal as UIYearRangePickerPortal,
   YearRangePickerContent as UIYearRangePickerContent,
-  YearRangePickerGrid as UIYearRangePickerGrid,
-  YearRangePickerCell as UIYearRangePickerCell,
   YearRangePickerPreviousPage as UIYearRangePickerPreviousPage,
   YearRangePickerNextPage as UIYearRangePickerNextPage,
 } from "@sectile/vue/temporal/year-range-picker";
