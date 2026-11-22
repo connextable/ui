@@ -30,7 +30,7 @@ export function renderTreeChoiceRows<ID extends string>(options: {
   return options.children(parent).flatMap(id => {
     const label = options.label(id);
     const branch = options.isBranch?.(id) ?? options.children(id).length > 0;
-    const row = h(options.item, { key: id, value: id, "aria-label": label }, () => [
+    const row = h(options.item, { key: `item:${id}`, value: id, "aria-label": label }, () => [
       branch && h(options.disclosure, { for: id, as: "button", "aria-label": `${label} 하위 항목` },
         () => h(ChevronRight, { size: 16, "aria-hidden": "true" })),
       options.beforeLabel?.(id),
