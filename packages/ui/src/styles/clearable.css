@@ -1,7 +1,7 @@
 .ui-clear-button.ui-button {
   --ui-control-size-height: var(--ui-clear-size, 2rem);
   --ui-control-size-padding-block: 0;
-  --ui-button-icon-radius: var(--ui-radius-sm);
+  --ui-button-icon-radius: var(--ui-clear-radius, var(--ui-radius-sm));
 
   flex: none;
   min-inline-size: var(--ui-control-size-height);
@@ -9,13 +9,27 @@
   color: var(--ui-color-text-muted);
 }
 
+:where(
+  .ui-inset-frame,
+  .ui-file-row__actions,
+  .ui-number-control,
+  .ui-tree-select-field,
+  [data-part="anchor"],
+  [data-scope="time-picker"][data-part="root"],
+  [data-scope$="-range-field"][data-part="root"]
+) > .ui-clear-button {
+  --ui-clear-size: var(--ui-inset-size, 2rem);
+  --ui-clear-radius: var(--ui-inset-radius, var(--ui-radius-sm));
+}
+
 .ui-clear-button--when-available:disabled {
   display: none;
 }
 
 .ui-clearable-control {
-  --ui-clear-size: 2rem;
-  --ui-clear-offset: var(--ui-frame-padding);
+  --ui-clear-size: var(--ui-inset-size);
+  --ui-clear-radius: var(--ui-inset-radius);
+  --ui-clear-offset: var(--ui-inset-distance);
 
   position: relative;
   display: grid;
@@ -74,14 +88,18 @@
   > input.ui-temporal-input { inline-size: 100%; }
 }
 
-.ui-tree-select-field:has(> .ui-clear-button) > input {
-  padding-inline-end: calc(var(--ui-control-height-small) + var(--ui-space-md) + 2rem);
+.ui-tree-select-field:has(> .ui-clear-button) {
+  --ui-clear-offset: calc(var(--ui-control-padding-inline) + 1rem + var(--ui-space-xs));
+
+  > input {
+    padding-inline-end: calc(var(--ui-clear-offset) + var(--ui-inset-size) + var(--ui-space-xs));
+  }
 }
 
 .ui-tree-select-field > .ui-clear-button {
   position: absolute;
   inset-block-start: 50%;
-  inset-inline-end: calc(var(--ui-control-padding-inline) + 1.25rem);
+  inset-inline-end: var(--ui-clear-offset);
   translate: 0 -50%;
 }
 

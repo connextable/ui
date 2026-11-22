@@ -14,7 +14,7 @@ input.ui-temporal-input {
   padding: var(--ui-frame-padding);
 
   &:has(> .ui-clear-button) {
-    inline-size: min(100%, calc(var(--ui-picker-width, 12rem) + 2rem + var(--ui-frame-padding)));
+    inline-size: min(100%, calc(var(--ui-picker-width, 12rem) + var(--ui-inset-size) + var(--ui-frame-padding)));
   }
 
   & input.ui-temporal-input {
@@ -298,7 +298,7 @@ input.ui-temporal-input {
 
   &:has(> .ui-clear-button) {
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
-    inline-size: min(100%, calc(var(--ui-range-field-width) + 2rem + var(--ui-inset-distance)));
+    inline-size: min(100%, calc(var(--ui-range-field-width) + var(--ui-inset-size) + var(--ui-inset-distance)));
 
     > .ui-clear-button {
       grid-area: 1 / 4;

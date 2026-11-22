@@ -102,7 +102,8 @@
 }
 
 /* Resolve on each frame so its children inherit the geometry of their immediate parent. */
-:where(.ui-inset-frame, .ui-tags-input__chip, .ui-number-control, .ui-quantity-control, .ui-color-sample,
+:where(.ui-inset-frame, .ui-clearable-control, .ui-tree-select-field,
+  .ui-tags-input__chip, .ui-number-control, .ui-quantity-control, .ui-color-sample,
   [data-part="anchor"]:is([data-scope^="date"], [data-scope^="month-"][data-scope$="-picker"], [data-scope^="year-"][data-scope$="-picker"]),
   [data-scope="time-picker"][data-part="root"],
   [data-scope$="-range-field"][data-part="root"]:has(> input.ui-temporal-input[data-part="start-input"] ~ input.ui-temporal-input[data-part="end-input"]),
