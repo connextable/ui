@@ -7,11 +7,13 @@ import {
   UICalendarNextMonth,
   UICalendarPreviousMonth,
   type UIDateValue,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 
 import { ref } from 'vue'
 const selected = ref<UIDateValue | null>(null)
 const initial = { year: 2026, month: 8, day: 22 }
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -19,12 +21,12 @@ const initial = { year: 2026, month: 8, day: 22 }
     <UICalendarContent>
       <header>
         <UICalendarPreviousMonth>이전</UICalendarPreviousMonth>
-        <strong>{{ view.year }}-{{ view.month }}</strong>
+        <strong>{{ display.yearMonth(view) }}</strong>
         <UICalendarNextMonth>다음</UICalendarNextMonth>
       </header>
       <UICalendarGrid>
         <UICalendarCell v-for="day in dates.flat()" :key="`${day.year}-${day.month}-${day.day}`" :value="day">
-          {{ day.day }}
+          {{ display.day(day) }}
         </UICalendarCell>
       </UICalendarGrid>
     </UICalendarContent>

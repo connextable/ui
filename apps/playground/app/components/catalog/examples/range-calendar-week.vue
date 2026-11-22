@@ -7,6 +7,7 @@ import {
   UIRangeCalendarGrid,
   UIRangeCalendarNextWeek,
   UIRangeCalendarPreviousWeek,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 
 const stay = {
@@ -14,6 +15,7 @@ const stay = {
   end: { year: 2026, month: 8, day: 25 },
 }
 
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -21,12 +23,12 @@ const stay = {
     <UIRangeCalendarContent>
       <header>
         <UIRangeCalendarPreviousWeek aria-label="이전 주"><ChevronLeft :size="16" aria-hidden="true" /></UIRangeCalendarPreviousWeek>
-        <strong>{{ view.year }}년 {{ view.month }}월</strong>
+        <strong>{{ display.yearMonth(view) }}</strong>
         <UIRangeCalendarNextWeek aria-label="다음 주"><ChevronRight :size="16" aria-hidden="true" /></UIRangeCalendarNextWeek>
       </header>
       <UIRangeCalendarGrid data-view="week">
         <UIRangeCalendarCell v-for="day in dates.flat()" :key="JSON.stringify(day)" :value="day">
-          {{ day.day }}
+          {{ display.day(day) }}
         </UIRangeCalendarCell>
       </UIRangeCalendarGrid>
     </UIRangeCalendarContent>

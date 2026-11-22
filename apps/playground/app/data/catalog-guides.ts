@@ -94,12 +94,18 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "temporal-provider": {
     examples: [
-      { id: "temporal-provider-format", title: "기준 시각과 날짜 서식", description: "같은 기준 시각이 서울과 뉴욕에서 각각 어떤 날짜인지 표시합니다.", parts: ["useUITemporalFormatter", "useUITemporalReferenceDate"] },
+      { id: "temporal-provider-format", title: "같은 시각의 지역별 기준일", description: "같은 기준 시각이 서울과 뉴욕에서 각각 어떤 날짜인지 표시합니다.", parts: ["useUITemporalDisplay", "useUITemporalReferenceDate"] },
+      { id: "temporal-provider-locale", title: "입력의 언어와 시간제 변경", description: "한국어 24시간제와 미국 영어 12시간제를 전환합니다. 날짜 순서와 시간 표기가 바뀐 뒤에도 같은 예약값을 편집할 수 있습니다.", parts: ["UIDateField", "UITimeField"] },
       { id: "temporal-provider-nested", title: "기준일 재정의", description: "안쪽 Provider의 기준 날짜를 따로 지정합니다." },
     ],
     title: "달력의 기준 날짜 지정",
     description: "8월 22일과 9월 7일을 기준으로 각각 처음 연 달력을 비교합니다.",
-    api: { "reference-date": "날짜 입력과 달력의 공통 기준일입니다.", formatting: "날짜·시간 서식을 하위 컴포넌트에서 공유합니다. 기본값은 한국어, 24시간제, Asia/Seoul입니다." },
+    api: {
+      "reference-date": "날짜 입력과 달력의 공통 기준일입니다.",
+      formatting: "locale과 timeZone으로 날짜 순서, 숫자, 시간제와 기준일의 시간대를 설정합니다. 기본값은 한국어 24시간제와 Asia/Seoul입니다.",
+      formats: "yearMonth, year, month, day, weekday, date, dateTime에 Intl 서식 옵션을 지정합니다. 달력과 선택값 표시에 적용되며, 직접 편집하는 입력은 locale의 서식을 사용합니다.",
+      useUITemporalDisplay: "사용자 정의 달력 슬롯과 선택값 표시에도 같은 로케일과 서식을 적용합니다.",
+    },
   },
   "host-provider": {
     examples: [
@@ -1315,7 +1321,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     examples: [
       { id: "date-range-picker-unavailable", title: "범위 끝점으로 선택할 수 없는 날짜", description: "8월 27일과 29일은 시작일이나 종료일로 선택할 수 없습니다. 두 끝점 사이에는 포함될 수 있습니다." },
       { id: "date-range-picker-draft", title: "두 끝점을 선택해야 범위 확정", description: "첫 날짜를 고른 후에는 확정한 범위가 없습니다. 마지막 날짜를 고르면 아래에 범위가 표시됩니다." },
-      { id: "date-range-picker-formatting", title: "날짜 범위의 표기 변경", description: "UITemporalProvider로 기본 날짜 서식을 정합니다. 요일 표시를 누르면 format 함수로 같은 날짜에 요일을 덧붙입니다.", parts: ["UIDateRangePickerValue"] },
+      { id: "date-range-picker-formatting", title: "날짜 범위의 표기 변경", description: "요일 표시를 누르면 Provider의 date와 yearMonth 서식이 선택값과 달력 제목에 함께 적용됩니다.", parts: ["UIDateRangePickerValue", "UICalendarPeriodHeader"] },
       { id: "date-range-picker-portal", title: "범위 달력을 포털에 표시", description: "시작일과 종료일 입력에 연결된 달력을 포털에 배치합니다.", parts: ["UIDateRangePickerPortal"] },
     ],
     title: "달력에서 날짜 범위 지정",

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { UIDateTimePicker, UIDateTimePickerAnchor, UIDateTimePickerDateInput, UIDateTimePickerTimeInput, UIDateTimePickerTrigger, UIDateTimePickerPortal, UIDateTimePickerContent, UIDateTimePickerPreviousMonth, UIDateTimePickerNextMonth, UIDateTimePickerGrid, UIDateTimePickerCell } from "@connextable/ui";
+import { UIDateTimePicker, UIDateTimePickerAnchor, UIDateTimePickerDateInput, UIDateTimePickerTimeInput, UIDateTimePickerTrigger, UIDateTimePickerPortal, UIDateTimePickerContent, UIDateTimePickerPreviousMonth, UIDateTimePickerNextMonth, UIDateTimePickerGrid, UIDateTimePickerCell, useUITemporalDisplay } from "@connextable/ui";
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 
 const initial = { date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minute: 30, second: 0, millisecond: 0 } };
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -16,12 +17,12 @@ const initial = { date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minu
       <UIDateTimePickerContent>
         <header>
           <UIDateTimePickerPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" /></UIDateTimePickerPreviousMonth>
-          <strong>{{ view.year }}년 {{ view.month }}월</strong>
+          <strong>{{ display.yearMonth(view) }}</strong>
           <UIDateTimePickerNextMonth aria-label="다음 달"><ChevronRight :size="16" /></UIDateTimePickerNextMonth>
         </header>
         <UIDateTimePickerGrid>
           <UIDateTimePickerCell v-for="day in dates.flat()" :key="[day.year, day.month, day.day].join('-')" :value="day">
-            {{ day.day }}
+            {{ display.day(day) }}
           </UIDateTimePickerCell>
         </UIDateTimePickerGrid>
       </UIDateTimePickerContent>

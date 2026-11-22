@@ -1,5 +1,5 @@
-import { defineComponent, h, mergeProps, nextTick, type Component } from "vue";
-import { TemporalProvider, useTemporalFormatter } from "@sectile/vue/temporal/temporal-provider";
+import { computed, defineComponent, h, inject, mergeProps, nextTick, provide, type Component, type PropType } from "vue";
+import { TemporalProvider, useTemporalFormatter, type TemporalFormatterOptions } from "@sectile/vue/temporal/temporal-provider";
 import { DateField } from "@sectile/vue/temporal/date-field";
 import { DateRangeFieldStartInput, DateRangeFieldEndInput } from "@sectile/vue/temporal/date-range-field";
 import { DatePickerInput } from "@sectile/vue/temporal/date-picker";
@@ -20,7 +20,10 @@ import {
 import { YearPickerInput } from "@sectile/vue/temporal/year-picker";
 import { YearRangePickerStartInput, YearRangePickerEndInput } from "@sectile/vue/temporal/year-range-picker";
 import { withTemporalEditing } from "./temporal-input";
+import { defaultTemporalFormatting, temporalDisplayFormatsKey, useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
+import type { DateValue } from "@sectile/temporal/date-field";
 
+export { useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
 export { default as UICalendarPeriodHeader } from "./UICalendarPeriodHeader.vue";
 export { default as UIDatePickerValue } from "./UIDatePickerValue.vue";
 export { default as UIDateRangePickerValue } from "./UIDateRangePickerValue.vue";
@@ -35,7 +38,7 @@ export const UIDateTimeRangeFieldStartInput = withTemporalEditing(DateTimeRangeF
 export const UIDateTimeRangeFieldEndInput = withTemporalEditing(DateTimeRangeFieldEndInput, "date-time");
 export const UIDateTimePickerDateTimeInput = withTemporalEditing(DateTimePickerDateTimeInput, "date-time");
 export const UIDateTimePickerDateInput = withTemporalEditing(DateTimePickerDateInput, "date-time-date");
-export const UIDateTimePickerTimeInput = withTemporalEditing(DateTimePickerTimeInput, "time");
+export const UIDateTimePickerTimeInput = withTemporalEditing(DateTimePickerTimeInput, "date-time-time");
 export const UIDateTimeRangePickerStartDateInput = withTemporalEditing(DateTimeRangePickerStartDateInput, "date");
 export const UIDateTimeRangePickerEndDateInput = withTemporalEditing(DateTimeRangePickerEndDateInput, "date");
 export const UIDateTimeRangePickerStartTimeInput = withTemporalEditing(DateTimeRangePickerStartTimeInput, "time");
@@ -69,19 +72,32 @@ export {
   useTemporalFormatter as useUITemporalFormatter,
 } from "@sectile/vue/temporal/temporal-provider";
 
-const defaultFormatting = { locale: "ko-KR-u-hc-h23", timeZone: "Asia/Seoul" };
-
 export const UITemporalProvider = defineComponent({
   name: "UITemporalProvider",
   inheritAttrs: false,
-  setup(_, { attrs, slots }) {
+  props: {
+    formatting: Object as PropType<Partial<TemporalFormatterOptions>>,
+    formats: Object as PropType<UITemporalDisplayFormats>,
+    referenceDate: Object as PropType<DateValue>,
+    referenceInstant: Number,
+  },
+  setup(props, { slots }) {
     const inherited = useTemporalFormatter();
+    const inheritedFormats = inject(temporalDisplayFormatsKey, undefined);
+    provide(temporalDisplayFormatsKey, computed(() => props.formats
+      ? { ...inheritedFormats?.value, ...props.formats }
+      : inheritedFormats?.value));
+
     return () => h(TemporalProvider, {
-      formatting: inherited.value ? undefined : defaultFormatting,
-      ...attrs,
+      referenceDate: props.referenceDate,
+      referenceInstant: props.referenceInstant,
+      formatting: props.formatting || !inherited.value ? {
+        locale: props.formatting?.locale ?? inherited.value?.locale ?? defaultTemporalFormatting.locale,
+        timeZone: props.formatting?.timeZone ?? inherited.value?.timeZone ?? defaultTemporalFormatting.timeZone,
+      } : undefined,
     }, slots);
   },
-}) as unknown as typeof TemporalProvider;
+});
 
 export {
   CalendarRoot as UICalendar,
@@ -247,12 +263,32 @@ function revealTimeChoice(column: HTMLElement, choice: Element | null) {
   column.scrollTop += Math.min(above, 0) + Math.max(below, 0);
 }
 
+type TimePickerColumnInstance = InstanceType<typeof TimePickerColumn>;
+
 export const UITimePickerColumn = defineComponent({
   name: "UITimePickerColumn",
   inheritAttrs: false,
-  setup(_, { attrs, slots }) {
-    return () => h("div", { class: "ui-time-picker-column ui-inset-frame", "data-time-part": attrs.part }, [
-      attrs.label ? h("span", { class: "ui-time-picker-column__label", "aria-hidden": "true" }, String(attrs.label)) : null,
+  props: {
+    part: { type: String as PropType<TimePickerColumnProps["part"]>, required: true },
+    label: String,
+  },
+  setup(props, { attrs, slots }) {
+    const { locale } = useUITemporalDisplay();
+    const formatter = useTemporalFormatter();
+    const label = computed(() => {
+      if (props.label !== undefined) return props.label;
+      const { part } = props;
+      if (part === "dayPeriod") {
+        const format = formatter.value?.timeFieldFormat();
+        return (format?.ok && format.value.dayPeriods?.join(" / ")) || "AM / PM";
+      }
+      const korean = { hour: "시", minute: "분", second: "초", millisecond: "밀리초" };
+      if (locale.value.startsWith("ko")) return korean[part];
+      return new Intl.NumberFormat(locale.value, { style: "unit", unit: part })
+        .formatToParts(1).find(part => part.type === "unit")?.value ?? part;
+    });
+    return () => h("div", { class: "ui-time-picker-column ui-inset-frame", "data-time-part": props.part }, [
+      label.value ? h("span", { class: "ui-time-picker-column__label", "aria-hidden": "true" }, label.value) : null,
       h(TimePickerColumn, {
         ...mergeProps(attrs, {
           class: "ui-scrollbar",
@@ -271,8 +307,8 @@ export const UITimePickerColumn = defineComponent({
             });
           },
         }),
-        part: attrs.part as TimePickerColumnProps["part"],
-        label: attrs.label as TimePickerColumnProps["label"],
+        part: props.part,
+        label: label.value,
       }, {
         default: (state: TimePickerColumnSlotProps) => slots.default?.({
           ...state,
@@ -281,7 +317,9 @@ export const UITimePickerColumn = defineComponent({
       }),
     ]);
   },
-}) as typeof TimePickerColumn;
+}) as unknown as new () => Omit<TimePickerColumnInstance, "$props"> & {
+  $props: Omit<TimePickerColumnInstance["$props"], "label"> & { label?: string };
+};
 
 export {
   TimeRangeFieldRoot as UITimeRangeField,

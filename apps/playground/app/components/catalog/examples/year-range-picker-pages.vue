@@ -11,6 +11,7 @@ import {
   UIYearRangePickerPreviousPage,
   UIYearRangePickerStartInput,
   UIYearRangePickerTrigger,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
@@ -19,6 +20,7 @@ const roadmap = {
   end: { year: 2045, month: 1, day: 1 },
 }
 
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -33,11 +35,11 @@ const roadmap = {
     </UIYearRangePickerAnchor>
     <UIYearRangePickerContent>
       <UIYearRangePickerPreviousPage aria-label="이전 연도 묶음"><ChevronLeft :size="16" aria-hidden="true" /></UIYearRangePickerPreviousPage>
-      <strong>{{ years.flat()[0]?.year }}–{{ years.flat().at(-1)?.year }}</strong>
+      <strong>{{ display.yearRange(years[0]?.[0], years.at(-1)?.at(-1)) }}</strong>
       <UIYearRangePickerNextPage aria-label="다음 연도 묶음"><ChevronRight :size="16" aria-hidden="true" /></UIYearRangePickerNextPage>
       <UIYearRangePickerGrid>
         <UIYearRangePickerCell v-for="year in years.flat()" :key="year.year" :value="year">
-          {{ year.year }}
+          {{ display.year(year) }}
         </UIYearRangePickerCell>
       </UIYearRangePickerGrid>
     </UIYearRangePickerContent>

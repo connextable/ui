@@ -11,16 +11,22 @@ import {
 } from "@sectile/vue/temporal/year-picker";
 import type { DateValue } from "@sectile/temporal/date-field";
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
+import { useUITemporalDisplay } from "./temporal-display";
 
-const { view, choosingMonth = false, yearFirst = false } = defineProps<{
+const { view, choosingMonth = false, yearFirst = false, labels } = defineProps<{
   view: { year: number; month: number };
   choosingMonth?: boolean;
   yearFirst?: boolean;
   min?: DateValue;
   max?: DateValue;
+  labels?: { selectYear?: string; previousYears?: string; nextYears?: string };
 }>();
 
 const emit = defineEmits<{ "select-year": [year: number] }>();
+const display = useUITemporalDisplay();
+const selectYearLabel = computed(() => labels?.selectYear ?? (display.locale.value.startsWith("ko") ? "연도 선택" : "Select year"));
+const previousYearsLabel = computed(() => labels?.previousYears ?? (display.locale.value.startsWith("ko") ? "이전 연도 목록" : "Previous years"));
+const nextYearsLabel = computed(() => labels?.nextYears ?? (display.locale.value.startsWith("ko") ? "다음 연도 목록" : "Next years"));
 const currentYear = computed(() => ({ year: view.year, month: 1, day: 1 }));
 const highlightedYear = ref(currentYear.value);
 const yearOpen = ref(choosingMonth && yearFirst);
@@ -45,7 +51,7 @@ watch([yearOpen, () => choosingMonth], async ([showYears], _, onCleanup) => {
     <header class="ui-calendar-period-header">
       <slot name="previous" />
       <slot v-if="!choosingMonth">
-        <strong>{{ view.year }}년 {{ view.month }}월</strong>
+        <strong>{{ display.yearMonth(view) }}</strong>
       </slot>
       <YearPickerRoot
         v-model:open="yearOpen"
@@ -53,22 +59,22 @@ watch([yearOpen, () => choosingMonth], async ([showYears], _, onCleanup) => {
         v-model:highlighted-value="highlightedYear"
         :policies="{ min, max }"
         :position="false"
-        label="연도 선택"
+        :label="selectYearLabel"
         v-slot="{ years }"
         @update:model-value="value => { if (value) emit('select-year', value.year) }"
       >
-        <YearPickerTrigger v-show="choosingMonth" class="ui-calendar-period-header__year" :aria-label="`${view.year}년, 다른 연도 선택`">
-          {{ view.year }}년 <ChevronDown :size="14" aria-hidden="true" />
+        <YearPickerTrigger v-show="choosingMonth" class="ui-calendar-period-header__year" :aria-label="`${display.year(view)}, ${selectYearLabel}`">
+          {{ display.year(view) }} <ChevronDown :size="14" aria-hidden="true" />
         </YearPickerTrigger>
-        <YearPickerContent class="ui-calendar-period-header__years" aria-label="연도 선택">
+        <YearPickerContent class="ui-calendar-period-header__years" :aria-label="selectYearLabel">
           <header>
-            <YearPickerPreviousPage aria-label="이전 연도 목록"><ChevronLeft :size="16" aria-hidden="true" /></YearPickerPreviousPage>
-            <strong>{{ years[0]?.[0]?.year }}–{{ years.at(-1)?.at(-1)?.year }}</strong>
-            <YearPickerNextPage aria-label="다음 연도 목록"><ChevronRight :size="16" aria-hidden="true" /></YearPickerNextPage>
+            <YearPickerPreviousPage :aria-label="previousYearsLabel"><ChevronLeft :size="16" aria-hidden="true" /></YearPickerPreviousPage>
+            <strong>{{ display.yearRange(years[0]?.[0], years.at(-1)?.at(-1)) }}</strong>
+            <YearPickerNextPage :aria-label="nextYearsLabel"><ChevronRight :size="16" aria-hidden="true" /></YearPickerNextPage>
           </header>
           <YearPickerGrid>
             <YearPickerCell v-for="year in years.flat()" :key="year.year" :value="year">
-              {{ year.year }}
+              {{ display.year(year) }}
             </YearPickerCell>
           </YearPickerGrid>
         </YearPickerContent>

@@ -11,6 +11,7 @@ import {
   UIMonthRangePickerPreviousYear,
   UIMonthRangePickerNextYear,
   UIMonthRangePickerTrigger,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 
@@ -18,6 +19,7 @@ const policies = {
   min: { year: 2026, month: 4, day: 1 },
   max: { year: 2026, month: 9, day: 30 },
 };
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -31,11 +33,11 @@ const policies = {
       </UIMonthRangePickerAnchor>
       <UIMonthRangePickerContent>
         <UIMonthRangePickerPreviousYear aria-label="이전 연도"><ChevronLeft :size="16" aria-hidden="true" /></UIMonthRangePickerPreviousYear>
-        <strong>{{ view.year }}년</strong>
+        <strong>{{ display.year(view) }}</strong>
         <UIMonthRangePickerNextYear aria-label="다음 연도"><ChevronRight :size="16" aria-hidden="true" /></UIMonthRangePickerNextYear>
         <UIMonthRangePickerGrid>
           <UIMonthRangePickerCell v-for="month in months.flat()" :key="month.month" :value="month">
-            {{ month.month }}월
+            {{ display.month(month) }}
           </UIMonthRangePickerCell>
         </UIMonthRangePickerGrid>
       </UIMonthRangePickerContent>

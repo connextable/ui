@@ -7,7 +7,9 @@ import {
   UICalendarGrid,
   UICalendarNextWeek,
   UICalendarPreviousWeek,
+  useUITemporalDisplay,
 } from "@connextable/ui";
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -20,12 +22,12 @@ import {
     <UICalendarContent>
       <header>
         <UICalendarPreviousWeek aria-label="이전 주"><ChevronLeft :size="16" aria-hidden="true" /></UICalendarPreviousWeek>
-        <strong>{{ view.year }}년 {{ view.month }}월</strong>
+        <strong>{{ display.yearMonth(view) }}</strong>
         <UICalendarNextWeek aria-label="다음 주"><ChevronRight :size="16" aria-hidden="true" /></UICalendarNextWeek>
       </header>
       <UICalendarGrid>
         <UICalendarCell v-for="day in dates.flat()" :key="`${day.year}-${day.month}-${day.day}`" :value="day">
-          {{ day.day }}
+          {{ display.day(day) }}
         </UICalendarCell>
       </UICalendarGrid>
     </UICalendarContent>

@@ -9,8 +9,10 @@ import {
   UIDateRangePickerGrid,
   UIDateRangePickerStartInput,
   UIDateRangePickerTrigger,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 import { CalendarDays } from "@lucide/vue";
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -27,10 +29,10 @@ import { CalendarDays } from "@lucide/vue";
       <p>첫날과 마지막 날을 차례로 고르세요.</p>
       <UIDateRangePickerGrid>
         <UIDateRangePickerCell v-for="day in dates.flat()" :key="`${day.year}-${day.month}-${day.day}`" :value="day">
-          {{ day.day }}
+          {{ display.day(day) }}
         </UIDateRangePickerCell>
       </UIDateRangePickerGrid>
     </UIDateRangePickerContent>
-    <output>{{ value ? `확정 날짜 ${value.start.month}/${value.start.day}–${value.end.month}/${value.end.day}` : "확정한 범위 없음" }}</output>
+    <output>{{ value ? `확정 날짜 ${display.date(value.start)}–${display.date(value.end)}` : "확정한 범위 없음" }}</output>
   </UIDateRangePicker>
 </template>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { UIRangeCalendar, UIRangeCalendarCell, UIRangeCalendarContent, UIRangeCalendarGrid } from "@connextable/ui";
+import { UIRangeCalendar, UIRangeCalendarCell, UIRangeCalendarContent, UIRangeCalendarGrid, useUITemporalDisplay } from "@connextable/ui";
 
 const min = { year: 2026, month: 8, day: 20 };
 const max = { year: 2026, month: 8, day: 27 };
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -10,10 +11,10 @@ const max = { year: 2026, month: 8, day: 27 };
     <UIRangeCalendarContent>
       <UIRangeCalendarGrid>
         <UIRangeCalendarCell v-for="day in dates.flat()" :key="`${day.year}-${day.month}-${day.day}`" :value="day">
-          {{ day.day }}
+          {{ display.day(day) }}
         </UIRangeCalendarCell>
       </UIRangeCalendarGrid>
     </UIRangeCalendarContent>
-    <output>{{ value ? `8월 ${value.start.day}일–${value.end.day}일` : "선택한 범위 없음" }}</output>
+    <output>{{ value ? `${display.date(value.start)}–${display.date(value.end)}` : "선택한 범위 없음" }}</output>
   </UIRangeCalendar>
 </template>

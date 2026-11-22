@@ -1,48 +1,57 @@
 <script setup lang="ts">
 import {
   UIButton,
+  UICalendarPeriodHeader,
   UIDateRangePicker,
   UIDateRangePickerAnchor,
   UIDateRangePickerCell,
   UIDateRangePickerContent,
   UIDateRangePickerGrid,
+  UIDateRangePickerNextMonth,
+  UIDateRangePickerPreviousMonth,
   UIDateRangePickerTrigger,
   UIDateRangePickerValue,
   UITemporalProvider,
-  type UIDateValue,
+  type UITemporalDisplayFormats,
+  useUITemporalDisplay,
 } from "@connextable/ui";
-import { CalendarDays } from "@lucide/vue";
+import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 import { ref } from "vue";
 
 const initial = { start: { year: 2026, month: 8, day: 22 }, end: { year: 2026, month: 8, day: 25 } };
-const korean = { locale: "ko-KR", timeZone: "Asia/Seoul" };
-const weekdayFormatter = new Intl.DateTimeFormat("ko-KR", {
-  year: "numeric", month: "long", day: "numeric", weekday: "short", timeZone: "UTC",
-});
+const formats: UITemporalDisplayFormats = {
+  date: { year: "numeric", month: "long", day: "numeric", weekday: "short" },
+  yearMonth: { year: "numeric", month: "2-digit" },
+};
 const showWeekday = ref(false);
-
-function formatWithWeekday({ year, month, day }: UIDateValue) {
-  const date = new Date(0);
-  date.setUTCFullYear(year, month - 1, day);
-  return weekdayFormatter.format(date);
-}
+const display = useUITemporalDisplay();
 </script>
 
 <template>
   <div class="formatting-example">
     <UIButton variant="outline" size="sm" :aria-pressed="showWeekday" @click="showWeekday = !showWeekday">요일 표시</UIButton>
-    <UITemporalProvider :formatting="korean">
-      <UIDateRangePicker :default-value="initial" v-slot="{ dates, value }">
+    <UITemporalProvider :formats="showWeekday ? formats : undefined">
+      <UIDateRangePicker :default-value="initial" v-slot="{ dates, value, view }">
         <UIDateRangePickerAnchor>
-          <UIDateRangePickerValue :value="value" :format="showWeekday ? formatWithWeekday : undefined" />
+          <UIDateRangePickerValue :value="value" />
           <UIDateRangePickerTrigger aria-label="표기 예제의 날짜 범위 선택"><CalendarDays :size="18" aria-hidden="true" /></UIDateRangePickerTrigger>
         </UIDateRangePickerAnchor>
         <UIDateRangePickerContent>
-          <UIDateRangePickerGrid>
-            <UIDateRangePickerCell v-for="day in dates.flat()" :key="`${day.year}-${day.month}-${day.day}`" :value="day">
-              {{ day.day }}
-            </UIDateRangePickerCell>
-          </UIDateRangePickerGrid>
+          <UICalendarPeriodHeader :view="view">
+            <template #previous>
+              <UIDateRangePickerPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" aria-hidden="true" /></UIDateRangePickerPreviousMonth>
+            </template>
+            <template #next>
+              <UIDateRangePickerNextMonth aria-label="다음 달"><ChevronRight :size="16" aria-hidden="true" /></UIDateRangePickerNextMonth>
+            </template>
+            <template #grid>
+              <UIDateRangePickerGrid>
+                <UIDateRangePickerCell v-for="day in dates.flat()" :key="`${day.year}-${day.month}-${day.day}`" :value="day">
+                  {{ display.day(day) }}
+                </UIDateRangePickerCell>
+              </UIDateRangePickerGrid>
+            </template>
+          </UICalendarPeriodHeader>
         </UIDateRangePickerContent>
       </UIDateRangePicker>
     </UITemporalProvider>

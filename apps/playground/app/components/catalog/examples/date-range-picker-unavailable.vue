@@ -19,6 +19,7 @@ import {
   UIDateRangePickerTrigger,
   UIDateRangePickerWeekViewTrigger,
   UIDateRangePickerYearViewTrigger,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
@@ -33,9 +34,8 @@ const policies = {
       [value.year, String(value.month).padStart(2, '0'), String(value.day).padStart(2, '0')].join('-'),
     ),
 }
-const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월',
-  '7월', '8월', '9월', '10월', '11월', '12월']
 
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -54,7 +54,7 @@ const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월',
           <UIDateRangePickerPreviousWeek v-if="viewMode === 'week'" aria-label="이전"><ChevronLeft :size="16" aria-hidden="true" /></UIDateRangePickerPreviousWeek>
           <UIDateRangePickerPreviousMonth v-else-if="viewMode === 'month'" aria-label="이전"><ChevronLeft :size="16" aria-hidden="true" /></UIDateRangePickerPreviousMonth>
           <UIDateRangePickerPreviousYear v-else aria-label="이전"><ChevronLeft :size="16" aria-hidden="true" /></UIDateRangePickerPreviousYear>
-          <strong>{{ viewMode === 'year' ? view.year + '년' : view.year + '년 ' + monthNames[view.month - 1] }}</strong>
+          <strong>{{ viewMode === 'year' ? display.year(view) : display.yearMonth(view) }}</strong>
           <UIDateRangePickerNextWeek v-if="viewMode === 'week'" aria-label="다음"><ChevronRight :size="16" aria-hidden="true" /></UIDateRangePickerNextWeek>
           <UIDateRangePickerNextMonth v-else-if="viewMode === 'month'" aria-label="다음"><ChevronRight :size="16" aria-hidden="true" /></UIDateRangePickerNextMonth>
           <UIDateRangePickerNextYear v-else aria-label="다음"><ChevronRight :size="16" aria-hidden="true" /></UIDateRangePickerNextYear>
@@ -72,7 +72,7 @@ const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월',
           :key="[day.year, day.month, day.day].join('-')"
           :value="day"
         >
-          {{ day.day }}
+          {{ display.day(day) }}
         </UIDateRangePickerCell>
       </UIDateRangePickerGrid>
       <UIDateRangePickerGrid v-else data-view="year">
@@ -81,7 +81,7 @@ const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월',
           :key="[month.year, month.month].join('-')"
           :value="month"
         >
-          {{ monthNames[month.month - 1] }}
+          {{ display.month(month) }}
         </UIDateRangePickerMonthCell>
       </UIDateRangePickerGrid>
     </UIDateRangePickerContent>

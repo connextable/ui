@@ -12,6 +12,7 @@ import {
   UIMonthRangePickerPreviousYear,
   UIMonthRangePickerStartInput,
   UIMonthRangePickerTrigger,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 import { ref } from "vue";
@@ -21,6 +22,7 @@ const reportingPeriod = {
   end: { year: 2026, month: 9, day: 1 },
 };
 const highlighted = ref(reportingPeriod.start);
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -45,7 +47,7 @@ const highlighted = ref(reportingPeriod.start);
         <template #grid>
           <UIMonthRangePickerGrid>
             <UIMonthRangePickerCell v-for="month in months.flat()" :key="month.year + '-' + month.month" :value="month">
-              {{ month.month }}월
+              {{ display.month(month) }}
             </UIMonthRangePickerCell>
           </UIMonthRangePickerGrid>
         </template>

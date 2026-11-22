@@ -4,7 +4,7 @@ import { createDateTimeFieldFormat, formatDateTimeFieldValue, parseDateTimeField
 import { useTemporalFormatter } from "@sectile/vue/temporal/temporal-provider";
 import { defineComponent, h, mergeProps, shallowRef, type Component } from "vue";
 
-type TemporalInputKind = "date" | "date-time-date" | "time" | "date-time";
+type TemporalInputKind = "date" | "date-time-date" | "time" | "date-time-time" | "date-time";
 type Formatter = ReturnType<typeof useTemporalFormatter>["value"];
 
 function datePrefix(text: string) {
@@ -42,13 +42,16 @@ function normalize(text: string, kind: TemporalInputKind, precision: TimeFieldPr
     return date && /^[.\s]*$/.test(date.tail) ? formatDateFieldValue(date.date, format) : undefined;
   }
 
-  const timeFormat = resolvedFormat(formatter?.timeFieldFormat(precision)) ?? createTimeFieldFormat({ precision });
-  const timeText = kind === "time" ? input : date?.tail.replace(/^(?:T|\.\s*|\s+)/, "");
+  const onlyTime = kind === "time" || kind === "date-time-time";
+  const timeFormat = (kind === "date-time-time"
+    ? resolvedFormat(formatter?.dateTimeFieldFormat(precision))?.time
+    : resolvedFormat(formatter?.timeFieldFormat(precision))) ?? createTimeFieldFormat({ precision });
+  const timeText = onlyTime ? input : date?.tail.replace(/^(?:T|\.\s*|\s+)/, "");
   const time = timeText && flexibleTime(timeText);
   const fitsPrecision = time &&
     (precision === "millisecond" || time.millisecond === 0) &&
     (precision !== "minute" || time.second === 0);
-  if (kind === "time") {
+  if (onlyTime) {
     if (parseTimeFieldValue(input, timeFormat).ok) return input;
     return fitsPrecision ? formatTimeFieldValue(time, timeFormat) : undefined;
   }

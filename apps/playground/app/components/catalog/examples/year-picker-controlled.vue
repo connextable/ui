@@ -11,12 +11,14 @@ import {
   UIYearPickerPreviousPage,
   UIYearPickerNextPage,
   UIYearPickerTrigger,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 import { ref } from "vue";
 
 type YearValue = InstanceType<typeof UIYearPicker>["$props"]["modelValue"];
 const selection = ref<YearValue>({ year: 2026, month: 1, day: 1 });
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -29,11 +31,11 @@ const selection = ref<YearValue>({ year: 2026, month: 1, day: 1 });
       </UIYearPickerAnchor>
       <UIYearPickerContent>
         <UIYearPickerPreviousPage aria-label="이전 연도 묶음"><ChevronLeft :size="16" aria-hidden="true" /></UIYearPickerPreviousPage>
-        <strong>{{ years.flat()[0]?.year }}–{{ years.flat().at(-1)?.year }}</strong>
+        <strong>{{ display.yearRange(years[0]?.[0], years.at(-1)?.at(-1)) }}</strong>
         <UIYearPickerNextPage aria-label="다음 연도 묶음"><ChevronRight :size="16" aria-hidden="true" /></UIYearPickerNextPage>
         <UIYearPickerGrid>
           <UIYearPickerCell v-for="year in years.flat()" :key="year.year" :value="year">
-            {{ year.year }}년
+            {{ display.year(year) }}
           </UIYearPickerCell>
         </UIYearPickerGrid>
       </UIYearPickerContent>

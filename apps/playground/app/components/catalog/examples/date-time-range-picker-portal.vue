@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { UIDateTimeRangePicker, UIDateTimeRangePickerAnchor, UIDateTimeRangePickerStartDateTimeInput, UIDateTimeRangePickerEndDateTimeInput, UIDateTimeRangePickerTrigger, UIDateTimeRangePickerPortal, UIDateTimeRangePickerContent, UIDateTimeRangePickerPreviousMonth, UIDateTimeRangePickerNextMonth, UIDateTimeRangePickerGrid, UIDateTimeRangePickerCell, UIDateTimeRangePickerValue } from "@connextable/ui";
+import { UIDateTimeRangePicker, UIDateTimeRangePickerAnchor, UIDateTimeRangePickerStartDateTimeInput, UIDateTimeRangePickerEndDateTimeInput, UIDateTimeRangePickerTrigger, UIDateTimeRangePickerPortal, UIDateTimeRangePickerContent, UIDateTimeRangePickerPreviousMonth, UIDateTimeRangePickerNextMonth, UIDateTimeRangePickerGrid, UIDateTimeRangePickerCell, UIDateTimeRangePickerValue, useUITemporalDisplay } from "@connextable/ui";
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 
 const initial = { start: { date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minute: 30, second: 0, millisecond: 0 } }, end: { date: { year: 2026, month: 8, day: 25 }, time: { hour: 17, minute: 30, second: 0, millisecond: 0 } } };
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -17,12 +18,12 @@ const initial = { start: { date: { year: 2026, month: 8, day: 22 }, time: { hour
       <UIDateTimeRangePickerContent>
         <header>
           <UIDateTimeRangePickerPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" /></UIDateTimeRangePickerPreviousMonth>
-          <strong>{{ view.year }}년 {{ view.month }}월</strong>
+          <strong>{{ display.yearMonth(view) }}</strong>
           <UIDateTimeRangePickerNextMonth aria-label="다음 달"><ChevronRight :size="16" /></UIDateTimeRangePickerNextMonth>
         </header>
         <UIDateTimeRangePickerGrid>
           <UIDateTimeRangePickerCell v-for="day in dates.flat()" :key="[day.year, day.month, day.day].join('-')" :value="day">
-            {{ day.day }}
+            {{ display.day(day) }}
           </UIDateTimeRangePickerCell>
         </UIDateTimeRangePickerGrid>
       </UIDateTimeRangePickerContent>

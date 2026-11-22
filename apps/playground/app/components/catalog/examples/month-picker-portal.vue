@@ -11,13 +11,13 @@ import {
   UIMonthPickerNextYear,
   UIMonthPickerPreviousYear,
   UIMonthPickerTrigger,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
 const billingMonth = { year: 2026, month: 8, day: 1 }
-const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월',
-  '7월', '8월', '9월', '10월', '11월', '12월']
 
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -32,11 +32,11 @@ const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월',
     <UIMonthPickerPortal>
       <UIMonthPickerContent>
         <UIMonthPickerPreviousYear aria-label="이전"><ChevronLeft :size="16" aria-hidden="true" /></UIMonthPickerPreviousYear>
-        <strong>{{ view.year }}</strong>
+        <strong>{{ display.year(view) }}</strong>
         <UIMonthPickerNextYear aria-label="다음"><ChevronRight :size="16" aria-hidden="true" /></UIMonthPickerNextYear>
         <UIMonthPickerGrid>
           <UIMonthPickerCell v-for="month in months.flat()" :key="month.year + '-' + month.month" :value="month">
-            {{ monthNames[month.month - 1] }}
+            {{ display.month(month) }}
           </UIMonthPickerCell>
         </UIMonthPickerGrid>
       </UIMonthPickerContent>

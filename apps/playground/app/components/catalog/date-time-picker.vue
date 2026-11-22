@@ -16,12 +16,14 @@ import {
   UIDateTimePickerTrigger,
   UIDateTimePickerYearViewTrigger,
   type UIDateValue,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 import { CalendarDays, ChevronDown, ChevronLeft, ChevronRight } from "@lucide/vue";
 import { ref } from "vue";
 
 const initial = { date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minute: 30, second: 0, millisecond: 0 } };
 const highlighted = ref<UIDateValue>(initial.date);
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -39,7 +41,7 @@ const highlighted = ref<UIDateValue>(initial.date);
           <UIDateTimePickerPreviousMonth v-else aria-label="이전 달"><ChevronLeft :size="16" aria-hidden="true" /></UIDateTimePickerPreviousMonth>
         </template>
         <UIDateTimePickerYearViewTrigger aria-label="연도와 월 선택">
-          {{ view.year }}년 {{ view.month }}월 <ChevronDown :size="14" aria-hidden="true" />
+          {{ display.yearMonth(view) }} <ChevronDown :size="14" aria-hidden="true" />
         </UIDateTimePickerYearViewTrigger>
         <template #next>
           <UIDateTimePickerNextYear v-if="viewMode === 'year'" aria-label="다음 연도"><ChevronRight :size="16" aria-hidden="true" /></UIDateTimePickerNextYear>
@@ -49,12 +51,12 @@ const highlighted = ref<UIDateValue>(initial.date);
           <UIDateTimePickerGrid :data-view="viewMode">
             <template v-if="viewMode === 'year'">
               <UIDateTimePickerMonthCell v-for="month in months.flat()" :key="month.month" :value="month">
-                {{ month.month }}월
+                {{ display.month(month) }}
               </UIDateTimePickerMonthCell>
             </template>
             <template v-else>
               <UIDateTimePickerCell v-for="day in dates.flat()" :key="[day.year, day.month, day.day].join('-')" :value="day">
-                {{ day.day }}
+                {{ display.day(day) }}
               </UIDateTimePickerCell>
             </template>
           </UIDateTimePickerGrid>

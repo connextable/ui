@@ -10,8 +10,10 @@ import {
   UICalendarPreviousMonth,
   UICalendarPreviousYear,
   UICalendarYearViewTrigger,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 import { ChevronLeft, ChevronRight } from "@lucide/vue";
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -20,22 +22,22 @@ import { ChevronLeft, ChevronRight } from "@lucide/vue";
     <UICalendarContent>
       <header v-if="viewMode === 'year'">
         <UICalendarPreviousYear aria-label="이전 연도"><ChevronLeft :size="16" aria-hidden="true" /></UICalendarPreviousYear>
-        <strong>{{ view.year }}년</strong>
+        <strong>{{ display.year(view) }}</strong>
         <UICalendarNextYear aria-label="다음 연도"><ChevronRight :size="16" aria-hidden="true" /></UICalendarNextYear>
       </header>
       <header v-else>
         <UICalendarPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" aria-hidden="true" /></UICalendarPreviousMonth>
-        <strong>{{ view.year }}년 {{ view.month }}월</strong>
+        <strong>{{ display.yearMonth(view) }}</strong>
         <UICalendarNextMonth aria-label="다음 달"><ChevronRight :size="16" aria-hidden="true" /></UICalendarNextMonth>
       </header>
       <UICalendarGrid v-if="viewMode === 'year'" data-view="year">
         <UICalendarMonthCell v-for="month in months.flat()" :key="month.month" :value="month">
-          {{ month.month }}월
+          {{ display.month(month) }}
         </UICalendarMonthCell>
       </UICalendarGrid>
       <UICalendarGrid v-else>
         <UICalendarCell v-for="day in dates.flat()" :key="`${day.year}-${day.month}-${day.day}`" :value="day">
-          {{ day.day }}
+          {{ display.day(day) }}
         </UICalendarCell>
       </UICalendarGrid>
       <UICalendarYearViewTrigger v-if="viewMode !== 'year'">연도 보기</UICalendarYearViewTrigger>

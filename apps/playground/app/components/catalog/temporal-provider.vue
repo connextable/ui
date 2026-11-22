@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UICalendar, UICalendarCell, UICalendarContent, UICalendarGrid, UITemporalProvider } from "@connextable/ui";
+import { UIButton, UICalendar, UICalendarCell, UICalendarContent, UICalendarGrid, UITemporalProvider, useUITemporalDisplay } from "@connextable/ui";
 import { computed, ref } from "vue";
 
 const dates = [
@@ -8,6 +8,7 @@ const dates = [
 ] as const;
 const secondDate = ref(false);
 const referenceDate = computed(() => dates[secondDate.value ? 1 : 0]);
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -15,20 +16,20 @@ const referenceDate = computed(() => dates[secondDate.value ? 1 : 0]);
     <UITemporalProvider :reference-date="referenceDate">
       <UICalendar :key="referenceDate.month" v-slot="{ dates: calendarDates, view }">
         <UICalendarContent>
-          <strong class="reference-calendar__heading">{{ view.year }}년 {{ view.month }}월</strong>
+          <strong class="reference-calendar__heading">{{ display.yearMonth(view) }}</strong>
           <div class="reference-calendar__weekdays" aria-hidden="true">
-            <span v-for="day in ['월', '화', '수', '목', '금', '토', '일']" :key="day">{{ day }}</span>
+            <span v-for="day in calendarDates[0]" :key="day.day">{{ display.weekday(day) }}</span>
           </div>
           <UICalendarGrid aria-label="기준 날짜의 달력">
             <UICalendarCell v-for="day in calendarDates.flat()" :key="`${day.year}-${day.month}-${day.day}`" :value="day">
-              {{ day.day }}
+              {{ display.day(day) }}
             </UICalendarCell>
           </UICalendarGrid>
         </UICalendarContent>
       </UICalendar>
     </UITemporalProvider>
     <div class="reference-calendar__actions">
-      <span aria-live="polite">기준일 {{ referenceDate.month }}월 {{ referenceDate.day }}일</span>
+      <span aria-live="polite">기준일 {{ display.date(referenceDate) }}</span>
       <UIButton size="sm" variant="outline" @click="secondDate = !secondDate">
         {{ secondDate ? "8월 22일로 변경" : "9월 7일로 변경" }}
       </UIButton>

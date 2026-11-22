@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { UITemporalProvider, useUITemporalFormatter, useUITemporalReferenceDate } from "@connextable/ui";
+import { UITemporalProvider, useUITemporalDisplay, useUITemporalReferenceDate } from "@connextable/ui";
 import { defineComponent, h } from "vue";
 
 const ReferenceDate = defineComponent({
   setup() {
     const reference = useUITemporalReferenceDate();
-    const formatter = useUITemporalFormatter();
-    return () => {
-      const date = reference.value;
-      const result = formatter.value?.date(date);
-      return h("strong", result?.ok ? result.value : `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`);
-    };
+    const display = useUITemporalDisplay();
+    return () => h("strong", display.date(reference.value));
   },
 });
 </script>

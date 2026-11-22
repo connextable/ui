@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { UIDateTimePicker, UIDateTimePickerAnchor, UIDateTimePickerCell, UIDateTimePickerContent, UIDateTimePickerDateTimeInput, UIDateTimePickerGrid, UIDateTimePickerTrigger } from "@connextable/ui";
+import { UIDateTimePicker, UIDateTimePickerAnchor, UIDateTimePickerCell, UIDateTimePickerContent, UIDateTimePickerDateTimeInput, UIDateTimePickerGrid, UIDateTimePickerTrigger, useUITemporalDisplay } from "@connextable/ui";
 import { CalendarDays } from "@lucide/vue";
 
 const initial = { date: { year: 2026, month: 8, day: 22 }, time: { hour: 10, minute: 0, second: 0, millisecond: 0 } };
 const policies = { min: { date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minute: 0, second: 0, millisecond: 0 } }, max: { date: { year: 2026, month: 8, day: 24 }, time: { hour: 17, minute: 0, second: 0, millisecond: 0 } } };
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -14,7 +15,7 @@ const policies = { min: { date: { year: 2026, month: 8, day: 22 }, time: { hour:
     </UIDateTimePickerAnchor>
     <UIDateTimePickerContent>
       <UIDateTimePickerGrid>
-        <UIDateTimePickerCell v-for="day in dates.flat()" :key="`${day.month}-${day.day}`" :value="day">{{ day.day }}</UIDateTimePickerCell>
+        <UIDateTimePickerCell v-for="day in dates.flat()" :key="`${day.month}-${day.day}`" :value="day">{{ display.day(day) }}</UIDateTimePickerCell>
       </UIDateTimePickerGrid>
     </UIDateTimePickerContent>
   </UIDateTimePicker>

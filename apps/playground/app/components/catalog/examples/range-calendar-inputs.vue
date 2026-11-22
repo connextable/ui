@@ -13,6 +13,7 @@ import {
   UIForm,
   UIFormActions,
   UIFormSubmit,
+  useUITemporalDisplay,
 } from "@connextable/ui";
 import { ref } from "vue";
 
@@ -22,6 +23,7 @@ const stay = {
 };
 const submitted = ref("");
 
+const display = useUITemporalDisplay();
 </script>
 
 <template>
@@ -33,12 +35,12 @@ const submitted = ref("");
       <UIRangeCalendarContent>
         <header>
           <UIRangeCalendarPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" aria-hidden="true" /></UIRangeCalendarPreviousMonth>
-          <strong>{{ view.year }}년 {{ view.month }}월</strong>
+          <strong>{{ display.yearMonth(view) }}</strong>
           <UIRangeCalendarNextMonth aria-label="다음 달"><ChevronRight :size="16" aria-hidden="true" /></UIRangeCalendarNextMonth>
         </header>
         <UIRangeCalendarGrid>
           <UIRangeCalendarCell v-for="day in dates.flat()" :key="JSON.stringify(day)" :value="day">
-            {{ day.day }}
+            {{ display.day(day) }}
           </UIRangeCalendarCell>
         </UIRangeCalendarGrid>
       </UIRangeCalendarContent>
