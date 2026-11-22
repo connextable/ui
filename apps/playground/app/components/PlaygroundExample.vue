@@ -85,7 +85,11 @@ watch(codeOpen, revealSource, { immediate: true });
           {{ codeOpen ? "코드 접기" : "코드 보기" }}
         </UIDisclosureTrigger>
       </div>
-      <UIDisclosureContent divided flush role="region" :aria-label="`${title} Vue 코드`">
+      <UIDisclosureContent
+        divided flush role="region"
+        :class="{ 'playground-example__source--initially-open': isPrimaryExample }"
+        :aria-label="`${title} Vue 코드`"
+      >
         <PlaygroundCodeBlock v-if="hasOpenedCode && code !== undefined" :code="code" />
         <PlaygroundCodeBlock v-else-if="hasOpenedCode && renderedSource">
           <div v-html="renderedSource" />
@@ -100,6 +104,10 @@ watch(codeOpen, revealSource, { immediate: true });
 </template>
 
 <style scoped>
+.playground-example__source--initially-open {
+  --ui-expandable-start-rows: 1fr;
+}
+
 .playground-example {
   container: playground-example / inline-size;
   min-inline-size: 0;
