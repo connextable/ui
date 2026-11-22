@@ -94,11 +94,11 @@ function focusFromFrame(event: MouseEvent) {
   padding-inline: var(--ui-space-sm);
 }
 
-.ui-input--with-slots:has(> .ui-input__slot--leading > button) {
+.ui-input--with-slots:has(> .ui-input__slot--leading > :is(button, .ui-button)) {
   padding-inline-start: var(--ui-frame-padding);
 }
 
-.ui-input--with-slots:has(> .ui-input__slot--trailing > button) {
+.ui-input--with-slots:has(> .ui-input__slot--trailing > :is(button, .ui-button)) {
   padding-inline-end: var(--ui-frame-padding);
 }
 
@@ -136,7 +136,7 @@ function focusFromFrame(event: MouseEvent) {
   block-size: var(--ui-control-size-icon);
 }
 
-.ui-input__slot > :slotted(button) {
+.ui-input__slot > :slotted(:is(button, .ui-button)) {
   --ui-control-size-height: var(--ui-inset-size);
   --ui-control-size-padding-block: 0px;
   --ui-control-size-radius: var(--ui-inset-radius);

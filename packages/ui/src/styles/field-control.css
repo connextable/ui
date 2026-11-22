@@ -1,3 +1,7 @@
+:where(.ui-field-control.ui-inset-frame .ui-button[data-ui-control-shape="square"]) {
+  --ui-button-icon-radius: var(--ui-inset-radius);
+}
+
 :is(.ui-field-control, :where(
   input[data-scope="combobox"][data-part="input"],
   input[data-scope="tree-select"][data-part="input"],

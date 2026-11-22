@@ -134,7 +134,7 @@ function onClick(event: MouseEvent) {
 }
 
 .ui-button[data-ui-control-shape="square"] {
-  border-radius: 50%;
+  border-radius: var(--ui-button-icon-radius, 50%);
 }
 
 .ui-button[data-variant="soft"],
