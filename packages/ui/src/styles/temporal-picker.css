@@ -187,19 +187,28 @@ input.ui-temporal-input {
 
   &[data-time-part="millisecond"] { inline-size: 4.5rem; }
 
-  &:has(> [role="listbox"]:focus-visible) {
+  &:has(> .ui-time-picker-column__viewport > [role="listbox"]:focus-visible) {
     outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
     outline-offset: calc(-1 * var(--ui-focus-ring-width));
   }
 
-  > [role="listbox"] {
+  > .ui-time-picker-column__viewport.ui-scroll-fade {
+    --ui-scroll-fade-size: var(--ui-space-md);
+
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    min-block-size: 0;
+  }
+
+  > .ui-time-picker-column__viewport > [role="listbox"] {
     box-sizing: border-box;
     inline-size: 100%;
     min-inline-size: 0;
     max-block-size: min(10rem, 42dvh);
     align-content: start;
-    overflow: auto;
+    overflow: hidden auto;
     overscroll-behavior: contain;
+    scrollbar-width: none;
     border: 0;
     border-radius: var(--ui-inset-radius);
     padding-block: 0;

@@ -1,4 +1,4 @@
-import { computed, defineComponent, h, inject, mergeProps, nextTick, provide, type PropType } from "vue";
+import { computed, defineComponent, h, inject, mergeProps, nextTick, provide, shallowRef, watch, type PropType } from "vue";
 import { TemporalProvider, useTemporalFormatter, type TemporalFormatterOptions } from "@sectile/vue/temporal/temporal-provider";
 import { DateField } from "@sectile/vue/temporal/date-field";
 import { CalendarRoot } from "@sectile/vue/temporal/calendar";
@@ -27,6 +27,8 @@ import {
 import { YearPickerRoot, YearPickerAnchor, YearPickerInput } from "@sectile/vue/temporal/year-picker";
 import { YearRangePickerRoot, YearRangePickerAnchor, YearRangePickerStartInput, YearRangePickerEndInput, YearRangePickerGrid, YearRangePickerCell } from "@sectile/vue/temporal/year-range-picker";
 import { withClearableControl, withClearableModel, type ClearableComponent } from "../clear/with-clearable";
+import UIScrollFade from "../scroll/UIScrollFade.vue";
+import { useUIScrollArea } from "../scroll/useUIScrollArea";
 import { withTemporalEditing, withTemporalInputAppearance } from "./temporal-input";
 import { TemporalInputFormatProvider, temporalInputFormatsKey, type UITemporalInputFormats } from "./temporal-input-format";
 import { withRangeGridPresentation, withRangeCellPresentation } from "./temporal-range-presentation";
@@ -325,11 +327,22 @@ export const UITimePickerColumn = defineComponent({
   setup(props, { attrs, slots }) {
     const { locale } = useUITemporalDisplay();
     const formatter = useTemporalFormatter();
-    let listbox: HTMLElement | undefined;
-    let resizeObserver: ResizeObserver | undefined;
+    const listbox = shallowRef<HTMLElement>();
+    const { state: scrollState } = useUIScrollArea(listbox);
     const centerSelection = () => {
-      if (listbox) centerSelectedTimeChoice(listbox);
+      if (listbox.value) centerSelectedTimeChoice(listbox.value);
     };
+    watch([listbox, () => scrollState.value.height], centerSelection, { flush: "post" });
+    watch(listbox, (column, _, onCleanup) => {
+      if (!column) return;
+      const activeChoice = new MutationObserver(() => {
+        if (!column.matches(":focus")) return;
+        const active = column.getAttribute("aria-activedescendant");
+        if (active) revealTimeChoice(column, column.ownerDocument.getElementById(active));
+      });
+      activeChoice.observe(column, { attributeFilter: ["aria-activedescendant"] });
+      onCleanup(() => activeChoice.disconnect());
+    }, { flush: "post" });
     const label = computed(() => {
       if (props.label !== undefined) return props.label;
       const { part } = props;
@@ -344,41 +357,30 @@ export const UITimePickerColumn = defineComponent({
     });
     return () => h("div", { class: "ui-time-picker-column ui-inset-frame", "data-time-part": props.part }, [
       label.value ? h("span", { class: "ui-time-picker-column__label", "aria-hidden": "true" }, label.value) : null,
-      h(TimePickerColumn, {
-        ...mergeProps(attrs, {
-          class: "ui-scrollbar",
-          "data-ui-scrollbar": "centered",
-          onVnodeMounted({ el }: { el: unknown }) {
-            if (!(el instanceof HTMLElement)) return;
-            listbox = el;
-            centerSelection();
-            if (typeof ResizeObserver !== "undefined") {
-              resizeObserver = new ResizeObserver(centerSelection);
-              resizeObserver.observe(el);
-            }
-          },
-          onVnodeBeforeUnmount() {
-            resizeObserver?.disconnect();
-            listbox = undefined;
-          },
-          onActivate() {
-            void nextTick(centerSelection);
-          },
-          onKeydown(event: KeyboardEvent) {
-            const column = event.currentTarget;
-            if (!(column instanceof HTMLElement)) return;
-            void nextTick(() => {
-              const active = column.getAttribute("aria-activedescendant");
-              if (active) revealTimeChoice(column, column.ownerDocument.getElementById(active));
-            });
-          },
-        }),
-        part: props.part,
-        label: label.value,
+      h(UIScrollFade, {
+        class: "ui-time-picker-column__viewport",
+        state: scrollState.value,
+        edges: ["top", "bottom"],
       }, {
-        default: (state: TimePickerColumnSlotProps) => slots.default?.({
-          ...state,
-          choices: state.choices.filter(choice => !choice.disabled),
+        default: () => h(TimePickerColumn, {
+          ...mergeProps(attrs, {
+            onVnodeMounted({ el }: { el: unknown }) {
+              if (el instanceof HTMLElement) listbox.value = el;
+            },
+            onVnodeBeforeUnmount() {
+              listbox.value = undefined;
+            },
+            onActivate() {
+              void nextTick(centerSelection);
+            },
+          }),
+          part: props.part,
+          label: label.value,
+        }, {
+          default: (state: TimePickerColumnSlotProps) => slots.default?.({
+            ...state,
+            choices: state.choices.filter(choice => !choice.disabled),
+          }),
         }),
       }),
     ]);

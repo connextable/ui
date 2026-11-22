@@ -152,7 +152,7 @@ function updateTime(endpoint: "start" | "end", time: Time | null) {
 }
 
 @media (width > 42rem) {
-  .date-time-range-picker__time :deep(.ui-time-picker-column > [role="listbox"]) {
+  .date-time-range-picker__time :deep(.ui-time-picker-column__viewport > [role="listbox"]) {
     contain: size;
     max-block-size: none;
   }
