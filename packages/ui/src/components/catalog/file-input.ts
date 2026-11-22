@@ -9,5 +9,7 @@ export {
   useFileUpload as useUIFileUpload,
   useFileUploadGroup as useUIFileUploadGroup,
   type FileUploadAdapter as UIFileUploadAdapter,
+  type FileUploadRequest as UIFileUploadRequest,
 } from "@sectile/vue/form/file-upload";
 export { default as UIFileUpload } from "./UIFileUpload.vue";
+export { createUIFileUploadAdapter, type UIFileUploadHTTPOptions } from "./file-upload-adapter";
