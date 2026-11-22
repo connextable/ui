@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/ui";
+import { createUIDataTreeGridComponents, createUITabularSource, useUIDataTreeGrid } from "@connextable/ui";
 import { ChevronRight } from "@lucide/vue";
 
 const children = [
@@ -9,27 +9,17 @@ const children = [
 
 const tree = useUIDataTreeGrid({
   defaultExpansion: ["platform"],
-  source: (request) => {
-    const expanded = request.expansion.includes("platform");
-    const group = {
-      kind: "group", id: "platform", parentGroupID: null, depth: 0, expanded,
-      cells: { service: "플랫폼", team: "서비스 팀" },
-    } as const;
-    const rows = expanded ? [group, ...children] : [group];
-    return {
-      ...request,
-      rows,
-      viewRevision: request.requestID,
-      matchingLeafCount: { kind: "known", value: children.length },
-      visibleRowCount: { kind: "known", value: rows.length },
-      columnSchema: {
-        revision: request.columnSchemaRevision,
-        columns: [{ id: "service" }, { id: "team" }],
-        headers: [],
-      },
-      removedRowIDs: [],
-    };
-  },
+  source: createUITabularSource({
+    columns: [{ id: "service" }, { id: "team" }],
+    load({ expansion }) {
+      const expanded = expansion.includes("platform");
+      const group = {
+        kind: "group", id: "platform", parentGroupID: null, depth: 0, expanded,
+        cells: { service: "플랫폼", team: "서비스 팀" },
+      } as const;
+      return { rows: expanded ? [group, ...children] : [group], matchingLeafCount: children.length };
+    },
+  }),
 });
 const DataTreeGrid = createUIDataTreeGridComponents(tree);
 </script>

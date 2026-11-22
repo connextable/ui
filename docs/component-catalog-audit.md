@@ -45,7 +45,7 @@
 
 ### Sectile에 전달할 재현 근거
 
-`/components/data-tree-grid#data-tree-grid-group-selection`에서 ‘하위 서비스 모두 선택’을 누르면 하위 행 두 개는 체크되지만, 그룹 컨트롤의 `aria-checked`는 `false`로 남는다. 전체 카탈로그 재점검에서도 이 동작을 재현했다. 현재 설치된 Sectile 그리드 연결은 `group-leaves` 대상의 그룹 체크 상태를 항상 `unchecked`로 설정한다. 소스가 확정한 그룹의 선택 범위로부터 `unchecked`, `mixed`, `checked`를 전달할 수 있는 계약이 필요하다.
+설치된 Sectile 그리드 연결의 `group-leaves` 대상은 그룹 체크 상태를 `unchecked`로 설정한다. 로드되지 않은 하위 행을 포함하는 일괄 선택은 컨트롤러가 요청을 전달하고 앱이나 데이터 소스가 대상 범위를 확정한다. [그룹 선택 예제](/components/data-tree-grid#data-tree-grid-group-selection)는 전체 하위 ID가 있는 경우의 제어형 선택을 보여 준다. 행 하나를 선택하면 그룹이 `mixed`, 모두 선택하면 `true`, 전체 해제하면 `false`로 표시된다.
 
 ### 전체 카탈로그 재점검
 

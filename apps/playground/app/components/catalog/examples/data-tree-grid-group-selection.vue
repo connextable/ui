@@ -1,48 +1,48 @@
 <script setup lang="ts">
-import { createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/ui";
+import { UICheckbox, createUIDataTreeGridComponents, createUITabularSource, useUIDataTreeGrid } from "@connextable/ui";
 import { ChevronRight } from "@lucide/vue";
-import { onScopeDispose } from "vue";
+import { computed, ref } from "vue";
 
 const groupID = "platform";
 const children = [
-  { kind: "leaf", id: "site", cells: { selected: null, service: "웹사이트", team: "프런트엔드" } },
-  { kind: "leaf", id: "api", cells: { selected: null, service: "API", team: "백엔드" } },
+  { kind: "leaf", id: "site", parentGroupID: groupID, depth: 1, cells: { selected: null, service: "웹사이트", team: "프런트엔드" } },
+  { kind: "leaf", id: "api", parentGroupID: groupID, depth: 1, cells: { selected: null, service: "API", team: "백엔드" } },
 ] as const;
+const ids = children.map(row => row.id);
+type RowSelection = NonNullable<Parameters<typeof useUIDataTreeGrid>[0]["defaultRowSelection"]>;
+const rowSelection = ref<RowSelection>({ kind: "explicit-rows", rowIDs: [] });
 
 const tree = useUIDataTreeGrid({
   defaultExpansion: [groupID],
-  source: (request) => {
-    const expanded = request.expansion.includes(groupID);
-    const group = {
-      kind: "group", id: groupID, parentGroupID: null, depth: 0, expanded,
-      cells: { selected: null, service: "플랫폼", team: "서비스 팀" },
-    } as const;
-    const rows = expanded ? [group, ...children] : [group];
-    return {
-      ...request,
-      rows,
-      viewRevision: request.requestID,
-      matchingLeafCount: { kind: "known", value: children.length },
-      visibleRowCount: { kind: "known", value: rows.length },
-      columnSchema: {
-        revision: request.columnSchemaRevision,
-        columns: [{ id: "selected" }, { id: "service" }, { id: "team" }],
-        headers: [],
-      },
-      removedRowIDs: [],
-    };
+  rowSelection,
+  onRowSelectionChange: selection => { rowSelection.value = selection; },
+  source: createUITabularSource({
+    columns: [{ id: "selected" }, { id: "service" }, { id: "team" }],
+    load({ expansion }) {
+      const expanded = expansion.includes(groupID);
+      const group = {
+        kind: "group", id: groupID, parentGroupID: null, depth: 0, expanded,
+        cells: { selected: null, service: "플랫폼", team: "서비스 팀" },
+      } as const;
+      return { rows: expanded ? [group, ...children] : [group], matchingLeafCount: children.length };
+    },
+  }),
+});
+const DataTreeGrid = createUIDataTreeGridComponents(tree);
+const groupSelection = computed({
+  get() {
+    const selection = rowSelection.value;
+    if (selection.kind !== "explicit-rows") return false;
+    const count = ids.filter(id => selection.rowIDs.includes(id)).length;
+    return count === ids.length ? true : count > 0 ? "indeterminate" as const : false;
+  },
+  set(checked: boolean | "indeterminate") {
+    const selection = rowSelection.value;
+    if (selection.kind !== "explicit-rows") return;
+    const otherRows = selection.rowIDs.filter(id => !children.some(row => row.id === id));
+    rowSelection.value = { kind: "explicit-rows", rowIDs: checked === true ? [...otherRows, ...ids] : otherRows };
   },
 });
-onScopeDispose(tree.subscribeCommands((command) => {
-  if (command.type !== "request-bulk-selection" || command.target.kind !== "group-leaves" ||
-      command.target.groupID !== groupID) return;
-
-  tree.dispatch({
-    type: "set-row-selection",
-    selection: { kind: "explicit-rows", rowIDs: children.map(row => row.id) },
-  });
-}));
-const DataTreeGrid = createUIDataTreeGridComponents(tree);
 </script>
 
 <template>
@@ -57,8 +57,7 @@ const DataTreeGrid = createUIDataTreeGridComponents(tree);
       </DataTreeGrid.Header>
       <DataTreeGrid.Body v-slot="{ row }">
         <DataTreeGrid.Cell column="selected">
-          <DataTreeGrid.BulkSelectionControl v-if="row.kind === 'group'"
-            :target="{ kind: 'group-leaves', groupID: row.id }" aria-label="하위 서비스 모두 선택" />
+          <UICheckbox v-if="row.kind === 'group'" v-model="groupSelection" label="하위 서비스 모두 선택" />
           <DataTreeGrid.RowSelectionControl v-else name="service" :value="row.id" :aria-label="`${row.cells.service} 선택`" />
         </DataTreeGrid.Cell>
         <DataTreeGrid.Cell column="service" data-ui-tree-column>
