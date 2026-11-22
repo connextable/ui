@@ -1,4 +1,4 @@
-import { ChartRoot, createChartComponents, type ChartRootProps, type ChartRootPublicProps, type ChartRootSlotProps } from "@sectile/vue/chart";
+import { ChartBar, ChartCartesian, ChartLine, ChartRenderer, ChartRoot, ChartXAxis, ChartYAxis, createChartComponents, type ChartAxisProps, type ChartRootProps, type ChartRootPublicProps, type ChartRootSlotProps } from "@sectile/vue/chart";
 import { defineComponent, h, onBeforeUnmount, onMounted, shallowRef, unref, watch, type Component, type PropType, type ShallowRef, type VNodeChild } from "vue";
 import { createUIChartRenderer, type ChartGrid, type ChartTickFormatter } from "./chart-renderer";
 import type { ChartCandlestickLayers } from "./chart-candlesticks";
@@ -9,7 +9,15 @@ import type { ChartTooltipDatum, ChartTooltipGroup } from "./chart-tooltip";
 
 type ChartDOM = ChartRootProps["dom"];
 type ChartInstance = InstanceType<typeof ChartRoot>;
+type ChartSeries = {
+  readonly data: readonly unknown[];
+  readonly label?: string;
+  readonly type?: "line" | "bar";
+  readonly x: Omit<ChartAxisProps, "id"> & { readonly field: string };
+  readonly y: Omit<ChartAxisProps, "id"> & { readonly field: string };
+};
 interface ChartAppearanceProps {
+  readonly series?: ChartSeries;
   readonly fill?: "area";
   readonly candlesticks?: ChartCandlestickLayers;
   readonly animateUpdates?: boolean;
@@ -17,6 +25,18 @@ interface ChartAppearanceProps {
   readonly formatTick?: ChartTickFormatter;
   readonly tooltip?: boolean | "shared";
   readonly tooltipGroup?: ChartTooltipGroup;
+}
+
+function renderSeries(series: ChartSeries) {
+  return [
+    series.label && h(UIChartLegend, { items: [{ label: series.label }] }),
+    h(ChartCartesian, null, () => [
+      h(ChartXAxis, { scale: series.type === "bar" ? "categorical" : "linear", ...series.x, id: "x" }),
+      h(ChartYAxis, { scale: "linear", ...series.y, id: "y" }),
+      h(series.type === "bar" ? ChartBar : ChartLine, { id: "series", data: series.data, xAxis: "x", yAxis: "y", label: series.label }),
+    ]),
+    h(UIChartPlot, null, () => h(ChartRenderer)),
+  ];
 }
 
 interface UIChartComponent {
@@ -41,6 +61,7 @@ function themedRoot(
     inheritAttrs: false,
     props: {
       dom: Object as PropType<ChartDOM>,
+      series: Object as PropType<ChartSeries>,
       fill: String as PropType<ChartAppearanceProps["fill"]>,
       candlesticks: Object as PropType<ChartCandlestickLayers>,
       animateUpdates: Boolean,
@@ -81,10 +102,10 @@ function themedRoot(
 
       return () => {
         const shared = props.tooltip === "shared";
-        const chartSlots = props.tooltip ? {
+        const chartSlots = props.tooltip || props.series ? {
           default: (scope: ChartRootSlotProps) => [
-            ...(slots.default?.(scope) ?? []),
-            h(UIChartTooltip, {
+            slots.default ? slots.default(scope) : props.series && renderSeries(props.series),
+            props.tooltip && h(UIChartTooltip, {
               scope,
               getLabel: props.dom?.getAccessibleDatumLabel,
               shared,

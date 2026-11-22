@@ -13,6 +13,7 @@ export { default as UITabularColumnAction } from "./UITabularColumnAction.vue";
 export { default as UITabularColumnHeading } from "./UITabularColumnHeading.vue";
 export { default as UITabularFilterPopover } from "./UITabularFilterPopover.vue";
 export { default as UITabularEditTrigger } from "./UITabularEditTrigger.vue";
+export { UIDataTable, UIDataGrid, type UIDataColumn, type UIDataRow } from "./local-data";
 export {
   createUIDataTableComponents,
   createUIDataGridComponents,

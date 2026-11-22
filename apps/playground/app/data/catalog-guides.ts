@@ -1232,9 +1232,11 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "data-table-row-details", section: "presentation", title: "행별 상세 조회", description: "각 비용의 상세 버튼을 눌러 표 아래에서 사용 목적을 확인합니다." },
       { id: "data-table-columns", section: "presentation", title: "표시할 열 선택", description: "담당자와 버전 열을 각각 숨기거나 다시 표시합니다.", parts: ["UIDataSurface"] },
     ],
-    title: "데이터 소스의 행과 열 표시",
-    description: "source에 데이터 요청을 처리하는 함수를 전달하고, 반환한 컨트롤러로 컴포넌트를 만듭니다. Cell의 column에는 열 id를 지정합니다.",
+    title: "팀 구성원 데이터 표시",
+    description: "columns로 열의 이름과 순서를 정하고 rows로 구성원을 전달합니다. 행이 page-size를 넘으면 페이지 이동 버튼이 표시됩니다.",
     api: {
+      "columns / rows": "열의 id와 표시 이름, 행의 id와 열 id별 cells를 지정합니다.",
+      "#cell": "row, column, value를 받아 셀의 내용을 직접 렌더링합니다.",
       source: "정렬, 필터, 페이지 등 현재 요청을 받아 해당 행과 열 스키마를 반환합니다. 비동기 소스는 두 번째 인자의 signal로 이전 요청의 취소를 확인할 수 있습니다.",
       defaultAccessState: "페이지 또는 범위 접근의 초기 상태입니다. 페이지 번호는 1부터 시작합니다.",
       "Body #default": "자동 모드에서는 각 row를 받습니다. manual 모드에서는 rows를 받아 Row와 Cell을 직접 구성합니다.",
@@ -1315,8 +1317,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   chart: {
     title: "선 차트",
-    description: "주간 매출처럼 시간에 따라 달라지는 값을 선으로 연결합니다. 날짜와 매출 필드를 각 축에 연결하고 UIChartLine에 데이터를 전달합니다.",
+    description: "series에 날짜와 매출 데이터를 전달합니다. x와 y가 각 축에서 읽을 필드를 지정하면 매출 추이를 선으로 표시합니다.",
     api: {
+      series: "한 개의 선 또는 막대 계열의 데이터와 두 축을 설정합니다. type은 line과 bar를 지원하며 기본값은 line입니다.",
       dom: "접근성 이름과 렌더러 등 Sectile의 DOM 설정입니다. 기본 테마를 사용하거나 renderer로 Canvas2D·WebGL2 렌더러를 선택합니다.",
       fill: "area를 지정하면 기본 테마가 선 아래를 채웁니다.",
       "animate-updates": "기본 Canvas 테마에서 마크와 눈금이 빠르게 이동하고 끝에서 부드럽게 감속합니다. 범주형 막대는 항목이 추가되거나 삭제될 때 기준선에서 펼쳐지거나 접힙니다. 모션을 줄이는 시스템 설정을 따릅니다.",

@@ -1,14 +1,5 @@
 <script setup lang="ts">
-import {
-  UIChart,
-  UIChartCartesian,
-  UIChartLegend,
-  UIChartLine,
-  UIChartPlot,
-  UIChartRenderer,
-  UIChartXAxis,
-  UIChartYAxis,
-} from "@connextable/ui";
+import { UIChart } from "@connextable/ui";
 
 const revenue = [128, 135, 132, 149, 146, 163, 168].map((amount, index) => ({
   id: index,
@@ -18,13 +9,13 @@ const revenue = [128, 135, 132, 149, 146, 163, 168].map((amount, index) => ({
 </script>
 
 <template>
-  <UIChart :dom="{ accessibilityLabel: '주간 매출 추이' }">
-    <UIChartLegend :items="[{ label: '주간 매출' }]" />
-    <UIChartCartesian>
-      <UIChartXAxis id="x" scale="temporal" field="date" :ticks="7" />
-      <UIChartYAxis id="y" scale="linear" field="amount" :domain="{ kind: 'numeric', minimum: 100, maximum: 180 }" :ticks="5" label="매출 (만 원)" />
-      <UIChartLine id="revenue" :data="revenue" x-axis="x" y-axis="y" label="주간 매출" />
-    </UIChartCartesian>
-    <UIChartPlot><UIChartRenderer /></UIChartPlot>
-  </UIChart>
+  <UIChart
+    :dom="{ accessibilityLabel: '주간 매출 추이' }"
+    :series="{
+      data: revenue,
+      label: '주간 매출',
+      x: { field: 'date', scale: 'temporal', ticks: 7 },
+      y: { field: 'amount', label: '매출 (만 원)', ticks: 5, domain: { kind: 'numeric', minimum: 100, maximum: 180 } },
+    }"
+  />
 </template>
