@@ -87,7 +87,6 @@ watch(codeOpen, revealSource, { immediate: true });
       </div>
       <UIDisclosureContent
         divided flush role="region"
-        :class="{ 'playground-example__source--initially-open': isPrimaryExample }"
         :aria-label="`${title} Vue 코드`"
       >
         <PlaygroundCodeBlock v-if="hasOpenedCode && code !== undefined" :code="code" />
@@ -104,10 +103,6 @@ watch(codeOpen, revealSource, { immediate: true });
 </template>
 
 <style scoped>
-.playground-example__source--initially-open {
-  --ui-expandable-start-rows: 1fr;
-}
-
 .playground-example {
   container: playground-example / inline-size;
   min-inline-size: 0;

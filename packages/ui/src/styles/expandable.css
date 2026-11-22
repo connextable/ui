@@ -1,14 +1,23 @@
 .ui-expandable-content:not([hidden]) {
   display: grid;
   grid-template-rows: 0fr;
+}
+
+.ui-expandable-content[data-ui-motion-ready]:not([hidden]) {
   transition: grid-template-rows var(--ui-motion-standard) var(--ui-ease-out);
 }
 
 .ui-expandable-content[data-state="open"]:not([hidden]) {
   grid-template-rows: 1fr;
+}
 
-  @starting-style {
-    grid-template-rows: var(--ui-expandable-start-rows, 0fr);
+.ui-expandable-content[data-part="group"][data-state="closed"]:not([hidden]) {
+  margin-block-start: calc(-1 * var(--ui-space-2xs));
+}
+
+@starting-style {
+  .ui-expandable-content[data-ui-motion-from-hidden][data-ui-motion-ready][data-state="open"]:not([hidden]) {
+    grid-template-rows: 0fr;
   }
 }
 

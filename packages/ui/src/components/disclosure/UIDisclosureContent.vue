@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { DisclosureContent, type DisclosureContentProps, type DisclosureSlotProps } from "@sectile/vue/disclosure";
+import { useAppearanceMotion } from "../appearance-motion";
 
 const { divided, flush, forcePresent = true, ...contentProps } = defineProps<
   Omit<DisclosureContentProps, "asChild"> & { divided?: boolean; flush?: boolean }
 >();
 defineSlots<{ default?(state: DisclosureSlotProps): unknown }>();
+const motion = useAppearanceMotion(() => !forcePresent);
 </script>
 
 <template>
-  <DisclosureContent v-bind="contentProps" v-slot="state" class="ui-expandable-content" :force-present="forcePresent">
+  <DisclosureContent v-bind="{ ...contentProps, ...motion }" v-slot="state" class="ui-expandable-content" :force-present="forcePresent">
     <div class="ui-expandable-clip">
       <div v-if="divided" class="ui-disclosure-content__divider" aria-hidden="true"></div>
       <slot v-if="flush" v-bind="state" />

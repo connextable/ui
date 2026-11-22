@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { AccordionContent, type AccordionContentProps } from "@sectile/vue/accordion";
+import { useAppearanceMotion } from "../appearance-motion";
 
 const { forcePresent = true, ...props } = defineProps<AccordionContentProps>();
+const motion = useAppearanceMotion(() => !forcePresent);
 </script>
 
 <template>
   <AccordionContent v-if="props.asChild" v-bind="props" :force-present="forcePresent" v-slot="state">
     <slot v-bind="state" />
   </AccordionContent>
-  <AccordionContent v-else v-bind="props" :force-present="forcePresent" v-slot="state" class="ui-expandable-content">
+  <AccordionContent v-else v-bind="{ ...props, ...motion }" :force-present="forcePresent" v-slot="state" class="ui-expandable-content">
     <div class="ui-expandable-clip">
       <div class="ui-expandable-body"><slot v-bind="state" /></div>
     </div>
