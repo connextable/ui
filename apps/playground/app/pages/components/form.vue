@@ -8,7 +8,6 @@ import FormFieldSelectorExampleSource from "~/components/form/FormFieldSelectorE
 import FormSelectorExample from "~/components/form/FormSelectorExample.vue";
 import FormSelectorExampleSource from "~/components/form/FormSelectorExample.vue?example-code&raw";
 import FormSubmitExample from "~/components/form/FormSubmitExample.vue";
-import submitSource from "~/components/form/FormSubmitExample.vue?example-code&raw";
 import FormSchemaExample from "~/components/form/FormSchemaExample.vue";
 import schemaSource from "~/components/form/FormSchemaExample.vue?example-code&raw";
 import DynamicFieldsExample from "~/components/form/DynamicFieldsExample.vue";
@@ -36,39 +35,16 @@ definePageMeta({
   title: "UIForm",
   category: "입력·폼",
   description: "입력과 동작을 묶어 유효성을 검사하고 값을 제출합니다.",
-  componentParts: ["UIFormField", "UIFormFieldGroup", "UIFormActions", "UIFormSubmit", "UIFormReset", "UIFormSummary", "UIFormSelector", "UIFormFieldSelector"],
+  componentParts: ["UIFormField", "UIFormLabel", "UIFormDescription", "UIFormMessage", "UIFormFieldGroup", "UIFormActions", "UIFormSubmit", "UIFormReset", "UIFormSummary", "UIFormSelector", "UIFormFieldSelector"],
 });
 </script>
 
 <template>
   <div>
     <PlaygroundExampleSection id="usage" title="기본 사용법">
-      <PlaygroundExample :heading-level="3"
-        id="form-submit"
-        title="기본 제출"
-        description="UIForm에서 submit 이벤트를 받아 제출을 처리합니다."
-        :source="submitSource"
-      >
-        <FormSubmitExample />
-      </PlaygroundExample>
+      <FormSubmitExample />
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="examples" title="동작별 예제">
-      <PlaygroundExample :heading-level="3"
-        id="form-schema"
-        title="스키마 검증"
-        description="Standard Schema를 schema에 전달합니다. 수량이 유효하면 숫자로 변환된 값이 submit의 values에 들어갑니다."
-        :source="schemaSource"
-      >
-        <FormSchemaExample />
-      </PlaygroundExample>
-      <PlaygroundExample :heading-level="3"
-        id="dynamic-fields"
-        title="동적 필드"
-        description="목록에서 입력 필드를 추가하거나 삭제합니다. 화면에 있는 필드만 필수값을 검사하며, 같은 name의 값은 FormData.getAll()로 읽습니다."
-        :source="dynamicFieldsSource"
-      >
-        <DynamicFieldsExample />
-      </PlaygroundExample>
+    <PlaygroundExampleSection id="form-fields" title="필드와 필드 그룹">
       <PlaygroundExample :heading-level="3"
         id="UIFormField"
         title="UIFormField"
@@ -109,6 +85,8 @@ definePageMeta({
       >
         <FormFieldGroupSelectExample />
       </PlaygroundExample>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="form-actions" title="제출과 초기화">
       <PlaygroundExample :heading-level="3"
         id="UIFormActions"
         title="UIFormActions"
@@ -133,6 +111,24 @@ definePageMeta({
       >
         <FormResetExample />
       </PlaygroundExample>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="examples" title="실전 예제">
+      <PlaygroundExample :heading-level="3"
+        id="form-schema"
+        title="스키마 검증"
+        description="Standard Schema를 schema에 전달합니다. 수량이 유효하면 숫자로 변환된 값이 submit의 values에 들어갑니다."
+        :source="schemaSource"
+      >
+        <FormSchemaExample />
+      </PlaygroundExample>
+      <PlaygroundExample :heading-level="3"
+        id="dynamic-fields"
+        title="동적 필드"
+        description="목록에서 입력 필드를 추가하거나 삭제합니다. 화면에 있는 필드만 필수값을 검사하며, 같은 name의 값은 FormData.getAll()로 읽습니다."
+        :source="dynamicFieldsSource"
+      >
+        <DynamicFieldsExample />
+      </PlaygroundExample>
       <PlaygroundExample :heading-level="3"
         id="UIFormSummary"
         title="UIFormSummary"
@@ -144,9 +140,11 @@ definePageMeta({
       <PlaygroundExample :heading-level="3" id="form-server-error" title="저장 실패 후 재시도" description="첫 저장에서 오류 요약을 확인합니다. 같은 값을 다시 제출하면 저장합니다." :source="FormServerErrorExampleSource">
         <FormServerErrorExample />
       </PlaygroundExample>
-      <PlaygroundExample :heading-level="3" id="form-revalidate" title="검증 시점" description="세 글자보다 짧은 제목을 쓴 뒤 Tab을 누르고, 다시 입력하며 오류가 사라지는지 확인합니다." :source="FormRevalidationExampleSource">
+      <PlaygroundExample :heading-level="3" id="form-revalidate" title="검증 시점" description="validate에 검증 함수를 전달합니다. 짧은 제목을 입력하고 Tab을 누르면 오류가 나타납니다. 세 글자 이상으로 늘리면 오류가 사라집니다." :source="FormRevalidationExampleSource">
         <FormRevalidationExample />
       </PlaygroundExample>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="form-state" title="폼 상태 구독">
       <PlaygroundExample :heading-level="3" id="UIFormFieldSelector" title="UIFormFieldSelector" description="필드 하나가 방문된 상태를 구독해 표시합니다." :source="FormFieldSelectorExampleSource">
         <FormFieldSelectorExample />
       </PlaygroundExample>
@@ -154,5 +152,36 @@ definePageMeta({
         <FormSelectorExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="form-field-parts" title="필드 구성 요소">
+      <dl class="form-parts">
+        <div id="UIFormLabel" tabindex="-1">
+          <dt><code>UIFormLabel</code></dt>
+          <dd>필드 이름을 입력에 연결합니다.</dd>
+        </div>
+        <div id="UIFormDescription" tabindex="-1">
+          <dt><code>UIFormDescription</code></dt>
+          <dd>필드에 입력 조건이나 예시를 연결합니다.</dd>
+        </div>
+        <div id="UIFormMessage" tabindex="-1">
+          <dt><code>UIFormMessage</code></dt>
+          <dd>필드의 검증 상태에 맞는 메시지를 표시합니다.</dd>
+        </div>
+      </dl>
+    </PlaygroundExampleSection>
   </div>
 </template>
+
+<style scoped>
+.form-parts > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ui-space-xs) var(--ui-space-md);
+  padding-block: var(--ui-space-sm);
+  border-block-end: 1px solid var(--ui-color-divider);
+}
+
+.form-parts dd {
+  margin: 0;
+  color: var(--ui-color-text-muted);
+}
+</style>
