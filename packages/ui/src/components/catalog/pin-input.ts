@@ -1,5 +1,5 @@
 import { PinInputInput, PinInputRoot, type PinInputRootProps, type PinInputRootSlotProps } from "@sectile/vue/pin-input";
-import { defineComponent, h, nextTick } from "vue";
+import { defineComponent, h, nextTick, type VNode } from "vue";
 import UIFieldClear from "../clear/UIFieldClear.vue";
 import { controlFlag, useFieldClear } from "../clear/clearable";
 import { withClearableModel, type ClearableComponent } from "../clear/with-clearable";
@@ -13,6 +13,8 @@ const PinInputComposition = defineComponent({
   emits: ["update:modelValue", "complete"],
   setup(_, { attrs, slots, emit }) {
     const clear = useFieldClear();
+    let currentState: PinInputRootSlotProps | undefined;
+    let defaultParts: { count: number; name: string; cells: VNode[] } | undefined;
 
     function paste(event: ClipboardEvent, index: number, count: number, state: PinInputRootSlotProps) {
       if (state.disabled || state.readonly || !event.clipboardData) return;
@@ -34,6 +36,23 @@ const PinInputComposition = defineComponent({
       }
     }
 
+    function defaultCells() {
+      const count = typeof attrs.length === "number" ? attrs.length : 6;
+      const name = typeof attrs.label === "string" ? attrs.label : "인증 코드";
+      // Keep the cells and their paste handlers stable when the slot state changes.
+      if (defaultParts?.count === count && defaultParts.name === name) return defaultParts.cells;
+      const cells = Array.from({ length: count }, (_, index) => h(PinInputInput, {
+        key: index,
+        index,
+        "aria-label": `${name} ${count}자리 중 ${index + 1}번째`,
+        onPaste: (event: ClipboardEvent) => {
+          if (currentState) paste(event, index, count, currentState);
+        },
+      }));
+      defaultParts = { count, name, cells };
+      return cells;
+    }
+
     return () => {
       const bindings = {
         ...attrs,
@@ -41,15 +60,10 @@ const PinInputComposition = defineComponent({
         onComplete: (value: string) => emit("complete", value),
       };
       if (controlFlag(attrs.asChild ?? attrs["as-child"])) return h(PinInputRoot, bindings, slots);
-      const count = typeof attrs.length === "number" ? attrs.length : 6;
-      const name = typeof attrs.label === "string" ? attrs.label : "인증 코드";
       return h(PinInputRoot, bindings, {
         default: (state: PinInputRootSlotProps) => {
-          const cells = slots.default?.(state) ?? Array.from({ length: count }, (_, index) => h(PinInputInput, {
-            key: index, index,
-            "aria-label": `${name} ${count}자리 중 ${index + 1}번째`,
-            onPaste: (event: ClipboardEvent) => paste(event, index, count, state),
-          }));
+          currentState = state;
+          const cells = slots.default?.(state) ?? defaultCells();
           return clear?.enabled.value ? [...cells, h(UIFieldClear)] : cells;
         },
       });
