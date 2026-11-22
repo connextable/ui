@@ -207,19 +207,10 @@ function onPointerUp(event: PointerEvent) {
               </span>
             </div>
             <div class="ui-lightbox__controls">
-              <template v-if="items.length > 1">
-                <UIButton variant="ghost" size="sm" icon-only :aria-label="labels?.previous ?? '이전 미디어'"
-                  :aria-disabled="!canGoBack" :tabindex="canGoBack ? 0 : -1" @click="move(-1)">
-                  <template #leading><ChevronLeft class="ui-lightbox__direction" /></template>
-                </UIButton>
-                <UIButton variant="ghost" size="sm" icon-only :aria-label="labels?.next ?? '다음 미디어'"
-                  :aria-disabled="!canGoForward" :tabindex="canGoForward ? 0 : -1" @click="move(1)">
-                  <template #leading><ChevronRight class="ui-lightbox__direction" /></template>
-                </UIButton>
-              </template>
               <slot name="actions" :item="current" :index="selectedIndex" :total="items.length" />
               <DialogClose as-child>
-                <UIButton variant="ghost" size="sm" icon-only :aria-label="labels?.close ?? '닫기'">
+                <UIButton class="ui-lightbox__close" variant="ghost" size="sm" icon-only
+                  :aria-label="labels?.close ?? '닫기'">
                   <template #leading><X /></template>
                 </UIButton>
               </DialogClose>
@@ -243,6 +234,18 @@ function onPointerUp(event: PointerEvent) {
                   <track v-for="track in current.tracks" :key="track.src" :src="track.src" :srclang="track.srclang"
                     :label="track.label" :kind="track.kind ?? 'captions'" :default="track.default" />
                 </video>
+              </div>
+              <div v-if="items.length > 1" class="ui-lightbox__navigation">
+                <UIButton class="ui-lightbox__arrow" variant="ghost" icon-only
+                  :aria-label="labels?.previous ?? '이전 미디어'" :aria-disabled="!canGoBack"
+                  :tabindex="canGoBack ? 0 : -1" @click="move(-1)">
+                  <template #leading><ChevronLeft class="ui-lightbox__direction" /></template>
+                </UIButton>
+                <UIButton class="ui-lightbox__arrow" variant="ghost" icon-only
+                  :aria-label="labels?.next ?? '다음 미디어'" :aria-disabled="!canGoForward"
+                  :tabindex="canGoForward ? 0 : -1" @click="move(1)">
+                  <template #leading><ChevronRight class="ui-lightbox__direction" /></template>
+                </UIButton>
               </div>
             </div>
             <figcaption class="ui-lightbox__caption" aria-live="polite" aria-atomic="true">
@@ -314,14 +317,14 @@ function onPointerUp(event: PointerEvent) {
 }
 
 .ui-lightbox__panel {
-  --ui-lightbox-inset: clamp(0.5rem, 3vw, 2rem);
+  --ui-lightbox-inset: clamp(1rem, 2vw, 2rem);
 
   box-sizing: border-box;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   gap: var(--ui-space-md);
-  inline-size: min(72rem, calc(100% - 2 * var(--ui-lightbox-inset)));
-  block-size: min(52rem, calc(100dvh - 2 * var(--ui-lightbox-inset)));
+  inline-size: min(112rem, calc(100% - 2 * var(--ui-lightbox-inset)));
+  block-size: calc(100dvh - 2 * var(--ui-lightbox-inset));
   max-block-size: calc(100dvh - 2 * var(--ui-lightbox-inset));
   padding: clamp(0.625rem, 2vw, 1.25rem);
   border: 1px solid var(--ui-color-divider);
@@ -364,11 +367,6 @@ function onPointerUp(event: PointerEvent) {
 
 .ui-lightbox__controls {
   margin-inline-start: auto;
-}
-
-.ui-lightbox__controls :deep([aria-disabled="true"]) {
-  opacity: 0.5;
-  cursor: default;
 }
 
 .ui-lightbox__direction:dir(rtl) {
@@ -423,6 +421,39 @@ function onPointerUp(event: PointerEvent) {
   object-fit: contain;
 }
 
+.ui-lightbox__navigation {
+  --ui-color-text: #fff;
+  --ui-color-focus: #bfe6f4;
+  --ui-color-surface-hover: rgb(9 17 22 / 94%);
+  --ui-color-surface-active: #091116;
+
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--ui-space-md);
+  pointer-events: none;
+}
+
+.ui-lightbox__navigation .ui-lightbox__arrow {
+  background-color: rgb(9 17 22 / 79%);
+  pointer-events: auto;
+}
+
+.ui-lightbox__navigation .ui-lightbox__arrow:hover:not([aria-disabled="true"]) {
+  background-color: var(--ui-color-surface-hover);
+}
+
+.ui-lightbox__navigation .ui-lightbox__arrow:active:not([aria-disabled="true"]) {
+  background-color: var(--ui-color-surface-active);
+}
+
+.ui-lightbox__arrow[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .ui-lightbox__error {
   margin: var(--ui-space-md);
   text-align: center;
@@ -471,6 +502,71 @@ function onPointerUp(event: PointerEvent) {
     grid-template-rows: auto minmax(13rem, 1fr) auto;
     overflow: auto;
     overscroll-behavior: contain;
+  }
+}
+
+@media (max-width: 47.999rem), (max-height: 32rem) and (pointer: coarse) {
+  .ui-lightbox__panel {
+    --ui-color-text: #fff;
+    --ui-color-text-muted: #c9d2d8;
+    --ui-color-focus: #bfe6f4;
+    --ui-color-surface-hover: #283139;
+    --ui-color-surface-active: #35434c;
+    --ui-lightbox-edge-left: max(var(--ui-space-md), env(safe-area-inset-left));
+    --ui-lightbox-edge-right: max(var(--ui-space-md), env(safe-area-inset-right));
+
+    inset: 0;
+    translate: none;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0;
+    inline-size: 100%;
+    block-size: 100dvh;
+    max-block-size: none;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    overflow: hidden;
+    background: var(--ui-lightbox-stage-background, #151b1f);
+    box-shadow: none;
+  }
+
+  .ui-lightbox__header {
+    padding: max(var(--ui-space-xs), env(safe-area-inset-top)) var(--ui-lightbox-edge-right)
+      var(--ui-space-xs) var(--ui-lightbox-edge-left);
+  }
+
+  .ui-lightbox__close {
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+  }
+
+  .ui-lightbox__figure {
+    gap: 0;
+  }
+
+  .ui-lightbox__stage,
+  .ui-lightbox__visual {
+    border-radius: 0;
+  }
+
+  .ui-lightbox__visual video {
+    inline-size: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
+  }
+
+  .ui-lightbox__caption {
+    box-sizing: border-box;
+    max-block-size: min(7rem, 25dvh);
+    padding: var(--ui-space-sm) var(--ui-lightbox-edge-right)
+      max(var(--ui-space-sm), env(safe-area-inset-bottom)) var(--ui-lightbox-edge-left);
+  }
+
+  .ui-lightbox__navigation {
+    padding-right: max(var(--ui-space-sm), env(safe-area-inset-right));
+    padding-left: max(var(--ui-space-sm), env(safe-area-inset-left));
+  }
+
+  .ui-lightbox__strip {
+    display: none;
   }
 }
 

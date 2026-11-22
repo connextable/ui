@@ -29,7 +29,7 @@ const treeReorderBoardExamples = [
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   lightbox: {
     title: "사진과 영상이 있는 관찰 기록 열기",
-    description: "썸네일을 눌러 해당 자료부터 엽니다. 창 안에서는 이전·다음 버튼, 방향키, 하단 썸네일로 사진과 영상을 오갈 수 있습니다.",
+    description: "썸네일을 눌러 해당 자료부터 엽니다. 미디어 위 화살표나 방향키로 이동합니다. 작은 화면에서는 전체 화면으로 열리고 하단 썸네일을 숨깁니다.",
     sections: [
       { id: "examples", title: "미디어 구성", section: "media" },
       { id: "lightbox-behavior", title: "탐색과 전환", section: "behavior" },
@@ -46,7 +46,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "v-model:open": "보기 창의 열림 상태를 연결합니다.",
       "v-model:index": "현재 미디어의 위치를 0부터 공유합니다.",
       loop: "첫 항목과 마지막 항목 사이를 이어서 탐색합니다.",
-      thumbnails: "여러 항목의 하단 썸네일을 표시합니다. 기본값은 true입니다.",
+      thumbnails: "데스크톱에서 하단 썸네일을 표시합니다. 기본값은 true입니다.",
       motion: "View Transition을 사용합니다. 모션 감소 설정이 켜져 있으면 즉시 전환합니다.",
       "close-on-interact-outside": "배경을 눌러 창을 닫을지 지정합니다. 기본값은 true입니다.",
       "#default": "items와 openAt을 받아 직접 만든 버튼이나 미디어 목록에서 창을 엽니다. 버튼의 클릭 이벤트를 전달하면 닫을 때 포커스가 해당 버튼으로 돌아갑니다.",
