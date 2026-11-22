@@ -1672,7 +1672,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "달력에서 날짜를 바꾸고 시간 입력에서 시각을 편집합니다.",
     api: {
       "v-model": "편집한 날짜와 시각을 연결합니다.",
-      "time-precision": "분리된 시각 입력의 정밀도를 지정합니다. minute이면 시·분을 표시합니다.",
+      "time-precision": "시각 입력의 정밀도를 지정합니다. minute이면 시·분을 표시합니다.",
       "#default": "달력의 날짜, 월, 보기 상태를 제공합니다.",
     },
   },

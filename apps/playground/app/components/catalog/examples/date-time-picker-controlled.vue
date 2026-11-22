@@ -20,7 +20,7 @@ const display = useUITemporalDisplay();
 
 <template>
   <div>
-    <UIDateTimePicker v-model:open="open" v-model="initial" v-slot="{ dates }">
+    <UIDateTimePicker v-model:open="open" v-model="initial" time-precision="minute" v-slot="{ dates }">
       <UIDateTimePickerAnchor>
         <UIDateTimePickerDateTimeInput aria-label="업데이트 일시" />
         <UIDateTimePickerTrigger aria-label="업데이트 달력"><CalendarDays :size="18" aria-hidden="true" /></UIDateTimePickerTrigger>

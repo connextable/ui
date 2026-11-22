@@ -9,7 +9,7 @@ const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIDateTimePicker v-model="initial" :policies="policies" v-slot="{ dates }">
+  <UIDateTimePicker v-model="initial" :policies="policies" time-precision="minute" v-slot="{ dates }">
     <UIDateTimePickerAnchor>
       <UIDateTimePickerDateTimeInput aria-label="검토 예약 일시" />
       <UIDateTimePickerTrigger aria-label="예약 날짜 선택"><CalendarDays :size="18" aria-hidden="true" /></UIDateTimePickerTrigger>
