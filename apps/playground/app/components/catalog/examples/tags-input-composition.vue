@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Check, X } from "@lucide/vue";
-import { UITagsInput, UITagsInputInput, UITagsInputItem, UITagsInputItemDelete, UITagsInputItemText } from "@connextable/ui";
+import { UITagsInput, UITagsInputClear, UITagsInputInput, UITagsInputItem, UITagsInputItemDelete, UITagsInputItemText } from "@connextable/ui";
 import { ref } from "vue";
 
 const tags = ref<readonly string[]>(['승인', '검토']);
@@ -14,5 +14,6 @@ const tags = ref<readonly string[]>(['승인', '검토']);
       <UITagsInputItemDelete :aria-label="`${tag} 삭제`"><X aria-hidden="true" /></UITagsInputItemDelete>
     </UITagsInputItem>
     <UITagsInputInput placeholder="상태 추가" />
+    <UITagsInputClear />
   </UITagsInput>
 </template>

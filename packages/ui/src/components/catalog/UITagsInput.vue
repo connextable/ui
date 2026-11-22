@@ -7,9 +7,8 @@ import {
   type TagsInputRootSlotProps,
 } from "@sectile/vue/tags-input";
 import { computed, nextTick, ref } from "vue";
-import UIClearButton from "../clear/UIClearButton.vue";
 import { clearFocusTarget } from "../clear/clear-focus";
-import { UITagsInputClear } from "../clear/selection-clear-parts";
+import { TagsInputClearScope, UITagsInputClear } from "../clear/selection-clear-parts";
 import type { ClearableProps } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
 import UITagChips from "./UITagChips.vue";
@@ -93,29 +92,27 @@ function paste(event: ClipboardEvent, scope: TagsInputRootSlotProps) {
     @update:model-value="updateValue"
     @update:input-value="emit('update:inputValue', $event)"
   >
-    <slot v-if="$slots.default" v-bind="state" />
-    <template v-else>
-      <UITagChips
-        :value="state.value"
-        :readonly="state.readonly"
-        :reorderable="reorderable && modelValue !== undefined && !state.readonly && !state.disabled && state.value.length > 1"
-        @reorder="updateValue"
-      />
-      <TagsInputInput
-        :placeholder="placeholder ?? '태그 추가'"
-        :aria-labelledby="$attrs['aria-labelledby']"
-        :aria-describedby="$attrs['aria-describedby']"
-        @paste="paste($event, state)"
-      />
-      <template v-if="clearable && state.value.length && !state.readonly && !state.disabled">
-        <UIClearButton
-          v-if="modelValue !== undefined"
-          :label="clearLabel ?? '태그 모두 지우기'"
-          @click="clearControlled"
+    <TagsInputClearScope :state="state" :clear="modelValue === undefined ? undefined : clearControlled">
+      <slot v-if="$slots.default" v-bind="state" />
+      <template v-else>
+        <UITagChips
+          :value="state.value"
+          :readonly="state.readonly"
+          :reorderable="reorderable && modelValue !== undefined && !state.readonly && !state.disabled && state.value.length > 1"
+          @reorder="updateValue"
         />
-        <UITagsInputClear v-else :aria-label="clearLabel" />
+        <TagsInputInput
+          :placeholder="placeholder ?? '태그 추가'"
+          :aria-labelledby="$attrs['aria-labelledby']"
+          :aria-describedby="$attrs['aria-describedby']"
+          @paste="paste($event, state)"
+        />
+        <UITagsInputClear
+          v-if="clearable && state.value.length && !state.readonly && !state.disabled"
+          :aria-label="clearLabel"
+        />
+        <span v-if="splitPaste" class="ui-tags-input__announcement" role="status">{{ notice }}</span>
       </template>
-      <span v-if="splitPaste" class="ui-tags-input__announcement" role="status">{{ notice }}</span>
-    </template>
+    </TagsInputClearScope>
   </TagsInputRoot>
 </template>
