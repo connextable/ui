@@ -2,6 +2,7 @@
 import { UIDisclosure, UIDisclosureContent, UIDisclosureTrigger } from "@connextable/ui";
 import { computed, inject, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
 import { playgroundPrimaryExampleKey } from "~/utils/playground-primary-example";
+import { playgroundHeadingLevelKey } from "~/utils/playground-heading";
 import PlaygroundCodeBlock from "./PlaygroundCodeBlock.vue";
 
 const props = defineProps<{
@@ -12,10 +13,12 @@ const props = defineProps<{
   code?: string;
   wide?: boolean;
   inline?: boolean;
-  headingLevel?: 2 | 3;
+  headingLevel?: 2 | 3 | 4;
 }>();
 
 const primaryExample = inject(playgroundPrimaryExampleKey, undefined);
+const parentLevel = inject(playgroundHeadingLevelKey, undefined);
+const level = computed(() => Math.max(props.headingLevel ?? 2, (parentLevel?.value ?? 1) + 1));
 const unregisterExample = primaryExample?.register(props.id);
 const isPrimaryExample = computed(() => primaryExample?.id.value === props.id);
 const preview = useTemplateRef<HTMLElement>("preview");
@@ -50,7 +53,7 @@ watch(codeOpen, revealSource, { immediate: true });
 <template>
   <section class="playground-example" :aria-labelledby="id">
     <component
-      :is="headingLevel === 3 ? 'h3' : 'h2'"
+      :is="`h${level}`"
       :id="id"
       data-playground-heading
       tabindex="-1"
@@ -109,11 +112,11 @@ watch(codeOpen, revealSource, { immediate: true });
   margin-block-end: 3rem;
 }
 
-.playground-example > :is(h2, h3, p) {
+.playground-example > :is(h2, h3, h4, p) {
   margin: 0;
 }
 
-.playground-example > :is(h2, h3) {
+.playground-example > :is(h2, h3, h4) {
   font-size: clamp(1.25rem, 2.5vw, 1.625rem);
   font-weight: 680;
   letter-spacing: -0.025em;
@@ -122,6 +125,10 @@ watch(codeOpen, revealSource, { immediate: true });
 
 .playground-example > h3 {
   font-size: clamp(1.125rem, 2vw, 1.375rem);
+}
+
+.playground-example > h4 {
+  font-size: clamp(1.0625rem, 1.6vw, 1.1875rem);
 }
 
 .playground-example .playground-example__description {

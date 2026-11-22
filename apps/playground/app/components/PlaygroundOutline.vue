@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ChevronDown } from "@lucide/vue";
 import { computed, onMounted, onUnmounted, ref, shallowRef, useTemplateRef, watch } from "vue";
 
 const props = defineProps<{ content: HTMLElement | null }>();
@@ -7,12 +8,26 @@ const headings = shallowRef<{ element: HTMLElement; id: string; text: string; le
 const activeId = ref("");
 const scroller = useTemplateRef<HTMLDivElement>("scroller");
 const list = useTemplateRef<HTMLUListElement>("list");
+const narrow = ref(false);
+const expanded = ref(false);
+const route = useRoute();
 const baseLevel = computed(() => Math.min(...headings.value.map(heading => heading.level)));
 const rail = shallowRef<{ path: string; length: number; segments: Map<string, { start: number; length: number }> }>();
 const indicator = computed(() => rail.value?.segments.get(activeId.value));
 
 let frame = 0;
 let requestedFragment = "";
+let narrowLayout: MediaQueryList | undefined;
+
+function updateLayout() {
+  narrow.value = narrowLayout?.matches ?? false;
+}
+
+function onOutlineToggle(event: Event) {
+  if (narrow.value && event.currentTarget instanceof HTMLDetailsElement) expanded.value = event.currentTarget.open;
+}
+
+watch(() => route.path, () => { expanded.value = false; });
 
 function updateActive() {
   frame = 0;
@@ -162,6 +177,9 @@ watch(activeId, () => {
 }, { flush: "post" });
 
 onMounted(() => {
+  narrowLayout = window.matchMedia("(width < 68rem)");
+  updateLayout();
+  narrowLayout.addEventListener("change", updateLayout);
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll);
   window.addEventListener("hashchange", syncFragment);
@@ -169,6 +187,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  narrowLayout?.removeEventListener("change", updateLayout);
   window.removeEventListener("scroll", onScroll);
   window.removeEventListener("resize", onScroll);
   window.removeEventListener("hashchange", syncFragment);
@@ -178,38 +197,40 @@ onUnmounted(() => {
 
 <template>
   <div class="playground-outline">
-    <nav v-if="headings.length" aria-labelledby="playground-outline-title">
-      <h2 id="playground-outline-title">이 페이지</h2>
-      <div ref="scroller" class="playground-outline__scroller">
-        <div class="playground-outline__entries">
-          <svg v-if="rail" class="playground-outline__rail" aria-hidden="true">
-            <path :d="rail.path" class="playground-outline__track" />
-            <path
-              v-if="indicator"
-              :d="rail.path"
-              class="playground-outline__indicator"
-              :style="{
-                strokeDasharray: `${indicator.length} ${rail.length}`,
-                strokeDashoffset: -indicator.start,
-              }"
-            />
-          </svg>
-          <ul ref="list">
-            <li
-              v-for="heading in headings"
-              :key="heading.id"
-              :style="{ '--outline-depth': heading.level - baseLevel }"
-            >
-              <a
-                :href="`#${heading.id}`"
-                :aria-current="activeId === heading.id ? 'location' : undefined"
-                :title="heading.text"
-                @click="onOutlineClick($event, heading.id)"
-              >{{ heading.text }}</a>
-            </li>
-          </ul>
+    <nav v-if="headings.length" aria-label="이 페이지">
+      <h2 id="playground-outline-title" class="playground-outline__title">이 페이지</h2>
+      <details :open="!narrow || expanded" @toggle="onOutlineToggle">
+        <summary>이 페이지 <ChevronDown aria-hidden="true" :size="16" /></summary>
+        <div ref="scroller" class="playground-outline__scroller">
+          <div class="playground-outline__entries">
+            <svg v-if="rail" class="playground-outline__rail" aria-hidden="true">
+              <path :d="rail.path" class="playground-outline__track" />
+              <path
+                v-if="indicator"
+                :d="rail.path"
+                class="playground-outline__indicator"
+                :style="{
+                  strokeDasharray: `${indicator.length} ${rail.length}`,
+                  strokeDashoffset: -indicator.start,
+                }"
+              />
+            </svg>
+            <ul ref="list">
+              <li
+                v-for="heading in headings"
+                :key="heading.id"
+                :style="{ '--outline-depth': heading.level - baseLevel }"
+              >
+                <a
+                  :href="`#${heading.id}`"
+                  :aria-current="activeId === heading.id ? 'location' : undefined"
+                  @click="onOutlineClick($event, heading.id)"
+                >{{ heading.text }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      </details>
     </nav>
   </div>
 </template>
@@ -227,13 +248,24 @@ onUnmounted(() => {
   min-inline-size: 0;
 }
 
-.playground-outline h2 {
+.playground-outline__title {
   margin: 0 0 var(--ui-space-sm);
   font-size: 0.8125rem;
   font-weight: 700;
 }
 
+.playground-outline details {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+}
+
+.playground-outline summary {
+  display: none;
+}
+
 .playground-outline__scroller {
+  max-block-size: max(0px, calc(var(--playground-outline-height) - 2.25rem));
   overflow-y: auto;
   padding: var(--ui-space-xs);
 }
@@ -281,9 +313,8 @@ onUnmounted(() => {
   color: var(--ui-color-text-muted);
   font-size: 0.8125rem;
   text-decoration: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
   transition: color var(--ui-motion-fast) var(--ui-ease-out);
 }
 
@@ -301,6 +332,29 @@ onUnmounted(() => {
 }
 
 @media (width < 68rem) {
+  .playground-outline__title {
+    display: none;
+  }
+
+  .playground-outline details {
+    border: 1px solid var(--ui-color-divider);
+    border-radius: var(--ui-radius-md);
+  }
+
+  .playground-outline summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--ui-space-sm) var(--ui-space-md);
+    font-size: var(--ui-font-size-body-sm);
+    font-weight: 650;
+    cursor: pointer;
+  }
+
+  .playground-outline details[open] summary svg {
+    rotate: 180deg;
+  }
+
   .playground-outline__scroller {
     max-block-size: min(40dvh, 16rem);
   }

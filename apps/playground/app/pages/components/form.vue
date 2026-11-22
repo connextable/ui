@@ -35,7 +35,6 @@ import summarySource from "~/components/form/FormSummaryExample.vue?example-code
 
 definePageMeta({
   title: "UIForm",
-  category: "입력·폼",
   description: "입력과 동작을 묶어 유효성을 검사하고 값을 제출합니다.",
   componentParts: ["UIFormField", "UIFormLabel", "UIFormDescription", "UIFormMessage", "UIFormFieldGroup", "UIFormActions", "UIFormSubmit", "UIFormReset", "UIFormSummary", "UIFormSelector", "UIFormFieldSelector"],
 });
@@ -46,23 +45,77 @@ definePageMeta({
     <PlaygroundExampleSection id="usage" title="기본 사용법">
       <FormSubmitExample />
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="form-fields" title="필드와 필드 그룹">
-      <PlaygroundExample :heading-level="3"
-        id="UIFormField"
-        title="UIFormField"
-        description="필드 안의 입력에 라벨과 도움말이 자동으로 연결됩니다."
-        :source="fieldSource"
-      >
-        <FormFieldExample />
-      </PlaygroundExample>
-      <PlaygroundExample :heading-level="3"
-        id="required-field"
-        title="필수 필드"
-        description="UIFormField에 required를 지정합니다. 값을 비워 두고 제출하면 해당 필드에 오류가 표시됩니다."
-        :source="requiredSource"
-      >
-        <RequiredFieldExample />
-      </PlaygroundExample>
+    <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
+      <PlaygroundExampleSection id="form-fields" title="필드와 필드 그룹">
+        <PlaygroundExample :heading-level="3"
+          id="UIFormField"
+          title="UIFormField"
+          description="필드 안의 입력에 라벨과 도움말이 자동으로 연결됩니다."
+          :source="fieldSource"
+        >
+          <FormFieldExample />
+        </PlaygroundExample>
+        <PlaygroundExample :heading-level="3"
+          id="required-field"
+          title="필수 필드"
+          description="UIFormField에 required를 지정합니다. 값을 비워 두고 제출하면 해당 필드에 오류가 표시됩니다."
+          :source="requiredSource"
+        >
+          <RequiredFieldExample />
+        </PlaygroundExample>
+        <PlaygroundExample :heading-level="3"
+          id="UIFormFieldGroup"
+          title="UIFormFieldGroup"
+          description="입력마다 field에 그룹 값의 키를 전달합니다. 이름과 성을 바꾸면 작성자 객체 하나가 갱신되고, 제출할 때는 같은 이름 아래 두 값이 묶입니다."
+          :source="fieldGroupSource"
+        >
+          <FormFieldGroupExample />
+        </PlaygroundExample>
+        <PlaygroundExample :heading-level="3"
+          id="field-group-models"
+          title="개별 입력의 v-model"
+          description="입력은 각각의 ref에 연결하고, 두 ref를 읽고 쓰는 computed를 그룹의 v-model에 연결합니다."
+          :source="fieldGroupModelsSource"
+        >
+          <FormFieldGroupModelsExample />
+        </PlaygroundExample>
+        <PlaygroundExample :heading-level="3"
+          id="field-group-select"
+          title="복합 입력과 함께 사용"
+          description="UISelect는 하위 UIFormField에 이름을 연결하고 bindModel로 같은 그룹 객체에 값을 반영합니다."
+          :source="fieldGroupSelectSource"
+        >
+          <FormFieldGroupSelectExample />
+        </PlaygroundExample>
+      </PlaygroundExampleSection>
+      <PlaygroundExampleSection id="form-actions" title="제출과 초기화">
+        <PlaygroundExample :heading-level="3"
+          id="UIFormActions"
+          title="UIFormActions"
+          description="초기화와 제출 버튼을 오른쪽에 묶습니다. 제출 결과는 UIForm의 output 슬롯에 표시합니다."
+          :source="actionsSource"
+        >
+          <FormActionsExample />
+        </PlaygroundExample>
+        <PlaygroundExample :heading-level="3"
+          id="UIFormSubmit"
+          title="UIFormSubmit"
+          description="제출 함수가 완료될 때까지 로딩 상태를 표시하고 추가 제출을 막습니다."
+          :source="submitStateSource"
+        >
+          <FormSubmitStateExample />
+        </PlaygroundExample>
+        <PlaygroundExample :heading-level="3"
+          id="UIFormReset"
+          title="UIFormReset"
+          description="값을 바꾼 다음 초기화하면 폼의 처음 값으로 돌아갑니다."
+          :source="resetSource"
+        >
+          <FormResetExample />
+        </PlaygroundExample>
+      </PlaygroundExampleSection>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="examples" title="실전 예제">
       <PlaygroundExample :heading-level="3"
         id="composite-fields"
         title="복합 입력 검증과 제출"
@@ -71,58 +124,6 @@ definePageMeta({
       >
         <CompositeFieldsExample />
       </PlaygroundExample>
-      <PlaygroundExample :heading-level="3"
-        id="UIFormFieldGroup"
-        title="UIFormFieldGroup"
-        description="입력마다 field에 그룹 값의 키를 전달합니다. 이름과 성을 바꾸면 작성자 객체 하나가 갱신되고, 제출할 때는 같은 이름 아래 두 값이 묶입니다."
-        :source="fieldGroupSource"
-      >
-        <FormFieldGroupExample />
-      </PlaygroundExample>
-      <PlaygroundExample :heading-level="3"
-        id="field-group-models"
-        title="개별 입력의 v-model"
-        description="입력은 각각의 ref에 연결하고, 두 ref를 읽고 쓰는 computed를 그룹의 v-model에 연결합니다."
-        :source="fieldGroupModelsSource"
-      >
-        <FormFieldGroupModelsExample />
-      </PlaygroundExample>
-      <PlaygroundExample :heading-level="3"
-        id="field-group-select"
-        title="복합 입력과 함께 사용"
-        description="UISelect는 하위 UIFormField에 이름을 연결하고 bindModel로 같은 그룹 객체에 값을 반영합니다."
-        :source="fieldGroupSelectSource"
-      >
-        <FormFieldGroupSelectExample />
-      </PlaygroundExample>
-    </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="form-actions" title="제출과 초기화">
-      <PlaygroundExample :heading-level="3"
-        id="UIFormActions"
-        title="UIFormActions"
-        description="초기화와 제출 버튼을 오른쪽에 묶습니다. 제출 결과는 UIForm의 output 슬롯에 표시합니다."
-        :source="actionsSource"
-      >
-        <FormActionsExample />
-      </PlaygroundExample>
-      <PlaygroundExample :heading-level="3"
-        id="UIFormSubmit"
-        title="UIFormSubmit"
-        description="제출 함수가 완료될 때까지 로딩 상태를 표시하고 추가 제출을 막습니다."
-        :source="submitStateSource"
-      >
-        <FormSubmitStateExample />
-      </PlaygroundExample>
-      <PlaygroundExample :heading-level="3"
-        id="UIFormReset"
-        title="UIFormReset"
-        description="값을 바꾼 다음 초기화하면 폼의 처음 값으로 돌아갑니다."
-        :source="resetSource"
-      >
-        <FormResetExample />
-      </PlaygroundExample>
-    </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="examples" title="실전 예제">
       <PlaygroundExample :heading-level="3"
         id="form-schema"
         title="스키마 검증"
@@ -154,13 +155,15 @@ definePageMeta({
         <FormRevalidationExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="form-state" title="폼 상태 구독">
-      <PlaygroundExample :heading-level="3" id="UIFormFieldSelector" title="UIFormFieldSelector" description="필드 하나가 방문된 상태를 구독해 표시합니다." :source="FormFieldSelectorExampleSource">
-        <FormFieldSelectorExample />
-      </PlaygroundExample>
-      <PlaygroundExample :heading-level="3" id="UIFormSelector" title="UIFormSelector" description="폼 전체에 수정된 필드가 있는지 구독합니다." :source="FormSelectorExampleSource">
-        <FormSelectorExample />
-      </PlaygroundExample>
+    <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
+      <PlaygroundExampleSection id="form-state" title="폼 상태 구독">
+        <PlaygroundExample :heading-level="3" id="UIFormFieldSelector" title="UIFormFieldSelector" description="필드 하나가 방문된 상태를 구독해 표시합니다." :source="FormFieldSelectorExampleSource">
+          <FormFieldSelectorExample />
+        </PlaygroundExample>
+        <PlaygroundExample :heading-level="3" id="UIFormSelector" title="UIFormSelector" description="폼 전체에 수정된 필드가 있는지 구독합니다." :source="FormSelectorExampleSource">
+          <FormSelectorExample />
+        </PlaygroundExample>
+      </PlaygroundExampleSection>
     </PlaygroundExampleSection>
   </div>
 </template>

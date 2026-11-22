@@ -15,7 +15,6 @@ import formSource from "~/components/form/SwitchFormExample.vue?example-code&raw
 
 definePageMeta({
   title: "UISwitch",
-  category: "선택",
   componentParts: ["UISwitchThumb"],
   description: "알림이나 자동 저장처럼 켜고 끄는 설정에 사용합니다.",
 });
@@ -26,50 +25,56 @@ definePageMeta({
     <PlaygroundExampleSection id="usage" title="기본 사용법">
       <SwitchExample />
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="switch-states" title="초기값과 상태">
-      <PlaygroundExample :heading-level="3"
-        id="switch-readonly"
-        title="읽기 전용"
-        description="readonly를 지정하면 사용자가 켜짐 상태를 바꿀 수 없습니다."
-        :source="switchReadonlyExampleSource"
-      >
-        <SwitchReadonlyExample />
-      </PlaygroundExample>
-      <PlaygroundExample id="switch-default" title="초기값"
-        description="v-model에 연결한 상태를 true로 시작하면 스위치가 처음부터 켜져 있습니다." :source="SwitchDefaultExampleSource" :heading-level="3">
-        <SwitchDefaultExample />
-      </PlaygroundExample>
-      <PlaygroundExample id="switch-disabled" title="비활성"
-        description="disabled를 지정한 스위치는 상태 변경 동작을 받지 않습니다." :source="SwitchDisabledExampleSource" :heading-level="3">
-        <SwitchDisabledExample />
-      </PlaygroundExample>
+    <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
+      <PlaygroundExampleSection id="switch-states" title="초기값과 상태">
+        <PlaygroundExample :heading-level="3"
+          id="switch-readonly"
+          title="읽기 전용"
+          description="readonly를 지정하면 사용자가 켜짐 상태를 바꿀 수 없습니다."
+          :source="switchReadonlyExampleSource"
+        >
+          <SwitchReadonlyExample />
+        </PlaygroundExample>
+        <PlaygroundExample id="switch-default" title="초기값"
+          description="v-model에 연결한 상태를 true로 시작하면 스위치가 처음부터 켜져 있습니다." :source="SwitchDefaultExampleSource" :heading-level="3">
+          <SwitchDefaultExample />
+        </PlaygroundExample>
+        <PlaygroundExample id="switch-disabled" title="비활성"
+          description="disabled를 지정한 스위치는 상태 변경 동작을 받지 않습니다." :source="SwitchDisabledExampleSource" :heading-level="3">
+          <SwitchDisabledExample />
+        </PlaygroundExample>
+      </PlaygroundExampleSection>
+      <PlaygroundExampleSection id="appearance" title="모양">
+        <PlaygroundExample :heading-level="3"
+          id="switch-size"
+          title="크기"
+          description="size로 입력 컨트롤의 공용 크기를 적용합니다."
+          :source="switchSizeExampleSource"
+        >
+          <SwitchSizeExample />
+        </PlaygroundExample>
+      </PlaygroundExampleSection>
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="appearance" title="모양">
-      <PlaygroundExample :heading-level="3"
-        id="switch-size"
-        title="크기"
-        description="size로 입력 컨트롤의 공용 크기를 적용합니다."
-        :source="switchSizeExampleSource"
-      >
-        <SwitchSizeExample />
-      </PlaygroundExample>
+    <PlaygroundExampleSection id="practical-examples" title="실전 예제">
+      <PlaygroundFormSection>
+        <PlaygroundExample
+          id="switch-form"
+          title="설정 제출"
+          description="스위치가 켜졌을 때 UIFormField의 name으로 값이 제출됩니다."
+          :source="formSource"
+          :heading-level="3"
+        >
+          <SwitchFormExample />
+        </PlaygroundExample>
+      </PlaygroundFormSection>
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="examples" title="실전 예제">
-      <PlaygroundExample id="UISwitchThumb" title="UISwitchThumb"
-        description="thumb 슬롯으로 켜짐 상태의 표시를 조합합니다." :source="thumbSource" :heading-level="3">
-        <SwitchThumbExample />
-      </PlaygroundExample>
+    <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
+      <PlaygroundExampleSection id="examples" title="스위치 손잡이">
+        <PlaygroundExample id="UISwitchThumb" title="UISwitchThumb"
+          description="thumb 슬롯으로 켜짐 상태의 표시를 조합합니다." :source="thumbSource" :heading-level="3">
+          <SwitchThumbExample />
+        </PlaygroundExample>
+      </PlaygroundExampleSection>
     </PlaygroundExampleSection>
-    <PlaygroundFormSection>
-      <PlaygroundExample
-        id="switch-form"
-        title="설정 제출"
-        description="스위치가 켜졌을 때 UIFormField의 name으로 값이 제출됩니다."
-        :source="formSource"
-        :heading-level="3"
-      >
-        <SwitchFormExample />
-      </PlaygroundExample>
-    </PlaygroundFormSection>
   </div>
 </template>

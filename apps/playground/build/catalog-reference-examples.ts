@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { parse } from "vue/compiler-sfc";
 import { catalog } from "../app/data/catalog";
+import { arrangeCatalogExamples } from "../app/data/catalog-example-sections";
 import { catalogGuides } from "../app/data/catalog-guides";
 import { stateApiNotes, type ReferenceExample } from "../app/data/catalog-reference";
 
@@ -70,7 +71,9 @@ export function catalogReferenceExamples() {
         if (!guide) throw new Error(`Missing component guide for ${entry.slug}`);
         const sections = [
           { id: "basic-example", title: guide.title, file: `${entry.slug}.vue`, parts: undefined },
-          ...(guide.examples ?? []).map(example => ({ ...example, file: `examples/${example.id}.vue` })),
+          ...arrangeCatalogExamples(guide.examples ?? [], guide.sections)
+            .flatMap(phase => phase.groups.flatMap(group => group.examples))
+            .map(example => ({ ...example, file: `examples/${example.id}.vue` })),
         ];
         const notes = Object.keys({ ...stateApiNotes(entry.slug), ...guide.api });
         const results = await Promise.all(sections.map(async example => {

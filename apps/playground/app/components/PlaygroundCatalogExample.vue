@@ -12,12 +12,13 @@ defineProps<{
   preview?: Component;
   loadPreview?: () => Promise<Component>;
   framed?: boolean;
+  headingLevel?: 3 | 4;
 }>();
 </script>
 
 <template>
-  <component v-if="framed && preview" :is="preview" v-bind="example" :heading-level="3" />
-  <PlaygroundExample v-else v-bind="example" :heading-level="3">
+  <component v-if="framed && preview" :is="preview" v-bind="example" :heading-level="headingLevel ?? 3" />
+  <PlaygroundExample v-else v-bind="example" :heading-level="headingLevel ?? 3">
     <PlaygroundDeferredPreview v-if="loadPreview" :load="loadPreview" />
     <component v-else :is="preview" />
   </PlaygroundExample>

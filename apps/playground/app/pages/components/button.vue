@@ -13,7 +13,6 @@ import IconButtonExample from "~/components/examples/IconButtonExample.vue";
 definePageMeta({
   title: "UIButton",
   componentParts: ["UIIconButton", "UIToggleButton"],
-  category: "동작",
   description: "화면 동작을 실행하거나 다른 페이지로 이동합니다.",
 });
 </script>
@@ -22,28 +21,32 @@ definePageMeta({
   <div>
     <PlaygroundExampleSection id="usage" title="기본 사용법">
       <ButtonExample />
-      <ButtonUsageExample topic="label" />
-      <ButtonUsageExample topic="icons" />
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="button-appearance" title="모양과 크기">
-      <ButtonUsageExample topic="appearance" />
-      <ButtonUsageExample topic="size" />
-      <ButtonFullWidthExample />
-    </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="button-states" title="비활성과 로딩">
-      <ButtonUsageExample topic="disabled" />
-      <ButtonUsageExample topic="loading" />
-    </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="button-types" title="버튼 종류">
-      <IconButtonExample />
-      <ButtonToggleExample />
-    </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="link" title="링크">
-      <p class="button-page__intro">
-        이동에 버튼 스타일이 필요하면 UIButton에 주소를 전달합니다.
-        본문에 넣는 텍스트 링크는 <UIAnchor to="/components/anchor">UIAnchor</UIAnchor>로 표시합니다.
-      </p>
-      <ButtonLinkExample />
+    <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
+      <PlaygroundExampleSection id="button-content" title="라벨과 아이콘">
+        <ButtonUsageExample topic="label" />
+        <ButtonUsageExample topic="icons" />
+      </PlaygroundExampleSection>
+      <PlaygroundExampleSection id="button-appearance" title="모양과 크기">
+        <ButtonUsageExample topic="appearance" />
+        <ButtonUsageExample topic="size" />
+        <ButtonFullWidthExample />
+      </PlaygroundExampleSection>
+      <PlaygroundExampleSection id="button-states" title="비활성과 로딩">
+        <ButtonUsageExample topic="disabled" />
+        <ButtonUsageExample topic="loading" />
+      </PlaygroundExampleSection>
+      <PlaygroundExampleSection id="button-types" title="버튼 종류">
+        <IconButtonExample />
+        <ButtonToggleExample />
+      </PlaygroundExampleSection>
+      <PlaygroundExampleSection id="link" title="링크">
+        <p class="button-page__intro">
+          이동에 버튼 스타일이 필요하면 UIButton에 주소를 전달합니다.
+          본문에 넣는 텍스트 링크는 <UIAnchor to="/components/anchor">UIAnchor</UIAnchor>로 표시합니다.
+        </p>
+        <ButtonLinkExample />
+      </PlaygroundExampleSection>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="examples" title="실전 예제">
       <ButtonPendingExample />

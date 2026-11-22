@@ -11,7 +11,6 @@ import { dashboardParts } from "~/data/dashboard-parts";
 
 definePageMeta({
   title: "UIDashboard",
-  category: "레이아웃",
   description: "사이드바, 상단 바, 툴바, 상세 패널을 조합해 화면의 목적에 맞는 레이아웃을 구성합니다.",
   componentParts: Object.keys(dashboardParts),
 });
@@ -42,11 +41,13 @@ onScopeDispose(removeRouteHook);
         <DashboardExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="examples" title="동작별 예제">
+    <PlaygroundExampleSection id="examples" title="실전 예제">
       <PlaygroundExample id="dashboard-aside" title="목록과 상세 패널"
         description="선택한 문서의 내용이 aside 슬롯에 표시됩니다." :source="asideSource" :heading-level="3" wide>
         <DashboardAsideExample />
       </PlaygroundExample>
+    </PlaygroundExampleSection>
+    <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
       <PlaygroundExample id="dashboard-panel-slots" title="패널의 헤더와 툴바"
         description="필터는 toolbar에, 페이지 제목과 초기화는 header에 배치합니다."
         :source="panelSource" :heading-level="3" wide>
