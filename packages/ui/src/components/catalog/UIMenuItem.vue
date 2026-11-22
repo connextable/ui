@@ -3,17 +3,18 @@ import { ChevronRight } from "@lucide/vue";
 import type { MenuItemProps, MenuItemSlotProps } from "@sectile/vue/menu";
 import type { Component } from "vue";
 import type { RouteLocationRaw } from "vue-router";
+import type { LinkPrefetchProps } from "../link-component";
 import { MenuItemLink } from "./menu-item-link";
 
 defineOptions({ inheritAttrs: false });
-defineProps<MenuItemProps & {
+withDefaults(defineProps<MenuItemProps & LinkPrefetchProps & {
   icon?: Component;
   tone?: "danger";
   href?: string;
   to?: RouteLocationRaw;
   external?: boolean;
   replace?: boolean;
-}>();
+}>(), { prefetch: undefined, noPrefetch: undefined });
 defineSlots<{
   default?(state: MenuItemSlotProps): unknown;
   leading?(state: MenuItemSlotProps): unknown;
@@ -32,6 +33,9 @@ defineSlots<{
     :to="to"
     :external="external"
     :replace="replace"
+    :prefetch="prefetch"
+    :prefetch-on="prefetchOn"
+    :no-prefetch="noPrefetch"
     :data-ui-menu-tone="tone"
     v-slot="state"
   >

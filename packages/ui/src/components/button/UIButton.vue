@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 import UISpinner from "../progress/UISpinner.vue";
-import { useLinkComponent } from "../link-component";
+import { useLinkComponent, type LinkPrefetchProps } from "../link-component";
 
 defineOptions({ inheritAttrs: false });
 defineSlots<{
@@ -11,7 +11,7 @@ defineSlots<{
   trailing?(): unknown;
 }>();
 
-export interface UIButtonProps {
+export interface UIButtonProps extends LinkPrefetchProps {
   type?: "button" | "reset" | "submit";
   disabled?: boolean;
   loading?: boolean;
@@ -28,7 +28,7 @@ export interface UIButtonProps {
 
 const props = withDefaults(
   defineProps<UIButtonProps>(),
-  { type: "button", variant: "solid", size: "md" },
+  { type: "button", variant: "solid", size: "md", prefetch: undefined, noPrefetch: undefined },
 );
 
 const emit = defineEmits<{ click: [event: MouseEvent] }>();
@@ -44,7 +44,15 @@ const elementProps = computed(() => {
   if (!isLink.value) return { type: props.type, disabled: props.disabled };
 
   if (routerLink.value) {
-    return { to: destination.value, target: props.target, rel: props.rel, external: props.external };
+    return {
+      to: destination.value,
+      target: props.target,
+      rel: props.rel,
+      external: props.external,
+      prefetch: props.prefetch,
+      prefetchOn: props.prefetchOn,
+      noPrefetch: props.noPrefetch,
+    };
   }
 
   if (linkDisabled.value) return { role: "link", tabindex: -1 };

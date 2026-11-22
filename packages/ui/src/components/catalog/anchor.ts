@@ -1,10 +1,10 @@
 import { Anchor, type AnchorProps, type AnchorExpose } from "@sectile/vue/primitive";
 import { defineComponent, h, mergeProps, shallowRef, type VNodeProps } from "vue";
 import type { RouteLocationRaw } from "vue-router";
-import { linkProps, useLinkRenderer } from "../link-component";
+import { linkProps, useLinkRenderer, type LinkPrefetchProps } from "../link-component";
 
 type AnchorInstance = InstanceType<typeof Anchor>;
-type AnchorLinkProps = AnchorInstance["$props"] & {
+type AnchorLinkProps = AnchorInstance["$props"] & LinkPrefetchProps & {
   to?: RouteLocationRaw;
   external?: boolean;
   replace?: boolean;

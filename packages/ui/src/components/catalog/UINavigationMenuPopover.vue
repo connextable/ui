@@ -3,10 +3,11 @@ import { ChevronDown } from "@lucide/vue";
 import { PopoverRoot, PopoverContent, PopoverPortal } from "@sectile/vue/popover";
 import { computed, nextTick, onBeforeUnmount, shallowRef, useId, useTemplateRef, watch } from "vue";
 import type { RouteLocationRaw } from "vue-router";
+import type { LinkPrefetchProps } from "../link-component";
 import { UIAnchor } from "./anchor";
 import { useNavigationPanelMotion } from "./useNavigationPanelMotion";
 
-export interface UINavigationMenuEntry {
+export interface UINavigationMenuEntry extends LinkPrefetchProps {
   id: string;
   label: string;
   href?: string;
@@ -220,6 +221,9 @@ onBeforeUnmount(() => {
             :href="entry.href"
             :to="entry.to"
             :external="entry.external"
+            :prefetch="entry.prefetch"
+            :prefetch-on="entry.prefetchOn"
+            :no-prefetch="entry.noPrefetch"
             :disabled="entry.disabled"
             :current="current === entry.id ? 'page' : undefined"
             @pointerenter="hover(entry, $event)"
@@ -247,6 +251,9 @@ onBeforeUnmount(() => {
                     :href="entry.href"
                     :to="entry.to"
                     :external="entry.external"
+                    :prefetch="entry.prefetch"
+                    :prefetch-on="entry.prefetchOn"
+                    :no-prefetch="entry.noPrefetch"
                     :disabled="entry.disabled"
                     :current="current === entry.id ? 'page' : undefined"
                     @click="open = false"

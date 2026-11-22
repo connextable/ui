@@ -39,4 +39,6 @@ export default defineNuxtConfig({
 
 Nuxt에서 정적 파일이나 같은 도메인의 별도 앱으로 이동할 때는 `external`을 지정합니다. `disabled`나 `loading` 상태에서는 링크가 활성화되지 않습니다.
 
+Nuxt 4.5 이상에서 링크는 앱의 `experimental.defaults.nuxtLink` 프리패치 설정을 따릅니다. 개별 링크는 `:prefetch="false"` 또는 `no-prefetch`로 끌 수 있습니다. 포인터가 닿거나 포커스를 받을 때만 실행하려면 `prefetch-on="interaction"`을 지정합니다.
+
 일반 Vue 앱에서 사용할 때는 `@connextable/ui`에서 컴포넌트를 가져오고 `@connextable/ui/styles.css`를 한 번 불러옵니다.
