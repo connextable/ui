@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UISpinner from "../progress/UISpinner.vue";
 import UIButton, { type UIButtonProps } from "./UIButton.vue";
 
 defineOptions({ inheritAttrs: false });
@@ -16,6 +17,6 @@ defineSlots<{
 <template>
   <UIButton v-bind="{ ...$attrs, ...props }" icon-only @click="emit('click', $event)">
     <template #leading><slot /></template>
-    <template v-if="$slots.loading" #loading><slot name="loading" /></template>
+    <template #loading><slot name="loading"><UISpinner /></slot></template>
   </UIButton>
 </template>

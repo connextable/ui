@@ -102,11 +102,13 @@ function onClick(event: MouseEvent) {
         <slot name="trailing" />
       </span>
     </span>
-    <span v-if="loading" class="ui-button__spinner" aria-hidden="true">
-      <span class="ui-button__icon">
-        <slot name="loading"><UISpinner variant="wave" /></slot>
+    <Transition name="ui-button-loading">
+      <span v-if="loading" class="ui-button__spinner" aria-hidden="true">
+        <span class="ui-button__icon">
+          <slot name="loading"><UISpinner variant="wave" /></slot>
+        </span>
       </span>
-    </span>
+    </Transition>
   </component>
 </template>
 
@@ -230,5 +232,24 @@ function onClick(event: MouseEvent) {
   display: grid;
   place-items: center;
   pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ui-button__content,
+  .ui-button-loading-enter-active,
+  .ui-button-loading-leave-active {
+    transition: opacity var(--ui-motion-fast) var(--ui-ease-out);
+  }
+
+  .ui-button-loading-enter-from,
+  .ui-button-loading-leave-to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-button-loading-leave-active {
+    opacity: 0;
+  }
 }
 </style>

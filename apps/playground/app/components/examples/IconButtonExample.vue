@@ -12,9 +12,9 @@ const icons = [
 const sizes = ["sm", "md", "lg"] as const;
 const sizeOptions = sizes.map(value => ({ value, label: value }));
 const spinners = [
-  { value: "default", label: "기본" },
+  { value: "default", label: "기본 스피너" },
   { value: "arc", label: "원호" },
-  { value: "spoke", label: "방사형" },
+  { value: "wave", label: "물결" },
 ];
 
 const iconValue = ref<string | null>("RefreshCw");
@@ -23,9 +23,9 @@ const spinnerValue = ref<string | null>("default");
 const loading = ref(false);
 const icon = computed(() => icons.find(option => option.value === iconValue.value) ?? icons[0]);
 const size = computed(() => sizes.find(value => value === sizeValue.value));
-const spinner = computed<"arc" | "spoke" | undefined>(() => {
+const spinner = computed<"arc" | "wave" | undefined>(() => {
   const value = spinnerValue.value;
-  return value === "arc" || value === "spoke" ? value : undefined;
+  return value === "arc" || value === "wave" ? value : undefined;
 });
 const code = computed(() => buttonExampleCode(
   { "aria-label": icon.value.label, size: size.value, loading: loading.value },
@@ -37,7 +37,7 @@ const code = computed(() => buttonExampleCode(
   <PlaygroundExample
     id="UIIconButton"
     title="UIIconButton"
-    description="기본 슬롯에 아이콘을 넣고 aria-label에 동작 이름을 지정합니다. loading으로 아이콘을 진행 표시로 바꾸고, loading 슬롯으로 표시 모양을 지정합니다."
+    description="기본 슬롯에 아이콘을 넣고 aria-label에 동작 이름을 지정합니다. loading을 켜면 기본 UISpinner가 표시되며, loading 슬롯으로 바꿀 수 있습니다."
     :code="code"
     :heading-level="3"
   >

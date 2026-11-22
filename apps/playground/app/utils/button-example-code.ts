@@ -11,7 +11,7 @@ export function buttonExampleCode(
     leading?: string;
     trailing?: string;
     icon?: string;
-    loadingSpinner?: "arc" | "spoke";
+    loadingSpinner?: "arc" | "wave";
     editableLabel?: boolean;
   },
 ) {
