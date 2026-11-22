@@ -42,7 +42,7 @@
   padding: var(--ui-frame-padding);
   border: var(--ui-frame-border-width) solid var(--ui-color-border);
   border-radius: var(--ui-frame-radius);
-  background: var(--ui-color-surface);
+  background: var(--ui-tags-input-chip-background, var(--ui-color-surface-active));
   font: 600 var(--ui-font-size-body-sm)/1.35 var(--ui-font-sans);
 }
 
