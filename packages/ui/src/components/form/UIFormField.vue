@@ -18,6 +18,7 @@ defineSlots<{
   <FormField v-bind="fieldProps" v-slot="state" class="ui-field ui-form-field" @invalid.capture.prevent>
     <FormLabel v-if="label || $slots.label" class="ui-field-label ui-form-field__label">
       <slot name="label" v-bind="state">{{ label }}</slot>
+      <span v-if="fieldProps.required && !fieldProps.disabled && !fieldProps.readonly" class="ui-form-field__required"> (필수)</span>
     </FormLabel>
     <slot v-bind="state" />
     <FormDescription v-if="description || $slots.description" class="ui-form-field__description">
@@ -40,5 +41,11 @@ defineSlots<{
 
 .ui-form-field__error {
   color: var(--ui-color-danger);
+}
+
+.ui-form-field__required {
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-metadata);
+  font-weight: normal;
 }
 </style>

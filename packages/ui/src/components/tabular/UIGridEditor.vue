@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { useNativeInputFormControl } from "@sectile/vue/form";
 import { nextTick, onMounted, useTemplateRef } from "vue";
-import { useInputState } from "../control-attrs";
+import { definedControlAttrs, useInputState, type FormControlProps } from "../control-attrs";
 
-const props = withDefaults(defineProps<{ readonly?: boolean; disabled?: boolean; placeholder?: string }>(), {
+defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "for" });
+const props = withDefaults(defineProps<FormControlProps & { readonly?: boolean; disabled?: boolean; placeholder?: string }>(), {
   readonly: undefined,
   disabled: undefined,
+  required: undefined,
 });
 const value = defineModel<string>({ required: true });
-const input = useTemplateRef("input");
+const input = useTemplateRef<HTMLInputElement>("input");
 const { readonly, disabled, attrs } = useInputState(props);
+const field = useNativeInputFormControl(input, {
+  reset() { void nextTick(() => { if (input.value) input.value.value = value.value; }); },
+});
 
 onMounted(async () => {
   // The grid restores its roving cell focus after processing the edit key.
@@ -22,7 +28,8 @@ onMounted(async () => {
 <template>
   <input
     ref="input" v-model="value" class="ui-grid-editor" type="text" tabindex="-1"
-    v-bind="attrs" :readonly="readonly" :disabled="disabled" :placeholder="placeholder" data-scope="grid" data-part="editor" @click.stop
+    v-bind="{ ...field.controlProps.value, ...$attrs, ...definedControlAttrs({ name, form, required }), ...attrs }"
+    :readonly="readonly" :disabled="disabled" :placeholder="placeholder" data-scope="grid" data-part="editor" @click.stop
   >
 </template>
 

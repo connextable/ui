@@ -3,12 +3,12 @@ import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot, type RadioGroupIte
 import { useId } from "vue";
 import UIFieldClear from "../clear/UIFieldClear.vue";
 import { provideClearable, useClearableValue, type ClearableProps } from "../clear/clearable";
-import { definedControlAttrs } from "../control-attrs";
+import { definedControlAttrs, useInputState, type FormControlProps } from "../control-attrs";
 import { useSelectionOptions, type SelectionOption } from "./selection-options";
 
 export interface UIRadioGroupOption extends SelectionOption {}
 
-defineOptions({ inheritAttrs: false });
+defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "labelledby" });
 
 const {
   label,
@@ -17,11 +17,12 @@ const {
   orientation = "vertical",
   disabled = undefined,
   readonly = undefined,
+  required = undefined,
   clearable,
   clearLabel,
   ...controlProps
-} = defineProps<ClearableProps & {
-  label: string;
+} = defineProps<ClearableProps & FormControlProps & {
+  label?: string;
   options: readonly UIRadioGroupOption[];
   variant?: "plain" | "card";
   orientation?: "horizontal" | "vertical";
@@ -37,6 +38,7 @@ defineSlots<{
   optionLabel?(state: RadioGroupItemSlotProps & { option: UIRadioGroupOption }): unknown;
 }>();
 const id = useId();
+const state = useInputState({ get disabled() { return disabled; }, get readonly() { return readonly; }, get required() { return required; } });
 const { values, disabledValues } = useSelectionOptions(() => options);
 const selection = useClearableValue(
   () => controlProps.modelValue,
@@ -56,7 +58,7 @@ provideClearable({
 
 <template>
   <div class="ui-radio-group">
-    <span :id="`${id}-label`" class="ui-radio-group__label"><slot name="label">{{ label }}</slot></span>
+    <span v-if="label || $slots.label" :id="`${id}-label`" class="ui-radio-group__label"><slot name="label">{{ label }}</slot></span>
     <UIFieldClear />
     <RadioGroupRoot
       v-bind="definedControlAttrs({
@@ -64,7 +66,8 @@ provideClearable({
         ...controlProps,
         disabled,
         readonly,
-        'aria-labelledby': $attrs['aria-labelledby'] ?? `${id}-label`,
+        required: state.required.value && state.editable.value,
+        'aria-labelledby': $attrs['aria-labelledby'] ?? (label || $slots.label ? `${id}-label` : undefined),
       })"
       class="ui-radio-group__options"
       :items="values"

@@ -21,10 +21,12 @@ const props = withDefaults(defineProps<Pick<SelectRootProps,
   "formOptions" | "renderedItems" | "textValue" | "typeaheadTimeoutMs" | "unmountOnExit" | "policies" | "name" | "form" | "required"
 > & ClearableProps & {
   id?: string;
+  label?: string;
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   ariaInvalid?: AriaAttributes["aria-invalid"];
+  ariaErrormessage?: string;
   options: readonly UISelectOption[];
   size?: "sm" | "md" | "lg";
   placeholder?: string;
@@ -39,9 +41,10 @@ const emit = defineEmits<{
 defineSlots<{ default?(state: SelectRootSlotProps): unknown }>();
 
 const uid = useId();
-const { readonly: isReadonly, editable } = useInputState({
+const { readonly: isReadonly, editable, required: isRequired } = useInputState({
   get disabled() { return props.options.length ? props.disabled : true; },
   get readonly() { return props.readonly; },
+  get required() { return props.required; },
 });
 const initialOpen = Boolean(props.defaultOpen);
 const localOpen = ref(editable.value && initialOpen);
@@ -93,10 +96,11 @@ provide(selectKey, {
   uid,
   triggerId: computed(() => props.id),
   aria: computed(() => ({
-    label: props.ariaLabel,
+    label: props.ariaLabel ?? props.label,
     labelledby: props.ariaLabelledby,
     describedby: props.ariaDescribedby,
     invalid: props.ariaInvalid,
+    errorMessage: props.ariaErrormessage,
   })),
   options: computed(() => props.options),
   size: computed(() => props.size),
@@ -108,9 +112,9 @@ provide(selectKey, {
 <template>
   <div class="ui-select">
     <SelectRoot
-      v-bind="{ ...positioning, ...definedControlAttrs({ disabled: options.length === 0 ? true : disabled, readonly, name, form, required }) }"
+      v-bind="{ ...positioning, ...definedControlAttrs({ disabled: options.length === 0 ? true : disabled, readonly, name, form, required: isRequired && editable }) }"
       v-slot="state"
-      :label="ariaLabel"
+      :label="ariaLabel ?? label"
       :items="values"
       :disabled-items="disabledValues"
       :text-value="textValue"

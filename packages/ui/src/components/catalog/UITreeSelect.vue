@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="ID extends string = string">
 import { Check } from "@lucide/vue";
+import { useFormFieldDefaults } from "@sectile/vue/form-boundary";
 import {
   TreeSelectContent,
   TreeSelectItem,
@@ -13,6 +14,7 @@ import {
 } from "@sectile/vue/tree-select";
 import { computed, getCurrentInstance, h, ref, useSlots, useTemplateRef } from "vue";
 import { provideClearable, useClearableValue, type ClearableProps } from "../clear/clearable";
+import { definedControlAttrs, useInputState } from "../control-attrs";
 import { renderTreeChoiceRows, type LabeledTreeNode } from "./tree-choice-rows";
 import { UITreeSelectGroup } from "./tree-groups";
 import UITreeSelectDisclosure from "./UITreeSelectDisclosure.vue";
@@ -35,11 +37,35 @@ const slots = useSlots();
 const instance = getCurrentInstance();
 const labels = computed(() => new Map(props.nodes.map(({ id, label }) => [id, label])));
 const labelFor = (id: ID) => labels.value.get(id) ?? id;
+const fieldDefaults = useFormFieldDefaults();
+const { required, editable } = useInputState(props);
 
 const rootProps = computed(() => {
   const { clearable: _clearable, clearLabel: _clearLabel, placeholder: _placeholder, ...nativeProps } = props;
-  return nativeProps as TreeSelectRootProps<ID>;
+  return definedControlAttrs({
+    ...nativeProps,
+    required: props.required !== undefined || fieldDefaults ? required.value && editable.value : undefined,
+  }) as TreeSelectRootProps<ID>;
 });
+
+function inputAttrs(attrs: Record<string, unknown>) {
+  return definedControlAttrs({
+    id: attrs.id,
+    "aria-label": attrs["aria-label"] ?? props.label ?? (fieldDefaults ? undefined : "항목 검색"),
+    "aria-labelledby": attrs["aria-labelledby"],
+    "aria-describedby": attrs["aria-describedby"],
+    "aria-errormessage": attrs["aria-errormessage"],
+    "aria-invalid": attrs["aria-invalid"],
+    "aria-required": required.value || undefined,
+  });
+}
+
+function rootAttrs(attrs: Record<string, unknown>) {
+  if (slots.default || props.asChild) return attrs;
+  const { id, "aria-label": _label, "aria-labelledby": _labelledBy, "aria-describedby": _describedBy,
+    "aria-errormessage": _errorMessage, "aria-invalid": _invalid, ...root } = attrs;
+  return root;
+}
 const localOpen = ref(props.defaultOpen ?? false);
 const selection = useClearableValue(
   () => props.modelValue,
@@ -146,7 +172,7 @@ defineExpose({
 <template>
   <TreeSelectRoot
     ref="tree"
-    v-bind="{ ...$attrs, ...rootProps }"
+    v-bind="{ ...rootAttrs($attrs), ...rootProps }"
     v-slot="state"
     :model-value="selection.value.value"
     :query="search.value.value"
@@ -166,7 +192,7 @@ defineExpose({
     <slot v-if="$slots.default || props.asChild" v-bind="state" />
     <template v-else>
       <UITreeSelectField
-        :aria-label="props.label ?? '항목 검색'"
+        v-bind="inputAttrs($attrs)"
         :placeholder="props.placeholder ?? '검색 또는 선택'"
         :query="state.query"
         :selected="state.value.length > 0"

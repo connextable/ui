@@ -1,4 +1,5 @@
 import { CalendarDays, ChevronDown, ChevronLeft, ChevronRight } from "@lucide/vue";
+import { appendFormFieldPath, encodeFormFieldPath } from "@sectile/form/path";
 import { useTemporalReferenceDate } from "@sectile/vue/temporal/temporal-provider";
 import {
   DatePickerCell, DatePickerContent, DatePickerGrid, DatePickerMonthCell,
@@ -14,7 +15,7 @@ import { applyDateTimeRangePickerEvent, createDateTimeRangePickerState, type Dat
 import { compareTimeValues, type TimeValue } from "@sectile/temporal/time-field";
 import { defineComponent, h, shallowRef, type Component } from "vue";
 import { controlFlag } from "../clear/clearable";
-import { inputStateAttrs } from "../control-attrs";
+import { definedControlAttrs, inputStateAttrs } from "../control-attrs";
 import UICalendarPeriodHeader from "./UICalendarPeriodHeader.vue";
 import UIDatePickerValue from "./UIDatePickerValue.vue";
 import UIDateRangePickerValue from "./UIDateRangePickerValue.vue";
@@ -36,6 +37,12 @@ interface CalendarComposition {
   timePicker?: Component;
   summary?: boolean;
 }
+
+export type CalendarFormComponent<Root> = Root extends abstract new (...args: never[]) => infer Instance
+  ? Instance extends { $props: infer Props }
+    ? new () => Instance & { $props: Props & { name?: string; form?: string } }
+    : Root
+  : Root;
 
 function selectedDate(value: Value | undefined): DateValue | undefined {
   if (!value) return;
@@ -73,14 +80,15 @@ function rangeTimeBounds(range: DateTimeRange, endpoint: "start" | "end", polici
   return { min, max };
 }
 
-export function withCalendarDefaults<Root extends Component>(root: Root, options: CalendarComposition): Root {
+export function withCalendarDefaults<Root extends Component>(root: Root, options: CalendarComposition): CalendarFormComponent<Root> {
   const { kind = "day", anchor, inputs = [], grid = DatePickerGrid, cell = DatePickerCell, monthCell, yearCell, timePicker } = options;
   const metadata = root as Root & { __sectileFormLabelMode?: "for" | "labelledby" };
   return defineComponent({
     inheritAttrs: false,
     __sectileFormLabelMode: metadata.__sectileFormLabelMode,
+    props: { name: String, form: String },
     emits: ["update:highlightedValue"],
-    setup(_, { attrs, slots, emit }) {
+    setup(props, { attrs, slots, emit }) {
       const reference = useTemporalReferenceDate();
       const display = useUITemporalDisplay();
       const highlight = shallowRef<DateValue>();
@@ -133,18 +141,24 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
 
       function renderDefault(state: State) {
         const labels = display.locale.value.startsWith("ko") ? translations.ko : translations.en;
-        if (!anchor) return h(DatePickerContent, null, () => calendar(state, labels));
-
         const range = inputs.length === 2 && kind !== "date-time";
         const groupLabel = kind === "date-time" ? labels.dateTime : kind === "date-time-range" ? labels.dateTimeRange
           : range ? (kind === "day" ? labels.range : `${labels[kind]} ${labels.rangeUnit}`) : labels[kind];
         const triggerLabel = `${String(attrs.label ?? groupLabel)} ${labels.open}`;
         const granularity = kind === "month" || kind === "year" ? kind : "day";
         const placeholder = `${groupLabel} ${labels.choose}`;
-        const renderInputs = () => inputs.map((input, index) => h(input, {
-          hidden: options.summary || undefined,
-          "aria-label": kind === "date-time" ? (index ? labels.time : labels.day) : groupLabel,
-        }));
+        const renderInputs = () => inputs.map((input, index) => {
+          const segment = kind === "date-time" ? (index ? "time" : "date") : range ? (index ? "end" : "start") : undefined;
+          const name = props.name && segment ? encodeFormFieldPath(appendFormFieldPath(props.name, [segment])) : props.name;
+          const label = kind === "date-time" ? (index ? labels.time : labels.day)
+            : range ? `${index ? labels.end : labels.start} ${granularity === "day" ? labels.day : labels[granularity]}` : groupLabel;
+          return h(input, {
+            ...definedControlAttrs({ name, form: props.form }),
+            hidden: options.summary || !anchor || undefined,
+            "aria-label": label,
+          });
+        });
+        if (!anchor) return h(DatePickerContent, null, () => [...renderInputs(), calendar(state, labels)]);
         const value = !options.summary ? undefined : kind === "date-time-range"
           ? h(UIDateTimeRangePickerValue, {
             value: state.value as DateTimeRange | null,
@@ -193,7 +207,7 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
 
       return () => {
         if (slots.default || controlFlag(attrs.asChild ?? attrs["as-child"])) {
-          return h(root, { ...attrs, "onUpdate:highlightedValue": selectHighlight }, slots);
+          return h(root, { ...attrs, ...definedControlAttrs(props), "onUpdate:highlightedValue": selectHighlight }, slots);
         }
         const { "highlighted-value": highlighted, ...bindings } = attrs;
         return h(root, {
@@ -205,5 +219,5 @@ export function withCalendarDefaults<Root extends Component>(root: Root, options
         }, { default: renderDefault });
       };
     },
-  }) as unknown as Root;
+  }) as unknown as CalendarFormComponent<Root>;
 }

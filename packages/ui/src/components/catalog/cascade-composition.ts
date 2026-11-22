@@ -9,7 +9,7 @@ import {
 } from "@sectile/vue/cascade-select";
 import { defineComponent, h, type Component } from "vue";
 import { controlFlag } from "../clear/clearable";
-import { inputStateAttrs } from "../control-attrs";
+import { inputStateAttrs, useInputState } from "../control-attrs";
 import UICascadeSelectTrigger from "./UICascadeSelectTrigger.vue";
 
 type CascadeOptions = { columnLabels?: readonly string[] };
@@ -38,13 +38,23 @@ const idText = (id: string) => id;
 const listParts = { column: CascadeListColumn, item: CascadeListItem, chevron: CascadeListItemChevron, indicator: CascadeListItemIndicator };
 const selectParts = { column: CascadeSelectColumn, item: CascadeSelectItem, chevron: CascadeSelectItemChevron, indicator: CascadeSelectItemIndicator };
 
+function useCascadeRequired(attrs: Record<string, unknown>) {
+  return useInputState({
+    get required() { return controlFlag(attrs.required); },
+    get disabled() { return controlFlag(attrs.disabled); },
+    get readonly() { return controlFlag(attrs.readonly); },
+  });
+}
+
 export const CascadeListComposition = defineComponent({
   name: "UICascadeList",
   inheritAttrs: false,
   __sectileFormLabelMode: "labelledby",
   setup(_, { attrs, slots }) {
+    const { required, editable } = useCascadeRequired(attrs);
     return () => {
-      const { columnLabels, "column-labels": columnLabelsKebab, ...bindings } = attrs;
+      const { columnLabels, "column-labels": columnLabelsKebab, ...rootAttrs } = attrs;
+      const bindings = { ...rootAttrs, required: required.value && editable.value };
       if (slots.default || controlFlag(attrs.asChild ?? attrs["as-child"])) return h(CascadeListRoot as Component, bindings, slots);
       const labels = (columnLabels ?? columnLabelsKebab) as CascadeOptions["columnLabels"];
       const labelFor = (attrs.textValue ?? attrs["text-value"] ?? idText) as typeof idText;
@@ -63,8 +73,10 @@ export const CascadeSelectComposition = defineComponent({
   inheritAttrs: false,
   __sectileFormLabelMode: "labelledby",
   setup(_, { attrs, slots }) {
+    const { required, editable } = useCascadeRequired(attrs);
     return () => {
-      const { columnLabels, "column-labels": columnLabelsKebab, placeholder, ...bindings } = attrs;
+      const { columnLabels, "column-labels": columnLabelsKebab, placeholder, ...rootAttrs } = attrs;
+      const bindings = { ...rootAttrs, required: required.value && editable.value };
       if (slots.default || controlFlag(attrs.asChild ?? attrs["as-child"])) return h(CascadeSelectRoot as Component, bindings, slots);
       const labels = (columnLabels ?? columnLabelsKebab) as CascadeOptions["columnLabels"];
       const labelFor = (attrs.textValue ?? attrs["text-value"] ?? idText) as typeof idText;

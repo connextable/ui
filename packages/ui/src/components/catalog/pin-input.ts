@@ -4,6 +4,7 @@ import UIFieldClear from "../clear/UIFieldClear.vue";
 import { controlFlag, useFieldClear } from "../clear/clearable";
 import { withClearableModel, type ClearableComponent } from "../clear/with-clearable";
 import { useInputState } from "../control-attrs";
+import { useCompositeValueForm } from "../form/composite-value";
 
 type PinInputInstance = InstanceType<typeof PinInputRoot>;
 type PinInputWithPlaceholder = new () => Omit<PinInputInstance, "$props"> & {
@@ -18,6 +19,9 @@ const PinInputComposition = defineComponent({
   __sectileFormLabelMode: "labelledby",
   props: {
     placeholder: { type: String, default: "–" },
+    name: String,
+    form: String,
+    required: { type: Boolean, default: undefined },
     readonly: { type: Boolean, default: undefined },
     disabled: { type: Boolean, default: undefined },
   },
@@ -25,6 +29,14 @@ const PinInputComposition = defineComponent({
   setup(props, { attrs, slots, emit }) {
     const clear = useFieldClear();
     const { readonly, disabled, editable, attrs: stateAttrs } = useInputState(props);
+    const value = () => (attrs.modelValue as string | undefined) ?? "";
+    const length = () => typeof attrs.length === "number" ? attrs.length : 6;
+    const renderForm = useCompositeValueForm(props, {
+      values: () => [value()],
+      complete: () => Array.from(value()).length === length(),
+      focus: inputSelector,
+      requiredMessage: "확인 코드의 모든 자리를 입력하세요.",
+    });
     let currentState: PinInputRootSlotProps | undefined;
     let defaultParts: { count: number; name: string; placeholder: string; cells: VNode[] } | undefined;
 
@@ -49,7 +61,7 @@ const PinInputComposition = defineComponent({
     }
 
     function defaultCells() {
-      const count = typeof attrs.length === "number" ? attrs.length : 6;
+      const count = length();
       const name = typeof attrs.label === "string" ? attrs.label : "인증 코드";
       const { placeholder } = props;
       // Keep the cells and their paste handlers stable when the slot state changes.
@@ -77,14 +89,14 @@ const PinInputComposition = defineComponent({
         "onUpdate:modelValue": (value: string) => { if (editable.value) emit("update:modelValue", value); },
         onComplete: (value: string) => { if (editable.value) emit("complete", value); },
       };
-      if (controlFlag(attrs.asChild ?? attrs["as-child"])) return h(PinInputRoot, bindings, slots);
-      return h(PinInputRoot, bindings, {
+      if (controlFlag(attrs.asChild ?? attrs["as-child"])) return renderForm(metadata => h(PinInputRoot, { ...metadata, ...bindings }, slots));
+      return renderForm(metadata => h(PinInputRoot, { ...metadata, ...bindings }, {
         default: (state: PinInputRootSlotProps) => {
           currentState = state;
           const cells = slots.default?.(state) ?? defaultCells();
           return clear?.enabled.value ? [...cells, h(UIFieldClear)] : cells;
         },
-      });
+      }));
     };
   },
 }) as unknown as PinInputWithPlaceholder;

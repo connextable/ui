@@ -12,6 +12,7 @@ export interface SelectContext {
     labelledby?: string;
     describedby?: string;
     invalid?: AriaAttributes["aria-invalid"];
+    errorMessage?: string;
   }>>;
   size: Readonly<Ref<"sm" | "md" | "lg">>;
   placeholder: Readonly<Ref<string>>;

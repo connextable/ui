@@ -6,14 +6,15 @@ import {
   type TagsInputRootProps,
   type TagsInputRootSlotProps,
 } from "@sectile/vue/tags-input";
-import { computed, nextTick, ref } from "vue";
+import { computed, nextTick, ref, type SetupContext } from "vue";
 import { clearFocusTarget } from "../clear/clear-focus";
 import { TagsInputClearScope, UITagsInputClear } from "../clear/selection-clear-parts";
-import type { ClearableProps } from "../clear/clearable";
+import { useClearableValue, type ClearableProps } from "../clear/clearable";
 import { definedControlAttrs } from "../control-attrs";
+import { useCompositeValueForm } from "../form/composite-value";
 import UITagChips from "./UITagChips.vue";
 
-defineOptions({ inheritAttrs: false });
+defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "labelledby" });
 const props = withDefaults(defineProps<TagsInputRootProps & ClearableProps & {
   size?: "sm" | "md" | "lg";
   variant?: "outline" | "soft";
@@ -30,17 +31,32 @@ defineSlots<{
 }>();
 
 const rootProps = computed(() => {
-  const { size, variant, placeholder, clearable, clearLabel, splitPaste, reorderable, ...nativeProps } = props;
+  const { size, variant, placeholder, clearable, clearLabel, splitPaste, reorderable, name, form, required, ...nativeProps } = props;
   return definedControlAttrs({
     ...nativeProps,
     removeLabel: nativeProps.removeLabel ?? ((tag: string) => `${tag} 삭제`),
   });
 });
 const notice = ref("");
+const tags = useClearableValue(() => props.modelValue, props.defaultValue ?? [], value => emit("update:modelValue", value));
+const draft = useClearableValue(() => props.inputValue, props.defaultInputValue ?? "", value => emit("update:inputValue", value));
+const renderForm = useCompositeValueForm(props, {
+  values: () => tags.value.value,
+  focus: '[data-scope="tags-input"][data-part="input"]',
+  requiredMessage: "태그를 하나 이상 추가하세요.",
+  reset() {
+    tags.reset();
+    draft.reset();
+    notice.value = "";
+  },
+});
+function FormValue(_: unknown, { slots }: SetupContext) {
+  return renderForm(bindings => slots.default?.(bindings)[0]);
+}
 
 function updateValue(value: readonly string[]) {
   notice.value = "";
-  emit("update:modelValue", value);
+  tags.set(value);
 }
 
 async function clearControlled(event: MouseEvent) {
@@ -51,7 +67,7 @@ async function clearControlled(event: MouseEvent) {
 }
 
 function paste(event: ClipboardEvent, scope: TagsInputRootSlotProps) {
-  if (!props.splitPaste || props.modelValue === undefined || scope.disabled || scope.readonly) return;
+  if (!props.splitPaste || scope.disabled || scope.readonly) return;
   const source = event.clipboardData?.getData("text/plain");
   if (!source || !/[,\r\n]/.test(source) || !(event.target instanceof HTMLInputElement)) return;
   const input = event.target;
@@ -83,36 +99,41 @@ function paste(event: ClipboardEvent, scope: TagsInputRootSlotProps) {
 </script>
 
 <template>
-  <TagsInputRoot
-    v-bind="{ ...rootProps, ...$attrs }"
-    v-slot="state"
-    class="ui-field-control ui-inset-frame ui-tags-input"
-    :data-ui-control-size="size"
-    :data-variant="variant"
-    @update:model-value="updateValue"
-    @update:input-value="emit('update:inputValue', $event)"
-  >
-    <TagsInputClearScope :state="state" :clear="modelValue === undefined ? undefined : clearControlled">
-      <slot v-if="$slots.default" v-bind="state" />
-      <template v-else>
-        <UITagChips
-          :value="state.value"
-          :readonly="state.readonly"
-          :reorderable="reorderable && modelValue !== undefined && !state.readonly && !state.disabled && state.value.length > 1"
-          @reorder="updateValue"
-        />
-        <TagsInputInput
-          :placeholder="placeholder ?? '태그 추가'"
-          :aria-labelledby="$attrs['aria-labelledby']"
-          :aria-describedby="$attrs['aria-describedby']"
-          @paste="paste($event, state)"
-        />
-        <UITagsInputClear
-          v-if="clearable && state.value.length && !state.readonly && !state.disabled"
-          :aria-label="clearLabel"
-        />
-        <span v-if="splitPaste" class="ui-tags-input__announcement" role="status">{{ notice }}</span>
-      </template>
-    </TagsInputClearScope>
-  </TagsInputRoot>
+  <FormValue v-slot="bindings">
+    <TagsInputRoot
+      v-bind="{ ...rootProps, ...bindings, ...$attrs, disabled: bindings.disabled, readonly: bindings.readonly }"
+      v-slot="state"
+      class="ui-field-control ui-inset-frame ui-tags-input"
+      :data-ui-control-size="size"
+      :data-variant="variant"
+      :model-value="tags.value.value"
+      :input-value="draft.value.value"
+      @update:model-value="updateValue"
+      @update:input-value="draft.set"
+    >
+      <TagsInputClearScope :state="state" :clear="clearControlled">
+        <slot v-if="$slots.default" v-bind="state" />
+        <template v-else>
+          <UITagChips
+            :value="state.value"
+            :readonly="state.readonly"
+            :reorderable="reorderable && !state.readonly && !state.disabled && state.value.length > 1"
+            @reorder="updateValue"
+          />
+          <TagsInputInput
+            :placeholder="placeholder ?? '태그 추가'"
+            :aria-labelledby="$attrs['aria-labelledby'] ?? bindings['aria-labelledby']"
+            :aria-describedby="$attrs['aria-describedby'] ?? bindings['aria-describedby']"
+            :aria-invalid="$attrs['aria-invalid'] ?? bindings['aria-invalid']"
+            @paste="paste($event, state)"
+          />
+          <UITagsInputClear
+            v-if="clearable && state.value.length && !state.readonly && !state.disabled"
+            :aria-label="clearLabel"
+          />
+          <span v-if="splitPaste" class="ui-tags-input__announcement" role="status">{{ notice }}</span>
+        </template>
+      </TagsInputClearScope>
+    </TagsInputRoot>
+  </FormValue>
 </template>

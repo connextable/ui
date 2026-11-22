@@ -13,7 +13,7 @@ import {
 } from "@sectile/vue/transfer";
 import { computed, useTemplateRef } from "vue";
 import UIButton from "../button/UIButton.vue";
-import { definedControlAttrs } from "../control-attrs";
+import { definedControlAttrs, useInputState } from "../control-attrs";
 
 defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "labelledby" });
 const props = withDefaults(defineProps<TransferRootProps<ID> & {
@@ -33,9 +33,10 @@ defineSlots<{
 }>();
 
 const root = useTemplateRef<TransferExpose<ID>>("root");
+const { required, editable } = useInputState(props);
 const rootProps = computed(() => {
   const { sourceLabel, targetLabel, nodes, sourceId, targetId, ...optionalProps } = props;
-  return { ...definedControlAttrs(optionalProps), nodes, sourceId, targetId };
+  return { ...definedControlAttrs(optionalProps), nodes, sourceId, targetId, required: required.value && editable.value };
 });
 const disabledItems = computed(() => new Set(props.disabledItems));
 const sides = ["source", "target"] as const;

@@ -4,6 +4,7 @@ import { defineComponent, h, isVNode, type VNodeChild } from "vue";
 import { withClearButton } from "../clear/clear-button-part";
 import { controlFlag } from "../clear/clearable";
 import type { ClearableComponent } from "../clear/with-clearable";
+import { useInputState } from "../control-attrs";
 
 export const UIRatingClear: typeof RatingClear = withClearButton(RatingClear, "평가 지우기");
 
@@ -19,10 +20,16 @@ export const UIRating = defineComponent({
   __sectileFormLabelMode: "labelledby",
   props: { clearLabel: String },
   setup(props, { attrs, slots }) {
+    const { required, editable } = useInputState({
+      get required() { return controlFlag(attrs.required); },
+      get disabled() { return controlFlag(attrs.disabled); },
+      get readonly() { return controlFlag(attrs.readonly); },
+    });
     return () => {
       const items = attrs.items as readonly string[];
-      if (controlFlag(attrs.asChild ?? attrs["as-child"])) return h(RatingRoot, { ...attrs, items }, slots);
-      return h(RatingRoot, { ...attrs, items }, {
+      const bindings = { ...attrs, items, required: required.value && editable.value };
+      if (controlFlag(attrs.asChild ?? attrs["as-child"])) return h(RatingRoot, bindings, slots);
+      return h(RatingRoot, bindings, {
         default: (state: RatingRootSlotProps) => {
           const children = slots.default?.(state) ?? items.map(value =>
             h(RatingItem, { key: value, value, "aria-label": value }, () => h(Star, { size: 18, "aria-hidden": "true" })));

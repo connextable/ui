@@ -4,7 +4,7 @@ import { provideFormControlReset } from "@sectile/vue/form-boundary";
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 import UIClearButton from "../clear/UIClearButton.vue";
 import type { ClearableProps } from "../clear/clearable";
-import { definedControlAttrs, useInputState } from "../control-attrs";
+import { definedControlAttrs, useInputState, type FormControlProps } from "../control-attrs";
 
 defineOptions({ inheritAttrs: false });
 defineSlots<{
@@ -12,8 +12,8 @@ defineSlots<{
   trailing?(): unknown;
 }>();
 
-const { size = "md", variant = "outline", disabled = undefined, readonly = undefined, clearable, clearLabel, ...fieldProps } = defineProps<
-  Omit<TextFieldProps, "modelValue" | "name" | "form" | "required"> & ClearableProps & {
+const { size = "md", variant = "outline", disabled = undefined, readonly = undefined, required = undefined, clearable, clearLabel, ...fieldProps } = defineProps<
+  Omit<TextFieldProps, "modelValue" | "name" | "form" | "required"> & FormControlProps & ClearableProps & {
     id?: string;
     modelValue?: Value;
     size?: "sm" | "md" | "lg";
@@ -51,7 +51,7 @@ function inputBindings(attrs: Record<string, unknown>) {
   const { class: _class, style: _style, ...inputAttrs } = attrs;
   return {
     ...inputAttrs,
-    ...definedControlAttrs({ ...fieldProps, disabled, readonly }),
+    ...definedControlAttrs({ ...fieldProps, disabled, readonly, required }),
     "onUpdate:modelValue": (next: string | number) => {
       text.value = String(next);
       emit("update:modelValue", next as Value);

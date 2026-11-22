@@ -3,6 +3,7 @@ import { EditableArea, EditableInput, EditablePreview, EditableRoot, type Editab
 import { defineComponent, h } from "vue";
 import { controlFlag } from "../clear/clearable";
 import { withClearableControl, withClearableModel, type ClearableComponent } from "../clear/with-clearable";
+import { definedControlAttrs, type FormControlProps } from "../control-attrs";
 import { CascadeListComposition } from "./cascade-composition";
 import { ComboboxComposition } from "./combobox-composition";
 import QuantityFieldComposition from "./QuantityFieldComposition.vue";
@@ -16,23 +17,34 @@ export { UIComboboxInput } from "./combobox-composition";
 export const UIComboboxEditor: typeof ComboboxEditor = withClearableControl(ComboboxEditor, "input");
 type EditableInstance = InstanceType<typeof EditableRoot>;
 type EditableWithPlaceholder = new () => Omit<EditableInstance, "$props"> & {
-  $props: EditableInstance["$props"] & { placeholder?: string };
+  $props: EditableInstance["$props"] & FormControlProps & { placeholder?: string; id?: string; autocomplete?: string };
 };
 
 const EditableComposition = defineComponent({
   inheritAttrs: false,
-  props: { placeholder: String },
+  props: { placeholder: String, id: String, name: String, form: String, required: { type: Boolean, default: undefined }, autocomplete: String },
   setup(props, { attrs, slots }) {
-    return () => h(EditableRoot, attrs, slots.default || controlFlag(attrs.asChild ?? attrs["as-child"]) ? slots : {
-      default: (state: EditableRootSlotProps) => h(EditableArea, null, () => [
-        h(EditablePreview, {
-          as: "button", type: "button", disabled: state.disabled,
-          "data-placeholder": !state.value && !!props.placeholder || undefined,
-          "aria-description": state.readonly && !state.disabled ? "읽기 전용" : undefined,
-        }, () => state.value || props.placeholder || "편집"),
-        h(EditableInput, { placeholder: props.placeholder }),
-      ]),
-    });
+    return () => {
+      if (slots.default || controlFlag(attrs.asChild ?? attrs["as-child"])) return h(EditableRoot, { ...attrs, ...definedControlAttrs(props) }, slots);
+      return h(EditableRoot, { ...attrs, ...definedControlAttrs({ name: props.name, required: props.required }) }, {
+        default: (state: EditableRootSlotProps) => h(EditableArea, null, () => [
+          h(EditablePreview, {
+            as: "button", type: "button", disabled: state.disabled,
+            "data-placeholder": !state.value && !!props.placeholder || undefined,
+            "aria-description": state.readonly && !state.disabled ? "읽기 전용" : undefined,
+          }, () => state.value || props.placeholder || "편집"),
+          h(EditableInput, {
+            ...definedControlAttrs(props),
+            onInvalid(event: Event) {
+              const input = event.target;
+              if (!(input instanceof HTMLInputElement) || !input.hidden) return;
+              event.preventDefault();
+              input.parentElement?.querySelector<HTMLElement>('[data-part="preview"]')?.focus();
+            },
+          }),
+        ]),
+      });
+    };
   },
 }) as unknown as EditableWithPlaceholder;
 

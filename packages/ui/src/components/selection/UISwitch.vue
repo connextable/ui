@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { SwitchRoot, SwitchThumb, type SwitchSlotProps } from "@sectile/vue/switch";
 import { useId } from "vue";
-import { definedControlAttrs } from "../control-attrs";
+import { definedControlAttrs, useInputState, type FormControlProps } from "../control-attrs";
 
-defineOptions({ inheritAttrs: false });
+defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "labelledby" });
 
 const {
   label,
@@ -13,9 +13,10 @@ const {
   modelValue = undefined,
   disabled = undefined,
   readonly = undefined,
+  required = undefined,
   ...controlProps
 } = defineProps<{
-  label: string;
+  label?: string;
   description?: string;
   variant?: "plain" | "card";
   size?: "sm" | "md" | "lg";
@@ -23,7 +24,8 @@ const {
   defaultValue?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-}>();
+  value?: string;
+} & FormControlProps>();
 
 const emit = defineEmits<{ "update:modelValue": [value: boolean] }>();
 defineSlots<{
@@ -31,6 +33,7 @@ defineSlots<{
   thumb?(state: SwitchSlotProps): unknown;
 }>();
 const id = useId();
+const state = useInputState({ get disabled() { return disabled; }, get readonly() { return readonly; }, get required() { return required; } });
 </script>
 
 <template>
@@ -40,7 +43,8 @@ const id = useId();
       ...controlProps,
       disabled,
       readonly,
-      'aria-labelledby': $attrs['aria-labelledby'] ?? `${id}-label`,
+      required: state.required.value && state.editable.value,
+      'aria-labelledby': $attrs['aria-labelledby'] ?? (label || $slots.label ? `${id}-label` : undefined),
       'aria-describedby': [$attrs['aria-describedby'], description && `${id}-description`].filter(Boolean).join(' ') || undefined,
     })"
     v-slot="state"
@@ -50,8 +54,8 @@ const id = useId();
     :data-ui-control-size="size"
     @update:model-value="emit('update:modelValue', $event)"
   >
-    <span class="ui-choice__copy">
-      <span :id="`${id}-label`" class="ui-choice__label"><slot name="label" v-bind="state">{{ label }}</slot></span>
+    <span v-if="label || $slots.label || description" class="ui-choice__copy">
+      <span v-if="label || $slots.label" :id="`${id}-label`" class="ui-choice__label"><slot name="label" v-bind="state">{{ label }}</slot></span>
       <span v-if="description" :id="`${id}-description`" class="ui-choice__description">
         {{ description }}
       </span>
