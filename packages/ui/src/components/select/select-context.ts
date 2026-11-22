@@ -7,6 +7,7 @@ export interface SelectContext {
   uid: string;
   triggerId: Readonly<Ref<string | undefined>>;
   options: Readonly<Ref<readonly UISelectOption[]>>;
+  textValue: Readonly<Ref<(value: string) => string>>;
   aria: Readonly<Ref<{
     label?: string;
     labelledby?: string;

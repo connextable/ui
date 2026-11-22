@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Check } from "@lucide/vue";
 import { SelectItem, SelectItemIndicator, SelectItemText, type SelectItemSlotProps } from "@sectile/vue/select";
-import { useId } from "vue";
+import { useId, type Component } from "vue";
+import UIItemIcon from "../UIItemIcon.vue";
 
-defineProps<{ value: string; label: string; description?: string; disabled?: boolean }>();
+defineProps<{ value: string; label: string; description?: string; disabled?: boolean; icon?: Component }>();
 defineSlots<{
   default?(state: SelectItemSlotProps): unknown;
   leading?(state: SelectItemSlotProps): unknown;
@@ -21,8 +22,8 @@ const id = useId();
     :aria-label="label"
     :aria-describedby="description ? id : undefined"
   >
-    <span v-if="$slots.leading" class="ui-select-item__leading" aria-hidden="true">
-      <slot name="leading" v-bind="state" />
+    <span v-if="icon || $slots.leading" class="ui-select-item__leading" aria-hidden="true">
+      <slot name="leading" v-bind="state"><UIItemIcon v-if="icon" :icon="icon" /></slot>
     </span>
     <span class="ui-select-item__copy">
       <SelectItemText class="ui-select-item__label"><slot v-bind="state">{{ label }}</slot></SelectItemText>

@@ -16,7 +16,7 @@ defineSlots<{
 
 <template>
   <UIButton v-bind="{ ...$attrs, ...props }" icon-only @click="emit('click', $event)">
-    <template #leading><slot /></template>
+    <template v-if="$slots.default" #leading><slot /></template>
     <template #loading><slot name="loading"><UISpinner /></slot></template>
   </UIButton>
 </template>

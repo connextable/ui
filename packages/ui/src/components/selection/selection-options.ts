@@ -1,9 +1,10 @@
-import { computed } from "vue";
+import { computed, type Component } from "vue";
 
 export interface SelectionOption {
   /** Unique, non-empty value within the control. */
   value: string;
   label: string;
+  icon?: Component;
   description?: string;
   disabled?: boolean;
 }

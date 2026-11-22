@@ -198,6 +198,14 @@
   }
 }
 
+.ui-tabbed-item__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-space-xs);
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
 .ui-menu-item__chevron {
   inline-size: 1em;
   block-size: 1em;

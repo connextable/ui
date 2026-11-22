@@ -8,8 +8,9 @@ import { useInputState } from "../control-attrs";
 import { useCompositeValueForm } from "../form/composite-value";
 import { type SelectionOption } from "../selection/selection-options";
 import UICheckboxGroupIndicator from "../selection/UICheckboxGroupIndicator.vue";
+import UIItemIcon from "../UIItemIcon.vue";
 
-type Option = Pick<SelectionOption, "value" | "label" | "disabled">;
+type Option = Pick<SelectionOption, "value" | "label" | "icon" | "disabled">;
 type SelectionRoot = typeof CheckboxGroupRoot | typeof ListboxRoot | typeof ToggleGroupRoot;
 type WithOptions<Root extends SelectionRoot> = new () => Omit<InstanceType<Root>, "$props"> & {
   $props: Omit<InstanceType<Root>["$props"], "items"> & { items?: readonly string[]; options?: readonly Option[] };
@@ -74,14 +75,15 @@ function withOptions<Root extends SelectionRoot>(
   }) as unknown as WithOptions<Root>;
 }
 
-export const CheckboxGroupComposition = withOptions(CheckboxGroupRoot, ({ value, label, disabled }) =>
-  h(CheckboxGroupItem, { key: value, value, disabled }, () => [h(UICheckboxGroupIndicator), label]));
+export const CheckboxGroupComposition = withOptions(CheckboxGroupRoot, ({ value, label, disabled, icon }) =>
+  h(CheckboxGroupItem, { key: value, value, disabled }, () => [h(UICheckboxGroupIndicator), icon && h(UIItemIcon, { icon }), label]));
 
-export const ToggleGroupComposition = withOptions(ToggleGroupRoot, ({ value, label, disabled }) =>
-  h(ToggleGroupItem, { key: value, value, disabled }, () => label));
+export const ToggleGroupComposition = withOptions(ToggleGroupRoot, ({ value, label, disabled, icon }) =>
+  h(ToggleGroupItem, { key: value, value, disabled }, () => [icon && h(UIItemIcon, { icon }), label]));
 
-export const ListboxComposition = withOptions(ListboxRoot, ({ value, label, disabled }) =>
+export const ListboxComposition = withOptions(ListboxRoot, ({ value, label, disabled, icon }) =>
   h(ListboxItem, { key: value, value, disabled }, () => [
+    icon && h(UIItemIcon, { icon }),
     h(ListboxItemText, null, () => label),
     h(ListboxItemIndicator, { "aria-hidden": "true" }, () => "선택됨"),
   ]));

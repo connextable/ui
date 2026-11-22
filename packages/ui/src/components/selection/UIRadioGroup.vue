@@ -5,6 +5,7 @@ import UIFieldClear from "../clear/UIFieldClear.vue";
 import { provideClearable, useClearableValue, type ClearableProps } from "../clear/clearable";
 import { definedControlAttrs, useInputState, type FormControlProps } from "../control-attrs";
 import { useSelectionOptions, type SelectionOption } from "./selection-options";
+import UIItemIcon from "../UIItemIcon.vue";
 
 export interface UIRadioGroupOption extends SelectionOption {}
 
@@ -89,6 +90,7 @@ provideClearable({
         <span class="ui-radio-group__ring" aria-hidden="true">
           <RadioGroupIndicator class="ui-radio-group__indicator" force-present />
         </span>
+        <UIItemIcon v-if="option.icon" :icon="option.icon" />
         <span class="ui-choice__copy">
           <span :id="`${id}-${index}-label`" class="ui-choice__label">
             <slot name="optionLabel" v-bind="state" :option="option">{{ option.label }}</slot>

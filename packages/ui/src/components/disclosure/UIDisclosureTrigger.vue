@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { ChevronDown } from "@lucide/vue";
 import { DisclosureTrigger } from "@sectile/vue/disclosure";
+import type { Component } from "vue";
 import UIButton from "../button/UIButton.vue";
 
 defineProps<{
   size?: "sm" | "md" | "lg";
   variant?: "solid" | "soft" | "outline" | "ghost";
+  icon?: Component;
 }>();
 </script>
 
 <template>
   <DisclosureTrigger as-child v-slot="state">
-    <UIButton class="ui-disclosure-trigger" :size="size" :variant="variant">
+    <UIButton class="ui-disclosure-trigger" :size="size" :variant="variant" :icon="icon">
       <slot v-bind="state" />
       <template #trailing>
         <ChevronDown class="ui-expandable-chevron" />
@@ -45,7 +47,12 @@ defineProps<{
 .ui-expandable-heading .ui-button__content,
 .ui-disclosure[data-variant="outline"] > .ui-disclosure-trigger .ui-button__content {
   inline-size: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
   text-align: start;
+}
+
+:is(.ui-expandable-heading, .ui-disclosure[data-variant="outline"] > .ui-disclosure-trigger)
+  .ui-button__content > .ui-button__icon:last-child {
+  margin-inline-start: auto;
 }
 </style>

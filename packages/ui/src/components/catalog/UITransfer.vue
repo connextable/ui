@@ -11,14 +11,16 @@ import {
   type TransferRootSlotProps,
   type TransferSide,
 } from "@sectile/vue/transfer";
-import { computed, useTemplateRef } from "vue";
+import { computed, useTemplateRef, type Component } from "vue";
 import UIButton from "../button/UIButton.vue";
+import UIItemIcon from "../UIItemIcon.vue";
 import { definedControlAttrs, useInputState } from "../control-attrs";
 
 defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "labelledby" });
 const props = withDefaults(defineProps<TransferRootProps<ID> & {
   sourceLabel?: string;
   targetLabel?: string;
+  iconFor?: (id: NoInfer<ID>) => Component | undefined;
 }>(), {
   sourceLabel: "사용 가능한 항목",
   targetLabel: "선택한 항목",
@@ -35,7 +37,7 @@ defineSlots<{
 const root = useTemplateRef<TransferExpose<ID>>("root");
 const { required, editable } = useInputState(props);
 const rootProps = computed(() => {
-  const { sourceLabel, targetLabel, nodes, sourceId, targetId, ...optionalProps } = props;
+  const { sourceLabel, targetLabel, iconFor, nodes, sourceId, targetId, ...optionalProps } = props;
   return { ...definedControlAttrs(optionalProps), nodes, sourceId, targetId, required: required.value && editable.value };
 });
 const disabledItems = computed(() => new Set(props.disabledItems));
@@ -120,7 +122,10 @@ defineExpose({
               :value="id"
               class="ui-transfer__item"
             >
-              <slot name="item" :id="id" :side="side">{{ id }}</slot>
+              <slot name="item" :id="id" :side="side">
+                <span v-if="iconFor" class="ui-transfer__item-label"><UIItemIcon :icon="iconFor(id)" />{{ id }}</span>
+                <template v-else>{{ id }}</template>
+              </slot>
             </TransferItem>
             <div v-if="!(side === 'source' ? state.sourceItems : state.targetItems).length" class="ui-transfer__empty">
               항목 없음
@@ -191,6 +196,12 @@ defineExpose({
 
 .ui-transfer__item[data-highlighted] {
   background: var(--ui-color-surface-hover);
+}
+
+.ui-transfer__item-label {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-xs);
 }
 
 .ui-transfer__item[aria-selected="true"] {

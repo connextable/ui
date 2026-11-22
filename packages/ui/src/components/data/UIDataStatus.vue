@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import type { Component } from "vue";
+import UIItemIcon from "../UIItemIcon.vue";
+
 defineProps<{
   tone?: "neutral" | "accent" | "success" | "warning" | "danger";
+  icon?: Component;
 }>();
 </script>
 
 <template>
-  <span class="ui-data-status" :data-tone="tone">
+  <span class="ui-data-status" :data-tone="tone" :data-icon="icon ? '' : undefined">
+    <UIItemIcon v-if="icon" :icon="icon" />
     <slot />
   </span>
 </template>
@@ -28,7 +33,7 @@ defineProps<{
     color var(--ui-motion-fast) var(--ui-ease-out);
 }
 
-.ui-data-status::before {
+.ui-data-status:not([data-icon])::before {
   content: "";
   flex: 0 0 0.375rem;
   block-size: 0.375rem;

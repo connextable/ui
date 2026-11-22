@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { SwitchRoot, SwitchThumb, type SwitchSlotProps } from "@sectile/vue/switch";
-import { useId } from "vue";
+import { useId, type Component } from "vue";
 import { definedControlAttrs, useInputState, type FormControlProps } from "../control-attrs";
+import UIItemIcon from "../UIItemIcon.vue";
 
 defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "labelledby" });
 
 const {
   label,
+  icon,
   description,
   variant = "plain",
   size = "md",
@@ -17,6 +19,7 @@ const {
   ...controlProps
 } = defineProps<{
   label?: string;
+  icon?: Component;
   description?: string;
   variant?: "plain" | "card";
   size?: "sm" | "md" | "lg";
@@ -54,6 +57,7 @@ const state = useInputState({ get disabled() { return disabled; }, get readonly(
     :data-ui-control-size="size"
     @update:model-value="emit('update:modelValue', $event)"
   >
+    <UIItemIcon v-if="icon" :icon="icon" />
     <span v-if="label || $slots.label || description" class="ui-choice__copy">
       <span v-if="label || $slots.label" :id="`${id}-label`" class="ui-choice__label"><slot name="label" v-bind="state">{{ label }}</slot></span>
       <span v-if="description" :id="`${id}-description`" class="ui-choice__description">

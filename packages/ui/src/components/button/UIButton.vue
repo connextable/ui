@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, type Component } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 import UISpinner from "../progress/UISpinner.vue";
 import { useLinkComponent, type LinkPrefetchProps } from "../link-component";
@@ -18,6 +18,8 @@ export interface UIButtonProps extends LinkPrefetchProps {
   loading?: boolean;
   block?: boolean;
   iconOnly?: boolean;
+  icon?: Component;
+  trailingIcon?: Component;
   variant?: "solid" | "soft" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   href?: string;
@@ -94,12 +96,12 @@ function onClick(event: MouseEvent) {
     @click="!routerLink && onClick($event)"
   >
     <span class="ui-button__content" :data-hidden="loading || undefined">
-      <span v-if="$slots.leading" class="ui-button__icon" aria-hidden="true">
-        <slot name="leading" />
+      <span v-if="$slots.leading || icon" class="ui-button__icon" aria-hidden="true">
+        <slot name="leading"><component :is="icon" v-if="icon" focusable="false" /></slot>
       </span>
       <slot />
-      <span v-if="$slots.trailing" class="ui-button__icon" aria-hidden="true">
-        <slot name="trailing" />
+      <span v-if="$slots.trailing || trailingIcon" class="ui-button__icon" aria-hidden="true">
+        <slot name="trailing"><component :is="trailingIcon" v-if="trailingIcon" focusable="false" /></slot>
       </span>
     </span>
     <Transition name="ui-button-loading">

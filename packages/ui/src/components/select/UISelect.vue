@@ -103,6 +103,7 @@ provide(selectKey, {
     errorMessage: props.ariaErrormessage,
   })),
   options: computed(() => props.options),
+  textValue,
   size: computed(() => props.size),
   placeholder: computed(() => props.placeholder),
   readonly: isReadonly,

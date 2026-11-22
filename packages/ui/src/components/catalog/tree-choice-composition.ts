@@ -27,7 +27,7 @@ function createTreeChoice<Root extends typeof CheckboxTreeRoot | typeof TreeView
       const handle = shallowRef<{ element?: HTMLElement | null; focus?(options?: FocusOptions): void }>();
       const nodes = () => attrs.nodes as readonly LabeledTreeNode[];
       const children = computed(() => treeChildren(nodes()));
-      const labels = computed(() => new Map(nodes().map(({ id, label }) => [id, label])));
+      const byID = computed(() => new Map(nodes().map(node => [node.id, node])));
       const renderForm = root === CheckboxTreeRoot ? useCompositeValueForm({
         get name() { return attrs.name as string | undefined; },
         get form() { return attrs.form as string | undefined; },
@@ -45,7 +45,8 @@ function createTreeChoice<Root extends typeof CheckboxTreeRoot | typeof TreeView
       return () => {
         const content = slots.default || controlFlag(attrs.asChild ?? attrs["as-child"]) ? slots : { default: () => renderTreeChoiceRows({
           ...parts,
-          label: id => labels.value.get(id) ?? id,
+          label: id => byID.value.get(id)?.label ?? id,
+          icon: id => byID.value.get(id)?.icon,
           children: parent => children.value.get(parent) ?? [],
         }) };
         if (!renderForm) return h(root as Component, { ...attrs, ref: handle }, content);

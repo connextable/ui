@@ -1,6 +1,6 @@
 import { Star } from "@lucide/vue";
 import { RatingClear, RatingItem, RatingRoot, type RatingRootSlotProps } from "@sectile/vue/rating";
-import { defineComponent, h, isVNode, type VNodeChild } from "vue";
+import { defineComponent, h, isVNode, type Component, type PropType, type VNodeChild } from "vue";
 import { withClearButton } from "../clear/clear-button-part";
 import { controlFlag } from "../clear/clearable";
 import type { ClearableComponent } from "../clear/with-clearable";
@@ -18,7 +18,10 @@ function containsClear(children: VNodeChild): boolean {
 export const UIRating = defineComponent({
   inheritAttrs: false,
   __sectileFormLabelMode: "labelledby",
-  props: { clearLabel: String },
+  props: {
+    clearLabel: String,
+    icon: [Object, Function] as PropType<Component>,
+  },
   setup(props, { attrs, slots }) {
     const { required, editable } = useInputState({
       get required() { return controlFlag(attrs.required); },
@@ -32,11 +35,12 @@ export const UIRating = defineComponent({
       return h(RatingRoot, { ...bindings, class: [attrs.class, controlFlag(attrs.clearable) && "ui-clearable-inline"] }, {
         default: (state: RatingRootSlotProps) => {
           const children = slots.default?.(state) ?? items.map(value =>
-            h(RatingItem, { key: value, value, "aria-label": value }, () => h(Star, { size: 18, "aria-hidden": "true" })));
+            h(RatingItem, { key: value, value, "aria-label": value }, () =>
+              h(props.icon ?? Star, { size: 18, "aria-hidden": "true", focusable: "false" })));
           if (!state.clearable || !state.value || state.disabled || state.readonly || containsClear(children)) return children;
           return [...children, h(UIRatingClear, { "aria-label": props.clearLabel })];
         },
       });
     };
   },
-}) as unknown as ClearableComponent<typeof RatingRoot>;
+}) as unknown as new () => InstanceType<ClearableComponent<typeof RatingRoot>> & { $props: { icon?: Component } };

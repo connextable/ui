@@ -8,7 +8,7 @@ import UIButton, { type UIButtonProps } from "./UIButton.vue";
 
 defineOptions({ inheritAttrs: false, __sectileFormLabelMode: "labelledby" });
 const props = withDefaults(defineProps<
-  Omit<ToggleButtonProps, "as" | "asChild"> & FormControlProps & { value?: string } & Pick<UIButtonProps, "size" | "variant" | "iconOnly">
+  Omit<ToggleButtonProps, "as" | "asChild"> & FormControlProps & { value?: string } & Pick<UIButtonProps, "size" | "variant" | "iconOnly" | "icon" | "trailingIcon">
 >(), { modelValue: undefined, disabled: undefined, readonly: undefined, required: undefined, value: "on" });
 const emit = defineEmits<{ "update:modelValue": [pressed: boolean] }>();
 defineSlots<{
@@ -37,7 +37,7 @@ function FormValue(_: unknown, { slots }: SetupContext) {
       as-child
       @update:model-value="pressed.set"
     >
-      <UIButton :size="size" :variant="variant" :icon-only="iconOnly">
+      <UIButton :size="size" :variant="variant" :icon-only="iconOnly" :icon="icon" :trailing-icon="trailingIcon">
         <template v-if="$slots.leading" #leading><slot name="leading" v-bind="state" /></template>
         <slot v-bind="state" />
         <template v-if="$slots.trailing" #trailing><slot name="trailing" v-bind="state" /></template>

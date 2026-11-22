@@ -4,7 +4,7 @@ import { controlFlag } from "../clear/clearable";
 import UIAccordionContent from "./UIAccordionContent.vue";
 import UIAccordionTrigger from "./UIAccordionTrigger.vue";
 
-type Section = { value: string; label: string; description?: string; disabled?: boolean };
+type Section = { value: string; label: string; description?: string; disabled?: boolean; icon?: Component };
 type AccordionInstance = InstanceType<typeof AccordionRoot>;
 type ComposedAccordion = new () => Omit<AccordionInstance, "$props" | "$slots"> & {
   $props: Omit<AccordionInstance["$props"], "items"> & { items: readonly (string | Section)[] };
@@ -20,7 +20,7 @@ export const UIAccordion = defineComponent({
       const items = props.items.map(item => typeof item === "string" ? { value: item, label: item } : item);
       const content = slots.default || controlFlag(attrs.asChild ?? attrs["as-child"]) ? slots : {
         default: () => items.map(item => h(AccordionItem, { key: item.value, value: item.value, disabled: item.disabled }, () => [
-          h(AccordionHeader, null, () => h(UIAccordionTrigger, null, () => item.label)),
+          h(AccordionHeader, null, () => h(UIAccordionTrigger, { icon: item.icon }, () => item.label)),
           h(UIAccordionContent, null, () => slots.panel ? slots.panel({ item }) : item.description),
         ])),
       };

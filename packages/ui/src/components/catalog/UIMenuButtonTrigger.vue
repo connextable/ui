@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { MenuButtonTrigger, type MenuPartProps, type MenuRootSlotProps } from "@sectile/vue/menu";
+import type { Component } from "vue";
+import UIItemIcon from "../UIItemIcon.vue";
 import UIPopupTriggerContent from "./UIPopupTriggerContent.vue";
 
 defineOptions({ inheritAttrs: false });
 const { as, asChild, size = "md", variant = "outline" } = defineProps<MenuPartProps & {
   size?: "sm" | "md" | "lg";
   variant?: "outline" | "soft";
+  icon?: Component;
 }>();
 defineSlots<{
   default?(state: MenuRootSlotProps): unknown;
@@ -26,7 +29,9 @@ defineSlots<{
   >
     <slot v-if="asChild" v-bind="state" />
     <UIPopupTriggerContent v-else>
-      <template v-if="$slots.leading" #leading><slot name="leading" /></template>
+      <template v-if="icon || $slots.leading" #leading>
+        <slot name="leading"><UIItemIcon :icon="icon" /></slot>
+      </template>
       <slot v-bind="state" />
       <template v-if="$slots.trailing" #trailing><slot name="trailing" /></template>
     </UIPopupTriggerContent>

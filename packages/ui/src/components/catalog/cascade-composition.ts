@@ -1,7 +1,7 @@
 import { Check, ChevronRight } from "@lucide/vue";
 import {
   CascadeListColumn, CascadeListItem, CascadeListItemChevron, CascadeListItemIndicator, CascadeListRoot, CascadeListValue,
-  type CascadeListColumnSlotProps, type CascadeListRootSlotProps,
+  type CascadeListColumnSlotProps, type CascadeListRootProps, type CascadeListRootSlotProps,
 } from "@sectile/vue/cascade-list";
 import {
   CascadeSelectColumn, CascadeSelectContent, CascadeSelectItem, CascadeSelectItemChevron,
@@ -12,8 +12,10 @@ import { controlFlag, useFieldClear } from "../clear/clearable";
 import UIFieldClear from "../clear/UIFieldClear.vue";
 import { inputStateAttrs, useInputState } from "../control-attrs";
 import UICascadeSelectTrigger from "./UICascadeSelectTrigger.vue";
+import UIItemIcon from "../UIItemIcon.vue";
 
-type CascadeOptions = { columnLabels?: readonly string[] };
+type CascadeNode = CascadeListRootProps["nodes"][number] & { readonly icon?: Component };
+type CascadeOptions = { columnLabels?: readonly string[]; nodes: readonly CascadeNode[] };
 type ComposedCascade<Root, Options> = Root extends abstract new (...args: never[]) => infer Instance
   ? Instance extends { $props: infer Props }
     ? new () => Instance & { $props: Props & Options }
@@ -24,10 +26,13 @@ function renderCascadeColumns(
   state: CascadeListRootSlotProps,
   textValue: (id: string) => string,
   labels: readonly string[] | undefined,
+  nodes: readonly CascadeNode[],
   parts: { column: Component; item: Component; chevron: Component; indicator: Component },
 ) {
+  const icons = new Map(nodes.map(({ id, icon }) => [id, icon]));
   return state.columns.map((_, depth) => h(parts.column, { key: depth, depth, label: labels?.[depth] }, {
     default: ({ items }: CascadeListColumnSlotProps) => items.map(id => h(parts.item, { key: id, value: id }, () => [
+      icons.has(id) && h(UIItemIcon, { icon: icons.get(id) }),
       textValue(id),
       h(parts.chevron, null, () => h(ChevronRight, { size: 16, "aria-hidden": "true" })),
       h(parts.indicator, null, () => h(Check, { size: 16, "aria-hidden": "true" })),
@@ -64,7 +69,7 @@ export const CascadeListComposition = defineComponent({
         ...slots,
         default: (state: CascadeListRootSlotProps) => [slots.default?.(state) ?? [
           h(CascadeListValue, null, () => state.valuePath.map(labelFor).join(" / ") || String(attrs.label ?? "")),
-          ...renderCascadeColumns(state, labelFor, labels, listParts),
+          ...renderCascadeColumns(state, labelFor, labels, attrs.nodes as CascadeOptions["nodes"], listParts),
         ], clear?.enabled.value ? h(UIFieldClear, { footer: true }) : null],
       });
     };
@@ -91,7 +96,7 @@ export const CascadeSelectComposition = defineComponent({
             ...inputStateAttrs(state.disabled, state.readonly),
           },
             () => h(CascadeSelectValue, { placeholder: (placeholder ?? "항목 선택") as string })),
-          h(CascadeSelectContent, null, () => renderCascadeColumns(state, labelFor, labels, selectParts)),
+          h(CascadeSelectContent, null, () => renderCascadeColumns(state, labelFor, labels, attrs.nodes as CascadeOptions["nodes"], selectParts)),
         ],
       });
     };

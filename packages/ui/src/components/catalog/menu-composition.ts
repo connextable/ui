@@ -18,7 +18,10 @@ type Command = MenuRootProps["items"][number] & {
 };
 type MenuRootComponent = typeof MenuRoot | typeof MenuButtonRoot | typeof ContextMenuRoot | typeof MenubarRoot;
 type ComposedMenu<Root extends MenuRootComponent> = new () => Omit<InstanceType<Root>, "$props" | "$slots"> & {
-  $props: Omit<InstanceType<Root>["$props"], "items"> & { items: readonly Command[]; triggerLabel?: string };
+  $props: Omit<InstanceType<Root>["$props"], "items"> & {
+    items: readonly Command[];
+    triggerLabel?: string;
+  } & (Root extends typeof MenuButtonRoot ? { triggerIcon?: Component } : object);
   $slots: InstanceType<Root>["$slots"] & { trigger?: (state: MenuRootSlotProps) => VNodeChild };
 };
 
@@ -34,6 +37,7 @@ function withCommands<Root extends MenuRootComponent>(root: Root, parts: {
     props: {
       items: { type: Array as PropType<readonly Command[]>, required: true },
       triggerLabel: String,
+      triggerIcon: [Object, Function] as PropType<Component>,
     },
     setup(props, { attrs, slots }) {
       return () => {
@@ -65,7 +69,10 @@ function withCommands<Root extends MenuRootComponent>(root: Root, parts: {
         const { "text-value": _textValue, ...bindings } = attrs;
         return h(root as Component, { ...bindings, items: props.items, textValue }, {
           default: (state: MenuRootSlotProps) => parts.trigger && parts.content ? [
-            h(parts.trigger, { asChild: Boolean(slots.trigger) }, () => slots.trigger?.(state) ?? props.triggerLabel ?? String(attrs.label ?? "메뉴")),
+            h(parts.trigger, {
+              asChild: Boolean(slots.trigger),
+              ...(props.triggerIcon ? { icon: props.triggerIcon } : {}),
+            }, () => slots.trigger?.(state) ?? props.triggerLabel ?? String(attrs.label ?? "메뉴")),
             h(parts.content, null, () => renderRows(null)),
           ] : renderRows(null),
         });

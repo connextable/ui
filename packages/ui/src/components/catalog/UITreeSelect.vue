@@ -35,8 +35,8 @@ const emit = defineEmits<TreeSelectEmits<ID>>();
 defineSlots<TreeSelectSlots<ID>>();
 const slots = useSlots();
 const instance = getCurrentInstance();
-const labels = computed(() => new Map(props.nodes.map(({ id, label }) => [id, label])));
-const labelFor = (id: ID) => labels.value.get(id) ?? id;
+const byID = computed(() => new Map(props.nodes.map(node => [node.id, node])));
+const labelFor = (id: ID) => byID.value.get(id)?.label ?? id;
 const fieldDefaults = useFormFieldDefaults();
 const { required, editable } = useInputState(props);
 
@@ -156,6 +156,7 @@ function Rows({ state }: { state: TreeSelectRootSlotProps<ID> }) {
     group: UITreeSelectGroup,
     disclosure: UITreeSelectDisclosure,
     label: labelFor,
+    icon: id => byID.value.get(id)?.icon,
     children: state.getChildren,
     isBranch: state.isBranch,
     afterLabel: id => state.value.includes(id) ? h(Check, { size: 16, "aria-hidden": "true" }) : null,

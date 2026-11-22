@@ -3,8 +3,9 @@ import { TabsContent, TabsIndicator, TabsList, TabsRoot, TabsTrigger } from "@se
 import { defineComponent, h, type Component, type PropType, type VNodeChild } from "vue";
 import UIButton from "../button/UIButton.vue";
 import { controlFlag } from "../clear/clearable";
+import UIItemIcon from "../UIItemIcon.vue";
 
-type TabbedItem = { value: string; label: string; description?: string; disabled?: boolean };
+type TabbedItem = { value: string; label: string; description?: string; disabled?: boolean; icon?: Component };
 type TabbedRoot = typeof TabsRoot | typeof StepperRoot;
 type ComposedTabs<Root extends TabbedRoot> = new () => Omit<InstanceType<Root>, "$props" | "$slots"> & {
   $props: Omit<InstanceType<Root>["$props"], "items"> & {
@@ -42,7 +43,9 @@ function withTabbedComposition<Root extends TabbedRoot>(root: Root, parts: {
         }, {
           default: () => [
             h(parts.list, { label }, () => [
-              ...items.map(item => h(parts.trigger, { key: item.value, value: item.value }, () => item.label)),
+              ...items.map(item => h(parts.trigger, { key: item.value, value: item.value }, () => item.icon
+                ? h("span", { class: "ui-tabbed-item__label" }, [h(UIItemIcon, { icon: item.icon }), item.label])
+                : item.label)),
               parts.indicator && h(parts.indicator),
             ]),
             ...items.map(item => h(parts.content, { key: item.value, value: item.value }, () => [

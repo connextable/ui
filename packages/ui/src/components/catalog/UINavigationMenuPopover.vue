@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ChevronDown } from "@lucide/vue";
 import { PopoverRoot, PopoverContent, PopoverPortal } from "@sectile/vue/popover";
-import { computed, nextTick, onBeforeUnmount, shallowRef, useId, useTemplateRef, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, shallowRef, useId, useTemplateRef, watch, type Component } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 import type { LinkPrefetchProps } from "../link-component";
 import { UIAnchor } from "./anchor";
 import { useNavigationPanelMotion } from "./useNavigationPanelMotion";
+import UIItemIcon from "../UIItemIcon.vue";
 
 export interface UINavigationMenuEntry extends LinkPrefetchProps {
   id: string;
@@ -14,6 +15,7 @@ export interface UINavigationMenuEntry extends LinkPrefetchProps {
   to?: RouteLocationRaw;
   external?: boolean;
   description?: string;
+  icon?: Component;
   disabled?: boolean;
   children?: readonly UINavigationMenuEntry[];
 }
@@ -212,7 +214,9 @@ onBeforeUnmount(() => {
             @click="click(entry, $event)"
             @keydown.down.prevent="focusPanel(entry, $event)"
           >
-            <slot name="label" :entry="entry" :open="displayed && active?.id === entry.id">{{ entry.label }}</slot>
+            <slot name="label" :entry="entry" :open="displayed && active?.id === entry.id">
+              <UIItemIcon v-if="entry.icon" :icon="entry.icon" />{{ entry.label }}
+            </slot>
             <ChevronDown class="ui-navigation-rail__chevron" aria-hidden="true" />
           </button>
           <UIAnchor
@@ -228,7 +232,7 @@ onBeforeUnmount(() => {
             :current="current === entry.id ? 'page' : undefined"
             @pointerenter="hover(entry, $event)"
             @click="open = false"
-          >{{ entry.label }}</UIAnchor>
+          ><UIItemIcon v-if="entry.icon" :icon="entry.icon" />{{ entry.label }}</UIAnchor>
         </li>
       </ul>
     </nav>
@@ -258,6 +262,7 @@ onBeforeUnmount(() => {
                     :current="current === entry.id ? 'page' : undefined"
                     @click="open = false"
                   >
+                    <UIItemIcon v-if="entry.icon" :icon="entry.icon" />
                     <span>{{ entry.label }}<small v-if="entry.description">{{ entry.description }}</small></span>
                   </UIAnchor>
                 </li>

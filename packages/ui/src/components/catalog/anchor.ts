@@ -1,13 +1,15 @@
 import { Anchor, type AnchorProps, type AnchorExpose } from "@sectile/vue/primitive";
-import { defineComponent, h, mergeProps, shallowRef, type VNodeProps } from "vue";
+import { defineComponent, h, mergeProps, shallowRef, type Component, type PropType, type VNodeProps } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 import { linkProps, useLinkRenderer, type LinkPrefetchProps } from "../link-component";
+import UIItemIcon from "../UIItemIcon.vue";
 
 type AnchorInstance = InstanceType<typeof Anchor>;
 type AnchorLinkProps = AnchorInstance["$props"] & LinkPrefetchProps & {
   to?: RouteLocationRaw;
   external?: boolean;
   replace?: boolean;
+  icon?: Component;
 };
 
 export const UIAnchor = defineComponent({
@@ -17,6 +19,7 @@ export const UIAnchor = defineComponent({
     ...linkProps,
     disabled: Boolean,
     asChild: Boolean,
+    icon: [Object, Function] as PropType<Component>,
   },
   setup(props, { attrs, slots, expose }) {
     const anchor = shallowRef<AnchorExpose | null>(null);
@@ -32,6 +35,9 @@ export const UIAnchor = defineComponent({
       asChild: props.asChild,
       // An absent href lets an adopted anchor supply its own destination.
       ...(link.href === undefined ? {} : link),
-    }) as AnchorProps & VNodeProps, slots), props.disabled || props.asChild);
+    }) as AnchorProps & VNodeProps, props.icon && !props.asChild ? {
+      ...slots,
+      default: () => [h(UIItemIcon, { icon: props.icon, class: "ui-anchor__icon" }), slots.default?.()],
+    } : slots), props.disabled || props.asChild);
   },
 }) as unknown as { new(): AnchorInstance & { $props: AnchorLinkProps } };

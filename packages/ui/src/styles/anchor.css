@@ -1,3 +1,7 @@
+.ui-anchor__icon {
+  margin-inline-end: var(--ui-space-xs);
+}
+
 .ui-anchor {
   border-radius: var(--ui-space-2xs);
   color: var(--ui-color-accent);

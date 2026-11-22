@@ -1,10 +1,11 @@
 <script setup lang="ts" generic="Value extends string | number = string">
 import { TextField, type TextFieldProps } from "@sectile/vue/text";
 import { provideFormControlReset } from "@sectile/vue/form-boundary";
-import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
+import { computed, nextTick, ref, useTemplateRef, watch, type Component } from "vue";
 import UIClearButton from "../clear/UIClearButton.vue";
 import type { ClearableProps } from "../clear/clearable";
 import { definedControlAttrs, useInputState, type FormControlProps } from "../control-attrs";
+import UIItemIcon from "../UIItemIcon.vue";
 
 defineOptions({ inheritAttrs: false });
 defineSlots<{
@@ -12,9 +13,10 @@ defineSlots<{
   trailing?(): unknown;
 }>();
 
-const { size = "md", variant = "outline", disabled = undefined, readonly = undefined, required = undefined, clearable, clearLabel, ...fieldProps } = defineProps<
+const { size = "md", variant = "outline", disabled = undefined, readonly = undefined, required = undefined, clearable, clearLabel, icon, ...fieldProps } = defineProps<
   Omit<TextFieldProps, "modelValue" | "name" | "form" | "required"> & FormControlProps & ClearableProps & {
     id?: string;
+    icon?: Component;
     modelValue?: Value;
     size?: "sm" | "md" | "lg";
     variant?: "outline" | "soft";
@@ -80,7 +82,7 @@ function focusFromFrame(event: MouseEvent) {
 
 <template>
   <div
-    v-if="$slots.leading || $slots.trailing || clearable"
+    v-if="icon || $slots.leading || $slots.trailing || clearable"
     class="ui-field-control ui-inset-frame ui-input ui-input--with-slots"
     v-bind="state.attrs.value"
     :class="$attrs.class"
@@ -91,7 +93,9 @@ function focusFromFrame(event: MouseEvent) {
     :data-clearable="clearable || undefined"
     @click="focusFromFrame"
   >
-    <div v-if="$slots.leading" class="ui-input__slot ui-input__slot--leading"><slot name="leading" /></div>
+    <div v-if="icon || $slots.leading" class="ui-input__slot ui-input__slot--leading">
+      <slot name="leading"><UIItemIcon :icon="icon" /></slot>
+    </div>
     <TextField ref="control" v-bind="inputBindings($attrs)" class="ui-input__control" @input="syncText" @change="syncText" />
     <UIClearButton v-if="canClear" :label="clearLabel" @click="clear" />
     <div v-if="$slots.trailing" class="ui-input__slot ui-input__slot--trailing"><slot name="trailing" /></div>

@@ -2,7 +2,7 @@ import { AlertDialogDescription, AlertDialogOverlay, AlertDialogPortal, AlertDia
 import { DialogDescription, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, DialogTrigger, type DialogInteractOutsideHandler, type DialogRootProps, type DialogRootSlotProps, type PopupCloseReason } from "@sectile/vue/dialog";
 import { DrawerDescription, DrawerHandle, DrawerOverlay, DrawerPortal, DrawerRoot, DrawerTitle, DrawerTrigger, type DrawerRootProps } from "@sectile/vue/drawer";
 import { PopoverArrow, PopoverContent, PopoverDescription, PopoverPortal, PopoverRoot, PopoverTitle, PopoverTrigger, type PopoverRootProps } from "@sectile/vue/popover";
-import { defineComponent, h, shallowRef, type Component, type VNodeChild } from "vue";
+import { defineComponent, h, shallowRef, type Component, type PropType, type VNodeChild } from "vue";
 import UIButton from "../button/UIButton.vue";
 import { controlFlag } from "../clear/clearable";
 import UIAlertDialogContent from "./UIAlertDialogContent.vue";
@@ -10,7 +10,7 @@ import UIDialogContent from "./UIDialogContent.vue";
 import UIDrawerContent from "./UIDrawerContent.vue";
 import UISheetContent from "./UISheetContent.vue";
 
-type PanelOptions = { title?: string; description?: string; triggerLabel?: string; panelClass?: string };
+type PanelOptions = { title?: string; description?: string; triggerLabel?: string; triggerIcon?: Component; panelClass?: string };
 type ClosablePanel = { showClose?: boolean; closeLabel?: string };
 type PanelSlot = (state: DialogRootSlotProps & { close(): void }) => VNodeChild;
 type PanelComponent<Props> = new () => {
@@ -46,6 +46,7 @@ function withPanelComposition<Props>(root: Component, parts: {
       title: String,
       description: String,
       triggerLabel: String,
+      triggerIcon: [Object, Function] as PropType<Component>,
       panelClass: String,
     },
     setup(props, { attrs, slots, expose }) {
@@ -78,7 +79,7 @@ function withPanelComposition<Props>(root: Component, parts: {
             });
             return [
               !inline && (slots.trigger || props.triggerLabel) && h(parts.trigger, { asChild: true }, () =>
-                slots.trigger?.(slotState) ?? h(UIButton, { variant: "outline" }, () => props.triggerLabel)),
+                slots.trigger?.(slotState) ?? h(UIButton, { variant: "outline", icon: props.triggerIcon }, () => props.triggerLabel)),
               inline ? panel() : h(parts.portal, null, () => [parts.overlay && h(parts.overlay), panel()]),
             ];
           },

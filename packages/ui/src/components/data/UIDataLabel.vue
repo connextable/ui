@@ -1,10 +1,13 @@
 <script setup lang="ts">
-defineProps<{ label: string; detail?: string }>();
+import type { Component } from "vue";
+import UIItemIcon from "../UIItemIcon.vue";
+
+defineProps<{ label: string; detail?: string; icon?: Component }>();
 </script>
 
 <template>
   <span class="ui-data-label">
-    <span v-if="$slots.icon" class="ui-data-label__icon"><slot name="icon" /></span>
+    <span v-if="icon || $slots.icon" class="ui-data-label__icon"><slot name="icon"><UIItemIcon :icon="icon" /></slot></span>
     <span class="ui-data-label__text">
       <strong>{{ label }}</strong>
       <span v-if="detail" class="ui-data-label__detail">{{ detail }}</span>
