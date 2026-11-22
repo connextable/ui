@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UIDateField, UITemporalProvider, UITimeField } from "@connextable/ui";
+import { UIButton, UIDateField, UIFormActions, UITemporalProvider, UITimeField } from "@connextable/ui";
 import { ref } from "vue";
 
 const locales = [
@@ -13,7 +13,7 @@ const time = ref({ hour: 17, minute: 30, second: 0, millisecond: 0 });
 
 <template>
   <div class="ui-field">
-    <div class="locale-example__row">
+    <UIFormActions>
       <UIButton
         v-for="option in locales"
         :key="option.value"
@@ -24,7 +24,7 @@ const time = ref({ hour: 17, minute: 30, second: 0, millisecond: 0 });
       >
         {{ option.label }}
       </UIButton>
-    </div>
+    </UIFormActions>
     <UITemporalProvider :formatting="{ locale }">
       <div class="locale-example__row">
         <UIDateField v-model="date" label="예약 날짜" />

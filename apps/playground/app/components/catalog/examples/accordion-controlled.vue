@@ -6,6 +6,7 @@ import {
   UIAccordionHeader,
   UIAccordionItem,
   UIAccordionTrigger,
+  UIFormActions,
 } from "@connextable/ui";
 
 import { ref } from "vue";
@@ -19,8 +20,10 @@ const items = [
 </script>
 
 <template>
-  <div class="ui-field-layout">
-    <UIButton size="sm" @click="open = 'deployments'">배포 설정 열기</UIButton>
+  <div class="ui-field">
+    <UIFormActions>
+      <UIButton size="sm" @click="open = 'deployments'">배포 설정 열기</UIButton>
+    </UIFormActions>
     <UIAccordion v-model="open"
       :items="items.map(({ id }) => id)"
       type="single"
