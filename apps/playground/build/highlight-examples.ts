@@ -2,21 +2,10 @@
 
 import { readFile } from "node:fs/promises";
 import { format } from "prettier";
-import { createHighlighterCore } from "shiki/core";
-import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
-import { bundledLanguages } from "shiki/langs";
-import { bundledThemes } from "shiki/themes";
-import type { ShikiTransformer } from "shiki/types";
 import { babelParse, parse } from "vue/compiler-sfc";
+import { highlightExampleCode } from "../app/utils/highlight-example-code";
 
 const exampleCodeQuery = "?example-code&raw";
-let highlighter: ReturnType<typeof createHighlighterCore> | undefined;
-
-const usePlaygroundBackground: ShikiTransformer = {
-  pre(node) {
-    delete node.properties.style;
-  },
-};
 
 async function formatExample(source: string) {
   if (!source.includes("<PlaygroundExample")) {
@@ -80,18 +69,8 @@ export function highlightExamples() {
       const filename = id.slice(0, -exampleCodeQuery.length);
       this.addWatchFile(filename);
 
-      highlighter ??= createHighlighterCore({
-        engine: createJavaScriptRegexEngine(),
-        langs: [bundledLanguages.vue],
-        themes: [bundledThemes["github-light"]],
-      });
-
-      const [renderer, source] = await Promise.all([highlighter, readFile(filename, "utf8")]);
-      const html = renderer.codeToHtml(await formatExample(source), {
-        lang: "vue",
-        theme: "github-light",
-        transformers: [usePlaygroundBackground],
-      });
+      const source = await readFile(filename, "utf8");
+      const html = await highlightExampleCode(await formatExample(source));
 
       return `export default ${JSON.stringify(html)};`;
     },
