@@ -1,32 +1,13 @@
 <script setup lang="ts">
-import { UIDateTimePicker, UIDateTimePickerAnchor, UIDateTimePickerDateInput, UIDateTimePickerTimeInput, UIDateTimePickerTrigger, UIDateTimePickerPortal, UIDateTimePickerContent, UIDateTimePickerPreviousMonth, UIDateTimePickerNextMonth, UIDateTimePickerGrid, UIDateTimePickerCell, useUITemporalDisplay } from "@connextable/ui";
-import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
+import { UIDateTimePicker, type UIDateTimeValue } from "@connextable/ui";
 import { ref } from "vue";
 
-const initial = ref({ date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minute: 30, second: 0, millisecond: 0 } });
-const display = useUITemporalDisplay();
+const appointment = ref<UIDateTimeValue | null>({
+  date: { year: 2026, month: 8, day: 22 },
+  time: { hour: 9, minute: 30, second: 0, millisecond: 0 },
+});
 </script>
 
 <template>
-  <UIDateTimePicker v-model="initial" time-precision="minute" v-slot="{ dates, view }">
-    <UIDateTimePickerAnchor>
-      <UIDateTimePickerDateInput aria-label="날짜" />
-      <UIDateTimePickerTimeInput aria-label="시간" />
-      <UIDateTimePickerTrigger aria-label="날짜 선택 창 열기"><CalendarDays :size="18" /></UIDateTimePickerTrigger>
-    </UIDateTimePickerAnchor>
-    <UIDateTimePickerPortal>
-      <UIDateTimePickerContent>
-        <header>
-          <UIDateTimePickerPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" /></UIDateTimePickerPreviousMonth>
-          <strong>{{ display.yearMonth(view) }}</strong>
-          <UIDateTimePickerNextMonth aria-label="다음 달"><ChevronRight :size="16" /></UIDateTimePickerNextMonth>
-        </header>
-        <UIDateTimePickerGrid>
-          <UIDateTimePickerCell v-for="day in dates.flat()" :key="[day.year, day.month, day.day].join('-')" :value="day">
-            {{ display.day(day) }}
-          </UIDateTimePickerCell>
-        </UIDateTimePickerGrid>
-      </UIDateTimePickerContent>
-    </UIDateTimePickerPortal>
-  </UIDateTimePicker>
+  <UIDateTimePicker v-model="appointment" label="예약 일시" portal />
 </template>

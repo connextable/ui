@@ -1,39 +1,24 @@
 <script setup lang="ts">
-import { UITreeSelect, UITreeSelectContent, UITreeSelectDisclosure, UITreeSelectField, UITreeSelectGroup, UITreeSelectItem } from "@connextable/ui";
-import { Check, Folder, Users } from "@lucide/vue";
+import { UITreeSelect } from "@connextable/ui";
+import { ref } from "vue";
 
 const nodes = [
-  { id: "design", parentID: null },
-  { id: "ui", parentID: "design" },
-  { id: "development", parentID: null },
-  { id: "web", parentID: "development" },
-] as const;
-const disabledItems = ["design", "ui"] as const;
-const labels = { design: "디자인", ui: "화면", development: "개발", web: "웹" };
+  { id: "design", parentID: null, label: "디자인 (잠김)" },
+  { id: "ui", parentID: "design", label: "화면" },
+  { id: "development", parentID: null, label: "개발" },
+  { id: "web", parentID: "development", label: "웹" },
+];
+const disabledTeams = ["design", "ui"];
+const teams = ref<readonly string[]>([]);
 </script>
 
 <template>
-  <UITreeSelect :nodes="nodes" :disabled-items="disabledItems" :default-expanded-values="['development']" v-slot="{ value, query }">
-    <UITreeSelectField aria-label="이동할 팀 선택" placeholder="이동할 팀" :query="query" :display-value="value[0] ? labels[value[0]] : ''" />
-    <UITreeSelectContent>
-      <UITreeSelectItem value="design">
-        <UITreeSelectDisclosure for="design" as="button" aria-label="디자인 하위 팀 펼치기 또는 접기" />
-        <Folder :size="16" aria-hidden="true" /> {{ labels.design }} (잠김)
-      </UITreeSelectItem>
-      <UITreeSelectGroup for="design">
-        <UITreeSelectItem value="ui"><Users :size="16" aria-hidden="true" /> {{ labels.ui }}</UITreeSelectItem>
-      </UITreeSelectGroup>
-      <UITreeSelectItem value="development">
-        <UITreeSelectDisclosure for="development" as="button" aria-label="개발 하위 팀 펼치기 또는 접기" />
-        <Folder :size="16" aria-hidden="true" /> {{ labels.development }}
-        <Check v-if="value.includes('development')" :size="16" aria-hidden="true" />
-      </UITreeSelectItem>
-      <UITreeSelectGroup for="development">
-        <UITreeSelectItem value="web">
-          <Users :size="16" aria-hidden="true" /> {{ labels.web }}
-          <Check v-if="value.includes('web')" :size="16" aria-hidden="true" />
-        </UITreeSelectItem>
-      </UITreeSelectGroup>
-    </UITreeSelectContent>
-  </UITreeSelect>
+  <UITreeSelect
+    v-model="teams"
+    :nodes="nodes"
+    :disabled-items="disabledTeams"
+    :default-expanded-values="['development']"
+    label="이동할 팀 선택"
+    placeholder="이동할 팀"
+  />
 </template>
