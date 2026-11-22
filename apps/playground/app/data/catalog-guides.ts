@@ -877,7 +877,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "태그 입력 및 삭제",
     description: "Enter로 태그를 추가하고, 칩의 삭제 버튼이나 키보드로 지울 수 있습니다.",
     api: {
-      "v-model": "태그 배열을 외부에서 관리합니다. 여러 태그 붙여넣기와 순서 변경을 활성화할 때 사용합니다.",
+      "v-model": "태그 배열을 외부에서 읽거나 변경합니다.",
       "v-model:input-value": "아직 등록하지 않은 입력 내용을 연결합니다.",
       placeholder: { type: "string", default: "태그 추가", description: "추가할 태그의 입력창이 비었을 때 표시합니다.", example: { id: "basic-example", title: "태그 입력 및 삭제" } },
       clearable: "등록한 모든 태그를 지우는 버튼을 표시합니다.",

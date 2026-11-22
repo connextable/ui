@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import CompositeFieldsExample from "~/components/form/CompositeFieldsExample.vue";
+import compositeFieldsSource from "~/components/form/CompositeFieldsExample.vue?example-code&raw";
 import FormServerErrorExample from "~/components/form/FormServerErrorExample.vue";
 import FormServerErrorExampleSource from "~/components/form/FormServerErrorExample.vue?example-code&raw";
 import FormRevalidationExample from "~/components/form/FormRevalidationExample.vue";
@@ -60,6 +62,14 @@ definePageMeta({
         :source="requiredSource"
       >
         <RequiredFieldExample />
+      </PlaygroundExample>
+      <PlaygroundExample :heading-level="3"
+        id="composite-fields"
+        title="복합 입력 검증과 제출"
+        description="빈 폼을 확정하면 입력별 필수 조건을 확인할 수 있습니다. 값을 채우고 확정하면 실제 제출값을 확인합니다. 초기화를 누르면 입력 상태가 기본값으로 돌아갑니다."
+        :source="compositeFieldsSource"
+      >
+        <CompositeFieldsExample />
       </PlaygroundExample>
       <PlaygroundExample :heading-level="3"
         id="UIFormFieldGroup"
