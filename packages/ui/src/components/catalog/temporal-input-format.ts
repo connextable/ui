@@ -2,8 +2,11 @@ import { okResult } from "@sectile/core/result";
 import { createDateFieldFormat, type DateFieldFormat, type DateFieldFormatOptions } from "@sectile/temporal/date-field";
 import { createDateTimeFieldFormat, type DateTimeFieldFormatOptions } from "@sectile/temporal/date-time-field";
 import { createTimeFieldFormat, type TimeFieldFormat, type TimeFieldHourCycle, type TimeFieldPrecision } from "@sectile/temporal/time-field";
-import { useTemporalFormatter, useTemporalReferenceDate, type TemporalFormatter } from "@sectile/vue/temporal/temporal-provider";
-import { computed, defineComponent, getCurrentInstance, inject, provide, type ComponentInternalInstance, type ComputedRef, type InjectionKey, type PropType } from "vue";
+import type { DateTimePickerRoot, DateTimePickerRootSlotProps } from "@sectile/vue/temporal/date-time-picker";
+import type { DateTimeRangePickerRoot, DateTimeRangePickerRootSlotProps } from "@sectile/vue/temporal/date-time-range-picker";
+import { TemporalProvider, useTemporalFormatter, useTemporalReferenceDate, type TemporalFormatter } from "@sectile/vue/temporal/temporal-provider";
+import { computed, defineComponent, getCurrentInstance, h, inject, provide, type Component, type ComponentInternalInstance, type ComputedRef, type InjectionKey, type PropType } from "vue";
+import { defaultTemporalFormatting } from "./temporal-display";
 
 export interface UITemporalInputFormats {
   date?: {
@@ -114,8 +117,8 @@ function provideTemporalFormatter(transform: (formatter: TemporalFormatter) => T
   const formatter = useTemporalFormatter();
   const referenceDate = useTemporalReferenceDate();
   let provider = (getCurrentInstance()?.parent as ProviderInstance | undefined)?.provides;
-  // Sectile 0.21 keeps this injection key private. Match the public refs of
-  // the nearest scope and preserve the rest of its context.
+  // Vue's TemporalProvider accepts locale and time zone. Combined and time
+  // fields still read custom editing formats through its formatter.
   while (provider) {
     const context = provider;
     const key = Object.getOwnPropertySymbols(context).find(symbol =>
@@ -132,7 +135,7 @@ function provideTemporalFormatter(transform: (formatter: TemporalFormatter) => T
   return false;
 }
 
-export const TemporalFormatterScope = defineComponent({
+const TemporalFormatterScope = defineComponent({
   props: {
     transform: { type: Function as PropType<(formatter: TemporalFormatter) => TemporalFormatter>, required: true },
   },
@@ -154,3 +157,40 @@ export const TemporalInputFormatProvider = defineComponent({
     };
   },
 });
+
+type DateTimeRoot = typeof DateTimePickerRoot | typeof DateTimeRangePickerRoot;
+type PickerWithInputPrecision<Root extends DateTimeRoot> = new () => Omit<InstanceType<Root>, "$props"> & {
+  $props: InstanceType<Root>["$props"] & { timePrecision?: TimeFieldPrecision };
+};
+
+export function withPickerInputPrecision<Root extends DateTimeRoot>(root: Root): PickerWithInputPrecision<Root> {
+  return defineComponent({
+    inheritAttrs: false,
+    props: { timePrecision: String as PropType<TimeFieldPrecision> },
+    setup(props, { attrs, slots }) {
+      const formatter = useTemporalFormatter();
+      const renderWithInputPrecision = () => h(TemporalFormatterScope, {
+        transform: base => ({
+          ...base,
+          // The native picker inputs request the Provider's millisecond format.
+          timeFieldFormat: precision => base.timeFieldFormat(precision === "millisecond" ? props.timePrecision : precision),
+          dateTimeFieldFormat: precision => base.dateTimeFieldFormat(precision === "millisecond" ? props.timePrecision : precision),
+        }),
+      }, {
+        default: (inherited: ReturnType<typeof useTemporalFormatter>) => h(root as Component, attrs, {
+          ...slots,
+          default: (state: DateTimePickerRootSlotProps | DateTimeRangePickerRootSlotProps) => h(TemporalFormatterScope, {
+            transform: base => inherited.value ?? base,
+          }, { default: () => slots.default?.(state) }),
+        }),
+      });
+
+      return () => {
+        if (!props.timePrecision) return h(root as Component, attrs, slots);
+        return formatter.value ? renderWithInputPrecision() : h(TemporalProvider, {
+          formatting: defaultTemporalFormatting,
+        }, { default: renderWithInputPrecision });
+      };
+    },
+  }) as unknown as PickerWithInputPrecision<Root>;
+}

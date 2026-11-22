@@ -143,7 +143,7 @@ input.ui-temporal-input {
   > :where(header, nav, p, output) { justify-self: stretch; }
 }
 
-.ui-temporal-picker__time-range:not([hidden]) {
+.ui-temporal-picker__with-time:not([hidden]) {
   display: grid;
   grid-template-areas: "start calendar end";
   grid-template-columns: max-content minmax(0, 20rem) max-content;
@@ -151,9 +151,14 @@ input.ui-temporal-input {
   inline-size: max-content;
   max-inline-size: min(calc(100dvw - 1rem), var(--sectile-position-available-width, 100dvw));
   padding: var(--ui-space-md);
+
+  &[data-time-layout="single"] {
+    grid-template-areas: "calendar end";
+    grid-template-columns: minmax(0, 20rem) max-content;
+  }
 }
 
-.ui-temporal-picker__time-range > .ui-temporal-picker__calendar {
+.ui-temporal-picker__with-time > .ui-temporal-picker__calendar {
   grid-area: calendar;
   align-self: start;
 }
@@ -177,18 +182,39 @@ input.ui-temporal-input {
 }
 
 @media (width > 42rem) {
-  .ui-temporal-picker__time-range .ui-temporal-picker__time .ui-time-picker-column__viewport > [role="listbox"] {
+  .ui-temporal-picker__with-time .ui-temporal-picker__time .ui-time-picker-column__viewport > [role="listbox"] {
     contain: size;
     max-block-size: none;
   }
 }
 
 @media (width <= 42rem) {
-  .ui-temporal-picker__time-range:not([hidden]) {
+  .ui-temporal-picker__with-time:not([hidden]) {
     grid-template-areas: "calendar calendar" "start end";
     grid-template-columns: repeat(2, minmax(0, 1fr));
     inline-size: min(22rem, calc(100dvw - 1rem));
     max-block-size: min(38rem, var(--sectile-position-available-height, 85dvh));
+
+    &[data-time-layout="single"] {
+      grid-template-areas: "calendar" "end";
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}
+
+[data-part="time-choices"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: var(--ui-space-xs);
+
+  > [role="status"] {
+    flex-basis: 100%;
+  }
+
+  > [role="status"]:empty {
+    position: absolute;
   }
 }
 

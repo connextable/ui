@@ -37,9 +37,33 @@ test("calendar and picker roots provide interactive parts without a default slot
   assert.equal([...range.matchAll(/role="listbox"/g)].length, 4);
   assert.match(range, /09:30/);
   assert.match(range, /17:30/);
+  const emptyRange = await render(UIDateTimeRangePicker, { defaultOpen: true });
+  assert.equal([...emptyRange.matchAll(/role="listbox"/g)].length, 4);
+  const appointment = await render(UIDateTimePicker, { defaultValue: dateTime, defaultOpen: true });
+  assert.equal([...appointment.matchAll(/role="listbox"/g)].length, 2);
+  const dateOnlyPopup = await render(UIDateTimePicker, { defaultValue: dateTime, defaultOpen: true, timeChoices: false });
+  assert.doesNotMatch(dateOnlyPopup, /role="listbox"/);
   const clock = await render(UITimePicker, { defaultValue: time, defaultOpen: true });
   assert.match(clock, /aria-haspopup="dialog"/);
   assert.match(clock, /role="listbox"/);
+});
+
+test("month and year pickers can expose native editable text without changing their summary defaults", async () => {
+  for (const [component, modelValue, values] of [
+    [UIMonthPicker, date, ["2026-08"]],
+    [UIMonthRangePicker, dates, ["2026-08", "2026-08"]],
+    [UIYearPicker, date, ["2026"]],
+    [UIYearRangePicker, dates, ["2026", "2026"]],
+  ]) {
+    const editable = await render(component, { editable: true, modelValue });
+    const inputs = [...editable.matchAll(/<input\b[^>]*type="text"[^>]*>/g)].map(match => match[0]);
+    assert.equal(inputs.length, values.length);
+    for (const [index, input] of inputs.entries()) {
+      assert.doesNotMatch(input, /\s(?:hidden|readonly)(?=[\s=>])/);
+      assert.ok(input.includes(`value="${values[index]}"`), input);
+    }
+    assert.match(await render(component, { modelValue }), /<input[^>]+\shidden/);
+  }
 });
 
 test("inline calendars include year/month navigation and opt in to independent time models", async () => {

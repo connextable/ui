@@ -211,7 +211,7 @@
       border-end-end-radius: 0;
     }
 
-    > :where([data-ui-range-edge], [data-ui-range-anchor]):not([aria-disabled="true"]) {
+    > [data-selected]:not([aria-disabled="true"]) {
       background: var(--ui-color-accent);
       color: var(--ui-color-on-accent);
 

@@ -12,8 +12,7 @@ import { MonthPickerCell } from "@sectile/vue/temporal/month-picker";
 import { YearPickerCell, YearPickerNextPage, YearPickerPreviousPage } from "@sectile/vue/temporal/year-picker";
 import { compareDateValues, type DateRange, type DateValue } from "@sectile/temporal/date-field";
 import type { DateTimeRange, DateTimeValue } from "@sectile/temporal/date-time-field";
-import { applyDateTimeRangePickerEvent, createDateTimeRangePickerState, type DateTimeRangePickerPolicies } from "@sectile/temporal/date-time-range-picker";
-import { compareTimeValues, type TimeFieldPolicies, type TimeFieldPrecision, type TimeValue } from "@sectile/temporal/time-field";
+import type { TimeFieldPolicies, TimeFieldPrecision, TimeValue } from "@sectile/temporal/time-field";
 import { defineComponent, h, shallowRef, type Component, type PropType } from "vue";
 import { controlFlag } from "../clear/clearable";
 import { definedControlAttrs, inputStateAttrs } from "../control-attrs";
@@ -37,6 +36,7 @@ interface CalendarComposition {
   monthCell?: Component;
   yearCell?: Component;
   timePicker?: Component;
+  timeChoices?: Component;
   inlineTime?: "single" | "range";
   summary?: boolean;
 }
@@ -57,6 +57,8 @@ export type RangeCalendarTimeModels = CalendarTimeProps & {
   "onUpdate:startTime"?: (time: TimeValue | null) => void;
   "onUpdate:endTime"?: (time: TimeValue | null) => void;
 };
+
+export type EditableDatePickerOptions = { editable?: boolean };
 
 export type CalendarFormComponent<Root, Extra = object> = Root extends abstract new (...args: never[]) => infer Instance
   ? Instance extends { $props: infer Props }
@@ -87,19 +89,6 @@ const translations = {
   },
 };
 
-function rangeTimeBounds(range: DateTimeRange, endpoint: "start" | "end", policies?: DateTimeRangePickerPolicies) {
-  const date = range[endpoint].date;
-  const sameDay = compareDateValues(range.start.date, range.end.date) === 0;
-  const limits = endpoint === "start" ? policies?.startTime : policies?.endTime;
-  const minimums = [limits?.min, sameDay && endpoint === "end" ? range.start.time : undefined];
-  const maximums = [limits?.max, sameDay && endpoint === "start" ? range.end.time : undefined];
-  if (policies?.min && compareDateValues(date, policies.min.date) === 0) minimums.push(policies.min.time);
-  if (policies?.max && compareDateValues(date, policies.max.date) === 0) maximums.push(policies.max.time);
-  const min = minimums.filter((time): time is TimeValue => time !== undefined).sort(compareTimeValues).at(-1);
-  const max = maximums.filter((time): time is TimeValue => time !== undefined).sort(compareTimeValues)[0];
-  return { min, max };
-}
-
 const CalendarTimeControl = defineComponent({
   inheritAttrs: false,
   props: { picker: { type: [Object, Function] as PropType<Component>, required: true } },
@@ -110,7 +99,8 @@ const CalendarTimeControl = defineComponent({
 });
 
 export function withCalendarDefaults<Root extends Component, Extra = object>(root: Root, options: CalendarComposition): CalendarFormComponent<Root, Extra> {
-  const { kind = "day", anchor, content = DatePickerContent, inputs = [], grid = DatePickerGrid, cell = DatePickerCell, monthCell, yearCell, timePicker, inlineTime } = options;
+  const { kind = "day", anchor, content = DatePickerContent, inputs = [], grid = DatePickerGrid, cell = DatePickerCell, monthCell, yearCell, timePicker, timeChoices, inlineTime } = options;
+  const range = inputs.length === 2 && kind !== "date-time";
   const metadata = root as Root & { __sectileFormLabelMode?: "for" | "labelledby" };
   return defineComponent({
     inheritAttrs: false,
@@ -122,6 +112,8 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
       startTime: Object as PropType<TimeValue | null>,
       endTime: Object as PropType<TimeValue | null>,
       timePolicies: Object as PropType<TimeFieldPolicies>,
+      timeChoices: { type: Boolean, default: true },
+      editable: Boolean,
     },
     emits: ["update:highlightedValue", "update:time", "update:startTime", "update:endTime"],
     setup(props, { attrs, slots, emit }) {
@@ -197,11 +189,11 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
 
       function renderDefault(state: State) {
         const labels = display.locale.value.startsWith("ko") ? translations.ko : translations.en;
-        const range = inputs.length === 2 && kind !== "date-time";
         const groupLabel = kind === "date-time" ? labels.dateTime : kind === "date-time-range" ? labels.dateTimeRange
           : range ? (kind === "day" ? labels.range : `${labels[kind]} ${labels.rangeUnit}`) : labels[kind];
         const triggerLabel = `${String(attrs.label ?? groupLabel)} ${labels.open}`;
         const granularity = kind === "month" || kind === "year" ? kind : "day";
+        const summary = options.summary && !(kind !== "date-time-range" && props.editable);
         const placeholder = `${groupLabel} ${labels.choose}`;
         const renderInputs = () => inputs.map((input, index) => {
           const segment = kind === "date-time" ? (index ? "time" : "date") : range ? (index ? "end" : "start") : undefined;
@@ -210,7 +202,7 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
             : range ? `${index ? labels.end : labels.start} ${granularity === "day" ? labels.day : labels[granularity]}` : groupLabel;
           return h(input, {
             ...definedControlAttrs({ name, form: props.form }),
-            hidden: options.summary || !anchor || undefined,
+            hidden: summary || !anchor || undefined,
             "aria-label": label,
           });
         });
@@ -226,7 +218,7 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
             start || end ? h("div", { class: "ui-calendar-time-range" }, [start, end]) : undefined,
           ]);
         }
-        const value = !options.summary ? undefined : kind === "date-time-range"
+        const value = !summary ? undefined : kind === "date-time-range"
           ? h(UIDateTimeRangePickerValue, {
             value: state.value as DateTimeRange | null,
             startPlaceholder: `${labels.start} ${labels.dateTime}`, endPlaceholder: `${labels.end} ${labels.dateTime}`,
@@ -237,26 +229,13 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
           })
             : h(UIDatePickerValue, { value: state.value as DateValue | null, granularity, placeholder });
 
-        const selectedRange = timePicker && state.open ? state.value as DateTimeRange | null : null;
-        function renderTime(endpoint: "start" | "end") {
-          if (!timePicker || !selectedRange) return;
-          const policies = attrs.policies as DateTimeRangePickerPolicies | undefined;
-          const label = `${labels[endpoint]} ${labels.time}`;
-          return h("div", { class: "ui-temporal-picker__time", "data-endpoint": endpoint }, [
-            h("span", { class: "ui-field-label" }, label),
-            h(CalendarTimeControl, {
-              picker: timePicker, label, modelValue: selectedRange[endpoint].time, disabled: state.disabled, readonly: state.readonly,
-              precision: attrs.timePrecision ?? attrs["time-precision"] ?? "minute",
-              policies: rangeTimeBounds(selectedRange, endpoint, policies),
-              "onUpdate:modelValue": (time: TimeValue | null) => {
-                if (!time) return;
-                const update = attrs["onUpdate:modelValue"] as ((value: DateTimeRange) => void) | undefined;
-                const result = applyDateTimeRangePickerEvent(createDateTimeRangePickerState({ value: selectedRange }), {
-                  type: endpoint === "start" ? "set-start-time" : "set-end-time", value: time,
-                }, policies);
-                if (result.ok && result.value.state.value) update?.(result.value.state.value);
-              },
-            }),
+        const showTimes = timeChoices && props.timeChoices && state.open;
+        function renderTime(endpoint?: "start" | "end") {
+          if (!showTimes || !timeChoices) return;
+          const label = endpoint ? `${labels[endpoint]} ${labels.time}` : labels.time;
+          return h("div", { class: "ui-temporal-picker__time", "data-endpoint": endpoint ?? "end" }, [
+            h("span", { class: "ui-field-label", "aria-hidden": true }, label),
+            h(timeChoices, { label, endpoint, precision: attrs.timePrecision ?? attrs["time-precision"] ?? "minute" }),
           ]);
         }
         return [
@@ -265,10 +244,11 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
             value,
             h(DatePickerTrigger, { "aria-label": triggerLabel }, () => h(CalendarDays, { size: 18, "aria-hidden": true })),
           ]),
-          h(DatePickerContent, {
+          h(content, {
             "aria-label": groupLabel,
-            class: selectedRange ? "ui-temporal-picker__time-range" : undefined,
-          }, () => [renderTime("start"), calendar(state, labels), renderTime("end")]),
+            class: showTimes ? "ui-temporal-picker__with-time" : undefined,
+            "data-time-layout": showTimes ? range ? "range" : "single" : undefined,
+          }, () => [range ? renderTime("start") : undefined, calendar(state, labels), renderTime(range ? "end" : undefined)]),
         ];
       }
 

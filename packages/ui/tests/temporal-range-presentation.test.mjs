@@ -13,19 +13,19 @@ test("period ranges mark their actual endpoints in the initial calendar", async 
       Root: UIMonthRangePicker, Content: UIMonthRangePickerContent, Grid: UIMonthRangePickerGrid, Cell: UIMonthRangePickerCell,
       periods: "months", idOf: period => `month-${period.month}`,
       value: { start: { year: 2026, month: 1, day: 1 }, end: { year: 2026, month: 11, day: 1 } },
-      expected: [["month-1", "start"], ["month-11", "end"], ["month-10", undefined]],
+      expected: [["month-1", true], ["month-11", true], ["month-10", false]],
     },
     {
       Root: UIYearRangePicker, Content: UIYearRangePickerContent, Grid: UIYearRangePickerGrid, Cell: UIYearRangePickerCell,
       periods: "years", idOf: period => `year-${period.year}`,
       value: { start: { year: 2026, month: 1, day: 1 }, end: { year: 2026, month: 1, day: 1 } },
-      expected: [["year-2026", "both"], ["year-2027", undefined]],
+      expected: [["year-2026", true], ["year-2027", false]],
     },
     {
       Root: UIYearRangePicker, Content: UIYearRangePickerContent, Grid: UIYearRangePickerGrid, Cell: UIYearRangePickerCell,
       periods: "years", idOf: period => `year-${period.year}`,
       value: { start: { year: 2026, month: 1, day: 1 }, end: { year: 2045, month: 1, day: 1 } },
-      expected: [["year-2026", "start"], ["year-2031", undefined]],
+      expected: [["year-2026", true], ["year-2031", false]],
     },
   ];
 
@@ -41,10 +41,10 @@ test("period ranges mark their actual endpoints in the initial calendar", async 
       }),
     }));
 
-    for (const [id, edge] of expected) {
+    for (const [id, selected] of expected) {
       const cell = html.match(new RegExp(`<button\\b[^>]*\\bid="${id}"[^>]*>`))?.[0];
       assert.ok(cell, id);
-      assert.equal(cell.match(/data-ui-range-edge="([^"]*)"/)?.[1], edge, id);
+      assert.equal(/\bdata-selected(?=[\s=>])/.test(cell), selected, id);
     }
   }
 });

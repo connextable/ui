@@ -1,13 +1,14 @@
-import { createDateFieldFormat, formatDateFieldValue, parseDateFieldValue } from "@sectile/temporal/date-field";
+import { createDateFieldFormat, formatDateFieldValue, parseDateFieldValue, type DateFieldFormat, type DateFieldGranularity } from "@sectile/temporal/date-field";
 import { createTimeFieldFormat, formatTimeFieldValue, parseTimeFieldValue, type TimeFieldPrecision } from "@sectile/temporal/time-field";
 import { createDateTimeFieldFormat, formatDateTimeFieldValue, parseDateTimeFieldValue } from "@sectile/temporal/date-time-field";
 import { provideFormControlReset } from "@sectile/vue/form-boundary";
 import { useTemporalFormatter } from "@sectile/vue/temporal/temporal-provider";
-import { defineComponent, h, mergeProps, shallowRef, type Component } from "vue";
+import { computed, defineComponent, h, inject, mergeProps, provide, shallowRef, type Component, type ComputedRef, type InjectionKey } from "vue";
 import { useFieldClear } from "../clear/clearable";
 
 type TemporalInputKind = "date" | "date-time-date" | "time" | "date-time-time" | "date-time";
 type Formatter = ReturnType<typeof useTemporalFormatter>["value"];
+const dateEditingFormatKey: InjectionKey<ComputedRef<DateFieldFormat | undefined>> = Symbol("UIDateEditingFormat");
 
 const fieldAppearance = {
   class: "ui-field-control ui-temporal-input",
@@ -50,13 +51,13 @@ function resolvedFormat<T>(result: { ok: true; value: T } | { ok: false } | unde
   return result?.ok ? result.value : undefined;
 }
 
-function normalize(text: string, kind: TemporalInputKind, precision: TimeFieldPrecision, formatter: Formatter) {
+function normalize(text: string, kind: TemporalInputKind, precision: TimeFieldPrecision, formatter: Formatter, dateFormat?: DateFieldFormat) {
   const input = text.normalize("NFKC").trim();
   const date = datePrefix(input);
   if (kind === "date" || kind === "date-time-date") {
     const format = kind === "date-time-date"
       ? resolvedFormat(formatter?.dateTimeFieldFormat("millisecond"))?.date
-      : resolvedFormat(formatter?.dateFieldFormat());
+      : dateFormat ?? resolvedFormat(formatter?.dateFieldFormat());
     if (parseDateFieldValue(text, format).ok) return text;
     if (input !== text && parseDateFieldValue(input, format).ok) return input;
     return date && /^[.\s]*$/.test(date.tail) ? formatDateFieldValue(date.date, format) : undefined;
@@ -87,10 +88,22 @@ function normalize(text: string, kind: TemporalInputKind, precision: TimeFieldPr
   return date && fitsPrecision && time ? formatDateTimeFieldValue({ date: date.date, time }, dateTimeFormat) : undefined;
 }
 
+export function withDateEditingFormat<T extends Component>(part: T): T {
+  const metadata = part as T & { __sectileFormLabelMode?: "for" | "labelledby" };
+  return defineComponent({
+    inheritAttrs: false,
+    __sectileFormLabelMode: metadata.__sectileFormLabelMode,
+    setup(_, { attrs, slots }) {
+      provide(dateEditingFormatKey, computed(() => attrs.format as DateFieldFormat | undefined));
+      return () => h(part, attrs, slots);
+    },
+  }) as unknown as T;
+}
+
 export function withTemporalEditing<T extends Component>(
   part: T,
   kind: TemporalInputKind,
-  { reconnectFormReset, ...defaults }: { precision?: TimeFieldPrecision; reconnectFormReset?: boolean } = {},
+  { reconnectFormReset, dateFormatFromParent, ...defaults }: { precision?: TimeFieldPrecision; reconnectFormReset?: boolean; dateFormatFromParent?: boolean } = {},
 ): T {
   const metadata = part as T & { __sectileFormLabelMode?: "labelledby"; __sectileSubmissionPart?: number };
   return defineComponent({
@@ -103,6 +116,7 @@ export function withTemporalEditing<T extends Component>(
         if (reset) provideFormControlReset(reset);
       }
       const formatter = useTemporalFormatter();
+      const parentDateFormat = dateFormatFromParent ? inject(dateEditingFormatKey, undefined) : undefined;
       const control = shallowRef<{ element?: HTMLInputElement; $el?: unknown }>();
       const element = () => control.value?.element ?? (control.value?.$el instanceof HTMLInputElement ? control.value.$el : null);
       expose({
@@ -112,11 +126,13 @@ export function withTemporalEditing<T extends Component>(
       });
 
       function normalizeText(input: HTMLInputElement, text: string) {
+        const granularity = attrs.granularity as DateFieldGranularity | undefined;
+        if (granularity === "month" || granularity === "year") return;
         const configured = attrs.precision;
         const precision = configured === "minute" || configured === "second" || configured === "millisecond" ? configured
           : input.placeholder.includes("SSS") ? "millisecond"
           : input.placeholder.includes("ss") ? "second" : "minute";
-        return normalize(text, kind, precision, formatter.value);
+        return normalize(text, kind, precision, formatter.value, (attrs.format as DateFieldFormat | undefined) ?? parentDateFormat?.value);
       }
 
       function editableInput(event: Event) {

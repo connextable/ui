@@ -3,7 +3,7 @@ import test from "node:test";
 import { createSSRApp, h } from "vue";
 import { renderToString } from "vue/server-renderer";
 import {
-  UIDateField, UIDateRangeField, UIDateRangeFieldStartInput, UIDateRangeFieldEndInput,
+  createUIDateFieldFormat, UIDateField, UIDatePicker, UIDatePickerInput, UIDateRangeField, UIDateRangeFieldStartInput, UIDateRangeFieldEndInput,
   UIDateTimeField, UIDateTimePicker, UIDateTimePickerDateInput, UIDateTimePickerTimeInput,
   UIDateTimeRangePicker, UIDateTimeRangePickerStartTimeInput, UIDateTimeRangePickerEndTimeInput,
   UITemporalProvider, UITimeField, UITimePicker, UITimePickerInput,
@@ -26,6 +26,19 @@ function assertInput(html, id, value, placeholder) {
   assert.ok(input.includes(`value="${value}"`), input);
   if (placeholder) assert.ok(input.includes(`placeholder="${placeholder}"`), input);
 }
+
+test("explicit date formats take precedence over Provider formats", async () => {
+  const format = createUIDateFieldFormat({ order: ["month", "day", "year"], literals: ["", "-", "-", ""] });
+  const html = await renderToString(createSSRApp({
+    render: () => h(UITemporalProvider, { inputFormats }, () => [
+      h(UIDateField, { id: "field-format", defaultValue: date, format }),
+      h(UIDateRangeField, { defaultValue: { start: date, end: date }, format }, () =>
+        h(UIDateRangeFieldStartInput, { id: "range-format" })),
+      h(UIDatePicker, { defaultValue: date, format }, () => h(UIDatePickerInput, { id: "picker-format" })),
+    ]),
+  }));
+  for (const id of ["field-format", "range-format", "picker-format"]) assertInput(html, id, "08-22-2026", "MM-DD-YYYY");
+});
 
 test("custom formats reach the SSR input values and placeholders of fields and pickers", async () => {
   const html = await renderToString(createSSRApp({
