@@ -21,6 +21,11 @@
 - 공통 프레임에서 카탈로그 예제가 헤더와 푸터를 채울 수 있고, 정적·실시간 코드를 동일한 버튼으로 복사할 수 있다. 브라우저에서 두 종류의 클립보드 결과를 코드 영역과 대조했다.
 - 툴바의 가로 서식 적용, 세로 방향키 이동, 비활성 도구 건너뛰기, 복제 결과를 확인했다. 첫 코드에서 공통 레이아웃과 푸터를 제외한 Vue SFC를 확인했다.
 - 입력의 크기·모양·초기화·비활성 설정을 바꿨을 때 동작과 코드가 일치했다. 편집과 초기화 결과, 읽기 전용과 오류 상태, 폼 제출을 브라우저에서 확인했다.
+- 인라인 편집에서 Enter 확정, Escape 취소, 포커스 이탈 확정, 읽기 전용, 짧은 초안의 검증과 재확정을 확인했다.
+- 인증 코드에서 자리 수 변경, 마스킹, 붙여넣기, 완료, 초기화를 확인했다. 이미 채운 코드의 세 번째 칸을 선택해 `2846`을 `2896`으로 수정했다.
+- 태그 입력의 칩과 입력 표면 색상이 구분되고 개별 추가·삭제 및 중복 제외 붙여넣기가 동작한다. 제어 모드의 기본 전체 지우기는 모든 태그를 한 번에 비우고 입력으로 포커스를 돌려준다. 사용자 정의 `UITagsInputClear` 구성의 제어 모드와 실제 IME 합성 입력은 후속 검증에 남겨 두었다.
+- 숫자 입력에서 소수 확정과 지우기, 상한 초과 시 이전 확정값 유지, 폼에서 단위 없는 숫자 제출을 확인했다.
+- 증감 버튼은 배치와 증분 변경, 방향키, Page Up, 최솟값을 확인했다. 수량 필드는 `1.25 m`를 `125 cm`로 표시하고, `150 cm`를 입력하면 모델에 `1.5 m`가 확정되는 것을 확인했다.
 
 ## 공통 완료 조건
 
@@ -32,9 +37,9 @@
 
 ## 색인에서 확인할 공개 API
 
-- 선택·폼: `UICheckboxTreeIndicator`, `UIClearButton`, `UIFieldClear`, `UIRadioGroupItem`, `UIRadioGroupIndicator`, `UIFormDescription`, `UIFormLabel`, `UIFormMessage`
-- 날짜·진행 상태: `UIDatePickerValue`, `UIProgressIndicator`, `UIProgressTrack`, `UIProgressValueText`
-- 표: `UITabularColumnAction`, `UITabularColumnHeading`, `UITabularFilterPopover`
+- 선택·폼의 `UICheckboxTreeIndicator`, `UIClearButton`, `UIFieldClear`, `UIRadioGroupItem`, `UIRadioGroupIndicator`, `UIFormDescription`, `UIFormLabel`, `UIFormMessage`
+- 날짜·진행 상태의 `UIDatePickerValue`, `UIProgressIndicator`, `UIProgressTrack`, `UIProgressValueText`
+- 표의 `UITabularColumnAction`, `UITabularColumnHeading`, `UITabularFilterPopover`
 
 ## 컴포넌트별 완료 조건
 
@@ -45,12 +50,12 @@
 - [ ] `UIToggleButton` · 눌림 상태, 앞뒤 아이콘, 폼 안 동작
 - [x] `UIToolbar` · 가로·세로, 구분선, 비활성, 방향키 이동
 - [x] `UIInput` · 모델, 아이콘과 초기화, 오류, 읽기 전용, 폼 제출
-- [ ] `UIEditable` · 편집과 확정, Escape·blur, 검증
-- [ ] `UIPinInput` · 길이, 마스킹, 붙여넣기, 완료와 수정
+- [x] `UIEditable` · 편집과 확정, Escape·blur, 검증
+- [x] `UIPinInput` · 길이, 마스킹, 붙여넣기, 완료와 수정
 - [ ] `UITagsInput` · 칩 표면 대비, 추가·삭제·초기화, 붙여넣기와 중복·IME
-- [ ] `UINumberField` · 빈 값, 소수, 범위, 읽기 전용, 편집·제출
-- [ ] `UISpinButton` · 증분, 큰 단위 이동, 범위, 키보드
-- [ ] `UIQuantityField` · 단위 props, 표시 단위 전환, 확정값 출력
+- [x] `UINumberField` · 빈 값, 소수, 범위, 읽기 전용, 편집·제출
+- [x] `UISpinButton` · 증분, 큰 단위 이동, 범위, 키보드
+- [x] `UIQuantityField` · 단위 props, 표시 단위 전환, 확정값 출력
 - [ ] `UISlider` · 방향, 증분, 읽기 전용, 키보드, 값 표시
 - [ ] `UIMultiThumbSlider` · 손잡이 사이 채움, 최소 간격, 겹친 끝점, 세로 높이
 - [ ] `UIFileInput` · 단일·다중, 드롭·붙여넣기, 삭제, 개수·총합 제한

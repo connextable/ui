@@ -7,8 +7,8 @@ const policies = { maxTags: 2 };
 </script>
 
 <template>
-  <div class="ui-field-layout">
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
     <UITagsInput v-model="topics" :policies="policies" label="주제" placeholder="주제 추가" />
-    <output>{{ topics.length }} / 2개</output>
-  </div>
+    <template #footer><output>{{ topics.length }} / {{ policies.maxTags }}개</output></template>
+  </PlaygroundExample>
 </template>

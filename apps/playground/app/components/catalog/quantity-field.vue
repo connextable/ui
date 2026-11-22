@@ -6,5 +6,8 @@ const length = ref<{ value: string; unit: string } | null>({ value: "1.25", unit
 </script>
 
 <template>
-  <UIQuantityField v-model="length" unit="metre" unit-system="metric" label="길이" />
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIQuantityField v-model="length" unit="metre" unit-system="metric" label="길이" />
+    <template #footer><output>확정한 길이 · {{ length ? `${length.value} m` : "없음" }}</output></template>
+  </PlaygroundExample>
 </template>

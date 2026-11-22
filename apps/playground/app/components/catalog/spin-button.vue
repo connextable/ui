@@ -1,22 +1,47 @@
 <script setup lang="ts">
-import { UISpinButton } from "@connextable/ui";
-import { ref, useId } from "vue";
+import { UISelect, UISpinButton } from "@connextable/ui";
+import { computed, ref, watch } from "vue";
+import { vueExampleCode } from "~/utils/vue-example-code";
 
-const count = ref("4");
-const width = ref("28.5");
-const countId = useId();
-const widthId = useId();
+const count = ref("5");
+const layouts = ["stepper", "field"] as const;
+const layoutOptions = layouts.map(value => ({ value, label: value }));
+const layout = ref<string | null>("stepper");
+const steps = ["1", "5"].map(value => ({ value, label: value }));
+const step = ref<string | null>("1");
+watch(step, value => {
+  if (value === "5") count.value = String(Math.round(Number(count.value) / 5) * 5);
+});
+const attributes = computed(() => ({
+  label: "주문 수량",
+  min: "0",
+  max: "100",
+  step: step.value ?? "1",
+  unit: "개",
+  layout: layouts.find(value => value === layout.value),
+}));
+const code = computed(() => vueExampleCode("UISpinButton", {
+  script: [
+    'import { UISpinButton } from "@connextable/ui";',
+    'import { ref } from "vue";',
+    "",
+    'const count = ref("5");',
+  ],
+  attributes: { "v-model": "count", ...attributes.value },
+}));
 </script>
 
 <template>
-  <div class="ui-field ui-field-layout">
-    <div class="ui-field">
-      <label :for="countId">주문 수량 (개)</label>
-      <UISpinButton :id="countId" v-model="count" min="1" max="999" step="1" label="주문 수량" unit="개" size="sm" />
-    </div>
-    <div class="ui-field">
-      <label :for="widthId">제작 가로 길이 (mm)</label>
-      <UISpinButton :id="widthId" v-model="width" min="12" max="84" step="0.5" label="제작 가로 길이 (mm)" unit="mm" size="sm" layout="field" />
-    </div>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }" :code="code">
+    <template #header>
+      <PlaygroundExampleControl v-slot="{ labelId }" label="layout">
+        <UISelect v-model="layout" :options="layoutOptions" size="sm" :aria-labelledby="labelId" />
+      </PlaygroundExampleControl>
+      <PlaygroundExampleControl v-slot="{ labelId }" label="step">
+        <UISelect v-model="step" :options="steps" size="sm" :aria-labelledby="labelId" />
+      </PlaygroundExampleControl>
+    </template>
+    <UISpinButton v-model="count" v-bind="attributes" />
+    <template #footer><output>주문 수량 · {{ count }}개</output></template>
+  </PlaygroundExample>
 </template>

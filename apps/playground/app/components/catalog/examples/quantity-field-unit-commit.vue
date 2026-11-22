@@ -6,8 +6,8 @@ const value = ref<{ value: string; unit: string } | null>({ value: "1.25", unit:
 </script>
 
 <template>
-  <div class="ui-field">
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
     <UIQuantityField v-model="value" unit="metre" unit-system="metric" label="길이" clearable />
-    <output>확정한 길이 {{ value ? `${value.value} m` : "—" }}</output>
-  </div>
+    <template #footer><output>확정한 길이 · {{ value ? `${value.value} m` : "없음" }}</output></template>
+  </PlaygroundExample>
 </template>

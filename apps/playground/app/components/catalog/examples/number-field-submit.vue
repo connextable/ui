@@ -1,31 +1,23 @@
 <script setup lang="ts">
-import { UIButton, UIFormActions, UINumberField } from "@connextable/ui";
-import { ref, useId } from "vue";
+import { UIButton, UIForm, UIFormActions, UIFormField, UINumberField } from "@connextable/ui";
+import { ref } from "vue";
 
 const result = ref("");
-const quantityId = useId();
+const value = ref<string | null>(null);
 
-function submit(event: SubmitEvent) {
-  if (!(event.currentTarget instanceof HTMLFormElement)) return;
-  result.value = String(new FormData(event.currentTarget).get("quantity") ?? "");
+function submit({ formData }: { formData: FormData }) {
+  result.value = String(formData.get("quantity") ?? "");
 }
 </script>
 
 <template>
-  <form class="number-submission ui-field-layout" @submit.prevent="submit">
-    <div class="ui-field">
-      <label :for="quantityId">수량</label>
-      <UINumberField :id="quantityId" name="quantity" unit="개" required />
-    </div>
-    <UIFormActions><UIButton type="submit" size="sm">제출</UIButton></UIFormActions>
-    <output>{{ result }}</output>
-  </form>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIForm @submit="submit">
+      <UIFormField label="수량" name="quantity" required>
+        <UINumberField v-model="value" unit="개" />
+      </UIFormField>
+      <UIFormActions><UIButton type="submit" size="sm">제출</UIButton></UIFormActions>
+    </UIForm>
+    <template #footer><output>제출값 · {{ result || "제출 전" }}</output></template>
+  </PlaygroundExample>
 </template>
-
-<style scoped>
-.number-submission {
-  display: grid;
-  min-inline-size: 0;
-  gap: var(--ui-space-md);
-}
-</style>

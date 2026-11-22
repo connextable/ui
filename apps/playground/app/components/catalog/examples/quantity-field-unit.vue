@@ -20,18 +20,21 @@ const examples = reactive([
 </script>
 
 <template>
-  <div class="ui-field ui-field-layout">
-    <div v-for="example in examples" :key="example.label" class="ui-field">
-      <span class="ui-field-label">{{ example.label }}</span>
-      <UIQuantityField
-        v-model="example.model"
-        v-model:display-unit="example.displayUnit"
-        :unit="example.unit"
-        unit-system="metric"
-        :display-units="example.displayUnits"
-        :label="example.label"
-      />
-      <output>기준값 {{ example.model?.value ?? "—" }} {{ example.symbol }}</output>
-    </div>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIQuantityField
+      v-for="example in examples"
+      :key="example.label"
+      v-model="example.model"
+      v-model:display-unit="example.displayUnit"
+      :unit="example.unit"
+      unit-system="metric"
+      :display-units="example.displayUnits"
+      :label="example.label"
+    />
+    <template #footer>
+      <output v-for="example in examples" :key="example.label">
+        {{ example.label }} 기준값 · {{ example.model ? `${example.model.value} ${example.symbol}` : "없음" }}
+      </output>
+    </template>
+  </PlaygroundExample>
 </template>

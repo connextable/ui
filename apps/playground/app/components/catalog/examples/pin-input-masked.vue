@@ -1,16 +1,10 @@
 <script setup lang="ts">
 import { UIPinInput } from "@connextable/ui";
+import { ref } from "vue";
+
+const code = ref("");
 </script>
 
 <template>
-  <div class="example">
-    <UIPinInput :length="4" mask label="확인 코드" />
-  </div>
+  <UIPinInput v-model="code" :length="4" mask label="확인 코드" />
 </template>
-
-<style scoped>
-.example {
-  display: grid;
-  gap: var(--ui-space-sm);
-}
-</style>

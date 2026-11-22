@@ -1,10 +1,46 @@
 <script setup lang="ts">
-import { UIPinInput } from "@connextable/ui";
-import { ref } from "vue";
+import { UIPinInput, UISelect, UISwitch } from "@connextable/ui";
+import { computed, ref, watch } from "vue";
+import { vueExampleCode } from "~/utils/vue-example-code";
 
+const lengths = [
+  { value: "4", label: "4자리" },
+  { value: "6", label: "6자리" },
+];
 const code = ref("");
+const selectedLength = ref<string | null>("6");
+const length = computed(() => selectedLength.value === "4" ? 4 : 6);
+const mask = ref(false);
+const clearable = ref(false);
+watch(length, count => { code.value = code.value.slice(0, count); });
+
+const attributes = computed(() => ({
+  label: "인증 코드",
+  length: length.value,
+  mask: mask.value || undefined,
+  clearable: clearable.value || undefined,
+}));
+const source = computed(() => vueExampleCode("UIPinInput", {
+  script: [
+    'import { UIPinInput } from "@connextable/ui";',
+    'import { ref } from "vue";',
+    "",
+    'const code = ref("");',
+  ],
+  attributes: { "v-model": "code", ...attributes.value },
+}));
 </script>
 
 <template>
-  <UIPinInput v-model="code" :length="6" label="인증 코드" />
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }" :code="source">
+    <template #header>
+      <PlaygroundExampleControl v-slot="{ labelId }" label="length">
+        <UISelect v-model="selectedLength" :options="lengths" size="sm" :aria-labelledby="labelId" />
+      </PlaygroundExampleControl>
+      <UISwitch v-model="mask" size="sm" label="mask" />
+      <UISwitch v-model="clearable" size="sm" label="clearable" />
+    </template>
+    <UIPinInput v-model="code" v-bind="attributes" />
+    <template #footer><output>{{ code.length }} / {{ length }}자리 입력</output></template>
+  </PlaygroundExample>
 </template>
