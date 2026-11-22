@@ -17,10 +17,10 @@ defineProps<{
       {{ placeholder }}
     </span>
     <template v-else>
-      <time v-if="start" :datetime="start.datetime">{{ start.label }}</time>
+      <time v-if="start" :datetime="start.datetime" :title="start.label">{{ start.label }}</time>
       <span v-else class="ui-picker-range-value__placeholder">{{ startPlaceholder }}</span>
       <span class="ui-picker-range-value__separator" aria-hidden="true" />
-      <time v-if="end" :datetime="end.datetime">{{ end.label }}</time>
+      <time v-if="end" :datetime="end.datetime" :title="end.label">{{ end.label }}</time>
       <span v-else class="ui-picker-range-value__placeholder">{{ endPlaceholder }}</span>
     </template>
   </span>
@@ -37,8 +37,13 @@ defineProps<{
   padding-inline: var(--ui-space-xs);
   font-size: var(--ui-font-size-body-sm);
   font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
   text-align: center;
+}
+
+.ui-picker-range-value > :is(time, .ui-picker-range-value__placeholder) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ui-picker-range-value__separator {

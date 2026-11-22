@@ -41,16 +41,14 @@ const display = useUITemporalDisplay();
 <template>
   <UIDateTimeRangePicker :default-value="initialRange" v-slot="{ dates, months, view, viewMode }">
     <UIDateTimeRangePickerAnchor>
-      <label>
-        <span>시작</span>
+      <div role="group" aria-label="시작 일시">
         <UIDateTimeRangePickerStartDateInput aria-label="시작 날짜" />
         <UIDateTimeRangePickerStartTimeInput aria-label="시작 시간" />
-      </label>
-      <label>
-        <span>종료</span>
+      </div>
+      <div role="group" aria-label="종료 일시">
         <UIDateTimeRangePickerEndDateInput aria-label="종료 날짜" />
         <UIDateTimeRangePickerEndTimeInput aria-label="종료 시간" />
-      </label>
+      </div>
       <UIDateTimeRangePickerTrigger aria-label="일시 범위 선택 창 열기">
         <CalendarDays :size="18" aria-hidden="true" />
       </UIDateTimeRangePickerTrigger>

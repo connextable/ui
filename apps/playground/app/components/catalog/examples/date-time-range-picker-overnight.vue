@@ -14,7 +14,7 @@ const display = useUITemporalDisplay();
     <UIDateTimeRangePickerAnchor>
       <UIDateTimeRangePickerStartDateTimeInput hidden />
       <UIDateTimeRangePickerEndDateTimeInput hidden />
-      <UIDateTimeRangePickerValue :value="value" layout="stacked" />
+      <UIDateTimeRangePickerValue :value="value" />
       <UIDateTimeRangePickerTrigger aria-label="기간 선택 창 열기"><CalendarDays :size="18" /></UIDateTimeRangePickerTrigger>
     </UIDateTimeRangePickerAnchor>
     <UIDateTimeRangePickerContent>

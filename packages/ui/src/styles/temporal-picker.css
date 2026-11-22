@@ -52,14 +52,16 @@
   }
 }
 
-:where([data-scope="date-range"], [data-scope="month-range-picker"], [data-scope="year-range-picker"])[data-part="anchor"]
-  :where(input[data-part="start-input"], input[data-part="end-input"]) {
+:where([data-scope="date-range"], [data-scope="month-range-picker"], [data-scope="year-range-picker"], [data-scope="date-time-range"])[data-part="anchor"]
+  :where(input[data-part^="start-"], input[data-part^="end-"]) {
   padding-inline: var(--ui-space-xs);
   text-align: center;
 }
 
-:where([data-scope="date-range"], [data-scope="month-range-picker"], [data-scope="year-range-picker"])[data-part="anchor"]:has(
-  > input[data-part="start-input"]:not([hidden], [type="hidden"]) ~ input[data-part="end-input"]:not([hidden], [type="hidden"])
+:where([data-scope="date-range"], [data-scope="month-range-picker"], [data-scope="year-range-picker"], [data-scope="date-time-range"])[data-part="anchor"]:has(
+  > input[data-part="start-input"]:not([hidden], [type="hidden"]) ~ input[data-part="end-input"]:not([hidden], [type="hidden"]),
+  > input[data-part="start-date-time-input"]:not([hidden], [type="hidden"]) ~ input[data-part="end-date-time-input"]:not([hidden], [type="hidden"]),
+  > :is(label, [role="group"]):has(> input[data-part="start-date-input"]) ~ :is(label, [role="group"]):has(> input[data-part="end-date-input"])
 ) {
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
 
@@ -81,8 +83,25 @@
   --ui-picker-width: 22rem;
 }
 
-[data-scope="date-time-range"][data-part="anchor"] > :where(label + label, input[data-part="end-date-time-input"]):not([hidden], :focus-visible) {
-  border-block-start: 1px solid var(--ui-color-divider);
+[data-scope="date-time-range"][data-part="anchor"]:has(> input[data-part="end-date-time-input"]:not([hidden], [type="hidden"])) {
+  --ui-picker-width: 27rem;
+}
+
+[data-scope="date-time-range"][data-part="anchor"]:has(> :is(label, [role="group"]) > input[data-part="start-date-input"]) {
+  --ui-picker-width: 31rem;
+
+  > :is(label, [role="group"]) {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: center;
+    gap: var(--ui-space-2xs);
+    min-inline-size: 0;
+  }
+
+  > :is(label, [role="group"]) > span {
+    grid-column: 1 / -1;
+    padding-inline: var(--ui-space-sm);
+  }
 }
 
 :where([data-scope="range-calendar"], [data-scope="date-range"], [data-scope="date-time-range"],
@@ -90,10 +109,6 @@
   text-align: center;
 
   > :where(header, nav, p, output) { justify-self: stretch; }
-}
-
-[data-scope="date-time-range"][data-part="anchor"] input[data-scope="date-time-range"] {
-  text-align: center;
 }
 
 [data-scope="popover"][data-part="content"]:has(> .ui-time-picker-column):not([hidden]) {
@@ -183,6 +198,7 @@
   inline-size: min(100%, var(--ui-range-field-width));
 
   &[data-scope="date-range-field"] { --ui-range-field-width: 21rem; }
+  &[data-scope="date-time-range-field"] { --ui-range-field-width: 27rem; }
 
   &::before {
     grid-area: 1 / 1 / 2 / -1;
@@ -220,34 +236,4 @@
   }
 
   > output { grid-column: 1 / -1; }
-
-  &[data-scope="date-time-range-field"] {
-    --ui-range-field-width: 18rem;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: var(--ui-control-height) 1px var(--ui-control-height);
-    row-gap: 0;
-
-    &::before {
-      grid-area: 1 / 1 / 4 / 2;
-      align-self: stretch;
-      block-size: auto;
-    }
-
-    &::after {
-      grid-area: 2 / 1;
-      justify-self: stretch;
-      inline-size: auto;
-      margin-inline: var(--ui-range-field-inset);
-      background: var(--ui-color-divider);
-    }
-
-    > input[data-part="start-input"],
-    > input[data-part="end-input"] {
-      grid-column: 1;
-      justify-self: center;
-      inline-size: calc(100% - 2 * var(--ui-range-field-inset));
-    }
-
-    > input[data-part="end-input"] { grid-row: 3; }
-  }
 }
