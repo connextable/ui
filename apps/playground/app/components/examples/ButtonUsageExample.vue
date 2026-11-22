@@ -25,15 +25,10 @@ const topics = {
     title: "앞·뒤 아이콘",
     description: "leading과 trailing 슬롯에 아이콘을 넣습니다. 두 위치를 함께 사용할 수도 있습니다.",
   },
-  iconOnly: {
-    id: "button-icon-only",
-    title: "아이콘 전용",
-    description: "icon-only는 원형 버튼을 만듭니다. 텍스트가 없을 때는 aria-label로 동작을 설명합니다.",
-  },
   loading: {
     id: "button-loading",
     title: "로딩",
-    description: "loading은 실행을 막고 진행 표시를 보여줍니다. 슬롯에 아이콘이 있으면 해당 위치에 진행 표시가 나타납니다.",
+    description: "loading을 켜면 버튼 크기를 유지하면서 라벨과 아이콘 자리에 가운데 진행 표시를 띄웁니다.",
   },
   disabled: {
     id: "button-disabled",
@@ -67,7 +62,7 @@ const label = ref("문서 저장");
 const size = ref<string | null>("md");
 const variant = ref<string | null>("solid");
 const color = ref<string | null>("accent");
-const leading = ref<string | null>(props.topic === "iconOnly" ? "Search" : "Plus");
+const leading = ref<string | null>("Plus");
 const trailing = ref<string | null>("none");
 const loading = ref(true);
 const disabled = ref(true);
@@ -77,13 +72,12 @@ function iconName(value: string | null) {
   return Object.keys(icons).find(name => name === value) as keyof typeof icons | undefined;
 }
 
-const leadingIcon = computed(() => props.topic === "icons" || props.topic === "iconOnly"
+const leadingIcon = computed(() => props.topic === "icons"
   ? iconName(leading.value)
   : props.topic === "loading" && withIcon.value ? "Check" : undefined);
-const trailingIcon = computed(() => props.topic === "icons" ? iconName(trailing.value) : undefined);
-const iconAction = computed(() => iconOptions.find(option => option.value === leadingIcon.value)?.label);
+const trailingIcon = computed(() => props.topic === "icons" ? iconName(trailing.value)
+  : props.topic === "loading" && withIcon.value ? "ArrowRight" : undefined);
 const buttonLabel = computed(() => {
-  if (props.topic === "iconOnly") return "";
   if (props.topic === "label") return label.value.trim() || "문서 저장";
   if (props.topic === "icons") return "새 문서";
   return "저장";
@@ -108,9 +102,7 @@ const accentStyle = computed((): Record<string, string> | undefined => {
 const attributes = computed(() => ({
   variant: props.topic === "appearance" ? variants.find(value => value === variant.value) : undefined,
   style: props.topic === "appearance" ? accentStyle.value : undefined,
-  size: props.topic === "size" || props.topic === "iconOnly" ? sizes.find(value => value === size.value) : undefined,
-  iconOnly: props.topic === "iconOnly" || undefined,
-  "aria-label": props.topic === "iconOnly" ? iconAction.value : undefined,
+  size: props.topic === "size" ? sizes.find(value => value === size.value) : undefined,
   loading: (props.topic === "loading" && loading.value) || undefined,
   disabled: (props.topic === "disabled" && disabled.value) || undefined,
 }));
@@ -136,18 +128,18 @@ const code = computed(() => buttonExampleCode(attributes.value, {
           <UISelect v-model="color" :options="colorOptions" size="sm" :aria-labelledby="labelId" />
         </PlaygroundExampleControl>
       </template>
-      <PlaygroundExampleControl v-if="props.topic === 'size' || props.topic === 'iconOnly'" v-slot="{ labelId }" label="size">
+      <PlaygroundExampleControl v-if="props.topic === 'size'" v-slot="{ labelId }" label="size">
         <UISelect v-model="size" :options="sizeOptions" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <PlaygroundExampleControl v-if="props.topic === 'icons' || props.topic === 'iconOnly'" v-slot="{ labelId }" :label="props.topic === 'icons' ? 'leading' : '아이콘'">
-        <UISelect v-model="leading" :options="props.topic === 'icons' ? iconOptions : iconOptions.slice(1)" size="sm" :aria-labelledby="labelId" />
+      <PlaygroundExampleControl v-if="props.topic === 'icons'" v-slot="{ labelId }" label="leading">
+        <UISelect v-model="leading" :options="iconOptions" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
       <PlaygroundExampleControl v-if="props.topic === 'icons'" v-slot="{ labelId }" label="trailing">
         <UISelect v-model="trailing" :options="iconOptions" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
       <template v-if="props.topic === 'loading'">
         <UISwitch v-model="loading" label="loading" size="sm" />
-        <UISwitch v-model="withIcon" label="앞 아이콘 사용" size="sm" />
+        <UISwitch v-model="withIcon" label="앞·뒤 아이콘 사용" size="sm" />
       </template>
       <UISwitch v-if="props.topic === 'disabled'" v-model="disabled" label="disabled" size="sm" />
     </template>

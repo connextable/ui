@@ -6,10 +6,12 @@ function vueAttribute(value: string) {
 
 export function buttonExampleCode(
   attributes: Record<string, Attribute>,
-  { label, leading, trailing, editableLabel = false }: {
+  { label, leading, trailing, icon, loadingSpinner, editableLabel = false }: {
     label: string;
     leading?: string;
     trailing?: string;
+    icon?: string;
+    loadingSpinner?: "arc" | "spoke";
     editableLabel?: boolean;
   },
 ) {
@@ -29,26 +31,31 @@ export function buttonExampleCode(
     }
   }
 
-  const icons = [...new Set([leading, trailing].filter(Boolean))];
+  const component = icon ? "UIIconButton" : "UIButton";
+  const uiImports = loadingSpinner ? `${component}, UISpinner` : component;
+  const icons = [...new Set([leading, trailing, icon].filter(Boolean))];
   const script = [
-    'import { UIButton } from "@connextable/ui";',
+    `import { ${uiImports} } from "@connextable/ui";`,
     ...(icons.length ? [`import { ${icons.join(", ")} } from "@lucide/vue";`] : []),
     ...(declarations.length ? ["", ...declarations] : []),
   ];
   const children = [
+    ...(icon ? [`<${icon} />`] : []),
     ...(leading ? ["<template #leading>", `  <${leading} />`, "</template>"] : []),
     ...(label ? [editableLabel ? "{{ label }}" : label] : []),
     ...(trailing ? ["<template #trailing>", `  <${trailing} />`, "</template>"] : []),
+    ...(loadingSpinner ? ["<template #loading>", `  <UISpinner variant="${loadingSpinner}" />`, "</template>"] : []),
   ];
-  const opening = ["  <UIButton", ...props].join(" ");
+  const opening = [`  <${component}`, ...props].join(" ");
   const end = children.length ? ">" : " />";
   const tag = opening.length + end.length <= 80
     ? [opening + end]
-    : ["  <UIButton", ...props.map(prop => `    ${prop}`), `  ${end.trimStart()}`];
+    : [`  <${component}`, ...props.map(prop => `    ${prop}`), `  ${end.trimStart()}`];
+  const closing = `</${component}>`;
   const template = children.length === 1 && tag.length === 1
-    && opening.length + 1 + children[0]!.length + "</UIButton>".length <= 80
-    ? [`${tag[0]}${children[0]}</UIButton>`]
-    : children.length ? [...tag, ...children.map(line => `    ${line}`), "  </UIButton>"] : tag;
+    && opening.length + 1 + children[0]!.length + closing.length <= 80
+    ? [`${tag[0]}${children[0]}${closing}`]
+    : children.length ? [...tag, ...children.map(line => `    ${line}`), `  ${closing}`] : tag;
 
   return ["<script setup lang=\"ts\">", ...script, "</script>", "", "<template>", ...template, "</template>"].join("\n");
 }

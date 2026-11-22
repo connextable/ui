@@ -8,14 +8,15 @@ import ButtonLinkExample from "~/components/examples/ButtonLinkExample.vue";
 import ButtonPendingExample from "~/components/examples/ButtonPendingExample.vue";
 import ButtonToggleExample from "~/components/examples/ButtonToggleExample.vue";
 import ButtonUsageExample from "~/components/examples/ButtonUsageExample.vue";
+import IconButtonExample from "~/components/examples/IconButtonExample.vue";
 
 const api = {
   props: {
     variant: "solid는 주요 동작, soft는 보조 강조, outline은 경계선, ghost는 배경 없이 표시합니다. 기본값은 solid입니다.",
     size: "sm, md, lg 가운데 선택합니다. 기본값은 md입니다.",
     block: "버튼과 링크 버튼이 부모 너비를 채웁니다. 기본값은 false입니다. 아이콘 전용 버튼은 원형 크기를 유지합니다.",
-    "icon-only": "정사각형 영역 안에 원형 버튼을 표시합니다. aria-label로 버튼 이름을 전달합니다.",
-    loading: "진행 표시와 함께 aria-busy를 설정하고 실행을 막습니다.",
+    "icon-only": "원형 크기를 지정하는 기존 속성입니다. 아이콘만 표시할 때는 UIIconButton을 사용할 수 있습니다.",
+    loading: "버튼 크기를 유지하며 가운데 진행 표시를 띄우고, aria-busy를 설정해 실행을 막습니다.",
     disabled: "버튼 실행과 키보드 탭 진입을 막습니다.",
     type: "기본값인 button은 클릭 동작에 사용합니다. submit은 폼을 제출하고 reset은 초기화합니다.",
     form: "폼 밖에 있는 버튼을 폼의 id와 연결하는 HTML 속성입니다.",
@@ -33,13 +34,14 @@ const api = {
   slotsAndEvents: {
     default: "버튼에 표시할 라벨을 넣습니다.",
     "leading / trailing": "라벨 앞이나 뒤에 아이콘 등 보조 콘텐츠를 넣습니다.",
+    loading: "로딩 중 가운데 표시할 진행 아이콘을 지정합니다.",
     click: "활성 버튼을 실행할 때 MouseEvent를 전달합니다.",
   },
 };
 
 definePageMeta({
   title: "UIButton",
-  componentParts: ["UIToggleButton"],
+  componentParts: ["UIIconButton", "UIToggleButton"],
   category: "동작",
   description: "화면 동작을 실행하거나 다른 페이지로 이동합니다.",
 });
@@ -54,8 +56,8 @@ definePageMeta({
       <ButtonUsageExample topic="size" />
       <ButtonFullWidthExample />
       <ButtonUsageExample topic="icons" />
-      <ButtonUsageExample topic="iconOnly" />
       <ButtonUsageExample topic="loading" />
+      <IconButtonExample />
       <ButtonUsageExample topic="disabled" />
       <ButtonToggleExample />
     </PlaygroundExampleSection>
