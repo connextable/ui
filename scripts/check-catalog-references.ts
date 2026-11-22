@@ -9,6 +9,7 @@ const entries = new Map(catalog.map(entry => [entry.slug, entry]));
 const failures: string[] = [];
 let checkedExamples = 0;
 let checkedParts = 0;
+let checkedInitialExamples = 0;
 
 async function check(slug: string) {
   const path = `/components/${slug}`;
@@ -24,6 +25,27 @@ async function check(slug: string) {
     }
 
     expectAnchor("api", "API section");
+    for (const [id, count] of ids) {
+      if (count > 1) failures.push(`${path} duplicate document id #${id} (${count} targets)`);
+    }
+
+    const firstToggle = /<button\s[^>]*\bplayground-example__toggle\b[^>]*>/.exec(html);
+    const sourceID = firstToggle?.[0].match(/\saria-controls="([^"]+)"/)?.[1];
+    if (!firstToggle?.[0].includes('aria-expanded="true"') || !sourceID) {
+      failures.push(`${path} first example code is closed or missing`);
+    } else {
+      expectAnchor(sourceID, "first example source");
+      const sourceStart = html.indexOf(`id="${sourceID}"`, firstToggle.index);
+      const sectionEnd = html.indexOf("</section>", sourceStart);
+      const code = /<pre\b[^>]*>([\s\S]*?)<\/pre>/.exec(html.slice(sourceStart, sectionEnd))?.[1];
+      const source = code?.replace(/<[^>]*>/g, "").replace(/&(?:#x3c|#60|lt);/gi, "<");
+      if (!source || !/<script\b/.test(source) || !/<template\b/.test(source)) {
+        failures.push(`${path} first example has no complete Vue source`);
+      } else {
+        checkedInitialExamples++;
+      }
+    }
+
     const reference = /<div class="playground-reference"[\s\S]*?(?=<\/article>)/.exec(html)?.[0];
     if (!reference) throw new Error("missing shared reference");
     for (const [, description] of reference.matchAll(/<dd[^>]*>\s*<p[^>]*>([\s\S]*?)<\/p>/g)) {
@@ -50,7 +72,7 @@ async function check(slug: string) {
 
 for (let index = 0; index < slugs.length; index += 8) await Promise.all(slugs.slice(index, index + 8).map(check));
 
-console.log(`${slugs.length} pages, ${checkedParts} reference anchors, ${checkedExamples} example links`);
+console.log(`${slugs.length} pages, ${checkedInitialExamples} initially open Vue examples, ${checkedParts} reference anchors, ${checkedExamples} example links`);
 if (failures.length) {
   console.error(failures.sort().join("\n"));
   process.exitCode = 1;
