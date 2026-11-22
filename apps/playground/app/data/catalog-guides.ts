@@ -1381,7 +1381,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "date-time-range-picker-portal", title: "기간의 팝업을 포털에 배치", description: "시작·종료 일시 입력에서 연 달력을 포털에 표시합니다.", parts: ["UIDateTimeRangePickerPortal"] },
     ],
     title: "한 줄로 표시하는 일시 범위",
-    description: "달력에서 날짜 범위를 고르고 두 일시를 한 줄에서 확인합니다. 달력의 연도·월 제목을 눌러 원하는 달로 이동할 수 있습니다.",
+    description: "달력에서 날짜 범위를 고르고 양옆 목록에서 시작·종료 시각을 선택합니다. 연도·월 제목을 눌러 다른 달로 이동할 수 있습니다.",
     api: {
       "default-value": "날짜와 시간이 포함된 시작·종료 일시입니다.",
       "UIDateTimeRangePickerValue layout": "inline은 기본 한 줄 표시, stacked는 시작과 종료를 각각 한 줄에 표시합니다.",

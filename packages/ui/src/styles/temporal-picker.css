@@ -116,15 +116,23 @@ input.ui-temporal-input {
 
   > :is(label, [role="group"]) {
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: center;
     gap: var(--ui-space-2xs);
     min-inline-size: 0;
+    container-type: inline-size;
   }
 
   > :is(label, [role="group"]) > span {
     grid-column: 1 / -1;
     padding-inline: var(--ui-space-sm);
+  }
+
+  @container (inline-size < 12rem) {
+    > :is(label, [role="group"]) > .ui-temporal-input {
+      --ui-field-inner-padding: 0;
+      font-size: var(--ui-font-size-metadata);
+    }
   }
 }
 
@@ -133,6 +141,19 @@ input.ui-temporal-input {
   text-align: center;
 
   > :where(header, nav, p, output) { justify-self: stretch; }
+}
+
+[data-scope="time-picker"][data-part="root"]:has(> .ui-time-picker-column) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: var(--ui-space-xs);
+  inline-size: auto;
+  min-block-size: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
 [data-scope="popover"][data-part="content"]:has(> .ui-time-picker-column):not([hidden]) {
