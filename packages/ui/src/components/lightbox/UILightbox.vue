@@ -91,11 +91,16 @@ function openAt(position: number, event?: Event) {
     open.value = true;
   };
   if (motion) {
-    transition.start("open", show, { media: origin }, () => ({
-      media: origin ? photo.value : null,
-      panel: panel.value,
-      overlay: overlay.value,
-    }));
+    transition.start("open", show, { media: origin }, async () => {
+      const image = origin ? photo.value : null;
+      // The dialog mounts a new image on each open, even when the thumbnail is loaded.
+      if (image) await image.decode().catch(() => undefined);
+      return {
+        media: image === photo.value && image?.naturalWidth ? image : null,
+        panel: panel.value,
+        overlay: overlay.value,
+      };
+    });
   } else {
     show();
   }

@@ -39,7 +39,7 @@ export function useLightboxTransition() {
     direction: LightboxTransition,
     update: () => void,
     before: LightboxSnapshots,
-    after: () => LightboxSnapshots,
+    after: () => LightboxSnapshots | Promise<LightboxSnapshots>,
   ) {
     const owner = before.media?.ownerDocument ?? before.panel?.ownerDocument ?? document;
     if (typeof owner.startViewTransition !== "function" || owner.fullscreenElement
@@ -66,7 +66,9 @@ export function useLightboxTransition() {
       restore = undefined;
       commit();
       await nextTick();
-      if (active?.transition === transition) restore = nameSnapshots(after());
+      if (active?.transition !== transition) return;
+      const snapshots = await after();
+      if (active?.transition === transition) restore = nameSnapshots(snapshots);
     });
     const cleanup = () => {
       restore?.();

@@ -29,8 +29,8 @@
     &::view-transition-group(ui-lightbox-overlay),
     &::view-transition-group(ui-lightbox-panel),
     &::view-transition-group(ui-lightbox-media) {
-      animation-duration: calc(var(--ui-motion-standard) * 1.5);
-      animation-timing-function: ease-in-out;
+      animation-duration: var(--ui-motion-standard);
+      animation-timing-function: var(--ui-ease-out);
     }
 
     &::view-transition-old(ui-lightbox-media),
