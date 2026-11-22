@@ -74,10 +74,9 @@ export {
 } from "@sectile/vue/rating";
 export { UIRating, UIRatingClear } from "../selection/rating";
 export {
-  SliderRoot as UISlider,
   SliderRange as UISliderRange,
 } from "@sectile/vue/slider";
-export { UISliderTrack, UISliderThumb } from "./slider";
+export { UISlider, UISliderTrack, UISliderThumb } from "./slider";
 export {
   SpinButtonRoot as UISpinButton,
   SpinButtonInput as UISpinButtonInput,

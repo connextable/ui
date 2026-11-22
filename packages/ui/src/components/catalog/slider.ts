@@ -1,5 +1,6 @@
-import { SliderThumb, SliderTrack } from "@sectile/vue/slider";
+import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from "@sectile/vue/slider";
 import { defineComponent, h, mergeProps, type Component } from "vue";
+import { controlFlag } from "../clear/clearable";
 
 function withPointerFocus<T extends Component>(part: T, findThumb: (element: HTMLElement) => HTMLElement | null): T {
   return defineComponent({
@@ -23,3 +24,14 @@ function withPointerFocus<T extends Component>(part: T, findThumb: (element: HTM
 export const UISliderTrack = withPointerFocus(SliderTrack, element =>
   element.querySelector<HTMLElement>('[data-scope="slider"][data-part="thumb"]'));
 export const UISliderThumb = withPointerFocus(SliderThumb, element => element);
+
+export const UISlider = defineComponent({
+  name: "UISlider",
+  inheritAttrs: false,
+  __sectileFormLabelMode: "labelledby",
+  setup(_, { attrs, slots }) {
+    return () => h(SliderRoot, attrs, slots.default || controlFlag(attrs.asChild ?? attrs["as-child"]) ? slots : {
+      default: () => h(UISliderTrack, null, () => [h(SliderRange), h(UISliderThumb)]),
+    });
+  },
+}) as unknown as typeof SliderRoot;

@@ -1,8 +1,11 @@
 import {
-  MultiThumbSliderRoot,
+  MultiThumbSliderRange, MultiThumbSliderRoot, MultiThumbSliderTrack,
   type MultiThumbSliderRootProps,
+  type MultiThumbSliderRootSlotProps,
 } from "@sectile/vue/multi-thumb-slider";
 import { computed, defineComponent, h, type PropType } from "vue";
+import { controlFlag } from "../clear/clearable";
+import UIMultiThumbSliderThumb from "./UIMultiThumbSliderThumb.vue";
 
 export const UIMultiThumbSlider = defineComponent({
   name: "UIMultiThumbSlider",
@@ -37,6 +40,14 @@ export const UIMultiThumbSlider = defineComponent({
       policies: policies.value,
       getThumbLabel: props.getThumbLabel && getThumbLabel,
       formatValue: props.formatValue && formatValue,
-    }, slots);
+    }, Object.hasOwn(slots, "default") || controlFlag(attrs.asChild ?? attrs["as-child"]) ? slots : {
+      default: (state: MultiThumbSliderRootSlotProps) => [
+        h(MultiThumbSliderTrack, null, () => [
+          h(MultiThumbSliderRange),
+          ...thumbs.value.map(value => h(UIMultiThumbSliderThumb, { key: value, value })),
+        ]),
+        h("output", state.values.map((value, index) => formatValue(value, thumbs.value[index])).join(" – ")),
+      ],
+    });
   },
 }) as typeof MultiThumbSliderRoot;
