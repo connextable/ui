@@ -29,7 +29,7 @@ const treeReorderBoardExamples = [
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   lightbox: {
     title: "사진과 영상이 있는 관찰 기록 열기",
-    description: "썸네일을 눌러 해당 자료부터 엽니다. 미디어 위 화살표나 방향키로 이동합니다. 작은 화면에서는 전체 화면으로 열리고 하단 썸네일을 숨깁니다.",
+    description: "썸네일을 눌러 해당 자료부터 엽니다. 미디어 위 화살표나 방향키로 이동하고, 터치 화면에서는 사진을 좌우로 밀어 넘깁니다. 작은 화면에서는 전체 화면으로 열리고 하단 썸네일을 숨깁니다.",
     sections: [
       { id: "examples", title: "미디어 구성", section: "media" },
       { id: "lightbox-behavior", title: "탐색과 전환", section: "behavior" },

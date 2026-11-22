@@ -59,6 +59,7 @@ const canGoBack = computed(() => items.length > 1 && (loop || selectedIndex.valu
 const canGoForward = computed(() => items.length > 1 && (loop || selectedIndex.value < items.length - 1));
 
 watch([mediaKey, displayedOpen], ([key, isOpen], [previousKey]) => {
+  clearSwipe();
   video.value?.pause();
   if (!isOpen && !transition.isClosing()) transition.stop(false);
   if (key !== previousKey || isOpen) mediaFailed.value = false;
@@ -104,7 +105,10 @@ function goTo(position: number, direction?: "next" | "previous") {
   transition.stop();
   const from = selectedIndex.value;
   if (!items[position] || position === from) return;
-  const select = () => { index.value = position; };
+  const select = () => {
+    clearSwipe();
+    index.value = position;
+  };
   if (motion && visual.value) {
     transition.start(direction ?? (position > from ? "next" : "previous"), select,
       { media: visual.value }, () => ({ media: visual.value }));
@@ -115,7 +119,10 @@ function goTo(position: number, direction?: "next" | "previous") {
 
 function move(offset: -1 | 1) {
   transition.stop();
-  if (offset === -1 ? !canGoBack.value : !canGoForward.value) return;
+  if (!canMove(offset)) {
+    clearSwipe();
+    return;
+  }
   const position = (selectedIndex.value + offset + items.length) % items.length;
   goTo(position, offset === 1 ? "next" : "previous");
 }
@@ -127,6 +134,7 @@ function onDialogOpenChange(value: boolean) {
   }
   if (transition.isClosing()) return;
   transition.stop(false);
+  clearSwipe();
   const hide = () => { open.value = false; };
   if (!motion || !current.value) {
     hide();
@@ -162,22 +170,75 @@ function onKeydown(event: KeyboardEvent) {
   }
 }
 
-let touchStart: { id: number; x: number; y: number } | undefined;
+let touchStart: { id: number; x: number; y: number; width: number; rtl: boolean; horizontal: boolean } | undefined;
+
+function canMove(offset: -1 | 1) {
+  return offset === -1 ? canGoBack.value : canGoForward.value;
+}
+
+function clearSwipe() {
+  touchStart = undefined;
+  visual.value?.removeAttribute("data-dragging");
+  visual.value?.style.removeProperty("--ui-lightbox-swipe-x");
+}
 
 function onPointerDown(event: PointerEvent) {
-  if (current.value?.kind === "image" && items.length > 1 && event.isPrimary && event.pointerType === "touch") {
-    touchStart = { id: event.pointerId, x: event.clientX, y: event.clientY };
+  const surface = visual.value;
+  if (event.pointerType !== "touch" || !surface?.hasAttribute("data-swipe")) return;
+
+  clearSwipe();
+  if (!event.isPrimary) return;
+  touchStart = {
+    id: event.pointerId,
+    x: event.clientX,
+    y: event.clientY,
+    width: surface.clientWidth,
+    rtl: getComputedStyle(surface).direction === "rtl",
+    horizontal: false,
+  };
+}
+
+function onPointerMove(event: PointerEvent) {
+  const start = touchStart;
+  const surface = visual.value;
+  if (!start || start.id !== event.pointerId || !surface) return;
+
+  const dx = event.clientX - start.x;
+  const dy = event.clientY - start.y;
+  if (!start.horizontal) {
+    if (Math.abs(dy) >= 10 && Math.abs(dy) >= Math.abs(dx)) {
+      clearSwipe();
+      return;
+    }
+    if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+    start.horizontal = true;
+    surface.setAttribute("data-dragging", "");
   }
+
+  const offset = (dx < 0) !== start.rtl ? 1 : -1;
+  const distance = Math.min(Math.abs(dx), start.width * 0.45) * (canMove(offset) ? 1 : 0.2);
+  surface.style.setProperty("--ui-lightbox-swipe-x", `${Math.sign(dx) * distance}px`);
 }
 
 function onPointerUp(event: PointerEvent) {
-  if (touchStart?.id !== event.pointerId) return;
-  const dx = event.clientX - touchStart.x;
-  const dy = event.clientY - touchStart.y;
+  const start = touchStart;
+  if (!start || start.id !== event.pointerId) return;
   touchStart = undefined;
-  if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
-  const rtl = event.currentTarget instanceof Element && getComputedStyle(event.currentTarget).direction === "rtl";
-  move((dx < 0) !== rtl ? 1 : -1);
+
+  const dx = event.clientX - start.x;
+  const dy = event.clientY - start.y;
+  const threshold = Math.max(36, Math.min(72, start.width * 0.16));
+  if (!start.horizontal || Math.abs(dx) < threshold || Math.abs(dx) < Math.abs(dy) * 1.2) {
+    clearSwipe();
+    return;
+  }
+
+  // Keep the dragged position until the outgoing View Transition snapshot is captured.
+  move((dx < 0) !== start.rtl ? 1 : -1);
+}
+
+function onPointerCancel(event: PointerEvent) {
+  if (touchStart?.id === event.pointerId) clearSwipe();
 }
 </script>
 
@@ -217,9 +278,10 @@ function onPointerUp(event: PointerEvent) {
             </div>
           </header>
           <figure class="ui-lightbox__figure">
-            <div class="ui-lightbox__stage" :data-kind="current.kind" @pointerdown="onPointerDown"
-              @pointerup="onPointerUp" @pointercancel="touchStart = undefined">
-              <div ref="visual" class="ui-lightbox__visual">
+            <div class="ui-lightbox__stage">
+              <div ref="visual" class="ui-lightbox__visual" :data-swipe="current.kind === 'image' && items.length > 1 || undefined"
+                @pointerdown="onPointerDown" @pointermove="onPointerMove" @pointerup="onPointerUp"
+                @pointercancel="onPointerCancel" @lostpointercapture="onPointerCancel">
                 <p v-if="mediaFailed || (current.kind === 'video' && !current.sources.length)"
                   class="ui-lightbox__error" role="status">
                   {{ labels?.error ?? "미디어를 불러오지 못했습니다." }}
@@ -394,15 +456,15 @@ function onPointerUp(event: PointerEvent) {
   color: #fff;
 }
 
-.ui-lightbox__stage[data-kind="image"] {
-  touch-action: pan-y pinch-zoom;
-}
-
 .ui-lightbox__visual {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
+}
+
+.ui-lightbox__visual[data-swipe] {
+  touch-action: pan-y pinch-zoom;
 }
 
 .ui-lightbox__visual img {
@@ -412,6 +474,15 @@ function onPointerUp(event: PointerEvent) {
   max-block-size: 100%;
   margin: auto;
   object-fit: contain;
+}
+
+.ui-lightbox__visual[data-swipe] img {
+  translate: var(--ui-lightbox-swipe-x, 0px) 0;
+  transition: translate var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+.ui-lightbox__visual[data-dragging] img {
+  transition: none;
 }
 
 .ui-lightbox__visual video {
@@ -575,10 +646,20 @@ function onPointerUp(event: PointerEvent) {
   .ui-lightbox__panel {
     transition: none;
   }
+
+  .ui-lightbox__visual[data-swipe] img {
+    translate: none;
+    transition: none;
+  }
 }
 
 .ui-lightbox__overlay[data-motion="off"],
 .ui-lightbox__panel[data-motion="off"] {
+  transition: none;
+}
+
+.ui-lightbox__panel[data-motion="off"] .ui-lightbox__visual[data-swipe] img {
+  translate: none;
   transition: none;
 }
 </style>
