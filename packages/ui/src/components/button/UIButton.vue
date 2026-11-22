@@ -9,6 +9,7 @@ defineSlots<{
   default?(): unknown;
   leading?(): unknown;
   trailing?(): unknown;
+  loading?(): unknown;
 }>();
 
 export interface UIButtonProps extends LinkPrefetchProps {
@@ -92,19 +93,19 @@ function onClick(event: MouseEvent) {
     @click.capture="routerLink && onClick($event)"
     @click="!routerLink && onClick($event)"
   >
-    <span class="ui-button__content" :data-hidden="(loading && !$slots.leading && !$slots.trailing) || undefined">
+    <span class="ui-button__content" :data-hidden="loading || undefined">
       <span v-if="$slots.leading" class="ui-button__icon" aria-hidden="true">
-        <UISpinner v-if="loading" variant="wave" />
-        <slot v-else name="leading" />
+        <slot name="leading" />
       </span>
       <slot />
       <span v-if="$slots.trailing" class="ui-button__icon" aria-hidden="true">
-        <UISpinner v-if="loading && !$slots.leading" variant="wave" />
-        <slot v-else name="trailing" />
+        <slot name="trailing" />
       </span>
     </span>
-    <span v-if="loading && !$slots.leading && !$slots.trailing" class="ui-button__spinner" aria-hidden="true">
-      <UISpinner variant="wave" />
+    <span v-if="loading" class="ui-button__spinner" aria-hidden="true">
+      <span class="ui-button__icon">
+        <slot name="loading"><UISpinner variant="wave" /></slot>
+      </span>
     </span>
   </component>
 </template>
