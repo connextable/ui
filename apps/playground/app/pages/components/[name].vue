@@ -56,14 +56,14 @@ const parts = (entry.parts ?? []).map((name) => {
       <dl class="catalog-reference">
         <div v-for="part in parts" :id="part.name" :key="part.name" class="catalog-reference__part" tabindex="-1">
           <dt>
-            <NuxtLink v-if="part.related" :to="`/components/${part.related.slug}`"><code>{{ part.name }}</code></NuxtLink>
+            <UIAnchor v-if="part.related" :to="`/components/${part.related.slug}`"><code>{{ part.name }}</code></UIAnchor>
             <code v-else>{{ part.name }}</code>
           </dt>
           <dd v-if="part.description || part.example">
             {{ part.description }}
-            <NuxtLink v-if="part.example" class="catalog-reference__example" :to="{ path: route.path, hash: `#${part.example.id}` }">
+            <UIAnchor v-if="part.example" class="catalog-reference__example" :to="{ path: route.path, hash: `#${part.example.id}` }">
               {{ part.example.title }} 예제
-            </NuxtLink>
+            </UIAnchor>
           </dd>
         </div>
       </dl>

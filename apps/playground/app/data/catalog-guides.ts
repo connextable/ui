@@ -70,7 +70,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "사이트 헤더에서 페이지 탐색",
     description: "상위 분류가 헤더에 나란히 표시됩니다. 컴포넌트에서 데이터 표현으로 옮기면 같은 패널이 새 분류의 링크를 표시합니다.",
     api: {
-      items: "각 항목의 id, label, href, children을 지정합니다. disabled인 항목은 이동할 수 없습니다.",
+      items: "각 항목의 id, label과 목적지(href 또는 to), 하위 항목(children)을 지정합니다. disabled인 항목은 이동할 수 없습니다.",
       current: "현재 페이지 링크의 id입니다.",
       "v-model:open": "팝오버의 열림 상태를 연결합니다.",
       "#label": "상위 분류의 entry와 open 상태를 받아 버튼의 이름이나 아이콘을 구성합니다.",
@@ -123,11 +123,17 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     examples: [
       { id: "anchor-current", title: "현재 위치 표시", description: "선택된 링크의 현재 위치를 접근성 트리에 알립니다." },
       { id: "anchor-disabled", title: "이동할 수 없는 링크", description: "비활성 링크를 클릭해도 페이지는 바뀌지 않습니다." },
-      { id: "anchor-nuxt", title: "라우터 링크에 연결", description: "NuxtLink의 custom 슬롯으로 받은 주소와 탐색 함수를 UIAnchor의 실제 링크에 연결합니다." },
+      { id: "anchor-nuxt", title: "Nuxt 라우트 객체로 이동", description: "Nuxt 모듈을 등록한 앱에서는 UIAnchor의 to에 경로와 섹션을 담은 라우트 객체를 전달할 수 있습니다." },
     ],
     title: "디자인 토큰 페이지로 이동",
     description: "href에 경로와 섹션 ID를 함께 전달하면 지정한 문서의 섹션으로 이동합니다.",
-    api: { href: "링크의 목적지입니다.", current: "현재 위치를 접근성 트리에 전달합니다.", disabled: "링크의 활성화를 막습니다." },
+    api: {
+      href: "링크의 목적지입니다.",
+      to: "Nuxt 경로 문자열 또는 라우트 객체입니다. href보다 우선합니다.",
+      external: "Nuxt에서 정적 파일이나 별도 앱으로 이동할 때 지정합니다.",
+      current: "현재 위치를 접근성 트리에 전달합니다.",
+      disabled: "링크의 활성화를 막습니다.",
+    },
   },
   "tree-reorder": {
     examples: [
@@ -735,6 +741,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "menu-button": {
     examples: [
+      { id: "menu-button-links", title: "메뉴에서 문서 열기", description: "UIMenuItem에 to나 href를 지정합니다. 마우스로 클릭하거나 방향키로 항목을 찾아 Enter로 엽니다.", parts: ["UIMenuItem"] },
       { id: "menu-button-submenu", title: "하위 명령", description: "내보내기에서 하위 메뉴를 열어 파일 형식을 선택합니다.", parts: ["UIMenuSubContent"] },
       { id: "menu-button-disabled", title: "실행할 수 없는 명령", description: "Import 명령을 비활성으로 표시합니다." },
       { id: "menu-button-focus", title: "메뉴가 닫힐 때 트리거로 돌아가기", description: "메뉴에서 Escape를 누르거나 명령을 실행한 뒤 포커스가 트리거로 돌아오는지 확인합니다." },

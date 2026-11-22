@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  UIAnchor,
   UIButton,
   UIDashboard,
   UIDashboardNavbar,
@@ -162,10 +163,10 @@ onMounted(() => { mounted.value = true; });
       <UIDashboardSidebar ref="sidebar" label="컴포넌트">
         <template #header>
           <a class="playground-skip" href="#playground-content">본문으로 건너뛰기</a>
-          <NuxtLink class="playground-brand" to="/">
+          <UIAnchor class="playground-brand" to="/">
             <span class="playground-brand__mark" aria-hidden="true"></span>
             Connextable UI
-          </NuxtLink>
+          </UIAnchor>
         </template>
         <template #navigation-header>
           <div role="search" aria-label="컴포넌트" @keydown.esc="onSearchEscape">
@@ -193,7 +194,7 @@ onMounted(() => { mounted.value = true; });
         </p>
         <UIDashboardNavGroup v-if="showOverview" label="시작하기">
           <UIDashboardNavItem>
-            <NuxtLink to="/">디자인 시스템</NuxtLink>
+            <UIAnchor to="/" :current="route.path === '/' ? 'page' : undefined">디자인 시스템</UIAnchor>
           </UIDashboardNavItem>
         </UIDashboardNavGroup>
         <UIDashboardNavGroup
@@ -209,28 +210,28 @@ onMounted(() => { mounted.value = true; });
             :expanded="isExpanded(item)"
             @update:expanded="setExpanded(item.path, $event)"
           >
-            <NuxtLink
+            <UIAnchor
               class="playground-sidebar-link"
               :to="item.path"
               :title="item.title"
-              :aria-current-value="route.path === item.path && isExpanded(item) && item.parts.includes(selectedPart) ? 'false' : 'page'"
+              :current="route.path === item.path && !(isExpanded(item) && item.parts.includes(selectedPart)) ? 'page' : undefined"
             >
               <span>{{ item.title }}</span>
-            </NuxtLink>
+            </UIAnchor>
             <template v-if="item.parts.length" #children>
               <UIDashboardNavItem v-for="part in item.parts" :key="part">
-                <NuxtLink
+                <UIAnchor
                   class="playground-sidebar-link"
                   :to="{ path: item.path, hash: `#${part}` }"
                   :aria-label="part"
                   :title="part"
-                  :aria-current-value="route.path === item.path && selectedPart === part ? 'location' : 'false'"
+                  :current="route.path === item.path && selectedPart === part ? 'location' : undefined"
                 >
                   <span v-if="part.startsWith(item.title)" class="playground-sidebar-part">
                     <span>{{ item.title }}</span><span>{{ part.slice(item.title.length) }}</span>
                   </span>
                   <span v-else>{{ part }}</span>
-                </NuxtLink>
+                </UIAnchor>
               </UIDashboardNavItem>
             </template>
           </UIDashboardNavItem>

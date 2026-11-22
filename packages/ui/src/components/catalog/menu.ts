@@ -14,9 +14,9 @@ export {
   ContextMenuSeparator as UIContextMenuSeparator,
 } from "@sectile/vue/context-menu";
 export {
-  MenubarItem as UIMenubarItem,
   MenubarSeparator as UIMenubarSeparator,
   MenubarContent as UIMenubarContent,
 } from "@sectile/vue/menubar";
+export { MenuItemLink as UIMenubarItem } from "./menu-item-link";
 export { default as UIMenuButtonTrigger } from "./UIMenuButtonTrigger.vue";
 export { default as UIMenuItem, default as UIContextMenuItem } from "./UIMenuItem.vue";

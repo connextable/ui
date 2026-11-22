@@ -2,12 +2,16 @@
 import { ChevronDown } from "@lucide/vue";
 import { PopoverRoot, PopoverContent, PopoverPortal } from "@sectile/vue/popover";
 import { computed, nextTick, onBeforeUnmount, shallowRef, useId, useTemplateRef, watch } from "vue";
+import type { RouteLocationRaw } from "vue-router";
+import { UIAnchor } from "./anchor";
 import { useNavigationPanelMotion } from "./useNavigationPanelMotion";
 
 export interface UINavigationMenuEntry {
   id: string;
   label: string;
   href?: string;
+  to?: RouteLocationRaw;
+  external?: boolean;
   description?: string;
   disabled?: boolean;
   children?: readonly UINavigationMenuEntry[];
@@ -210,16 +214,17 @@ onBeforeUnmount(() => {
             <slot name="label" :entry="entry" :open="displayed && active?.id === entry.id">{{ entry.label }}</slot>
             <ChevronDown class="ui-navigation-rail__chevron" aria-hidden="true" />
           </button>
-          <a
+          <UIAnchor
             v-else
             class="ui-navigation-popover__row"
-            :href="entry.disabled ? undefined : entry.href"
-            :role="entry.disabled ? 'link' : undefined"
-            :aria-disabled="entry.disabled || undefined"
-            :aria-current="current === entry.id ? 'page' : undefined"
+            :href="entry.href"
+            :to="entry.to"
+            :external="entry.external"
+            :disabled="entry.disabled"
+            :current="current === entry.id ? 'page' : undefined"
             @pointerenter="hover(entry, $event)"
             @click="open = false"
-          >{{ entry.label }}</a>
+          >{{ entry.label }}</UIAnchor>
         </li>
       </ul>
     </nav>
@@ -237,16 +242,17 @@ onBeforeUnmount(() => {
               <b v-if="group.label" class="ui-navigation-popover__group-label">{{ group.label }}</b>
               <ul class="ui-navigation-popover__links">
                 <li v-for="entry in group.links" :key="entry.id">
-                  <a
+                  <UIAnchor
                     class="ui-navigation-popover__row"
-                    :href="entry.disabled ? undefined : entry.href"
-                    :role="entry.disabled ? 'link' : undefined"
-                    :aria-disabled="entry.disabled || undefined"
-                    :aria-current="current === entry.id ? 'page' : undefined"
-                    @click="!entry.disabled && (open = false)"
+                    :href="entry.href"
+                    :to="entry.to"
+                    :external="entry.external"
+                    :disabled="entry.disabled"
+                    :current="current === entry.id ? 'page' : undefined"
+                    @click="open = false"
                   >
                     <span>{{ entry.label }}<small v-if="entry.description">{{ entry.description }}</small></span>
-                  </a>
+                  </UIAnchor>
                 </li>
               </ul>
             </div>

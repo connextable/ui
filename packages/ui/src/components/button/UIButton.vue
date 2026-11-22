@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, inject, type Component } from "vue";
+import { computed } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 import UISpinner from "../progress/UISpinner.vue";
-import { buttonLinkKey } from "./link-component";
+import { useLinkComponent } from "../link-component";
 
 defineOptions({ inheritAttrs: false });
 defineSlots<{
@@ -32,7 +32,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{ click: [event: MouseEvent] }>();
-const linkComponent = inject<Component | null>(buttonLinkKey, null);
+const linkComponent = useLinkComponent();
 const destination = computed(() => props.to ?? props.href);
 const isLink = computed(() => destination.value != null);
 const nativeHref = computed(() => typeof destination.value === "string" ? destination.value : props.href);

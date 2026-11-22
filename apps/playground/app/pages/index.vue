@@ -77,7 +77,7 @@ onUnmounted(() => reducedMotion?.removeEventListener("change", readTokens));
     <section aria-labelledby="design-scrollbar">
       <h2 id="design-scrollbar" data-playground-heading tabindex="-1">스크롤바</h2>
       <p>스크롤 영역에 <code>ui-scrollbar</code>를 적용합니다. 숫자처럼 가운데 정렬이 필요한 영역에는 <code>data-ui-scrollbar="centered"</code>로 양쪽 여백을 맞춥니다.</p>
-      <p><NuxtLink to="/components/scroll-area">스크롤 영역과 외부 이동 버튼 예제</NuxtLink></p>
+      <p><UIAnchor to="/components/scroll-area">스크롤 영역과 외부 이동 버튼 예제</UIAnchor></p>
       <div class="design-scrollbar-example ui-scrollbar" tabindex="0" role="region" aria-label="스크롤 예제">
         <ul role="list">
           <li v-for="name in ['정산 보고서', '월간 주문 현황', '배송 지연 내역', '상품별 재고', '반품 처리 기록', '결제 승인 내역']" :key="name">{{ name }}</li>

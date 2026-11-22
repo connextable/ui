@@ -1,6 +1,6 @@
 import { addComponent, addImports, addPluginTemplate, defineNuxtModule } from "@nuxt/kit";
 import type { NuxtModule } from "@nuxt/schema";
-import { buttonLinkKey } from "./components/button/link-component";
+import { linkComponentKey } from "./components/link-component";
 
 const packageName = "@connextable/ui";
 const stylesheet = `${packageName}/styles.css`;
@@ -37,7 +37,7 @@ const connextableUI: NuxtModule<ConnextableUIOptions> = defineNuxtModule<Connext
         getContents: () => `import { defineNuxtPlugin } from '#app';
 import { NuxtLink } from '#components';
 export default defineNuxtPlugin(nuxtApp => {
-  nuxtApp.vueApp.provide(${JSON.stringify(buttonLinkKey)}, NuxtLink);
+  nuxtApp.vueApp.provide(${JSON.stringify(linkComponentKey)}, NuxtLink);
 });`,
       });
     }
