@@ -27,7 +27,7 @@ const items = [
     <UIAccordion v-model="open"
       :items="items.map(({ id }) => id)"
       type="single"
-      :collapsible="true"
+      collapsible
     >
       <UIAccordionItem v-for="item in items" :key="item.id" :value="item.id">
         <UIAccordionHeader><UIAccordionTrigger>{{ item.title }}</UIAccordionTrigger></UIAccordionHeader>

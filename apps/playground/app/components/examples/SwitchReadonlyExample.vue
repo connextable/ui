@@ -3,5 +3,5 @@ import { UISwitch } from "@connextable/ui";
 </script>
 
 <template>
-  <UISwitch label="제목 표시" :default-value="true" readonly />
+  <UISwitch label="제목 표시" default-value readonly />
 </template>
