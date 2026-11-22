@@ -27,27 +27,22 @@ const sections = (groups ?? defaults).map((group) => ({
 })).filter((group) => group.examples.length);
 
 // Resolve preview modules before rendering so their teleports hydrate in document order.
-const loadedPreviews = deferPreviews ? undefined : new Map(await Promise.all(
-  sections.flatMap((section) => section.examples.map(async ({ id, loadPreview }) =>
-    [id, await loadPreview()] as const,
-  )),
+const loadedPreviews = new Map(await Promise.all(
+  sections.flatMap((section) => section.examples)
+    .filter((example) => !deferPreviews || example.framed)
+    .map(async ({ id, loadPreview }) => [id, await loadPreview()] as const),
 ));
 </script>
 
 <template>
   <PlaygroundExampleSection v-for="section in sections" :id="section.id" :key="section.id" :title="section.title">
-    <PlaygroundExample
+    <PlaygroundCatalogExample
       v-for="example in section.examples"
-      :id="example.id"
       :key="example.id"
-      :title="example.title"
-      :description="example.description"
-      :source="example.source"
-      :wide="wide"
-      :heading-level="3"
-    >
-      <PlaygroundDeferredPreview v-if="deferPreviews" :load="example.loadPreview" />
-      <component :is="loadedPreviews?.get(example.id)" v-else />
-    </PlaygroundExample>
+      :example="{ id: example.id, title: example.title, description: example.description, source: example.source, wide }"
+      :framed="example.framed"
+      :load-preview="deferPreviews && !example.framed ? example.loadPreview : undefined"
+      :preview="loadedPreviews.get(example.id)"
+    />
   </PlaygroundExampleSection>
 </template>

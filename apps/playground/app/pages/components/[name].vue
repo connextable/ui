@@ -32,16 +32,17 @@ const parts = (entry.parts ?? []).map((name) => {
 <template>
   <div class="catalog-document">
     <PlaygroundExampleSection id="usage" title="기본 사용법">
-      <PlaygroundExample
-        id="basic-example"
-        :title="guide?.title ?? entry.title"
-        :description="guide?.description"
-        :source="source"
-        :wide="entry.wide"
-        :heading-level="3"
-      >
-        <Preview />
-      </PlaygroundExample>
+      <PlaygroundCatalogExample
+        :example="{
+          id: 'basic-example',
+          title: guide?.title ?? entry.title,
+          description: guide?.description,
+          source,
+          wide: entry.wide,
+        }"
+        :framed="guide?.framed"
+        :preview="Preview"
+      />
     </PlaygroundExampleSection>
     <PlaygroundCatalogExamples
       v-if="guide?.examples?.length"
