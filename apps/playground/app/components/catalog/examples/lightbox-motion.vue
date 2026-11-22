@@ -9,7 +9,7 @@ const motion = ref(true);
 <template>
   <div class="lightbox-motion-example">
     <UISwitch v-model="motion" label="확대·이동 효과" />
-    <UILightbox :items="[pinkFlower, purpleFlowers]" label="전환 효과 비교" :motion="motion" />
+    <UILightbox :items="[pinkFlower, purpleFlowers]" label="전환 효과 비교" :motion="motion" loop />
   </div>
 </template>
 

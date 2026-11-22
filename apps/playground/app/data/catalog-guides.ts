@@ -38,7 +38,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "lightbox-single", section: "media", title: "세로 사진 한 장 열기", description: "한 장일 때는 사진과 설명에 집중할 수 있도록 이동 버튼과 썸네일을 숨깁니다." },
       { id: "lightbox-video", section: "media", title: "예고편 재생과 자막", description: "재생과 일시정지, 재생 위치, 음소거, 한국어 자막을 조작해 보세요. 예고편은 처음에 음소거되어 있고, 끝까지 재생하면 반복됩니다." },
       { id: "lightbox-controlled", section: "behavior", title: "마지막으로 본 자료 다시 열기", description: "현재 위치를 페이지와 공유합니다. 썸네일 없이 방향키로 탐색하고, 마지막 항목 다음에는 첫 항목으로 돌아갑니다." },
-      { id: "lightbox-motion", section: "behavior", title: "열기와 항목 전환 효과 비교", description: "효과를 켜고 사진을 열어 보세요. 화살표로 다른 사진으로 이동하고 닫으면, 화면에 보이는 해당 썸네일로 돌아갑니다." },
+      { id: "lightbox-motion", section: "behavior", title: "열기와 항목 전환 효과 비교", description: "효과를 켜고 사진을 열어 보세요. 화살표로 마지막과 첫 사진 사이를 이어서 탐색합니다. 닫으면 화면에 보이는 현재 사진의 썸네일로 돌아갑니다." },
       { id: "lightbox-error", section: "behavior", title: "열 수 없는 원본 건너뛰기", description: "원본이 없는 사진에는 안내를 표시합니다. 다음 버튼으로 다른 자료를 계속 확인할 수 있습니다." },
     ],
     api: {
