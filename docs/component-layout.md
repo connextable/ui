@@ -7,6 +7,8 @@
 - Dialog는 오른쪽 위에 기본 닫기 버튼을 두고 본문을 별도로 스크롤한다. Dialog와 AlertDialog 모두 `#actions`는 오른쪽 아래, `#footer-leading`은 왼쪽 아래에 둔다. AlertDialog의 취소와 확인은 `#actions`에서 함께 제공한다.
 - 브라우저에서 프레임과 안쪽 요소의 경계 상자를 비교한다. Slider는 양 끝에서 손잡이의 세 인접 변, TagsInput은 이동·제거 버튼 양쪽, 메뉴는 입력과 패널의 위치 및 패널과 첫 행의 모서리를 확인한다.
 
+입력의 읽기 전용·비활성 규칙과 펼침 초기 상태는 [입력 상태와 화면 전환](./input-states-and-motion.md)을 따른다.
+
 ## 값 지우기
 
 `clearable`을 켜면 확정값이 있는 편집 가능한 컨트롤에 X 버튼을 표시한다. `clear-label`로 접근성 이름을 지정할 수 있다. Combobox와 TreeSelect는 선택값과 검색어를 함께 지운다. 버튼을 누르면 컨트롤의 평소 모델 갱신 경로를 거쳐 다음 빈 값으로 돌아간다.
