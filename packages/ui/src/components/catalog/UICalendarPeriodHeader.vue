@@ -97,6 +97,23 @@ watch([yearOpen, () => choosingMonth], async ([showYears], _, onCleanup) => {
   --ui-calendar-period-body: calc(6 * var(--ui-calendar-cell-height) + 5 * var(--ui-calendar-grid-gap));
 }
 
+@supports (inline-size: 1cqi) {
+  .ui-calendar-period[data-year-first] {
+    --ui-calendar-day-column-gap: var(--ui-calendar-grid-gap);
+    container-type: inline-size;
+  }
+
+  .ui-calendar-period[data-year-first]:has(> :is([data-scope="date-range"], [data-scope="date-time-range"])[data-part="grid"]) {
+    --ui-calendar-day-column-gap: 0px;
+  }
+
+  .ui-calendar-period[data-year-first] > .ui-calendar-period-header,
+  .ui-calendar-period[data-year-first] > :slotted([data-part="grid"]) {
+    --ui-calendar-day-size: max(var(--ui-calendar-cell-height), calc((100cqi - 6 * var(--ui-calendar-day-column-gap)) / 7));
+    --ui-calendar-period-body: calc(6 * var(--ui-calendar-day-size) + 5 * var(--ui-calendar-grid-gap));
+  }
+}
+
 .ui-calendar-period-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -132,6 +149,11 @@ watch([yearOpen, () => choosingMonth], async ([showYears], _, onCleanup) => {
 
 .ui-calendar-period > :slotted([data-part="grid"]) {
   min-block-size: var(--ui-calendar-period-body);
+}
+
+.ui-calendar-period[data-year-first] > :slotted([data-part="grid"]:has(> [data-part="cell"])) {
+  grid-auto-rows: auto;
+  align-content: start;
 }
 
 /* Both grids stay registered with their picker. Only the active one takes up space. */

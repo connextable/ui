@@ -232,6 +232,18 @@
     }
   }
 
+  :where(
+    [data-scope="calendar"], [data-scope="range-calendar"], [data-scope="date"],
+    [data-scope="date-range"], [data-scope="date-time"], [data-scope="date-time-range"]
+  )[data-part="cell"] {
+    box-sizing: border-box;
+    align-self: start;
+    inline-size: 100%;
+    min-block-size: 0;
+    aspect-ratio: 1;
+    padding: 0;
+  }
+
   :where([data-scope="calendar"], [data-scope="range-calendar"])[data-part="content"] {
     box-sizing: border-box;
     inline-size: 20rem;
