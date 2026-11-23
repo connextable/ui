@@ -28,8 +28,8 @@ interface LinkSlot {
   rel: string | null;
   isExternal: boolean;
   navigate(event: MouseEvent): unknown;
-  prefetch?(): Promise<void>;
-  shouldPrefetch?(trigger: PrefetchTrigger): boolean;
+  prefetch(): Promise<void>;
+  shouldPrefetch(trigger: PrefetchTrigger): boolean;
 }
 
 const visibleLinks = new Map<Element, () => void>();
@@ -45,12 +45,9 @@ function stopObservingLink(element: Element) {
 }
 
 function prefetchHandlers(link: LinkSlot) {
-  // Nuxt 4.5 and later expose the effective prefetch policy on the custom slot.
-  if (!link.shouldPrefetch || !link.prefetch) return {};
-
   function prefetchLink(element: Element, trigger: PrefetchTrigger) {
-    if (element.matches('a[href]:not([aria-disabled="true"])') && link.shouldPrefetch?.(trigger)) {
-      void link.prefetch?.();
+    if (element.matches('a[href]:not([aria-disabled="true"])') && link.shouldPrefetch(trigger)) {
+      void link.prefetch();
     }
   }
 
@@ -61,7 +58,7 @@ function prefetchHandlers(link: LinkSlot) {
   function observeVisibility(vnode: VNode) {
     const element = vnode.el;
     if (!(element instanceof HTMLAnchorElement)) return;
-    if (!link.shouldPrefetch?.("visibility") || typeof IntersectionObserver === "undefined") {
+    if (!link.shouldPrefetch("visibility") || typeof IntersectionObserver === "undefined") {
       stopObservingLink(element);
       return;
     }

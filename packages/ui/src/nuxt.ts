@@ -17,7 +17,7 @@ const connextableUI: NuxtModule<ConnextableUIOptions> = defineNuxtModule<Connext
   meta: {
     name: packageName,
     configKey: "connextableUI",
-    compatibility: { nuxt: "^4.0.0" },
+    compatibility: { nuxt: "^4.5.0" },
   },
   defaults: {
     prefix: "UI",
