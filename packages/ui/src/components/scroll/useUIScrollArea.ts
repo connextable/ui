@@ -8,6 +8,12 @@ export interface UIScrollAreaOptions {
   content?: ScrollElement;
 }
 
+export interface UIScrollToElementOptions {
+  axis?: "horizontal" | "vertical" | "both";
+  align?: "nearest" | "center";
+  behavior?: ScrollBehavior;
+}
+
 export interface UIScrollState {
   readonly x: number;
   readonly y: number;
@@ -119,7 +125,29 @@ export function useUIScrollArea(target: ScrollElement, options: UIScrollAreaOpti
     }
   }
 
-  return { element, state: readonly(state), isScrolling: readonly(isScrolling), refresh, scrollTo, scrollBy, scrollToEdge };
+  function scrollToElement(target: Element | null, { axis = "both", align = "nearest", behavior = "instant" }: UIScrollToElementOptions = {}) {
+    const node = element.value;
+    if (!node || !target || target === node || !node.contains(target) || !target.getClientRects().length) return;
+    const viewport = node.getBoundingClientRect();
+    const bounds = target.getBoundingClientRect();
+    const current = refresh();
+    function offset(start: number, end: number, size: number) {
+      if (align === "center") return (start + end - size) / 2;
+      if (start < 0 && end > size) return 0;
+      if (start < 0) return end - start > size ? end - size : start;
+      if (end > size) return end - start > size ? start : end - size;
+      return 0;
+    }
+    const left = viewport.left + node.clientLeft;
+    const top = viewport.top + node.clientTop;
+    scrollTo({
+      left: axis !== "vertical" && current.width ? current.x + offset(bounds.left - left, bounds.right - left, current.width) : undefined,
+      top: axis !== "horizontal" && current.height ? current.y + offset(bounds.top - top, bounds.bottom - top, current.height) : undefined,
+      behavior,
+    });
+  }
+
+  return { element, state: readonly(state), isScrolling: readonly(isScrolling), refresh, scrollTo, scrollBy, scrollToEdge, scrollToElement };
 }
 
 export type UIScrollAreaController = ReturnType<typeof useUIScrollArea>;

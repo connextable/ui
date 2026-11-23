@@ -3,7 +3,7 @@ import { computed, useId, useTemplateRef } from "vue";
 import UIScrollFade from "./UIScrollFade.vue";
 import { scrollEdges, useUIScrollArea, type UIScrollAreaController, type UIScrollEdge, type UIScrollState } from "./useUIScrollArea";
 
-type ScrollAreaSlot = Pick<UIScrollAreaController, "scrollTo" | "scrollBy" | "scrollToEdge" | "refresh"> & {
+type ScrollAreaSlot = Pick<UIScrollAreaController, "scrollTo" | "scrollBy" | "scrollToEdge" | "scrollToElement" | "refresh"> & {
   viewportId: string;
   state: UIScrollState;
   isScrolling: boolean;
@@ -31,10 +31,10 @@ const id = useId();
 const viewport = useTemplateRef("viewport");
 const content = useTemplateRef("content");
 const controller = useUIScrollArea(() => viewport.value?.element, { content });
-const { state, isScrolling, scrollTo, scrollBy, scrollToEdge, refresh } = controller;
+const { state, isScrolling, scrollTo, scrollBy, scrollToEdge, scrollToElement, refresh } = controller;
 const slotState = computed(() => ({
   viewportId: props.viewportId ?? id, state: state.value, isScrolling: isScrolling.value,
-  scrollTo, scrollBy, scrollToEdge, refresh,
+  scrollTo, scrollBy, scrollToEdge, scrollToElement, refresh,
 }));
 const fadeEdges = computed(() => {
   const { axis, fade } = props;

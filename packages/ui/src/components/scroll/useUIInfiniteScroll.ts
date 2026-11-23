@@ -25,7 +25,7 @@ export function useUIInfiniteScroll(scroll: UIScrollAreaController, options: UII
   const hasMore = computed(() => toValue(options.hasMore) ?? true);
   const extent = computed(() => edge.value === "top" || edge.value === "bottom"
     ? scroll.state.value.scrollHeight : scroll.state.value.scrollWidth);
-  const visible = computed(() => scroll.state.value.width > 0);
+  const visible = computed(() => scroll.state.value.width > 0 && scroll.state.value.height > 0);
   const nearEdge = computed(() => visible.value && scroll.state.value.distance[edge.value] <= distance.value);
   const canLoadMore = computed(() => enabled.value && hasMore.value && !!scroll.element.value && !loading.value);
   let request: AbortController | undefined;

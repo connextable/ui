@@ -2,6 +2,18 @@ export * from "./components/chart";
 export * from "./components/tabular";
 export * from "./components/scroll";
 export * from "./components/virtual";
+export { default as UICopyToClipboard } from "./components/headless/UICopyToClipboard.vue";
+export { default as UIInView } from "./components/headless/UIInView.vue";
+export { default as UIConfirmProvider } from "./components/headless/UIConfirmProvider.vue";
+export { useUIConfirm, type UIConfirmOptions } from "./components/headless/confirm";
+export { default as UIAsyncAction } from "./components/headless/UIAsyncAction.vue";
+export { default as UIFullscreen } from "./components/headless/UIFullscreen.vue";
+export { default as UIMediaGesture } from "./components/headless/UIMediaGesture.vue";
+export { useFullscreen as useUIFullscreen, type UseFullscreenOptions as UIFullscreenOptions,
+  type FullscreenSnapshot as UIFullscreenSnapshot, type FullscreenErrorCode as UIFullscreenErrorCode } from "@sectile/vue/fullscreen";
+export { useMediaGesture as useUIMediaGesture, type UseMediaGestureOptions as UIMediaGestureOptions,
+  type MediaGestureInput as UIMediaGestureInput, type MediaGestureEnd as UIMediaGestureEnd,
+  type MediaPointerAdmission as UIMediaPointerAdmission } from "@sectile/vue/media-gesture";
 export { default as UILightbox } from "./components/lightbox/UILightbox.vue";
 export type { UILightboxItem, UILightboxImage, UILightboxVideo } from "./components/lightbox/lightbox-types";
 export * from "./components/catalog/navigation-menu";
@@ -31,6 +43,8 @@ export { default as UIDisclosure } from "./components/disclosure/UIDisclosure.vu
 export { default as UIDisclosureContent } from "./components/disclosure/UIDisclosureContent.vue";
 export { default as UIDisclosureTrigger } from "./components/disclosure/UIDisclosureTrigger.vue";
 export { default as UIForm } from "./components/form/UIForm.vue";
+export { default as UIFormControl } from "./components/form/UIFormControl.vue";
+export * from "./components/form/form-control";
 export type { FormSubmitEvent as UIFormSubmitEvent } from "@sectile/vue/form";
 export { default as UIFormActions } from "./components/form/UIFormActions.vue";
 export { default as UIFormField } from "./components/form/UIFormField.vue";

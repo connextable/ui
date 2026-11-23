@@ -2,6 +2,7 @@
 import {
   DialogClose, DialogContent, DialogOverlay, DialogPortal, DialogRoot, DialogTitle,
 } from "@sectile/vue/dialog";
+import { useMediaGesture } from "@sectile/vue/media-gesture";
 import { ChevronLeft, ChevronRight, X } from "@lucide/vue";
 import { computed, nextTick, ref, shallowRef, useTemplateRef, watch, type CSSProperties } from "vue";
 import UIButton from "../button/UIButton.vue";
@@ -209,75 +210,74 @@ function onKeydown(event: KeyboardEvent) {
   }
 }
 
-let touchStart: { id: number; x: number; y: number; width: number; rtl: boolean; horizontal: boolean } | undefined;
-
 function canMove(offset: -1 | 1) {
   return offset === -1 ? canGoBack.value : canGoForward.value;
 }
 
-function clearSwipe() {
-  touchStart = undefined;
+let swipe: { x: number; y: number; dx: number; dy: number; width: number; rtl: boolean; horizontal: boolean } | undefined;
+let admitsTouch = false;
+const swipeActive = computed(() => displayedOpen.value && current.value?.kind === "image" && items.length > 1);
+
+function resetSwipe() {
+  swipe = undefined;
   visual.value?.removeAttribute("data-dragging");
   visual.value?.style.removeProperty("--ui-lightbox-swipe-x");
 }
 
-function onPointerDown(event: PointerEvent) {
-  const surface = visual.value;
-  if (event.pointerType !== "touch" || !surface?.hasAttribute("data-swipe")) return;
-
-  clearSwipe();
-  if (!event.isPrimary) return;
-  touchStart = {
-    id: event.pointerId,
-    x: event.clientX,
-    y: event.clientY,
-    width: surface.clientWidth,
-    rtl: getComputedStyle(surface).direction === "rtl",
-    horizontal: false,
-  };
-}
-
-function onPointerMove(event: PointerEvent) {
-  const start = touchStart;
-  const surface = visual.value;
-  if (!start || start.id !== event.pointerId || !surface) return;
-
-  const dx = event.clientX - start.x;
-  const dy = event.clientY - start.y;
-  if (!start.horizontal) {
-    if (Math.abs(dy) >= 10 && Math.abs(dy) >= Math.abs(dx)) {
-      clearSwipe();
+const gesture = useMediaGesture({
+  element: visual,
+  active: swipeActive,
+  dragThreshold: 10,
+  admitPointer: ({ pointerType, protectedOrigin }) => admitsTouch && pointerType === "touch" && !protectedOrigin,
+  onStart: ({ point }) => {
+    const surface = visual.value;
+    if (!surface) return false;
+    resetSwipe();
+    swipe = { x: point.x, y: point.y, dx: 0, dy: 0, width: surface.clientWidth,
+      rtl: getComputedStyle(surface).direction === "rtl", horizontal: false };
+    return true;
+  },
+  onMove: input => {
+    const start = swipe;
+    const surface = visual.value;
+    if (!start || !surface || input.kind !== "drag") return;
+    const dx = start.dx = input.after.x - start.x;
+    const dy = start.dy = input.after.y - start.y;
+    if (!start.horizontal) {
+      if (Math.abs(dy) >= 10 && Math.abs(dy) >= Math.abs(dx)) {
+        clearSwipe();
+        return;
+      }
+      if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+      start.horizontal = true;
+      surface.setAttribute("data-dragging", "");
+    }
+    const offset = (dx < 0) !== start.rtl ? 1 : -1;
+    const distance = Math.min(Math.abs(dx), start.width * 0.45) * (canMove(offset) ? 1 : 0.2);
+    surface.style.setProperty("--ui-lightbox-swipe-x", `${Math.sign(dx) * distance}px`);
+  },
+  onEnd: reason => {
+    const start = swipe;
+    if (!start) return;
+    swipe = undefined;
+    const threshold = Math.max(36, Math.min(72, start.width * 0.16));
+    if (reason !== "complete" || !start.horizontal || Math.abs(start.dx) < threshold || Math.abs(start.dx) < Math.abs(start.dy) * 1.2) {
+      resetSwipe();
       return;
     }
-    if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
-    start.horizontal = true;
-    surface.setAttribute("data-dragging", "");
-  }
+    // Preserve the dragged position until the outgoing View Transition snapshot.
+    move((start.dx < 0) !== start.rtl ? 1 : -1);
+  },
+});
 
-  const offset = (dx < 0) !== start.rtl ? 1 : -1;
-  const distance = Math.min(Math.abs(dx), start.width * 0.45) * (canMove(offset) ? 1 : 0.2);
-  surface.style.setProperty("--ui-lightbox-swipe-x", `${Math.sign(dx) * distance}px`);
+function clearSwipe() {
+  resetSwipe();
+  gesture.cancel();
 }
 
-function onPointerUp(event: PointerEvent) {
-  const start = touchStart;
-  if (!start || start.id !== event.pointerId) return;
-  touchStart = undefined;
-
-  const dx = event.clientX - start.x;
-  const dy = event.clientY - start.y;
-  const threshold = Math.max(36, Math.min(72, start.width * 0.16));
-  if (!start.horizontal || Math.abs(dx) < threshold || Math.abs(dx) < Math.abs(dy) * 1.2) {
-    clearSwipe();
-    return;
-  }
-
-  // Keep the dragged position until the outgoing View Transition snapshot is captured.
-  move((dx < 0) !== start.rtl ? 1 : -1);
-}
-
-function onPointerCancel(event: PointerEvent) {
-  if (touchStart?.id === event.pointerId) clearSwipe();
+function onPointerDown(event: PointerEvent) {
+  admitsTouch = event.pointerType === "touch" && event.isPrimary;
+  if (event.pointerType === "touch" && !event.isPrimary) clearSwipe();
 }
 </script>
 
@@ -320,8 +320,7 @@ function onPointerCancel(event: PointerEvent) {
             <div class="ui-lightbox__stage">
               <div ref="visual" class="ui-lightbox__visual" :data-swipe="current.kind === 'image' && items.length > 1 || undefined"
                 :style="photoRatio ? { '--ui-lightbox-photo-ratio': photoRatio } : undefined"
-                @pointerdown="onPointerDown" @pointermove="onPointerMove" @pointerup="onPointerUp"
-                @pointercancel="onPointerCancel" @lostpointercapture="onPointerCancel">
+                @pointerdown.capture="onPointerDown">
                 <p v-if="mediaFailed || (current.kind === 'video' && !current.sources.length)"
                   class="ui-lightbox__error" role="status">
                   {{ labels?.error ?? "미디어를 불러오지 못했습니다." }}

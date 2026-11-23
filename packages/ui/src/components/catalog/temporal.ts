@@ -501,27 +501,6 @@ export const UITimePickerContent = defineComponent({
   },
 }) as unknown as typeof TimePickerContent;
 
-function revealTimeChoice(column: HTMLElement, choice: Element | null) {
-  if (!choice || !column.contains(choice)) return;
-
-  const viewport = column.getBoundingClientRect();
-  const option = choice.getBoundingClientRect();
-  const top = viewport.top + column.clientTop;
-  const above = option.top - top;
-  const below = option.bottom - (top + column.clientHeight);
-  column.scrollTop += Math.min(above, 0) + Math.max(below, 0);
-}
-
-function centerSelectedTimeChoice(column: HTMLElement) {
-  const selected = column.querySelector('[role="option"][aria-selected="true"]');
-  if (!selected || column.clientHeight === 0) return;
-
-  const viewport = column.getBoundingClientRect();
-  const option = selected.getBoundingClientRect();
-  const viewportCenter = viewport.top + column.clientTop + column.clientHeight / 2;
-  column.scrollTop += option.top + option.height / 2 - viewportCenter;
-}
-
 type TimePickerColumnInstance = InstanceType<typeof TimePickerColumn>;
 
 export const UITimePickerColumn = defineComponent({
@@ -535,19 +514,20 @@ export const UITimePickerColumn = defineComponent({
     const { locale } = useUITemporalDisplay();
     const formatter = useTemporalFormatter();
     const listbox = shallowRef<HTMLElement>();
-    const { state: scrollState } = useUIScrollArea(listbox);
+    const { state: scrollState, scrollToElement } = useUIScrollArea(listbox);
     const centerSelection = () => {
-      if (listbox.value) centerSelectedTimeChoice(listbox.value);
+      const selected = listbox.value?.querySelector('[role="option"][aria-selected="true"]');
+      if (selected) scrollToElement(selected, { axis: "vertical", align: "center" });
     };
     watch([() => listbox.value, () => scrollState.value.height > 0], ([column, visible]) => {
-      if (column && visible) centerSelectedTimeChoice(column);
+      if (column && visible) centerSelection();
     }, { flush: "post" });
     watch(listbox, (column, _, onCleanup) => {
       if (!column) return;
       const activeChoice = new MutationObserver(() => {
         if (!column.matches(":focus")) return;
         const active = column.getAttribute("aria-activedescendant");
-        if (active) revealTimeChoice(column, column.ownerDocument.getElementById(active));
+        if (active) scrollToElement(column.ownerDocument.getElementById(active), { axis: "vertical" });
       });
       activeChoice.observe(column, { attributeFilter: ["aria-activedescendant"] });
       onCleanup(() => activeChoice.disconnect());

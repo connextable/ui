@@ -3,7 +3,7 @@ import test from "node:test";
 import { createSSRApp, h } from "vue";
 import { renderToString } from "vue/server-renderer";
 import {
-  UICalendar, UICheckboxGroup, UICheckboxTree, UIEditable, UIForm, UIFormField, UIGridEditor,
+  UICalendar, UICheckboxGroup, UICheckboxTree, UIEditable, UIForm, UIFormControl, UIFormField, UIGridEditor,
   UIInput, UIPinInput, UIRangeCalendar, UISelect, UITagsInput, UIToggleButton, UIToggleGroup, UITreeSelect,
 } from "@connextable/ui";
 
@@ -21,6 +21,20 @@ function render(control, props, children, field = {}) {
 function encodedInputs(html, name) {
   return [...html.matchAll(/<input\b[^>]*>/g)].map(([tag]) => tag).filter(tag => tag.includes(`name="${name}"`));
 }
+
+test("an adopted native form control inherits its accessible name and input state before hydration", async () => {
+  const html = await render(UIFormControl, {}, () => h("input", { value: "OPS-2026" }), { readonly: true });
+  const [input] = encodedInputs(html, "selection");
+  assert.match(html, /<label[^>]+for="audit-control"/);
+  assert.match(input, /id="audit-control"/);
+  assert.match(input, /aria-describedby="audit-description audit-message"/);
+  assert.match(input, /\sreadonly\b/);
+  assert.doesNotMatch(input, /\sdisabled\b/);
+  const standalone = await renderToString(createSSRApp({
+    render: () => h(UIFormControl, null, () => h("input", { disabled: true })),
+  }));
+  assert.match(standalone, /<input[^>]*\sdisabled\b/);
+});
 
 test("required composite controls validate the whole value and serialize only their accepted values", async () => {
   for (const [component, props] of [
