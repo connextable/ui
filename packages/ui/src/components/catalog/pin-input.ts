@@ -8,7 +8,7 @@ import { useCompositeValueForm } from "../form/composite-value";
 
 type PinInputInstance = InstanceType<typeof PinInputRoot>;
 type PinInputWithPlaceholder = new () => Omit<PinInputInstance, "$props"> & {
-  $props: PinInputInstance["$props"] & { placeholder?: string; onCompletionChange?: (completed: boolean) => void };
+  $props: PinInputInstance["$props"] & { placeholder?: string; onCompletion?: (completed: boolean) => void };
 };
 
 const inputSelector = '[data-scope="pin-input"][data-part="input"]';
@@ -30,14 +30,14 @@ const PinInputComposition = defineComponent({
   emits: {
     "update:modelValue": (_value: string) => true,
     complete: (_value: string) => true,
-    completionChange: (_completed: boolean) => true,
+    completion: (_completed: boolean) => true,
   },
   setup(props, { attrs, slots, emit }) {
     const clear = useFieldClear();
     const { readonly, disabled, editable, attrs: stateAttrs } = useInputState(props);
     const value = () => props.modelValue ?? "";
     const complete = () => Array.from(value()).length === props.length;
-    watch(complete, completed => emit("completionChange", completed));
+    watch(complete, completed => emit("completion", completed));
     const renderForm = useCompositeValueForm(props, {
       values: () => [value()],
       complete,

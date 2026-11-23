@@ -853,7 +853,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "pin-input": {
     framed: true,
     title: "여섯 자리 인증 코드 입력",
-    description: "코드를 한 자리씩 입력하거나 통째로 붙여넣습니다. 완료 상태는 completion-change에서 읽을 수 있습니다. 표시와 입력 상태는 위 설정으로 바꿉니다.",
+    description: "코드를 한 자리씩 입력하거나 통째로 붙여넣습니다. @completion으로 입력 완료 여부를 확인합니다.",
     api: {
       length: "입력할 코드 자리 수를 지정합니다.",
       "v-model": "입력한 코드를 문자열로 연결합니다.",
@@ -862,7 +862,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       clearable: "모든 칸을 비우는 버튼을 표시합니다.",
       readonly: { description: "입력한 코드를 표시하고 칸의 포커스를 유지합니다. 타이핑, 붙여넣기, 지우기로 값이 바뀌지 않습니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
       disabled: { description: "모든 칸의 입력과 키보드 포커스를 비활성화합니다. 연결된 값은 유지합니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
-      "@completion-change": { type: "(completed: boolean) => void", description: "모든 자리를 채우면 true, 다시 비어 있는 자리가 생기면 false를 전달합니다. 값은 v-model에서 읽습니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
+      "@completion": { type: "(completed: boolean) => void", description: "모든 자리를 채우면 true, 다시 비어 있는 자리가 생기면 false를 전달합니다. 값은 v-model에서 읽습니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
       "@complete": "기존 코드에서 사용하는 완료 이벤트입니다. 모든 칸이 채워지면 입력한 코드 문자열을 전달합니다.",
       "Input index": "이 입력 칸이 맡는 0부터 시작하는 인덱스입니다.",
     },

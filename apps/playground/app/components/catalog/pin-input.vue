@@ -33,7 +33,7 @@ const source = computed(() => vueExampleCode("UIPinInput", {
     'const code = ref("");',
     "const completed = ref(false);",
   ],
-  attributes: { "v-model": "code", "@completion-change": "completed = $event", ...attributes.value },
+  attributes: { "v-model": "code", "@completion": "completed = $event", ...attributes.value },
 }));
 </script>
 
@@ -48,7 +48,7 @@ const source = computed(() => vueExampleCode("UIPinInput", {
       <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
       <UISwitch variant="outline" v-model="disabled" size="sm" label="disabled" />
     </template>
-    <UIPinInput v-model="code" v-bind="attributes" @completion-change="completed = $event" />
+    <UIPinInput v-model="code" v-bind="attributes" @completion="completed = $event" />
     <template #footer><output>{{ completed ? "입력 완료" : `${code.length} / ${length}자리 입력` }}</output></template>
   </PlaygroundExample>
 </template>
