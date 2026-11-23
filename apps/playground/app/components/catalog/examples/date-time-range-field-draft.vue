@@ -6,9 +6,13 @@ const range = ref({ start: { date: { year: 2026, month: 8, day: 22 }, time: { ho
 </script>
 
 <template>
-  <UIDateTimeRangeField v-model="range" precision="minute" start-label="시작 일시" end-label="종료 일시" v-slot="{ value }">
-    <UIDateTimeRangeFieldStartInput />
-    <UIDateTimeRangeFieldEndInput />
-    <output>{{ value ? "확정한 범위가 있습니다." : "확정한 범위 없음" }}</output>
-  </UIDateTimeRangeField>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIDateTimeRangeField v-model="range" precision="minute" start-label="시작 일시" end-label="종료 일시">
+      <UIDateTimeRangeFieldStartInput />
+      <UIDateTimeRangeFieldEndInput />
+    </UIDateTimeRangeField>
+    <template #footer>
+      <output>{{ range ? "확정한 범위가 있습니다." : "확정한 범위 없음" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

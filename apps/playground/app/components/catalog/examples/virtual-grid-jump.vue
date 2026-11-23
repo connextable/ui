@@ -15,20 +15,24 @@ async function showItem() {
 </script>
 
 <template>
-  <div>
-    <UIButton size="sm" variant="outline" @click="showItem">두 열에서 75번으로 이동</UIButton>
-    <p aria-live="polite">화면 첫 항목 {{ firstVisible ?? "준비 중" }}</p>
-    <UIVirtualGrid
-      ref="grid"
-      :items="titles"
-      :get-i-d="id => id"
-      :lane-policy="{ kind: 'fixed', count: narrow ? 2 : 4, gap: 8 }"
-      :size-policy="{ kind: 'fixed', extent: 44 }"
-      :row-gap="8"
-      aria-label="샘플 목록"
-      @plan-change="plan => firstVisible = plan.placements.find(item => item.visible)?.id"
-    >
-      <template #item="{ value }">샘플 {{ value }}</template>
-    </UIVirtualGrid>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div>
+      <UIButton size="sm" variant="outline" @click="showItem">두 열에서 75번으로 이동</UIButton>
+      <UIVirtualGrid
+        ref="grid"
+        :items="titles"
+        :get-i-d="id => id"
+        :lane-policy="{ kind: 'fixed', count: narrow ? 2 : 4, gap: 8 }"
+        :size-policy="{ kind: 'fixed', extent: 44 }"
+        :row-gap="8"
+        aria-label="샘플 목록"
+        @plan-change="plan => firstVisible = plan.placements.find(item => item.visible)?.id"
+      >
+        <template #item="{ value }">샘플 {{ value }}</template>
+      </UIVirtualGrid>
+    </div>
+    <template #footer>
+      <output>화면 첫 항목 {{ firstVisible ?? "준비 중" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

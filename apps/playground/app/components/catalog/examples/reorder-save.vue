@@ -38,20 +38,24 @@ onScopeDispose(() => clearTimeout(timer));
 </script>
 
 <template>
-  <div ref="example" class="reorder-save">
-    <UISequenceReorder
-      :items="items" controlled :disabled="state === 'saving'" label="문서 페이지 순서" keyboard-mode="preview"
-      @update:items="save" v-slot="{ interaction, getPreviewState }"
-    >
-      <UIReorderGroup as="ul" framed :interaction="interaction" :get-preview-state="getPreviewState">
-        <UISequenceReorderItem v-for="id in items" :key="id" :value="id" as="li">
-          {{ id }}
-        </UISequenceReorderItem>
-      </UIReorderGroup>
-      <UIReorderFeedback :interaction="interaction" />
-    </UISequenceReorder>
-    <p role="status" :data-failed="state === 'failed' || undefined">{{ status }}</p>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div ref="example" class="reorder-save">
+      <UISequenceReorder
+        :items="items" controlled :disabled="state === 'saving'" label="문서 페이지 순서" keyboard-mode="preview"
+        @update:items="save" v-slot="{ interaction, getPreviewState }"
+      >
+        <UIReorderGroup as="ul" framed :interaction="interaction" :get-preview-state="getPreviewState">
+          <UISequenceReorderItem v-for="id in items" :key="id" :value="id" as="li">
+            {{ id }}
+          </UISequenceReorderItem>
+        </UIReorderGroup>
+        <UIReorderFeedback :interaction="interaction" />
+      </UISequenceReorder>
+    </div>
+    <template #footer>
+      <output :data-failed="state === 'failed' || undefined">{{ status }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
 
 <style scoped>

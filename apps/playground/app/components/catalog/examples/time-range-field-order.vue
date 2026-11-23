@@ -12,9 +12,13 @@ const display = useTemporalDisplay();
 </script>
 
 <template>
-  <UITimeRangeField precision="minute" v-model="range" start-label="시작 시간" end-label="종료 시간" v-slot="{ value }">
-    <UITimeRangeFieldStartInput />
-    <UITimeRangeFieldEndInput />
-    <output>{{ value ? `확정 시간 ${display.time(value.start)}–${display.time(value.end)}` : "확정한 범위 없음" }}</output>
-  </UITimeRangeField>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UITimeRangeField precision="minute" v-model="range" start-label="시작 시간" end-label="종료 시간">
+      <UITimeRangeFieldStartInput />
+      <UITimeRangeFieldEndInput />
+    </UITimeRangeField>
+    <template #footer>
+      <output>{{ range ? `확정 시간 ${display.time(range.start)}–${display.time(range.end)}` : "확정한 범위 없음" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

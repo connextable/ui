@@ -12,7 +12,7 @@ function move(input: UIMediaGestureInput) {
 </script>
 
 <template>
-  <div class="crop-position">
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
     <UIMediaGesture as-child :start="() => true" :admit-pointer="() => true" @move="move">
       <div class="crop-position__surface" role="slider" tabindex="0" aria-label="이미지 자르기 위치"
         :aria-valuenow="position" aria-valuemin="0" aria-valuemax="100"
@@ -22,16 +22,15 @@ function move(input: UIMediaGestureInput) {
         <div class="crop-position__marker" aria-hidden="true" :style="{ left: `${position}%` }" />
       </div>
     </UIMediaGesture>
-    <output>가로 위치 {{ position }}%</output>
-  </div>
+    <template #footer><output>가로 위치 {{ position }}%</output></template>
+  </PlaygroundExample>
 </template>
 
 <style scoped>
-.crop-position { inline-size: min(100%, 21rem); }
 .crop-position__surface {
   position: relative;
+  inline-size: min(100%, 21rem);
   height: 6rem;
-  margin-block-end: var(--ui-space-sm);
   overflow: hidden;
   border: 1px solid var(--ui-color-border);
   border-radius: var(--ui-radius-md);

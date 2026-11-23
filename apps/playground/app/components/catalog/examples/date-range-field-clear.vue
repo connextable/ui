@@ -13,9 +13,13 @@ const range = ref<{ start: { year: number; month: number; day: number }; end: { 
 </script>
 
 <template>
-  <UIDateRangeField v-model="range" start-label="시작" end-label="종료" clearable>
-    <UIDateRangeFieldStartInput name="start" />
-    <UIDateRangeFieldEndInput name="end" />
-  </UIDateRangeField>
-  <output>{{ range ? "범위를 선택했습니다." : "범위 값이 비었습니다." }}</output>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIDateRangeField v-model="range" start-label="시작" end-label="종료" clearable>
+      <UIDateRangeFieldStartInput name="start" />
+      <UIDateRangeFieldEndInput name="end" />
+    </UIDateRangeField>
+    <template #footer>
+      <output>{{ range ? "범위를 선택했습니다." : "범위 값이 비었습니다." }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

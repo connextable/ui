@@ -12,9 +12,13 @@ const display = useTemporalDisplay();
 </script>
 
 <template>
-  <UIDateRangeField v-model="range" start-label="시작 날짜" end-label="종료 날짜" v-slot="{ value }">
-    <UIDateRangeFieldStartInput />
-    <UIDateRangeFieldEndInput />
-    <output>{{ value ? `확정 기간 ${display.date(value.start)}–${display.date(value.end)}` : "확정한 범위 없음" }}</output>
-  </UIDateRangeField>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIDateRangeField v-model="range" start-label="시작 날짜" end-label="종료 날짜">
+      <UIDateRangeFieldStartInput />
+      <UIDateRangeFieldEndInput />
+    </UIDateRangeField>
+    <template #footer>
+      <output>{{ range ? `확정 기간 ${display.date(range.start)}–${display.date(range.end)}` : "확정한 범위 없음" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

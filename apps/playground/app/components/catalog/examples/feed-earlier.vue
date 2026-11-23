@@ -55,38 +55,42 @@ onBeforeUnmount(() => clearTimeout(timer));
 </script>
 
 <template>
-  <div class="feed-demo">
-    <header class="feed-demo__header">
-      <strong>배송지 정정 문의</strong>
-      <span class="feed-demo__meta">CS-1042 · {{ visible.length }} / {{ history.length }}건</span>
-    </header>
-    <UIFeed
-      v-slot="{ pending }" :items="items" :revision="revision" :request-generation="requestGeneration"
-      :get-position="getPosition" label="배송지 정정 상담 기록"
-      class="feed-demo__list" @request-window="loadHistory"
-    >
-      <UIFeedLoadEarlier v-if="start > 0" as-child>
-        <UIButton variant="outline" size="sm">
-          <template #leading><History /></template>
-          {{ pending === "before" ? "이전 기록 불러오는 중…" : failed ? "이전 기록 다시 시도" : "이전 상담 기록 불러오기" }}
-        </UIButton>
-      </UIFeedLoadEarlier>
-      <div class="feed-demo__scroll">
-        <UIFeedItem
-          v-for="event in visible" :key="event.id" :value="event.id"
-          :aria-labelledby="`${prefix}-${event.id}`" :aria-setsize="history.length" class="feed-demo__entry"
-        >
-          <div class="feed-demo__row">
-            <h4 :id="`${prefix}-${event.id}`" class="feed-demo__title">{{ event.title }}</h4>
-            <time class="feed-demo__meta" :datetime="event.time">{{ event.time }}</time>
-          </div>
-          <p>{{ event.detail }}</p>
-          <span class="feed-demo__meta">{{ event.actor }}</span>
-        </UIFeedItem>
-      </div>
-    </UIFeed>
-    <p class="feed-demo__status" :class="{ 'feed-demo__error': failed }" role="status">{{ status }}</p>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div class="feed-demo">
+      <header class="feed-demo__header">
+        <strong>배송지 정정 문의</strong>
+        <span class="feed-demo__meta">CS-1042 · {{ visible.length }} / {{ history.length }}건</span>
+      </header>
+      <UIFeed
+        v-slot="{ pending }" :items="items" :revision="revision" :request-generation="requestGeneration"
+        :get-position="getPosition" label="배송지 정정 상담 기록"
+        class="feed-demo__list" @request-window="loadHistory"
+      >
+        <UIFeedLoadEarlier v-if="start > 0" as-child>
+          <UIButton variant="outline" size="sm">
+            <template #leading><History /></template>
+            {{ pending === "before" ? "이전 기록 불러오는 중…" : failed ? "이전 기록 다시 시도" : "이전 상담 기록 불러오기" }}
+          </UIButton>
+        </UIFeedLoadEarlier>
+        <div class="feed-demo__scroll">
+          <UIFeedItem
+            v-for="event in visible" :key="event.id" :value="event.id"
+            :aria-labelledby="`${prefix}-${event.id}`" :aria-setsize="history.length" class="feed-demo__entry"
+          >
+            <div class="feed-demo__row">
+              <h4 :id="`${prefix}-${event.id}`" class="feed-demo__title">{{ event.title }}</h4>
+              <time class="feed-demo__meta" :datetime="event.time">{{ event.time }}</time>
+            </div>
+            <p>{{ event.detail }}</p>
+            <span class="feed-demo__meta">{{ event.actor }}</span>
+          </UIFeedItem>
+        </div>
+      </UIFeed>
+    </div>
+    <template #footer>
+      <output class="feed-demo__status" :class="{ 'feed-demo__error': failed }">{{ status }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
 
 <style src="../feed-demo.css"></style>

@@ -19,14 +19,18 @@ function locate(id: number) {
 </script>
 
 <template>
-  <UIVirtualSpatial ref="map" :items="bins" :get-i-d="bin => bin.id" :get-rect="bin => bin"
-    :item-attributes="bin => ({ 'data-ui-virtual-current': bin.id === current || undefined })"
-    size-ownership="declared" aria-label="창고 선반 좌표">
-    <template #item="{ id }">선반 {{ id }}</template>
-  </UIVirtualSpatial>
-  <UIDataActions>
-    <output aria-live="polite">{{ current ? `선반 ${current} 위치` : '창고 선반 6,000개' }}</output>
-    <UIButton size="sm" variant="outline" @click="locate(1)">입구</UIButton>
-    <UIButton size="sm" variant="outline" @click="locate(4785)">선반 4785</UIButton>
-  </UIDataActions>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIVirtualSpatial ref="map" :items="bins" :get-i-d="bin => bin.id" :get-rect="bin => bin"
+      :item-attributes="bin => ({ 'data-ui-virtual-current': bin.id === current || undefined })"
+      size-ownership="declared" aria-label="창고 선반 좌표">
+      <template #item="{ id }">선반 {{ id }}</template>
+    </UIVirtualSpatial>
+    <UIDataActions>
+      <UIButton size="sm" variant="outline" @click="locate(1)">입구</UIButton>
+      <UIButton size="sm" variant="outline" @click="locate(4785)">선반 4785</UIButton>
+    </UIDataActions>
+    <template #footer>
+      <output aria-live="polite">{{ current ? `선반 ${current} 위치` : '창고 선반 6,000개' }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

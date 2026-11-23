@@ -11,8 +11,12 @@ const display = useTemporalDisplay();
 </script>
 
 <template>
-  <div>
-    <label>8월 접수일 <UIDateField v-model="date" :policies="policies" /></label>
-    <p>확정한 날짜 <output>{{ date ? display.date(date) : "없음" }}</output></p>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div>
+      <label>8월 접수일 <UIDateField v-model="date" :policies="policies" /></label>
+    </div>
+    <template #footer>
+      <output>확정한 날짜 {{ date ? display.date(date) : "없음" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

@@ -51,48 +51,52 @@ onBeforeUnmount(() => clearTimeout(timer));
 </script>
 
 <template>
-  <div class="feed-demo">
-    <header class="feed-demo__header">
-      <strong>정산팀 받은편지함</strong>
-      <span class="feed-demo__meta">읽지 않은 알림 {{ unread }}개</span>
-    </header>
-    <UIFeed
-      v-slot="{ pending }" :items="items" :revision="revision" :request-generation="requestGeneration"
-      :set-size="notifications.length" :get-position="getPosition" label="정산 알림"
-      class="feed-demo__list" @request-window="loadNotifications"
-    >
-      <UIFeedItem
-        v-for="notice in visible" :key="notice.id" :value="notice.id"
-        :aria-labelledby="`${prefix}-${notice.id}`" class="feed-demo__entry feed-demo__entry--with-icon"
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div class="feed-demo">
+      <header class="feed-demo__header">
+        <strong>정산팀 받은편지함</strong>
+        <span class="feed-demo__meta">읽지 않은 알림 {{ unread }}개</span>
+      </header>
+      <UIFeed
+        v-slot="{ pending }" :items="items" :revision="revision" :request-generation="requestGeneration"
+        :set-size="notifications.length" :get-position="getPosition" label="정산 알림"
+        class="feed-demo__list" @request-window="loadNotifications"
       >
-        <span class="feed-demo__icon"><Bell :size="17" aria-hidden="true" /></span>
-        <div class="feed-demo__body">
-          <div class="feed-demo__row">
-            <h4 :id="`${prefix}-${notice.id}`" class="feed-demo__title">{{ notice.title }}</h4>
-            <span v-if="!read.has(notice.id)" class="feed-demo__badge">안 읽음</span>
+        <UIFeedItem
+          v-for="notice in visible" :key="notice.id" :value="notice.id"
+          :aria-labelledby="`${prefix}-${notice.id}`" class="feed-demo__entry feed-demo__entry--with-icon"
+        >
+          <span class="feed-demo__icon"><Bell :size="17" aria-hidden="true" /></span>
+          <div class="feed-demo__body">
+            <div class="feed-demo__row">
+              <h4 :id="`${prefix}-${notice.id}`" class="feed-demo__title">{{ notice.title }}</h4>
+              <span v-if="!read.has(notice.id)" class="feed-demo__badge">안 읽음</span>
+            </div>
+            <p>{{ notice.detail }}</p>
+            <div class="feed-demo__row">
+              <span class="feed-demo__meta">{{ notice.team }} · <time :datetime="notice.time">{{ notice.time }}</time></span>
+              <UIButton
+                variant="ghost" size="sm" :aria-label="`${notice.title} ${read.has(notice.id) ? '안 읽음으로 표시' : '읽음 처리'}`"
+                @click.stop="toggleRead(notice.id)"
+              >
+                <template v-if="!read.has(notice.id)" #leading><CircleCheck /></template>
+                {{ read.has(notice.id) ? "안 읽음으로 표시" : "읽음 처리" }}
+              </UIButton>
+            </div>
           </div>
-          <p>{{ notice.detail }}</p>
-          <div class="feed-demo__row">
-            <span class="feed-demo__meta">{{ notice.team }} · <time :datetime="notice.time">{{ notice.time }}</time></span>
-            <UIButton
-              variant="ghost" size="sm" :aria-label="`${notice.title} ${read.has(notice.id) ? '안 읽음으로 표시' : '읽음 처리'}`"
-              @click.stop="toggleRead(notice.id)"
-            >
-              <template v-if="!read.has(notice.id)" #leading><CircleCheck /></template>
-              {{ read.has(notice.id) ? "안 읽음으로 표시" : "읽음 처리" }}
-            </UIButton>
-          </div>
-        </div>
-      </UIFeedItem>
-      <UIFeedLoadNewer v-if="queued > 0" as-child>
-        <UIButton variant="outline" size="sm">
-          <template #leading><ArrowDown /></template>
-          {{ pending === "after" ? "새 알림 불러오는 중…" : `새 알림 ${queued}개 불러오기` }}
-        </UIButton>
-      </UIFeedLoadNewer>
-    </UIFeed>
-    <p class="feed-demo__status" role="status">{{ status }}</p>
-  </div>
+        </UIFeedItem>
+        <UIFeedLoadNewer v-if="queued > 0" as-child>
+          <UIButton variant="outline" size="sm">
+            <template #leading><ArrowDown /></template>
+            {{ pending === "after" ? "새 알림 불러오는 중…" : `새 알림 ${queued}개 불러오기` }}
+          </UIButton>
+        </UIFeedLoadNewer>
+      </UIFeed>
+    </div>
+    <template #footer>
+      <output class="feed-demo__status">{{ status }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
 
 <style src="../feed-demo.css"></style>

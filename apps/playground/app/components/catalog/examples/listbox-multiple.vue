@@ -8,13 +8,17 @@ const selected = ref<string | readonly string[]>([]);
 </script>
 
 <template>
-  <div>
-    <UIListbox v-model="selected" :items="channels" selection-mode="multiple" aria-label="알림 수단" clearable>
-      <UIListboxItem v-for="channel in channels" :key="channel" :value="channel">
-        <UIListboxItemText>{{ channel }}</UIListboxItemText>
-        <UIListboxItemIndicator><Check aria-hidden="true" /></UIListboxItemIndicator>
-      </UIListboxItem>
-    </UIListbox>
-    <p>선택 <output>{{ (typeof selected === "string" ? selected : selected.join(", ")) || "없음" }}</output></p>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div>
+      <UIListbox v-model="selected" :items="channels" selection-mode="multiple" aria-label="알림 수단" clearable>
+        <UIListboxItem v-for="channel in channels" :key="channel" :value="channel">
+          <UIListboxItemText>{{ channel }}</UIListboxItemText>
+          <UIListboxItemIndicator><Check aria-hidden="true" /></UIListboxItemIndicator>
+        </UIListboxItem>
+      </UIListbox>
+    </div>
+    <template #footer>
+      <output>선택 {{ (typeof selected === "string" ? selected : selected.join(", ")) || "없음" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

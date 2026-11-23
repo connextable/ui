@@ -34,32 +34,36 @@ function editOwner() {
 </script>
 
 <template>
-  <div>
-    <UITreeGrid v-model:highlighted-value="highlighted" v-model:edit-mode="editMode"
-      :rows="rows" :headers="['서비스', '담당자']" :get-cell-value="read" :set-cell-value="(id, value) => labels.set(id, value)"
-      :default-expanded-value="['platform']" aria-label="서비스 담당자">
-      <UITreeGridHeader />
-      <UITreeGridRow value="platform" :row-index="1" expandable>
-        <UITreeGridCell value="platform-name" :column-index="1">
-          <UITreeGridDisclosure as="button" type="button" for="platform" aria-label="플랫폼 하위 서비스">
-            <ChevronRight aria-hidden="true" />
-          </UITreeGridDisclosure>
-          {{ read("platform-name") }}
-        </UITreeGridCell>
-        <UITreeGridCell value="platform-owner" :column-index="2">{{ read("platform-owner") }}</UITreeGridCell>
-      </UITreeGridRow>
-      <UITreeGridGroup for="platform">
-        <UITreeGridRow value="site" :row-index="2" :level="2">
-          <UITreeGridCell value="site-name" :column-index="1">{{ read("site-name") }}</UITreeGridCell>
-          <UITreeGridCell value="site-owner" :column-index="2">
-            <UITabularEditTrigger :aria-label="`웹사이트 담당자 편집, 현재 ${read('site-owner')}`" @click="editOwner">
-              {{ read("site-owner") }}
-            </UITabularEditTrigger>
-            <UITreeGridEditor for="site-owner" label="웹사이트 담당자" />
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div>
+      <UITreeGrid v-model:highlighted-value="highlighted" v-model:edit-mode="editMode"
+        :rows="rows" :headers="['서비스', '담당자']" :get-cell-value="read" :set-cell-value="(id, value) => labels.set(id, value)"
+        :default-expanded-value="['platform']" aria-label="서비스 담당자">
+        <UITreeGridHeader />
+        <UITreeGridRow value="platform" :row-index="1" expandable>
+          <UITreeGridCell value="platform-name" :column-index="1">
+            <UITreeGridDisclosure as="button" type="button" for="platform" aria-label="플랫폼 하위 서비스">
+              <ChevronRight aria-hidden="true" />
+            </UITreeGridDisclosure>
+            {{ read("platform-name") }}
           </UITreeGridCell>
+          <UITreeGridCell value="platform-owner" :column-index="2">{{ read("platform-owner") }}</UITreeGridCell>
         </UITreeGridRow>
-      </UITreeGridGroup>
-    </UITreeGrid>
-    <output>웹사이트 담당자 {{ read("site-owner") }}</output>
-  </div>
+        <UITreeGridGroup for="platform">
+          <UITreeGridRow value="site" :row-index="2" :level="2">
+            <UITreeGridCell value="site-name" :column-index="1">{{ read("site-name") }}</UITreeGridCell>
+            <UITreeGridCell value="site-owner" :column-index="2">
+              <UITabularEditTrigger :aria-label="`웹사이트 담당자 편집, 현재 ${read('site-owner')}`" @click="editOwner">
+                {{ read("site-owner") }}
+              </UITabularEditTrigger>
+              <UITreeGridEditor for="site-owner" label="웹사이트 담당자" />
+            </UITreeGridCell>
+          </UITreeGridRow>
+        </UITreeGridGroup>
+      </UITreeGrid>
+    </div>
+    <template #footer>
+      <output>웹사이트 담당자 {{ read("site-owner") }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

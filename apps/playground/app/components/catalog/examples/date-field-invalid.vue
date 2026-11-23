@@ -8,8 +8,12 @@ const display = useTemporalDisplay();
 </script>
 
 <template>
-  <div>
-    <UIDateField v-model="value" label="서비스 시작일" />
-    <output>{{ value ? `확정 날짜 ${display.date(value)}` : "확정한 날짜 없음" }}</output>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div>
+      <UIDateField v-model="value" label="서비스 시작일" />
+    </div>
+    <template #footer>
+      <output>{{ value ? `확정 날짜 ${display.date(value)}` : "확정한 날짜 없음" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onScopeDispose, ref } from "vue";
-import { UIDataActions, UITabularEditTrigger, createUIDataGridComponents, useDataGrid } from "@connextable/ui";
+import { UITabularEditTrigger, createUIDataGridComponents, useDataGrid } from "@connextable/ui";
 
 const message = ref("수량 옆 편집 버튼을 누르세요.");
 let rows = [
@@ -36,26 +36,30 @@ function parseQuantity(input: string) {
 </script>
 
 <template>
-  <Grid.Provider>
-  <Grid.Root aria-label="재고 수량">
-    <Grid.Header>
-      <Grid.HeaderRow>
-        <Grid.ColumnHeader column="name">품목</Grid.ColumnHeader>
-        <Grid.ColumnHeader column="quantity">재고 수량</Grid.ColumnHeader>
-      </Grid.HeaderRow>
-    </Grid.Header>
-    <Grid.Body v-slot="{ row }">
-      <Grid.Cell column="name">{{ row.cells.name }}</Grid.Cell>
-      <Grid.Cell column="quantity" data-ui-tabular-numeric>
-        <Grid.Editor column="quantity" inputmode="numeric" :value="row.cells.quantity" :parse-value="parseQuantity" :aria-label="`${row.cells.name} 수량`" />
-        <UITabularEditTrigger
-          :aria-label="`${row.cells.name} 수량 편집, 현재 ${row.cells.quantity}개`"
-          @click="grid.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'quantity' } })">
-          {{ row.cells.quantity }}개
-        </UITabularEditTrigger>
-      </Grid.Cell>
-    </Grid.Body>
-  </Grid.Root>
-  </Grid.Provider>
-  <UIDataActions><output aria-live="polite">{{ message }}</output></UIDataActions>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <Grid.Provider>
+    <Grid.Root aria-label="재고 수량">
+      <Grid.Header>
+        <Grid.HeaderRow>
+          <Grid.ColumnHeader column="name">품목</Grid.ColumnHeader>
+          <Grid.ColumnHeader column="quantity">재고 수량</Grid.ColumnHeader>
+        </Grid.HeaderRow>
+      </Grid.Header>
+      <Grid.Body v-slot="{ row }">
+        <Grid.Cell column="name">{{ row.cells.name }}</Grid.Cell>
+        <Grid.Cell column="quantity" data-ui-tabular-numeric>
+          <Grid.Editor column="quantity" inputmode="numeric" :value="row.cells.quantity" :parse-value="parseQuantity" :aria-label="`${row.cells.name} 수량`" />
+          <UITabularEditTrigger
+            :aria-label="`${row.cells.name} 수량 편집, 현재 ${row.cells.quantity}개`"
+            @click="grid.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'quantity' } })">
+            {{ row.cells.quantity }}개
+          </UITabularEditTrigger>
+        </Grid.Cell>
+      </Grid.Body>
+    </Grid.Root>
+    </Grid.Provider>
+    <template #footer>
+      <output aria-live="polite">{{ message }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

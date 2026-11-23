@@ -12,21 +12,25 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
 </script>
 
 <template>
-  <div>
-    <UITreeReorder v-model:nodes="nodes" label="디자인 파일 트리" keyboard-mode="preview"
-      v-slot="{ nodes: currentNodes, interaction, getPreviewState }">
-      <UIReorderGroup framed :tree-nodes="currentNodes" :interaction="interaction" :get-preview-state="getPreviewState">
-        <template #default="{ items }">
-          <UITreeReorderItem v-for="{ id, level } in items" :key="id" :value="id">
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div>
+      <UITreeReorder v-model:nodes="nodes" label="디자인 파일 트리" keyboard-mode="preview"
+        v-slot="{ nodes: currentNodes, interaction, getPreviewState }">
+        <UIReorderGroup framed :tree-nodes="currentNodes" :interaction="interaction" :get-preview-state="getPreviewState">
+          <template #default="{ items }">
+            <UITreeReorderItem v-for="{ id, level } in items" :key="id" :value="id">
+              <span data-ui-reorder-indent :style="{ '--ui-reorder-depth': level - 1 }">{{ id }}</span>
+            </UITreeReorderItem>
+          </template>
+          <template #preview="{ id, level }">
             <span data-ui-reorder-indent :style="{ '--ui-reorder-depth': level - 1 }">{{ id }}</span>
-          </UITreeReorderItem>
-        </template>
-        <template #preview="{ id, level }">
-          <span data-ui-reorder-indent :style="{ '--ui-reorder-depth': level - 1 }">{{ id }}</span>
-        </template>
-      </UIReorderGroup>
-      <UIReorderFeedback :interaction="interaction" />
-    </UITreeReorder>
-    <output>색상의 현재 폴더 {{ nodes.find(node => node.id === '색상')?.parentID ?? "최상위" }}</output>
-  </div>
+          </template>
+        </UIReorderGroup>
+        <UIReorderFeedback :interaction="interaction" />
+      </UITreeReorder>
+    </div>
+    <template #footer>
+      <output>색상의 현재 폴더 {{ nodes.find(node => node.id === '색상')?.parentID ?? "최상위" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

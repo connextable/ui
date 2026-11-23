@@ -13,13 +13,17 @@ const selected = ref("");
 </script>
 
 <template>
-  <UIContextMenu :items="items" @invoke="selected = $event">
-    <UIContextMenuTrigger as="div" tabindex="0" aria-keyshortcuts="Shift+F10">키보드 메뉴 대상</UIContextMenuTrigger>
-    <UIContextMenuContent>
-      <UIContextMenuItem v-for="{ id } in items" :key="id" :value="id">
-        {{ labels[id] }}
-      </UIContextMenuItem>
-    </UIContextMenuContent>
-  </UIContextMenu>
-  <p v-if="selected" role="status">{{ labels[selected] }}</p>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIContextMenu :items="items" @invoke="selected = $event">
+      <UIContextMenuTrigger as="div" tabindex="0" aria-keyshortcuts="Shift+F10">키보드 메뉴 대상</UIContextMenuTrigger>
+      <UIContextMenuContent>
+        <UIContextMenuItem v-for="{ id } in items" :key="id" :value="id">
+          {{ labels[id] }}
+        </UIContextMenuItem>
+      </UIContextMenuContent>
+    </UIContextMenu>
+    <template #footer v-if="selected">
+      <output>{{ labels[selected] }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

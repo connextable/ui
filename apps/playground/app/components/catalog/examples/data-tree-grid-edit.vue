@@ -40,34 +40,38 @@ const DataTreeGrid = createUIDataTreeGridComponents(tree);
 </script>
 
 <template>
-  <div>
-    <DataTreeGrid.Provider>
-      <DataTreeGrid.Root aria-label="서비스 담당자">
-        <DataTreeGrid.Header>
-          <DataTreeGrid.HeaderRow>
-            <DataTreeGrid.ColumnHeader column="service">서비스</DataTreeGrid.ColumnHeader>
-            <DataTreeGrid.ColumnHeader column="owner">담당자</DataTreeGrid.ColumnHeader>
-          </DataTreeGrid.HeaderRow>
-        </DataTreeGrid.Header>
-        <DataTreeGrid.Body v-slot="{ row }">
-          <DataTreeGrid.Cell column="service" data-ui-tree-column>
-            <DataTreeGrid.RowDisclosure v-if="row.kind === 'group'" aria-label="플랫폼 그룹">
-              <ChevronRight aria-hidden="true" />
-            </DataTreeGrid.RowDisclosure>
-            {{ row.cells.service }}
-          </DataTreeGrid.Cell>
-          <DataTreeGrid.Cell column="owner">
-            <DataTreeGrid.Editor v-if="row.kind === 'leaf'" column="owner" :value="row.cells.owner" aria-label="새 담당자" />
-            <UITabularEditTrigger v-if="row.kind === 'leaf'"
-              :aria-label="`${row.cells.service} 담당자 편집, 현재 ${row.cells.owner}`"
-              @click="tree.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'owner' } })">
-              {{ row.cells.owner }}
-            </UITabularEditTrigger>
-            <template v-if="row.kind === 'group'">{{ row.cells.owner }}</template>
-          </DataTreeGrid.Cell>
-        </DataTreeGrid.Body>
-      </DataTreeGrid.Root>
-    </DataTreeGrid.Provider>
-    <output v-if="saved">저장한 담당자 {{ saved }}</output>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div>
+      <DataTreeGrid.Provider>
+        <DataTreeGrid.Root aria-label="서비스 담당자">
+          <DataTreeGrid.Header>
+            <DataTreeGrid.HeaderRow>
+              <DataTreeGrid.ColumnHeader column="service">서비스</DataTreeGrid.ColumnHeader>
+              <DataTreeGrid.ColumnHeader column="owner">담당자</DataTreeGrid.ColumnHeader>
+            </DataTreeGrid.HeaderRow>
+          </DataTreeGrid.Header>
+          <DataTreeGrid.Body v-slot="{ row }">
+            <DataTreeGrid.Cell column="service" data-ui-tree-column>
+              <DataTreeGrid.RowDisclosure v-if="row.kind === 'group'" aria-label="플랫폼 그룹">
+                <ChevronRight aria-hidden="true" />
+              </DataTreeGrid.RowDisclosure>
+              {{ row.cells.service }}
+            </DataTreeGrid.Cell>
+            <DataTreeGrid.Cell column="owner">
+              <DataTreeGrid.Editor v-if="row.kind === 'leaf'" column="owner" :value="row.cells.owner" aria-label="새 담당자" />
+              <UITabularEditTrigger v-if="row.kind === 'leaf'"
+                :aria-label="`${row.cells.service} 담당자 편집, 현재 ${row.cells.owner}`"
+                @click="tree.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'owner' } })">
+                {{ row.cells.owner }}
+              </UITabularEditTrigger>
+              <template v-if="row.kind === 'group'">{{ row.cells.owner }}</template>
+            </DataTreeGrid.Cell>
+          </DataTreeGrid.Body>
+        </DataTreeGrid.Root>
+      </DataTreeGrid.Provider>
+    </div>
+    <template #footer v-if="saved">
+      <output>저장한 담당자 {{ saved }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

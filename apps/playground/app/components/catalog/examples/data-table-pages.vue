@@ -35,7 +35,7 @@ const Table = createUIDataTableComponents(table);
 
 <template>
   <Table.Provider v-slot="{ accessState }">
-    <template v-if="accessState.kind === 'page'">
+    <PlaygroundExample v-if="accessState.kind === 'page'" v-bind="$attrs as { id: string; title: string }">
       <Table.Root aria-label="요청 목록">
         <Table.Header>
           <Table.HeaderRow>
@@ -51,12 +51,14 @@ const Table = createUIDataTableComponents(table);
         </Table.Body>
       </Table.Root>
       <UIDataActions>
-        <output aria-live="polite">{{ number.format(accessState.page) }} / {{ number.format(lastPage) }} 페이지 · 총 {{ number.format(total) }}건</output>
         <UIButton size="sm" variant="outline" icon-only aria-label="이전 페이지" :disabled="accessState.page <= 1"
           @click="table.dispatch({ type: 'set-access', accessState: pageAccess(accessState.page - 1) })"><ChevronLeft /></UIButton>
         <UIButton size="sm" variant="outline" icon-only aria-label="다음 페이지" :disabled="accessState.page >= lastPage"
           @click="table.dispatch({ type: 'set-access', accessState: pageAccess(accessState.page + 1) })"><ChevronRight /></UIButton>
       </UIDataActions>
-    </template>
+      <template #footer>
+        <output>{{ number.format(accessState.page) }} / {{ number.format(lastPage) }} 페이지 · 총 {{ number.format(total) }}건</output>
+      </template>
+    </PlaygroundExample>
   </Table.Provider>
 </template>

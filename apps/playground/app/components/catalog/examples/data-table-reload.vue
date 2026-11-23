@@ -24,23 +24,27 @@ const DataTable = createUIDataTableComponents(table);
 </script>
 
 <template>
-  <DataTable.Provider>
-    <DataTable.Root>
-      <DataTable.Caption>사용자</DataTable.Caption>
-      <DataTable.Header>
-        <DataTable.HeaderRow>
-          <DataTable.ColumnHeader column="name">이름</DataTable.ColumnHeader>
-          <DataTable.ColumnHeader column="team">팀</DataTable.ColumnHeader>
-        </DataTable.HeaderRow>
-      </DataTable.Header>
-      <DataTable.Body v-slot="{ row }">
-        <DataTable.Cell column="name">{{ row.cells.name }}</DataTable.Cell>
-        <DataTable.Cell column="team">{{ row.cells.team }}</DataTable.Cell>
-      </DataTable.Body>
-    </DataTable.Root>
-  </DataTable.Provider>
-  <UIDataActions>
-    <output aria-live="polite">{{ table.status.value === 'loading' ? '표를 불러오는 중' : '사용자 2명' }}</output>
-    <UIButton size="sm" variant="outline" :loading="table.status.value === 'loading'" @click="table.reload()">다시 불러오기</UIButton>
-  </UIDataActions>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <DataTable.Provider>
+      <DataTable.Root>
+        <DataTable.Caption>사용자</DataTable.Caption>
+        <DataTable.Header>
+          <DataTable.HeaderRow>
+            <DataTable.ColumnHeader column="name">이름</DataTable.ColumnHeader>
+            <DataTable.ColumnHeader column="team">팀</DataTable.ColumnHeader>
+          </DataTable.HeaderRow>
+        </DataTable.Header>
+        <DataTable.Body v-slot="{ row }">
+          <DataTable.Cell column="name">{{ row.cells.name }}</DataTable.Cell>
+          <DataTable.Cell column="team">{{ row.cells.team }}</DataTable.Cell>
+        </DataTable.Body>
+      </DataTable.Root>
+    </DataTable.Provider>
+    <UIDataActions>
+      <UIButton size="sm" variant="outline" :loading="table.status.value === 'loading'" @click="table.reload()">다시 불러오기</UIButton>
+    </UIDataActions>
+    <template #footer>
+      <output aria-live="polite">{{ table.status.value === 'loading' ? '표를 불러오는 중' : '사용자 2명' }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

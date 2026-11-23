@@ -11,15 +11,19 @@ const selected = ref("");
 </script>
 
 <template>
-  <UIMenuButton :items="items" label="내보내기 명령" @invoke="selected = $event">
-    <UIMenuButtonTrigger>명령 열기</UIMenuButtonTrigger>
-    <UIMenuButtonContent>
-      <UIMenuItem value="export">내보내기</UIMenuItem>
-      <UIMenuSubContent for="export">
-        <UIMenuItem value="pdf">PDF 내보내기</UIMenuItem>
-        <UIMenuItem value="text">텍스트 내보내기</UIMenuItem>
-      </UIMenuSubContent>
-    </UIMenuButtonContent>
-  </UIMenuButton>
-  <output v-if="selected">선택한 파일 형식 {{ selected }}</output>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIMenuButton :items="items" label="내보내기 명령" @invoke="selected = $event">
+      <UIMenuButtonTrigger>명령 열기</UIMenuButtonTrigger>
+      <UIMenuButtonContent>
+        <UIMenuItem value="export">내보내기</UIMenuItem>
+        <UIMenuSubContent for="export">
+          <UIMenuItem value="pdf">PDF 내보내기</UIMenuItem>
+          <UIMenuItem value="text">텍스트 내보내기</UIMenuItem>
+        </UIMenuSubContent>
+      </UIMenuButtonContent>
+    </UIMenuButton>
+    <template #footer v-if="selected">
+      <output>선택한 파일 형식 {{ selected }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

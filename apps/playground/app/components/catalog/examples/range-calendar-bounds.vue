@@ -9,6 +9,10 @@ const display = useTemporalDisplay();
 </script>
 
 <template>
-  <UIRangeCalendar v-model="range" :default-highlighted-value="min" :policies="{ min, max }" label="예약 가능 기간" />
-  <output>{{ range ? `${display.date(range.start)}–${display.date(range.end)}` : "선택한 범위 없음" }}</output>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIRangeCalendar v-model="range" :default-highlighted-value="min" :policies="{ min, max }" label="예약 가능 기간" />
+    <template #footer>
+      <output>{{ range ? `${display.date(range.start)}–${display.date(range.end)}` : "선택한 범위 없음" }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

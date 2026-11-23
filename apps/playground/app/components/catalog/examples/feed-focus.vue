@@ -41,39 +41,43 @@ onBeforeUnmount(() => clearTimeout(timer));
 </script>
 
 <template>
-  <div class="feed-demo">
-    <header class="feed-demo__header">
-      <div class="feed-demo__body">
-        <strong>결제 개선 배포 스레드</strong>
-        <span class="feed-demo__meta">댓글 {{ comments.length }}개 · 최신순</span>
-      </div>
-      <UIButton size="sm" variant="outline" :disabled="receiving || received" @click="simulateIncomingComment">
-        <template #leading><MessageSquare /></template>
-        {{ received ? "댓글 도착 완료" : receiving ? "댓글 도착 대기 중…" : "3초 뒤 댓글 받기" }}
-      </UIButton>
-    </header>
-    <p class="feed-demo__status" role="status">{{ status }}</p>
-    <UIFeed
-      v-slot="{ highlightedValue }" :items="items" :revision="revision" :request-generation="requestGeneration"
-      :get-position="getPosition" label="결제 개선 배포 댓글" class="feed-demo__list" @request-window="settleBoundary"
-    >
-      <div class="feed-demo__scroll">
-        <UIFeedItem
-          v-for="comment in comments" :key="comment.id" :value="comment.id"
-          :aria-labelledby="`${prefix}-${comment.id}`" :aria-setsize="comments.length" class="feed-demo__entry"
-        >
-          <div class="feed-demo__row">
-            <h4 :id="`${prefix}-${comment.id}`" class="feed-demo__title">{{ comment.title }}</h4>
-            <span class="feed-demo__meta">{{ comment.author }} · <time :datetime="comment.time">{{ comment.time }}</time></span>
-          </div>
-          <p>{{ comment.message }}</p>
-        </UIFeedItem>
-      </div>
-      <span class="feed-demo__meta">
-        현재 항목 · {{ comments.find(({ id }) => id === highlightedValue)?.title }}
-      </span>
-    </UIFeed>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div class="feed-demo">
+      <header class="feed-demo__header">
+        <div class="feed-demo__body">
+          <strong>결제 개선 배포 스레드</strong>
+          <span class="feed-demo__meta">댓글 {{ comments.length }}개 · 최신순</span>
+        </div>
+        <UIButton size="sm" variant="outline" :disabled="receiving || received" @click="simulateIncomingComment">
+          <template #leading><MessageSquare /></template>
+          {{ received ? "댓글 도착 완료" : receiving ? "댓글 도착 대기 중…" : "3초 뒤 댓글 받기" }}
+        </UIButton>
+      </header>
+      <UIFeed
+        v-slot="{ highlightedValue }" :items="items" :revision="revision" :request-generation="requestGeneration"
+        :get-position="getPosition" label="결제 개선 배포 댓글" class="feed-demo__list" @request-window="settleBoundary"
+      >
+        <div class="feed-demo__scroll">
+          <UIFeedItem
+            v-for="comment in comments" :key="comment.id" :value="comment.id"
+            :aria-labelledby="`${prefix}-${comment.id}`" :aria-setsize="comments.length" class="feed-demo__entry"
+          >
+            <div class="feed-demo__row">
+              <h4 :id="`${prefix}-${comment.id}`" class="feed-demo__title">{{ comment.title }}</h4>
+              <span class="feed-demo__meta">{{ comment.author }} · <time :datetime="comment.time">{{ comment.time }}</time></span>
+            </div>
+            <p>{{ comment.message }}</p>
+          </UIFeedItem>
+        </div>
+        <span class="feed-demo__meta">
+          현재 항목 · {{ comments.find(({ id }) => id === highlightedValue)?.title }}
+        </span>
+      </UIFeed>
+    </div>
+    <template #footer>
+      <output class="feed-demo__status">{{ status }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
 
 <style src="../feed-demo.css"></style>

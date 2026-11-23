@@ -29,20 +29,24 @@ async function confirm() {
 </script>
 
 <template>
-  <div>
-    <UIAlertDialog v-model:open="open" :close-on-escape="!pending">
-      <UIAlertDialogTrigger>검토 완료 처리</UIAlertDialogTrigger>
-      <UIAlertDialogOverlay />
-      <UIAlertDialogContent>
-        <UIAlertDialogTitle>검토를 완료할까요?</UIAlertDialogTitle>
-        <UIAlertDialogDescription>이 항목을 검토 완료 상태로 표시합니다.</UIAlertDialogDescription>
-        <template #footer-leading><span role="status">{{ pending ? '저장 중' : '' }}</span></template>
-        <template #actions>
-          <UIAlertDialogClose as-child><UIButton size="sm" variant="outline" :disabled="pending">취소</UIButton></UIAlertDialogClose>
-          <UIButton size="sm" :loading="pending" :disabled="pending" @click="confirm">완료 처리</UIButton>
-        </template>
-      </UIAlertDialogContent>
-    </UIAlertDialog>
-    <output v-if="saved">검토를 완료했습니다.</output>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div>
+      <UIAlertDialog v-model:open="open" :close-on-escape="!pending">
+        <UIAlertDialogTrigger>검토 완료 처리</UIAlertDialogTrigger>
+        <UIAlertDialogOverlay />
+        <UIAlertDialogContent>
+          <UIAlertDialogTitle>검토를 완료할까요?</UIAlertDialogTitle>
+          <UIAlertDialogDescription>이 항목을 검토 완료 상태로 표시합니다.</UIAlertDialogDescription>
+          <template #footer-leading><span role="status">{{ pending ? '저장 중' : '' }}</span></template>
+          <template #actions>
+            <UIAlertDialogClose as-child><UIButton size="sm" variant="outline" :disabled="pending">취소</UIButton></UIAlertDialogClose>
+            <UIButton size="sm" :loading="pending" :disabled="pending" @click="confirm">완료 처리</UIButton>
+          </template>
+        </UIAlertDialogContent>
+      </UIAlertDialog>
+    </div>
+    <template #footer v-if="saved">
+      <output>검토를 완료했습니다.</output>
+    </template>
+  </PlaygroundExample>
 </template>

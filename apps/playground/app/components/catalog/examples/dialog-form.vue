@@ -28,31 +28,35 @@ function createProject() {
 </script>
 
 <template>
-  <div class="project-example">
-    <UIDialog v-model:open="open" @update:open="resetForm">
-      <UIDialogTrigger as-child><UIButton variant="outline">프로젝트 만들기</UIButton></UIDialogTrigger>
-      <UIDialogPortal>
-        <UIDialogOverlay />
-        <UIDialogContent>
-          <UIDialogTitle>새 프로젝트</UIDialogTitle>
-          <UIDialogDescription>작업 목록에 표시할 프로젝트 이름을 정합니다.</UIDialogDescription>
-          <form :id="formID" class="ui-field-layout" @submit.prevent="createProject">
-            <label class="ui-field-layout">
-              프로젝트 이름
-              <UIInput
-                ref="titleInput" v-model="draft" placeholder="예시: 고객 상담 개선"
-                :aria-invalid="error ? 'true' : undefined" :aria-describedby="error ? `${formID}-error` : undefined"
-                @update:model-value="error = ''"
-              />
-            </label>
-            <p v-if="error" :id="`${formID}-error`" class="project-error" role="alert">{{ error }}</p>
-          </form>
-          <template #actions><UIButton type="submit" :form="formID">만들기</UIButton></template>
-        </UIDialogContent>
-      </UIDialogPortal>
-    </UIDialog>
-    <span v-if="project" role="status">프로젝트를 만들었습니다 · {{ project }}</span>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div class="project-example">
+      <UIDialog v-model:open="open" @update:open="resetForm">
+        <UIDialogTrigger as-child><UIButton variant="outline">프로젝트 만들기</UIButton></UIDialogTrigger>
+        <UIDialogPortal>
+          <UIDialogOverlay />
+          <UIDialogContent>
+            <UIDialogTitle>새 프로젝트</UIDialogTitle>
+            <UIDialogDescription>작업 목록에 표시할 프로젝트 이름을 정합니다.</UIDialogDescription>
+            <form :id="formID" class="ui-field-layout" @submit.prevent="createProject">
+              <label class="ui-field-layout">
+                프로젝트 이름
+                <UIInput
+                  ref="titleInput" v-model="draft" placeholder="예시: 고객 상담 개선"
+                  :aria-invalid="error ? 'true' : undefined" :aria-describedby="error ? `${formID}-error` : undefined"
+                  @update:model-value="error = ''"
+                />
+              </label>
+              <p v-if="error" :id="`${formID}-error`" class="project-error" role="alert">{{ error }}</p>
+            </form>
+            <template #actions><UIButton type="submit" :form="formID">만들기</UIButton></template>
+          </UIDialogContent>
+        </UIDialogPortal>
+      </UIDialog>
+    </div>
+    <template #footer v-if="project">
+      <output>프로젝트를 만들었습니다 · {{ project }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
 
 <style scoped>

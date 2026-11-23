@@ -31,28 +31,32 @@ function requestAgain() {
 </script>
 
 <template>
-  <Table.Provider>
-    <Table.Root aria-label="서비스 상태" :aria-busy="table.status.value === 'loading'">
-      <Table.Header>
-        <Table.HeaderRow>
-          <Table.ColumnHeader column="service">서비스</Table.ColumnHeader>
-          <Table.ColumnHeader column="status">상태</Table.ColumnHeader>
-        </Table.HeaderRow>
-      </Table.Header>
-      <Table.Body v-slot="{ row }">
-        <Table.Cell column="service">{{ row.cells.service }}</Table.Cell>
-        <Table.Cell column="status">{{ row.cells.status }}</Table.Cell>
-      </Table.Body>
-    </Table.Root>
-  </Table.Provider>
-  <UIDataActions>
-    <output aria-live="polite">
-      {{ failed ? '불러오지 못했습니다. 마지막 응답을 표시합니다.'
-        : table.status.value === 'loading' ? '가상 응답을 기다리는 중' : '서비스 2개 · 최신 응답' }}
-    </output>
-    <UIButton size="sm" :variant="failed ? 'solid' : 'outline'"
-      :loading="table.status.value === 'loading'" @click="requestAgain">
-      {{ failed ? '다시 시도' : '오류 재현' }}
-    </UIButton>
-  </UIDataActions>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <Table.Provider>
+      <Table.Root aria-label="서비스 상태" :aria-busy="table.status.value === 'loading'">
+        <Table.Header>
+          <Table.HeaderRow>
+            <Table.ColumnHeader column="service">서비스</Table.ColumnHeader>
+            <Table.ColumnHeader column="status">상태</Table.ColumnHeader>
+          </Table.HeaderRow>
+        </Table.Header>
+        <Table.Body v-slot="{ row }">
+          <Table.Cell column="service">{{ row.cells.service }}</Table.Cell>
+          <Table.Cell column="status">{{ row.cells.status }}</Table.Cell>
+        </Table.Body>
+      </Table.Root>
+    </Table.Provider>
+    <UIDataActions>
+      <UIButton size="sm" :variant="failed ? 'solid' : 'outline'"
+        :loading="table.status.value === 'loading'" @click="requestAgain">
+        {{ failed ? '다시 시도' : '오류 재현' }}
+      </UIButton>
+    </UIDataActions>
+    <template #footer>
+      <output aria-live="polite">
+        {{ failed ? '불러오지 못했습니다. 마지막 응답을 표시합니다.'
+          : table.status.value === 'loading' ? '가상 응답을 기다리는 중' : '서비스 2개 · 최신 응답' }}
+      </output>
+    </template>
+  </PlaygroundExample>
 </template>

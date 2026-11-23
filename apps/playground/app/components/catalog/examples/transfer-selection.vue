@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIDataActions, UITransfer } from "@connextable/ui";
+import { UITransfer } from "@connextable/ui";
 
 import { ref } from "vue";
 
@@ -15,17 +15,19 @@ const sourceValue = ref<readonly (typeof nodes)[number]["id"][]>([]);
 </script>
 
 <template>
-  <div class="ui-field">
-    <UITransfer
-      v-model:source-value="sourceValue"
-      :nodes="nodes"
-      source-id="available"
-      target-id="chosen"
-      source-label="사용 가능한 채널"
-      target-label="선택한 채널"
-    />
-    <UIDataActions>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div class="ui-field">
+      <UITransfer
+        v-model:source-value="sourceValue"
+        :nodes="nodes"
+        source-id="available"
+        target-id="chosen"
+        source-label="사용 가능한 채널"
+        target-label="선택한 채널"
+      />
+    </div>
+    <template #footer>
       <output>{{ sourceValue.length ? `이동할 채널 ${sourceValue.join(", ")}` : "선택한 이동 항목 없음" }}</output>
-    </UIDataActions>
-  </div>
+    </template>
+  </PlaygroundExample>
 </template>

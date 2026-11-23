@@ -31,18 +31,22 @@ onBeforeUnmount(() => clearTimeout(timer));
 </script>
 
 <template>
-  <div class="ui-form-actions">
-    <UIDialog :open="open" :close-on-escape="!pending" :close-on-interact-outside="!pending" @update:open="notifyOpen">
-      <UIDialogTrigger as-child><UIButton variant="outline">알림 문구 편집</UIButton></UIDialogTrigger>
-      <UIDialogOverlay />
-      <UIDialogContent :show-close="!pending">
-        <UIDialogTitle>정산 알림 문구</UIDialogTitle>
-        <UIDialogDescription>정산팀에 표시할 안내 문구를 저장합니다.</UIDialogDescription>
-        <UIInput v-model="draft" aria-label="정산 알림 문구" :readonly="pending" />
-        <template #footer-leading><span role="status">{{ pending ? "변경사항 저장 중" : "" }}</span></template>
-        <template #actions><UIButton :disabled="!draft.trim()" :loading="pending" @click="save">저장</UIButton></template>
-      </UIDialogContent>
-    </UIDialog>
-    <span v-if="didSave" role="status">저장된 알림 · {{ saved }}</span>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div class="ui-form-actions">
+      <UIDialog :open="open" :close-on-escape="!pending" :close-on-interact-outside="!pending" @update:open="notifyOpen">
+        <UIDialogTrigger as-child><UIButton variant="outline">알림 문구 편집</UIButton></UIDialogTrigger>
+        <UIDialogOverlay />
+        <UIDialogContent :show-close="!pending">
+          <UIDialogTitle>정산 알림 문구</UIDialogTitle>
+          <UIDialogDescription>정산팀에 표시할 안내 문구를 저장합니다.</UIDialogDescription>
+          <UIInput v-model="draft" aria-label="정산 알림 문구" :readonly="pending" />
+          <template #footer-leading><span role="status">{{ pending ? "변경사항 저장 중" : "" }}</span></template>
+          <template #actions><UIButton :disabled="!draft.trim()" :loading="pending" @click="save">저장</UIButton></template>
+        </UIDialogContent>
+      </UIDialog>
+    </div>
+    <template #footer v-if="didSave">
+      <output>저장된 알림 · {{ saved }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

@@ -48,31 +48,35 @@ const { loading, failure, canLoadMore, loadMore } = useInfiniteScroll(scroll, {
 </script>
 
 <template>
-  <div class="activity-scroll">
-    <div class="activity-scroll__tools">
-      <UISwitch variant="outline" v-model="auto" size="sm" label="자동으로 더 불러오기" />
-      <UIButton size="sm" variant="ghost" :disabled="!hasMore || loading || failNext" @click="failNext = true">
-        다음 요청 실패시키기
-      </UIButton>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div class="activity-scroll">
+      <div class="activity-scroll__tools">
+        <UISwitch variant="outline" v-model="auto" size="sm" label="자동으로 더 불러오기" />
+        <UIButton size="sm" variant="ghost" :disabled="!hasMore || loading || failNext" @click="failNext = true">
+          다음 요청 실패시키기
+        </UIButton>
+      </div>
+      <div class="activity-scroll__frame">
+        <UIScrollFade ref="viewport" class="activity-scroll__viewport ui-scrollbar" role="region"
+          aria-label="최근 활동" tabindex="0" :aria-busy="loading" :state="state" :edges="['bottom']">
+          <ul ref="content">
+            <li v-for="entry in history.slice(0, displayed)" :key="entry.time">
+              <div><strong>{{ entry.project }} · {{ entry.title }}</strong><time :datetime="entry.time">{{ entry.date }}</time></div>
+              <p>{{ entry.person }} 님이 {{ entry.detail }}</p>
+            </li>
+          </ul>
+        </UIScrollFade>
+      </div>
+      <div class="activity-scroll__actions">
+        <UIButton size="sm" variant="outline" :loading="loading" :aria-disabled="!canLoadMore" @click="loadMore()">
+          {{ failure ? '다시 시도' : '이전 활동 불러오기' }}
+        </UIButton>
+      </div>
     </div>
-    <div class="activity-scroll__frame">
-      <UIScrollFade ref="viewport" class="activity-scroll__viewport ui-scrollbar" role="region"
-        aria-label="최근 활동" tabindex="0" :aria-busy="loading" :state="state" :edges="['bottom']">
-        <ul ref="content">
-          <li v-for="entry in history.slice(0, displayed)" :key="entry.time">
-            <div><strong>{{ entry.project }} · {{ entry.title }}</strong><time :datetime="entry.time">{{ entry.date }}</time></div>
-            <p>{{ entry.person }} 님이 {{ entry.detail }}</p>
-          </li>
-        </ul>
-      </UIScrollFade>
-    </div>
-    <div class="activity-scroll__actions">
-      <span role="status">{{ loading ? '불러오는 중' : failure ? '불러오지 못했습니다.' : hasMore ? `${history.length}건 중 ${displayed}건 표시 중` : `전체 ${displayed}건 표시됨` }}</span>
-      <UIButton size="sm" variant="outline" :loading="loading" :aria-disabled="!canLoadMore" @click="loadMore()">
-        {{ failure ? '다시 시도' : '이전 활동 불러오기' }}
-      </UIButton>
-    </div>
-  </div>
+    <template #footer>
+      <output>{{ loading ? '불러오는 중' : failure ? '불러오지 못했습니다.' : hasMore ? `${history.length}건 중 ${displayed}건 표시 중` : `전체 ${displayed}건 표시됨` }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
 
 <style scoped>

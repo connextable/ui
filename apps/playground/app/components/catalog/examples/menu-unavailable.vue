@@ -22,11 +22,15 @@ const items = [
 </script>
 
 <template>
-  <UIMenu :disabled-items="['save-project']" :items="items" @invoke="lastAction = $event">
-    <UIMenuItem value="new-project">새 프로젝트 <kbd>⌘N</kbd></UIMenuItem>
-    <UIMenuItem value="open-project">프로젝트 열기 <kbd>⌘O</kbd></UIMenuItem>
-    <UIMenuSeparator />
-    <UIMenuItem value="save-project">프로젝트 저장 <kbd>⌘S</kbd></UIMenuItem>
-  </UIMenu>
-  <p v-if="lastAction" role="status">{{ labels[lastAction] }} 실행</p>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIMenu :disabled-items="['save-project']" :items="items" @invoke="lastAction = $event">
+      <UIMenuItem value="new-project">새 프로젝트 <kbd>⌘N</kbd></UIMenuItem>
+      <UIMenuItem value="open-project">프로젝트 열기 <kbd>⌘O</kbd></UIMenuItem>
+      <UIMenuSeparator />
+      <UIMenuItem value="save-project">프로젝트 저장 <kbd>⌘S</kbd></UIMenuItem>
+    </UIMenu>
+    <template #footer v-if="lastAction">
+      <output>{{ labels[lastAction] }} 실행</output>
+    </template>
+  </PlaygroundExample>
 </template>

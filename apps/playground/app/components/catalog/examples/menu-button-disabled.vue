@@ -24,14 +24,18 @@ const items = [
 </script>
 
 <template>
-  <UIMenuButton :disabled-items="['import']" :items="items" @invoke="lastAction = $event">
-    <UIMenuButtonTrigger>만들기</UIMenuButtonTrigger>
-    <UIMenuButtonContent>
-      <UIMenuItem value="new-file">새 파일 <kbd>⌘ N</kbd></UIMenuItem>
-      <UIMenuItem value="new-folder">새 폴더 <kbd>⇧ ⌘ N</kbd></UIMenuItem>
-      <UIMenuSeparator />
-      <UIMenuItem value="import">가져오기…</UIMenuItem>
-    </UIMenuButtonContent>
-  </UIMenuButton>
-  <p v-if="lastAction" role="status">{{ labels[lastAction] }} 실행</p>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIMenuButton :disabled-items="['import']" :items="items" @invoke="lastAction = $event">
+      <UIMenuButtonTrigger>만들기</UIMenuButtonTrigger>
+      <UIMenuButtonContent>
+        <UIMenuItem value="new-file">새 파일 <kbd>⌘ N</kbd></UIMenuItem>
+        <UIMenuItem value="new-folder">새 폴더 <kbd>⇧ ⌘ N</kbd></UIMenuItem>
+        <UIMenuSeparator />
+        <UIMenuItem value="import">가져오기…</UIMenuItem>
+      </UIMenuButtonContent>
+    </UIMenuButton>
+    <template #footer v-if="lastAction">
+      <output>{{ labels[lastAction] }} 실행</output>
+    </template>
+  </PlaygroundExample>
 </template>

@@ -29,28 +29,32 @@ function move(offset: -1 | 1) {
 </script>
 
 <template>
-  <div class="reorder-actions">
-    <div class="reorder-actions__controls">
-      <UISelect v-model="selected" :options="options" aria-label="이동할 블록" size="sm" />
-      <UIButton size="sm" variant="outline" :disabled="index <= 0" @click="move(-1)">
-        <template #leading><ArrowUp /></template>
-        위로
-      </UIButton>
-      <UIButton size="sm" variant="outline" :disabled="index < 0 || index >= order.length - 1" @click="move(1)">
-        <template #leading><ArrowDown /></template>
-        아래로
-      </UIButton>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div class="reorder-actions">
+      <div class="reorder-actions__controls">
+        <UISelect v-model="selected" :options="options" aria-label="이동할 블록" size="sm" />
+        <UIButton size="sm" variant="outline" :disabled="index <= 0" @click="move(-1)">
+          <template #leading><ArrowUp /></template>
+          위로
+        </UIButton>
+        <UIButton size="sm" variant="outline" :disabled="index < 0 || index >= order.length - 1" @click="move(1)">
+          <template #leading><ArrowDown /></template>
+          아래로
+        </UIButton>
+      </div>
+      <UITreeReorder ref="reorder" v-model:nodes="nodes" layout="columns" label="문서 블록 순서" keyboard-mode="preview" v-slot="{ interaction, getPreviewState }">
+        <UIReorderGroup parent-id="블록" framed :interaction="interaction" :get-preview-state="getPreviewState">
+          <UITreeReorderItem v-for="id in order" :key="id" :value="id">
+            {{ id }}
+          </UITreeReorderItem>
+        </UIReorderGroup>
+        <UIReorderFeedback :interaction="interaction" />
+      </UITreeReorder>
     </div>
-    <UITreeReorder ref="reorder" v-model:nodes="nodes" layout="columns" label="문서 블록 순서" keyboard-mode="preview" v-slot="{ interaction, getPreviewState }">
-      <UIReorderGroup parent-id="블록" framed :interaction="interaction" :get-preview-state="getPreviewState">
-        <UITreeReorderItem v-for="id in order" :key="id" :value="id">
-          {{ id }}
-        </UITreeReorderItem>
-      </UIReorderGroup>
-      <UIReorderFeedback :interaction="interaction" />
-    </UITreeReorder>
-    <p role="status" class="reorder-actions__status">{{ status }}</p>
-  </div>
+    <template #footer>
+      <output class="reorder-actions__status">{{ status }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
 
 <style scoped>

@@ -2,26 +2,29 @@
 import { UIButton, UIFullscreen } from "@connextable/ui";
 import { ref } from "vue";
 
-const feedback = ref("");
+const feedback = ref("전체 화면 전환 대기");
 
 async function toggle(active: boolean, enter: () => Promise<{ ok: boolean }>, exit: () => Promise<{ ok: boolean }>) {
   const result = await (active ? exit() : enter());
-  feedback.value = result.ok ? "" : "전체 화면 상태를 바꿀 수 없습니다.";
+  feedback.value = result.ok ? "전체 화면 전환 완료" : "전체 화면으로 전환하지 못했습니다.";
 }
 </script>
 
 <template>
-  <UIFullscreen as-child v-slot="{ snapshot, enter, exit }">
-    <section class="presentation" aria-label="발표 미리보기">
-      <strong>11월 점검 결과</strong>
-      <p>다음 정기 점검은 11월 16일입니다.</p>
-      <UIButton size="sm" variant="outline" :disabled="!snapshot?.available" :loading="Boolean(snapshot?.pending)"
-        @click="toggle(snapshot?.active ?? false, enter, exit)">
-        {{ snapshot?.active ? '전체 화면 닫기' : '전체 화면으로 보기' }}
-      </UIButton>
-      <small role="status">{{ snapshot && !snapshot.available ? '현재 환경에서는 전체 화면을 사용할 수 없습니다.' : feedback }}</small>
-    </section>
-  </UIFullscreen>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIFullscreen as-child v-slot="{ snapshot, enter, exit }">
+      <section class="presentation" aria-label="발표 미리보기">
+        <strong>11월 점검 결과</strong>
+        <p>다음 정기 점검은 11월 16일입니다.</p>
+        <UIButton size="sm" variant="outline" :disabled="!snapshot?.available" :loading="Boolean(snapshot?.pending)"
+          @click="toggle(snapshot?.active ?? false, enter, exit)">
+          {{ snapshot?.active ? '전체 화면 닫기' : '전체 화면으로 보기' }}
+        </UIButton>
+        <small v-if="snapshot && !snapshot.available">현재 환경에서는 전체 화면을 사용할 수 없습니다.</small>
+      </section>
+    </UIFullscreen>
+    <template #footer><output>{{ feedback }}</output></template>
+  </PlaygroundExample>
 </template>
 
 <style scoped>

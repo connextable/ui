@@ -7,14 +7,18 @@ const selected = ref("");
 </script>
 
 <template>
-  <div>
-    <UIMenuButton :items="items" @invoke="selected = $event">
-      <UIMenuButtonTrigger>템플릿 동작</UIMenuButtonTrigger>
-      <UIMenuButtonContent>
-        <UIMenuItem value="duplicate">복제</UIMenuItem>
-        <UIMenuItem value="archive">보관</UIMenuItem>
-      </UIMenuButtonContent>
-    </UIMenuButton>
-    <output v-if="selected">{{ selected === "duplicate" ? "복제" : "보관" }} 선택</output>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div>
+      <UIMenuButton :items="items" @invoke="selected = $event">
+        <UIMenuButtonTrigger>템플릿 동작</UIMenuButtonTrigger>
+        <UIMenuButtonContent>
+          <UIMenuItem value="duplicate">복제</UIMenuItem>
+          <UIMenuItem value="archive">보관</UIMenuItem>
+        </UIMenuButtonContent>
+      </UIMenuButton>
+    </div>
+    <template #footer v-if="selected">
+      <output>{{ selected === "duplicate" ? "복제" : "보관" }} 선택</output>
+    </template>
+  </PlaygroundExample>
 </template>

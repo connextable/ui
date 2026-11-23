@@ -16,10 +16,18 @@ async function formatExample(source: string, filename: string, watchFile: (path:
 
   const { descriptor } = parse(source);
   const template = descriptor.template;
-  const example = template?.ast?.children.find(node =>
-    "tag" in node && node.tag === "PlaygroundExample");
+  const nodes = [...(template?.ast?.children ?? [])];
+  let example;
+  for (const node of nodes) {
+    if (!("tag" in node)) continue;
+    if (node.tag === "PlaygroundExample") {
+      example = node;
+      break;
+    }
+    nodes.push(...node.children);
+  }
   const edits: { start: number; end: number; text: string }[] = [];
-  if (template && example && "tag" in example) {
+  if (example) {
     const preview = example.children.map((node) => {
       if ("tag" in node && node.tag === "template") {
         const slot = node.props.find(prop => prop.name === "slot" && "arg" in prop);
@@ -30,7 +38,9 @@ async function formatExample(source: string, filename: string, watchFile: (path:
       }
       return node.loc.source;
     }).join("\n");
-    edits.push({ start: template.loc.start.offset, end: template.loc.end.offset, text: `\n${preview}\n` });
+    const condition = example.props.find(prop => prop.name === "if");
+    const content = condition ? `<template ${condition.loc.source}>\n${preview}\n</template>` : preview;
+    edits.push({ start: example.loc.start.offset, end: example.loc.end.offset, text: `\n${content}\n` });
   }
 
   for (const style of descriptor.styles) {

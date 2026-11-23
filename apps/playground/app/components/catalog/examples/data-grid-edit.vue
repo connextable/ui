@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIDataActions, UITabularEditTrigger, createUIDataGridComponents, createUITabularSource, useDataGrid } from "@connextable/ui";
+import { UITabularEditTrigger, createUIDataGridComponents, createUITabularSource, useDataGrid } from "@connextable/ui";
 
 import { onScopeDispose, ref } from "vue";
 
@@ -28,26 +28,30 @@ const DataGrid = createUIDataGridComponents(grid);
 </script>
 
 <template>
-  <DataGrid.Provider>
-    <DataGrid.Root aria-label="작업 상태">
-      <DataGrid.Header>
-        <DataGrid.HeaderRow>
-          <DataGrid.ColumnHeader column="task">작업</DataGrid.ColumnHeader>
-          <DataGrid.ColumnHeader column="status">상태</DataGrid.ColumnHeader>
-        </DataGrid.HeaderRow>
-      </DataGrid.Header>
-      <DataGrid.Body v-slot="{ row }">
-        <DataGrid.Cell column="task">{{ row.cells.task }}</DataGrid.Cell>
-        <DataGrid.Cell column="status">
-          <DataGrid.Editor column="status" :value="row.cells.status" aria-label="새 상태" />
-          <UITabularEditTrigger
-            :aria-label="`${row.cells.task} 상태 편집, 현재 ${row.cells.status}`"
-            @click="grid.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'status' } })">
-            {{ row.cells.status }}
-          </UITabularEditTrigger>
-        </DataGrid.Cell>
-      </DataGrid.Body>
-    </DataGrid.Root>
-  </DataGrid.Provider>
-  <UIDataActions v-if="message"><output aria-live="polite">{{ message }}</output></UIDataActions>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <DataGrid.Provider>
+      <DataGrid.Root aria-label="작업 상태">
+        <DataGrid.Header>
+          <DataGrid.HeaderRow>
+            <DataGrid.ColumnHeader column="task">작업</DataGrid.ColumnHeader>
+            <DataGrid.ColumnHeader column="status">상태</DataGrid.ColumnHeader>
+          </DataGrid.HeaderRow>
+        </DataGrid.Header>
+        <DataGrid.Body v-slot="{ row }">
+          <DataGrid.Cell column="task">{{ row.cells.task }}</DataGrid.Cell>
+          <DataGrid.Cell column="status">
+            <DataGrid.Editor column="status" :value="row.cells.status" aria-label="새 상태" />
+            <UITabularEditTrigger
+              :aria-label="`${row.cells.task} 상태 편집, 현재 ${row.cells.status}`"
+              @click="grid.dispatch({ type: 'begin-edit', cell: { rowID: row.id, columnID: 'status' } })">
+              {{ row.cells.status }}
+            </UITabularEditTrigger>
+          </DataGrid.Cell>
+        </DataGrid.Body>
+      </DataGrid.Root>
+    </DataGrid.Provider>
+    <template #footer>
+      <output aria-live="polite">{{ message }}</output>
+    </template>
+  </PlaygroundExample>
 </template>

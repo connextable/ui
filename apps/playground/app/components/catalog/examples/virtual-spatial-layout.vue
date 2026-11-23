@@ -17,13 +17,17 @@ const position = computed(() => {
 </script>
 
 <template>
-  <UIVirtualSpatial :items="stations" :get-i-d="station => station.id" :get-rect="position"
-    :item-attributes="station => ({ 'data-ui-virtual-current': station.id % 11 === 0 || undefined })"
-    size-ownership="declared" data-ui-virtual-layout-motion aria-label="점검 구역 배치도">
-    <template #item="{ value }">{{ value.name }}</template>
-  </UIVirtualSpatial>
-  <UIDataActions>
-    <output>{{ compact ? '4열 배치' : '8열 배치' }} · 구역 {{ stations.length }}개</output>
-    <UIButton size="sm" variant="outline" :aria-pressed="compact" @click="compact = !compact">4열로 배치</UIButton>
-  </UIDataActions>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <UIVirtualSpatial :items="stations" :get-i-d="station => station.id" :get-rect="position"
+      :item-attributes="station => ({ 'data-ui-virtual-current': station.id % 11 === 0 || undefined })"
+      size-ownership="declared" data-ui-virtual-layout-motion aria-label="점검 구역 배치도">
+      <template #item="{ value }">{{ value.name }}</template>
+    </UIVirtualSpatial>
+    <UIDataActions>
+      <UIButton size="sm" variant="outline" :aria-pressed="compact" @click="compact = !compact">4열로 배치</UIButton>
+    </UIDataActions>
+    <template #footer>
+      <output>{{ compact ? '4열 배치' : '8열 배치' }} · 구역 {{ stations.length }}개</output>
+    </template>
+  </PlaygroundExample>
 </template>

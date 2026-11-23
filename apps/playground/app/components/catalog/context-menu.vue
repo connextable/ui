@@ -49,27 +49,31 @@ function rename() {
 </script>
 
 <template>
-  <div class="file-example">
-    <ul class="file-example__list" aria-label="예제 파일">
-      <li v-for="file in files" :key="file.id">
-        <UIContextMenu :items="commands" :label="`${file.name} 작업`" @invoke="invoke($event, file)">
-          <template #trigger>
-            <div tabindex="0" aria-keyshortcuts="Shift+F10" class="file-example__row">
-              <span>{{ file.name }}</span>
-              <small>{{ file.size }}</small>
-            </div>
-          </template>
-        </UIContextMenu>
-      </li>
-    </ul>
-    <form v-if="editing !== undefined" class="file-example__actions" @submit.prevent="rename" @keydown.esc="editing = undefined">
-      <UIInput :id="nameInputID" v-model="draft" aria-label="새 파일 이름" />
-      <UIButton type="submit" size="sm" :disabled="!draft.trim()">저장</UIButton>
-      <UIButton type="button" size="sm" variant="ghost" @click="editing = undefined">취소</UIButton>
-    </form>
-    <UIButton v-if="!files.length" size="sm" variant="outline" @click="files = [...initialFiles]; status = ''">예제 파일 복원</UIButton>
-    <small v-if="status" role="status">{{ status }}</small>
-  </div>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div class="file-example">
+      <ul class="file-example__list" aria-label="예제 파일">
+        <li v-for="file in files" :key="file.id">
+          <UIContextMenu :items="commands" :label="`${file.name} 작업`" @invoke="invoke($event, file)">
+            <template #trigger>
+              <div tabindex="0" aria-keyshortcuts="Shift+F10" class="file-example__row">
+                <span>{{ file.name }}</span>
+                <small>{{ file.size }}</small>
+              </div>
+            </template>
+          </UIContextMenu>
+        </li>
+      </ul>
+      <form v-if="editing !== undefined" class="file-example__actions" @submit.prevent="rename" @keydown.esc="editing = undefined">
+        <UIInput :id="nameInputID" v-model="draft" aria-label="새 파일 이름" />
+        <UIButton type="submit" size="sm" :disabled="!draft.trim()">저장</UIButton>
+        <UIButton type="button" size="sm" variant="ghost" @click="editing = undefined">취소</UIButton>
+      </form>
+      <UIButton v-if="!files.length" size="sm" variant="outline" @click="files = [...initialFiles]; status = ''">예제 파일 복원</UIButton>
+    </div>
+    <template #footer v-if="status">
+      <output>{{ status }}</output>
+    </template>
+  </PlaygroundExample>
 </template>
 
 <style scoped>
