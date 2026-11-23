@@ -462,10 +462,11 @@ body {
 }
 
 .playground-document__outline {
-  --playground-outline-height: calc(100dvh - var(--playground-sticky-height) - 1.5rem - var(--ui-dashboard-panel-padding));
+  --playground-outline-top: calc(var(--playground-sticky-height) + var(--ui-dashboard-panel-padding));
+  --playground-outline-height: calc(100dvh - var(--playground-outline-top) - var(--ui-dashboard-panel-padding));
   position: sticky;
   grid-area: outline;
-  inset-block-start: calc(var(--playground-sticky-height) + 1.5rem);
+  inset-block-start: var(--playground-outline-top);
   box-sizing: border-box;
   max-block-size: var(--playground-outline-height);
   padding-block: 0.375rem;
