@@ -362,7 +362,6 @@
 [data-scope="toast"][data-part="title"] { font-weight: 650; }
 [data-scope="toast"][data-part="description"] { color: var(--ui-color-text-muted); }
 [data-scope="toast"][data-part="root"] > :where(div, [data-part="title"]) { min-inline-size: 0; }
-[data-scope="toast"][data-part="root"] > svg { flex: none; }
 
 [data-scope="toast"][data-part="close"] {
   --ui-control-size-radius: max(0px, calc(var(--ui-toast-radius, var(--ui-radius-md)) - var(--ui-toast-padding, var(--ui-space-xs)) - 1px));

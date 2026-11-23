@@ -77,9 +77,9 @@ watch([yearOpen, () => choosingMonth], async ([showYears], _, onCleanup) => {
         </YearPickerTrigger>
         <YearPickerContent class="ui-calendar-period-header__years" :aria-label="selectYearLabel">
           <header>
-            <YearPickerPreviousPage :aria-label="previousYearsLabel"><ChevronLeft :size="16" aria-hidden="true" /></YearPickerPreviousPage>
+            <YearPickerPreviousPage :aria-label="previousYearsLabel"><ChevronLeft aria-hidden="true" /></YearPickerPreviousPage>
             <strong>{{ display.yearRange(years[0]?.[0], years.at(-1)?.at(-1)) }}</strong>
-            <YearPickerNextPage :aria-label="nextYearsLabel"><ChevronRight :size="16" aria-hidden="true" /></YearPickerNextPage>
+            <YearPickerNextPage :aria-label="nextYearsLabel"><ChevronRight aria-hidden="true" /></YearPickerNextPage>
           </header>
           <YearPickerGrid>
             <YearPickerCell v-for="year in years.flat()" :key="year.year" :value="year">

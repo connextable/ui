@@ -35,7 +35,7 @@ function formatSize(bytes: number) {
   >
     <span class="ui-file-row__preview" aria-hidden="true">
       <img v-if="image" :src="image" alt="" @error="image = ''">
-      <slot v-else name="icon"><FileText :size="18" /></slot>
+      <slot v-else name="icon"><FileText /></slot>
     </span>
     <div class="ui-file-row__details">
       <strong :title="file?.name"><slot name="name">{{ file?.name ?? '파일 선택' }}</slot></strong>

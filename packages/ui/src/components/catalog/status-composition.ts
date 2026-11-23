@@ -57,9 +57,9 @@ export const UITimer = withStatusContent(TimerRoot, (state: TimerSlotProps, attr
       h(TimerItem, { type: "seconds" }),
     ]),
     h(TimerControl, null, () => [
-      h(TimerActionTrigger, { action }, () => [h(icon, { size: 16, "aria-hidden": "true" }), label]),
+      h(TimerActionTrigger, { action }, () => [h(icon, { "aria-hidden": "true" }), label]),
       h(TimerActionTrigger, { action: "reset", disabled: atStart && !state.running && !state.completed }, () => [
-        h(RotateCcw, { size: 16, "aria-hidden": "true" }), "초기화",
+        h(RotateCcw, { "aria-hidden": "true" }), "초기화",
       ]),
     ]),
   ];

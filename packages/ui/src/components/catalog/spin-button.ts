@@ -45,9 +45,9 @@ export const UISpinButton = defineComponent({
             unit ? h("span", { class: "ui-numeric-unit", "aria-hidden": "true" }, unit) : null,
           ]);
           const increase = h(SpinButtonIncrement, { label: label + "늘리기" },
-            () => h(field ? ChevronUp : Plus, { size: 16, "aria-hidden": "true" }));
+            () => h(field ? ChevronUp : Plus, { "aria-hidden": "true" }));
           const decrease = h(SpinButtonDecrement, { label: label + "줄이기" },
-            () => h(field ? ChevronDown : Minus, { size: 16, "aria-hidden": "true" }));
+            () => h(field ? ChevronDown : Minus, { "aria-hidden": "true" }));
           return field ? [input, increase, decrease] : [decrease, input, increase];
         },
       });

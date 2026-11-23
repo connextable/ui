@@ -140,8 +140,8 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
         const next = choosingYear ? [YearPickerNextPage, labels.nextPage] as const
           : choosingMonth ? [DatePickerNextYear, labels.nextYear] as const
           : week ? [DatePickerNextWeek, labels.nextWeek] as const : [DatePickerNextMonth, labels.nextMonth] as const;
-        const previousButton = () => h(previous[0], { "aria-label": previous[1] }, () => h(ChevronLeft, { size: 16, "aria-hidden": true }));
-        const nextButton = () => h(next[0], { "aria-label": next[1] }, () => h(ChevronRight, { size: 16, "aria-hidden": true }));
+        const previousButton = () => h(previous[0], { "aria-label": previous[1] }, () => h(ChevronLeft, { "aria-hidden": true }));
+        const nextButton = () => h(next[0], { "aria-label": next[1] }, () => h(ChevronRight, { "aria-hidden": true }));
         const cells = () => h(grid, {
           "data-view": choosingYear || kind === "month" ? undefined : state.viewMode,
           "aria-readonly": state.readonly && !state.disabled || undefined,
@@ -269,7 +269,7 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
           h(anchor, inputStateAttrs(state.disabled, state.readonly), () => [
             renderPickerInputs(),
             value,
-            h(DatePickerTrigger, { "aria-label": triggerLabel }, () => h(CalendarDays, { size: 18, "aria-hidden": true })),
+            h(DatePickerTrigger, { "aria-label": triggerLabel }, () => h(CalendarDays, { "aria-hidden": true })),
           ]),
           props.portal ? h(DatePickerPortal, null, popup) : popup(),
         ];

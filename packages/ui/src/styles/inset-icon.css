@@ -19,6 +19,54 @@
   inline-size: var(--ui-icon-frame-size, var(--ui-inset-size));
 }
 
+/* Size inline SVGs in control parts and icon slots without touching illustration content. */
+:where(
+  .ui-anchor, .ui-button__content, .ui-checkbox__marks, .ui-choice, .ui-data-label__icon, .ui-image__fallback,
+  .ui-input__slot, .ui-select-item__leading, .ui-reorder-handle-visual, .ui-reorder-blocked,
+  [data-scope="tags-input"][data-part="item"],
+  :is([data-scope="menu"], [data-scope="menubar"], [data-scope="navigation-menu"],
+    [data-scope="combobox"], [data-scope="listbox"], [data-scope="cascade-select"], [data-scope="cascade-list"],
+    [data-scope="checkbox-group"], [data-scope="toggle-group"])[data-part="item"],
+  [data-scope="context-menu"][data-part="trigger"],
+  [data-scope="toolbar"][data-part="item"],
+  [data-scope="stepper"][data-part="step"],
+  [data-scope="timer"][data-part="action-trigger"],
+  [data-scope="spin-button"]:is([data-part="increment"], [data-part="decrement"]),
+  [data-scope="toast"]:is([data-part="root"], [data-part="close"]),
+  [data-scope="rating"][data-part="item"],
+  :is([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"]):is([data-part="item"], [data-part="disclosure"]),
+  :is([data-scope="tree-grid"], [data-scope^="data-"]):is([data-part="disclosure"], [data-part="row-disclosure"], [data-part="sort-trigger"]),
+  :is([data-scope="calendar"], [data-scope="range-calendar"], [data-scope^="date"], [data-scope$="-picker"]):is(
+    [data-part^="previous-"], [data-part^="next-"], [data-part$="-view-trigger"]),
+  [data-scope$="-reorder"][data-part="handle"]
+) > svg,
+:where([data-scope$="-reorder"][data-part="item"], .ui-reorder-projected-item, .ui-reorder-lift) > svg[aria-hidden="true"],
+:where([data-scope="window-splitter"][data-part="handle"]) :where(svg) {
+  flex: none;
+  inline-size: var(--ui-icon-size, var(--ui-control-size-icon, 1rem));
+  block-size: var(--ui-icon-size, var(--ui-control-size-icon, 1rem));
+}
+
+:where(.ui-checkbox__marks, [data-scope="window-splitter"][data-part="handle"]) {
+  --ui-icon-size: 0.875rem;
+}
+
+:where(.ui-button__content, .ui-input__slot) {
+  --ui-icon-size: var(--ui-control-size-icon);
+}
+
+:where(.ui-data-label__icon, .ui-select-item__leading, [data-scope="toast"][data-part="close"]) {
+  --ui-icon-size: 1rem;
+}
+
+:where(.ui-image__fallback) {
+  --ui-icon-size: 1.5rem;
+}
+
+:where(.ui-reorder-blocked, [data-scope="rating"][data-part="item"], [data-scope="toast"][data-part="root"]) {
+  --ui-icon-size: 1.125rem;
+}
+
 :where([data-scope="select"], [data-scope="listbox"])[data-part="item-indicator"] {
   transition: opacity var(--ui-motion-fast) var(--ui-ease-out);
 

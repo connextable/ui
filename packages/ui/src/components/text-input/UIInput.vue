@@ -165,12 +165,6 @@ function focusFromFrame(event: MouseEvent) {
   overflow-wrap: anywhere;
 }
 
-.ui-input__slot > :slotted(svg) {
-  flex: none;
-  inline-size: var(--ui-control-size-icon);
-  block-size: var(--ui-control-size-icon);
-}
-
 .ui-input__slot > :slotted(:is(button, .ui-button)) {
   --ui-control-size-height: var(--ui-inset-size);
   --ui-control-size-padding-block: 0px;

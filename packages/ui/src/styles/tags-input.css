@@ -29,6 +29,7 @@
 
 .ui-tags-input__chip,
 :where(.ui-tags-input [data-scope="tags-input"][data-part="item"]:not(.ui-tags-input__chip-content)) {
+  --ui-icon-size: 1em;
   --ui-control-size-height: var(--ui-tag-height, 2.375rem);
   --ui-frame-radius: var(--ui-tag-radius, var(--ui-radius-md));
   --ui-frame-padding: var(--ui-space-2xs);

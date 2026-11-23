@@ -149,7 +149,7 @@
 }
 
 :where([data-scope="rating"][data-part="item"]) > svg {
-  inline-size: min(100%, 1.125rem);
+  max-inline-size: 100%;
   overflow: visible;
   fill: transparent;
   transition: fill var(--ui-motion-standard) var(--ui-ease-out),

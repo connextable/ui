@@ -53,7 +53,7 @@ defineSlots<{
       <FileInputInput hidden tabindex="-1" />
     </UIFileInput>
     <FileUploadAttempt v-if="file" ref="attempt" :file="file" :adapter="adapter" :auto-start="autoStart && editable" />
-    <template v-if="!file" #icon><FileUp :size="18" /></template>
+    <template v-if="!file" #icon><FileUp /></template>
     <template #name>
       <slot name="name">{{ file?.name ?? (readonly || (props.file !== undefined && !$slots.picker) ? '선택한 파일 없음' : '파일 선택') }}</slot>
     </template>

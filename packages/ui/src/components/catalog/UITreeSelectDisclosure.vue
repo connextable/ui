@@ -9,6 +9,6 @@ defineSlots<{ default?(state: TreeViewItemSlotProps): unknown }>();
 
 <template>
   <TreeSelectDisclosure v-bind="props" v-slot="state">
-    <slot v-bind="state"><ChevronRight v-if="!asChild" :size="16" aria-hidden="true" /></slot>
+    <slot v-bind="state"><ChevronRight v-if="!asChild" aria-hidden="true" /></slot>
   </TreeSelectDisclosure>
 </template>

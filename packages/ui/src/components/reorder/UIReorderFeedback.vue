@@ -142,7 +142,7 @@ onBeforeUnmount(() => {
         :style="blocked"
         aria-hidden="true"
       >
-        <Ban :size="18" />
+        <Ban />
       </div>
     </Transition>
     <Transition name="ui-reorder-feedback">

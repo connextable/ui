@@ -202,7 +202,7 @@ const TimePickerDefaultParts = defineComponent({
       return [
         h(UITimePickerInput, { label }),
         h(TimePickerTrigger, { "aria-label": korean ? "시간 선택 열기" : "Open time picker" }, () =>
-          h(Clock, { size: 16, "aria-hidden": true })),
+          h(Clock, { "aria-hidden": true })),
         h(UITimePickerContent, null, {
           default: (state: TimePickerContentSlotProps) => state.columns.map(column =>
             h(UITimePickerColumn, { key: column.part, part: column.part }, { default: renderTimeItems })),

@@ -124,7 +124,7 @@ defineExpose({
           v-bind="inputStateAttrs(state.disabled, state.readonly)"
           :aria-invalid="state.error ? 'true' : undefined"
         >
-          <template v-if="!state.files.length" #icon><Paperclip :size="18" /></template>
+          <template v-if="!state.files.length" #icon><Paperclip /></template>
           <template v-if="!state.files.length" #name>{{ state.readonly ? '선택한 파일 없음' : pickerLabel ?? '파일 선택' }}</template>
           <template v-if="!state.readonly || state.disabled" #picker>
             <FileInputTrigger

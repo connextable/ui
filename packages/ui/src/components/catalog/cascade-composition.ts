@@ -34,8 +34,8 @@ function renderCascadeColumns(
     default: ({ items }: CascadeListColumnSlotProps) => items.map(id => h(parts.item, { key: id, value: id }, () => [
       icons.has(id) && h(UIItemIcon, { icon: icons.get(id) }),
       textValue(id),
-      h(parts.chevron, null, () => h(ChevronRight, { size: 16, "aria-hidden": "true" })),
-      h(parts.indicator, null, () => h(Check, { size: 16, "aria-hidden": "true" })),
+      h(parts.chevron, null, () => h(ChevronRight, { "aria-hidden": "true" })),
+      h(parts.indicator, null, () => h(Check, { "aria-hidden": "true" })),
     ])),
   }));
 }

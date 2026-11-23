@@ -76,8 +76,6 @@ import { Check, Minus } from "@lucide/vue";
 
 .ui-checkbox__mark {
   grid-area: 1 / 1;
-  inline-size: 0.875rem;
-  block-size: 0.875rem;
   opacity: 0;
   scale: 0.65;
   transition:

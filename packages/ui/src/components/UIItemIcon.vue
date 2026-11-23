@@ -15,8 +15,8 @@ defineProps<{ icon?: Component }>();
   display: inline-grid;
   flex: none;
   place-items: center;
-  inline-size: 1rem;
-  block-size: 1rem;
+  inline-size: var(--ui-icon-size, 1rem);
+  block-size: var(--ui-icon-size, 1rem);
   vertical-align: -0.125em;
 }
 

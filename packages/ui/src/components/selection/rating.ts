@@ -36,7 +36,7 @@ export const UIRating = defineComponent({
         default: (state: RatingRootSlotProps) => {
           const children = slots.default?.(state) ?? items.map(value =>
             h(RatingItem, { key: value, value, "aria-label": value }, () =>
-              h(props.icon ?? Star, { size: 18, "aria-hidden": "true", focusable: "false" })));
+              h(props.icon ?? Star, { "aria-hidden": "true", focusable: "false" })));
           if (!state.clearable || !state.value || state.disabled || state.readonly || containsClear(children)) return children;
           return [...children, h(UIRatingClear, { "aria-label": props.clearLabel })];
         },

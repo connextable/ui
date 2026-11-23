@@ -61,7 +61,7 @@ export const UIFeed = defineComponent({
       return h(FeedRoot as Component, { setSize: ids.length, ...attrs, items: ids }, {
         default: () => items.map(item => h(FeedItem, { key: item.id, value: item.id, "aria-label": item.title }, () => slots.item?.({ item }) ?? [
           h("div", { class: "ui-feed-entry__header" }, [
-            item.icon && h(item.icon, { size: 16, "aria-hidden": "true" }),
+            item.icon && h(item.icon, { "aria-hidden": "true" }),
             h("strong", item.title),
             item.time && h("time", { datetime: item.dateTime }, item.time),
           ]),
