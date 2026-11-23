@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { UITreeView } from "@connextable/ui";
-import { FileCode, Folder } from "@lucide/vue";
 import { ref } from "vue";
 
 const nodes = [
-  { id: "dashboard", parentID: null, label: "대시보드", icon: Folder },
-  { id: "overview", parentID: "dashboard", label: "Overview.vue", icon: FileCode },
-  { id: "settings", parentID: "dashboard", label: "Settings.vue", icon: FileCode },
+  { id: "dashboard", parentID: null, label: "대시보드" },
+  { id: "overview", parentID: "dashboard", label: "Overview.vue" },
+  { id: "settings", parentID: "dashboard", label: "Settings.vue" },
 ];
 const selected = ref<readonly string[]>(["overview"]);
 </script>

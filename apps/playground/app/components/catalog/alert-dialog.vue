@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { UIButton, UIAlertDialog } from "@connextable/ui";
-import { Trash2 } from "@lucide/vue";
 
 </script>
 
 <template>
   <UIAlertDialog
     trigger-label="프로젝트 삭제"
-    :trigger-icon="Trash2"
     title="프로젝트를 삭제할까요?"
     description="프로젝트와 배포 기록이 영구적으로 삭제됩니다."
   >

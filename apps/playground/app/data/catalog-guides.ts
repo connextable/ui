@@ -72,13 +72,14 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "navigation-menu-links", section: "structure", title: "직접 이동과 현재 페이지", description: "current에 현재 링크의 id를 지정하면 해당 링크에 aria-current가 적용됩니다.", parts: ["UINavigationMenuPopover"] },
       { id: "navigation-menu-columns", section: "structure", title: "설명이 있는 링크", description: "메뉴 안에서 각 링크의 이름과 간단한 설명을 함께 보여 줍니다." },
       { id: "navigation-menu-nested", section: "structure", title: "하위 분류를 열로 표시", description: "컴포넌트 패널에서 표와 그리드, 입력 분류의 링크를 나란히 탐색합니다." },
-      { id: "navigation-menu-indicator", section: "behavior", title: "분류 아이콘과 열림 표시", description: "label 슬롯으로 분류 이름 옆에 아이콘을 넣습니다. 열린 분류의 화살표가 위를 향합니다." },
+      { id: "navigation-menu-indicator", section: "behavior", title: "분류와 링크 앞 아이콘", description: "items의 icon을 지정해 상위 분류와 패널 안 링크 이름 앞에 아이콘을 표시합니다." },
       { id: "navigation-menu-keyboard", section: "behavior", title: "키보드로 메뉴 탐색", description: "Enter 또는 ↓로 분류의 첫 링크에 들어가고 Tab으로 다음 링크로 이동합니다. Escape를 누르면 분류 버튼으로 돌아갑니다." },
       { id: "navigation-menu-disabled", section: "behavior", title: "이동할 수 없는 링크", description: "가상 그리드는 비활성 상태로 표시합니다. 클릭하거나 Enter를 눌러도 페이지가 열리지 않습니다." },
     ],
     title: "사이트 헤더에서 페이지 탐색",
     description: "상위 분류가 헤더에 나란히 표시됩니다. 컴포넌트에서 데이터 표현으로 옮기면 같은 패널이 새 분류의 링크를 표시합니다.",
     api: {
+      "items[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "navigation-menu-indicator", title: "분류와 링크 앞 아이콘" } },
       items: "각 항목의 id, label과 목적지(href 또는 to), 하위 항목(children)을 지정합니다. icon은 분류나 링크 이름 앞에 표시할 Vue 컴포넌트입니다.",
       current: "현재 페이지 링크의 id입니다.",
       "v-model:open": "팝오버의 열림 상태를 연결합니다.",
@@ -154,6 +155,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "anchor-examples-2", title: "라우팅 연결", section: "examples-2", phase: "examples" },
     ],
     examples: [
+      { id: "anchor-icon", section: "usage-options", title: "링크에 아이콘 표시", description: "icon에 Vue 컴포넌트를 전달해 링크 텍스트 앞에 표시합니다." },
       { id: "anchor-current", section: "usage-options", title: "현재 위치 표시", description: "선택된 링크의 현재 위치를 접근성 트리에 알립니다." },
       { id: "anchor-disabled", section: "usage-options", title: "이동할 수 없는 링크", description: "비활성 링크를 클릭해도 페이지는 바뀌지 않습니다." },
       { id: "anchor-nuxt", section: "examples-2", title: "Nuxt 라우트 객체로 이동", description: "Nuxt 모듈을 등록한 앱에서는 UIAnchor의 to에 경로와 섹션을 담은 라우트 객체를 전달할 수 있습니다." },
@@ -162,7 +164,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "href에 경로와 섹션 ID를 함께 전달하면 지정한 문서의 섹션으로 이동합니다.",
     api: {
       href: "링크의 목적지입니다.",
-      icon: { type: "Component", description: "링크 텍스트 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "basic-example", title: "디자인 토큰 페이지로 이동" } },
+      "icon": { type: "Component", description: "링크 텍스트 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "anchor-icon", title: "링크에 아이콘 표시" } },
       to: "Nuxt 경로 문자열 또는 라우트 객체입니다. href보다 우선합니다.",
       external: "Nuxt에서 정적 파일이나 별도 앱으로 이동할 때 지정합니다.",
       current: "현재 위치를 접근성 트리에 전달합니다.",
@@ -194,6 +196,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "alert-dialog-examples-2", title: "포털 연결", section: "examples-2", phase: "composition" },
     ],
     examples: [
+      { id: "alert-dialog-trigger-icon", section: "usage-options", title: "확인 창 열기 버튼의 아이콘", description: "trigger-icon에 Vue 컴포넌트를 전달해 기본 열기 버튼의 라벨 앞에 표시합니다." },
       { id: "alert-dialog-confirm", section: "usage-options", title: "확인한 경우에만 반영", description: "취소하면 결과가 유지되고, 확인하면 변경 사항이 표시됩니다." },
       { id: "alert-dialog-pending", section: "usage-options", title: "저장 중 확인 버튼 잠금", description: "완료 처리를 누르면 저장이 끝날 때까지 확인 버튼에 로딩 상태를 표시합니다." },
       { id: "alert-dialog-portal", section: "examples-2", title: "확인 창을 포털에 배치", description: "트리거는 현재 영역에 두고 표시되는 확인 창은 포털로 이동합니다.", parts: ["UIAlertDialogPortal"] },
@@ -204,7 +207,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "v-model:open": "확인 창의 열린 상태를 외부 상태와 연결합니다.",
       label: "제목에서 이름을 제공하기 어려울 때 사용할 접근성 이름입니다.",
       "trigger-label / title / description": "열기 버튼, 확인 창 제목과 설명에 표시할 문구를 지정합니다.",
-      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
+      "trigger-icon": { type: "Component", description: "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.", example: { id: "alert-dialog-trigger-icon", title: "확인 창 열기 버튼의 아이콘" } },
       "#actions": "취소와 확인 버튼을 배치하고, 슬롯의 close로 확인 창을 닫습니다.",
       "Content #footer-leading": "하단 왼쪽에 상태나 보조 콘텐츠를 배치합니다.",
     },
@@ -221,7 +224,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "default-open": "외부에서 상태를 제어하지 않을 때의 초기 상태입니다.",
       "restore-focus-target": "컴포넌트 바깥에서 열었다면 닫은 후 포커스를 돌려줄 요소를 전달합니다.",
       "trigger-label / title / description": "열기 버튼과 대화상자의 제목·설명을 설정합니다.",
-      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
+      "trigger-icon": { type: "Component", description: "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.", example: { id: "dialog-trigger-icon", title: "대화상자 열기 버튼의 아이콘" } },
       "#body": "제목과 설명 아래에 대화상자의 실제 내용을 배치합니다.",
       "show-close": "기본 닫기 버튼의 표시 여부를 지정합니다. 기본값은 true입니다.",
       "Content close-label": "기본 닫기 버튼의 접근성 이름입니다.",
@@ -229,6 +232,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "Content #footer-leading": "하단 왼쪽에 상태나 보조 콘텐츠를 배치합니다.",
     },
     examples: [
+      { id: "dialog-trigger-icon", section: "behavior", title: "대화상자 열기 버튼의 아이콘", description: "trigger-icon에 Vue 컴포넌트를 전달해 기본 열기 버튼의 라벨 앞에 표시합니다." },
       { id: "dialog-form", section: "workflows", title: "입력 검증과 폼 제출", description: "이름을 비워 제출하면 오류를 표시하고 입력칸에 포커스를 둡니다. 유효한 이름으로 제출하면 창이 닫히고 새 프로젝트 이름을 확인할 수 있습니다." },
       { id: "dialog-discard", section: "workflows", title: "저장하지 않은 변경사항 확인", description: "메모를 수정하고 창을 닫으면 확인 창이 열립니다. 편집을 계속하거나 변경사항을 버릴 수 있습니다." },
       { id: "dialog-steps", section: "workflows", title: "권한 선택과 최종 확인", description: "권한을 고른 뒤 적용할 내용을 확인합니다. 이전 단계로 돌아가 선택을 바꿀 수 있습니다." },
@@ -245,6 +249,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "drawer-examples-2", title: "긴 내용과 포털", section: "examples-2", phase: "composition" },
     ],
     examples: [
+      { id: "drawer-trigger-icon", section: "usage-options", title: "드로어 열기 버튼의 아이콘", description: "trigger-icon에 Vue 컴포넌트를 전달해 기본 열기 버튼의 라벨 앞에 표시합니다." },
       { id: "drawer-directions", section: "usage-options", title: "네 방향에서 패널 열기", description: "side에 지정한 화면 가장자리에서 패널이 들어옵니다." },
       { id: "drawer-outside", section: "usage-options", title: "바깥을 눌러도 열린 패널 유지", description: "오버레이를 눌러도 패널을 유지합니다. 닫기 버튼이나 Escape로 종료할 수 있습니다." },
       { id: "drawer-scroll", section: "examples-2", title: "긴 패널 본문 끝까지 읽기", description: "활동 기록을 스크롤해도 닫기 버튼은 오른쪽 위에 유지됩니다." },
@@ -254,7 +259,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "화면 가장자리와 간격을 둔 오른쪽 패널에서 배포 조건을 선택합니다. 적용을 누르면 선택한 조건 수가 버튼에 표시됩니다.",
     api: {
       side: "패널이 표시될 화면 가장자리를 지정합니다.",
-      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
+      "trigger-icon": { type: "Component", description: "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.", example: { id: "drawer-trigger-icon", title: "드로어 열기 버튼의 아이콘" } },
       "v-model:open": "패널이 열린 상태를 외부에 연결합니다.",
       "Content show-close": "오른쪽 위의 기본 닫기 버튼을 표시합니다. 기본값은 true입니다.",
       "Content close-label": "기본 닫기 버튼의 접근성 이름입니다.",
@@ -269,6 +274,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "sheet-presentation", title: "너비와 배치", section: "presentation" },
     ],
     examples: [
+      { id: "sheet-trigger-icon", section: "presentation", title: "시트 열기 버튼의 아이콘", description: "trigger-icon에 Vue 컴포넌트를 전달해 기본 열기 버튼의 라벨 앞에 표시합니다." },
       { id: "sheet-actions", section: "workflows", title: "보고서 작업 선택", description: "짧은 작업 목록에 size=sm을 적용합니다. 사본을 만들거나 보고서를 보관하면 버튼 옆에 결과가 표시됩니다." },
       { id: "sheet-sharing", section: "workflows", title: "공유 범위 적용과 취소", description: "보고서에 접근할 범위를 고릅니다. 적용을 눌러야 선택이 반영됩니다." },
       { id: "sheet-scroll", section: "workflows", title: "긴 목록에서 수령 지점 선택", description: "주소와 운영 시간을 함께 표시하도록 size=lg를 적용합니다. 목록을 스크롤해 방문할 지점을 선택합니다." },
@@ -278,7 +284,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
     api: {
       side: "시트가 들어오는 방향입니다. 기본값은 bottom입니다.",
-      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
+      "trigger-icon": { type: "Component", description: "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.", example: { id: "sheet-trigger-icon", title: "시트 열기 버튼의 아이콘" } },
       "swipe-to-dismiss": "시트를 화면 가장자리 방향으로 밀어 닫을 수 있게 합니다.",
       "size / block": "size는 sm, md, lg 중 하나를 선택합니다. 기본값은 md입니다. block을 지정하면 안전 영역과 바깥 여백을 뺀 가용 너비를 채웁니다.",
       "panel-class": "시트 패널에 CSS 클래스를 적용합니다.",
@@ -292,7 +298,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "열 표시를 눌러 재고나 보관 위치를 켜고 끕니다. 팝오버를 열어 둔 채 바뀐 표를 확인하고 완료로 닫습니다.",
     api: {
       "trigger-label": "기본 트리거 버튼의 텍스트입니다.",
-      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
+      "trigger-icon": { type: "Component", description: "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.", example: { id: "popover-trigger-icon", title: "팝오버 열기 버튼의 아이콘" } },
       "#trigger": "팝오버를 여는 버튼을 직접 구성합니다.",
       "#body": "트리거 옆에 표시할 내용을 배치합니다. 슬롯의 close()를 호출하면 팝오버를 닫습니다.",
       side: "팝오버가 놓일 방향입니다.",
@@ -305,6 +311,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "popover-examples-3", title: "별도 기준 요소", section: "examples-3", phase: "composition" },
     ],
     examples: [
+      { id: "popover-trigger-icon", section: "usage-options", title: "팝오버 열기 버튼의 아이콘", description: "trigger-icon에 Vue 컴포넌트를 전달해 기본 열기 버튼의 라벨 앞에 표시합니다." },
       { id: "popover-directions", section: "usage-options", title: "네 방향과 화살표", description: "각 버튼을 눌러 방향에 따라 화살표가 트리거 쪽을 가리키는지 확인합니다.", parts: ["UIPopoverArrow"] },
       { id: "popover-position", section: "usage-options", title: "트리거 끝에 정렬", description: "side와 align을 함께 지정해 팝오버를 트리거의 아래쪽 끝에 맞춥니다." },
       { id: "popover-stay-open", section: "usage-options", title: "바깥 클릭 시 열림 유지", description: "바깥을 눌러도 열린 상태를 유지하고 완료 버튼으로 닫습니다." },
@@ -320,6 +327,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "toast-dismissal", title: "시간과 닫기", section: "dismissal" },
     ],
     examples: [
+      { id: "toast-icon", section: "content", title: "알림 제목 앞 아이콘", description: "UIToast의 icon으로 내보내기 알림에 다운로드 아이콘을 표시합니다." },
       { id: "toast-positions", section: "placement", title: "화면의 여섯 위치에서 알림 띄우기", description: "같은 위치를 여러 번 누르면 알림이 쌓입니다. 마우스를 올리거나 포커스를 옮기면 위쪽 스택은 아래로, 아래쪽 스택은 위로 펼쳐집니다.", parts: ["UIToastViewport"] },
       { id: "toast-queue", section: "placement", title: "표시 개수와 스택 펼침", description: "세 알림을 연속으로 띄워 최근 두 개만 남는 모습을 확인합니다. 항상 펼치기를 켜거나 알림을 한꺼번에 닫을 수 있습니다." },
       { id: "toast-portal", section: "placement", title: "알림 영역을 포털에 렌더링", description: "UIToastPortal로 알림 영역을 옮겨 화면 위에 표시합니다.", parts: ["UIToastPortal"] },
@@ -336,7 +344,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "저장 완료 알림 띄우기",
     description: "버튼을 여러 번 눌러 알림을 쌓을 수 있습니다. 스택에 마우스를 올리거나 키보드로 포커스를 옮기면 전체 알림이 펼쳐집니다.",
     api: {
-      icon: "알림 제목 옆에 표시할 Vue 아이콘 컴포넌트입니다. 생략하면 성공 알림에 기본 체크 아이콘을 표시합니다.",
+      "icon": { type: "Component", description: "알림 제목 앞에 표시할 아이콘입니다. 생략하면 성공 알림에 기본 체크 아이콘을 표시합니다.", example: { id: "toast-icon", title: "알림 제목 앞 아이콘" } },
       "Viewport position": "top 또는 bottom을 start·center·end와 조합합니다. 기본값은 bottom-end입니다. start와 end는 글의 방향을 따릅니다.",
       "Viewport expand": "항상 스택을 펼쳐 표시합니다. 기본 스택은 마우스를 올리거나 키보드 포커스가 들어오면 펼쳐집니다.",
       "Viewport label": "키보드로 알림 영역에 이동했을 때 보조 기술이 읽는 이름입니다.",
@@ -377,12 +385,14 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "examples", title: "경로 탐색과 표시", section: "usage-options" },
     ],
     examples: [
+      { id: "cascade-list-icons", section: "usage-options", title: "계층별 항목 아이콘", description: "노드의 icon으로 권역, 국가, 도시를 구분합니다." },
       { id: "cascade-list-branch", section: "usage-options", title: "상위 항목 바꾸기", description: "다른 국가로 바꾸면 다음 열의 도시가 바뀝니다." },
       { id: "cascade-list-markers", section: "usage-options", title: "선택 표시와 다음 계층", description: "체크와 꺾쇠로 현재 위치를 확인합니다.", parts: ["UICascadeListItemIndicator", "UICascadeListItemChevron"] },
     ],
     title: "단계별로 지역 고르기",
     description: "id와 parentID로 계층을 지정하면 목록이 열별로 표시됩니다. 도시 하나를 선택하거나 선택을 지워 보세요.",
     api: {
+      "nodes[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "cascade-list-icons", title: "계층별 항목 아이콘" } },
       nodes: "id와 parentID로 계층을 지정합니다. 노드에 icon을 넣으면 열의 항목 이름 앞에 표시합니다.",
       "v-model": "선택한 노드의 id를 연결합니다. 선택이 없으면 null입니다.",
       "column-labels": "각 열의 접근성 이름을 순서대로 지정합니다.",
@@ -396,6 +406,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "cascade-select-examples-2", title: "외부에서 선택 창 열기", section: "examples-2", phase: "examples" },
     ],
     examples: [
+      { id: "cascade-select-icons", section: "usage-options", title: "선택 목록의 계층 아이콘", description: "노드의 icon을 지정하고 목록을 열어 각 열에서 아이콘을 확인합니다." },
       { id: "cascade-select-disabled", section: "usage-options", title: "선택할 수 없는 경로", description: "서울 옵션을 비활성화한 상태에서 지역을 탐색합니다." },
       { id: "cascade-select-markers", section: "usage-options", title: "선택과 하위 계층 표시", description: "체크는 선택값, 꺾쇠는 다음 단계가 있는 항목을 표시합니다.", parts: ["UICascadeSelectItemIndicator", "UICascadeSelectItemChevron"] },
       { id: "cascade-select-controlled", section: "examples-2", title: "별도 버튼으로 지역 선택 열기", description: "바깥 버튼에서 선택 창의 열림 상태를 제어합니다." },
@@ -403,6 +414,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "목록을 열어 계층 안에서 선택",
     description: "트리거에서 지역 목록을 열고 각 열의 항목을 선택합니다. 다음 열에는 선택한 항목의 하위 항목이 나타납니다.",
     api: {
+      "nodes[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "cascade-select-icons", title: "선택 목록의 계층 아이콘" } },
       nodes: "id와 parentID로 계층을 지정합니다. 노드에 icon을 넣으면 선택 목록의 항목 이름 앞에 표시합니다.",
       "v-model": "선택한 노드의 id를 연결합니다. 선택이 없으면 null입니다.",
       placeholder: "선택하지 않았을 때 표시할 안내입니다.",
@@ -465,14 +477,16 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "examples", title: "선택 방식과 배치", section: "usage-options" },
     ],
     examples: [
+      { id: "toggle-group-icons", section: "usage-options", title: "정렬 옵션 앞 아이콘", description: "옵션의 icon으로 왼쪽, 가운데, 오른쪽 정렬을 구분합니다." },
       { id: "toggle-group-multiple", section: "usage-options", title: "여러 항목 선택", description: "multiple을 켜서 여러 버튼을 선택합니다." },
       { id: "toggle-group-deselect", section: "usage-options", title: "다시 눌러 선택 해제", description: "선택한 버튼을 다시 누르면 선택이 해제됩니다." },
       { id: "toggle-group-vertical", section: "usage-options", title: "세로 탐색", description: "위·아래 방향키로 버튼을 탐색합니다." },
       { id: "toggle-group-disabled", section: "usage-options", title: "특정 항목 비활성", description: "가운데 정렬 버튼을 비활성화합니다." },
     ],
     title: "버튼 그룹에서 옵션 선택",
-    description: "options에 값과 이름을 넣고 icon으로 왼쪽·가운데·오른쪽 정렬을 구분합니다. v-model로 눌린 항목을 읽습니다.",
+    description: "options에 버튼의 값과 이름을 전달하고 v-model로 눌린 항목을 읽습니다.",
     api: {
+      "options[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "toggle-group-icons", title: "정렬 옵션 앞 아이콘" } },
       options: "value, label, 선택 사항인 icon과 disabled로 버튼을 구성합니다.",
       "v-model": "그룹이 채택한 선택값을 연결합니다.",
       "Item value": "이 토글 버튼에 해당하는 항목의 id입니다.",
@@ -508,6 +522,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "열린 목록에서 하나 선택",
     description: "목록에 포커스를 두고 방향키로 항목을 탐색합니다. selection-mode를 single로 지정하면 한 번에 한 값만 선택할 수 있습니다.",
     api: {
+      "options[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "listbox-icons", title: "목록 항목에 아이콘 표시" } },
       options: "value, label, 선택 사항인 icon과 disabled로 항목을 구성합니다.",
       "selection-mode": "한 번에 선택할 수 있는 항목 수를 정합니다.",
       "Item value": "목록 항목을 items의 값에 연결합니다.",
@@ -517,6 +532,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "listbox-examples-2", title: "선택 표시 꾸미기", section: "examples-2", phase: "composition" },
     ],
     examples: [
+      { id: "listbox-icons", section: "usage-options", title: "목록 항목에 아이콘 표시", description: "옵션의 icon에 Vue 컴포넌트를 전달해 실행 환경을 구분합니다." },
       { id: "listbox-multiple", section: "usage-options", title: "여러 항목을 선택", description: "selection-mode를 multiple로 지정하고 두 항목을 차례로 눌러 보세요. v-model에서 선택한 값의 배열을 확인할 수 있습니다." },
       { id: "listbox-disabled", section: "usage-options", title: "비활성 항목 건너뛰기", description: "staging은 방향키와 포인터로 선택할 수 없습니다." },
       { id: "listbox-typeahead", section: "usage-options", title: "글자로 항목 찾기", description: "목록에 포커스를 두고 S를 눌러 검증 환경으로 이동합니다." },
@@ -597,6 +613,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "stepper-examples-2", title: "외부 제어", section: "examples-2", phase: "examples" },
     ],
     examples: [
+      { id: "stepper-icons", section: "usage-options", title: "단계 이름 옆 아이콘", description: "items의 icon을 지정해 배송과 결제 단계를 구분합니다." },
       { id: "stepper-indicator", section: "usage-options", title: "완료한 단계 표시", description: "단계 이름 옆에 완료 및 현재 상태를 표시합니다." },
       { id: "stepper-disabled", section: "usage-options", title: "진입할 수 없는 단계", description: "검토 단계를 비활성화합니다." },
       { id: "stepper-vertical", section: "usage-options", title: "세로 단계 목록", description: "세로 목록에서 서로 다른 단계를 선택합니다." },
@@ -605,6 +622,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "여러 단계 사이를 이동",
     description: "items로 단계의 이름과 설명을 전달합니다. 기본 이전·다음 버튼으로 이동하면 현재 단계의 설명이 표시됩니다.",
     api: {
+      "items[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "stepper-icons", title: "단계 이름 옆 아이콘" } },
       items: "단계의 value, label, description과 disabled를 지정합니다. icon은 단계 이름 옆에 표시합니다.",
       "v-model": "현재 단계의 식별자입니다.",
       "#panel": "현재 단계의 item으로 설명 영역을 직접 구성합니다.",
@@ -615,6 +633,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "검색해서 항목 선택",
     description: "items에 항목을 전달하면 입력과 결과 목록이 함께 나타납니다. ‘검증’을 입력하고 결과를 선택해 보세요.",
     api: {
+      "items[].icon": { type: "Component", description: "검색 결과에 표시할 항목 아이콘입니다.", example: { id: "combobox-icons", title: "검색 결과의 항목 아이콘" } },
       items: "검색할 항목마다 고유한 id와 label을 전달합니다. icon은 검색 결과의 항목 이름 앞에 표시합니다.",
       "policies.matches": "항목의 이름과 검색어를 받아 결과에 포함할지 결정합니다. 생략하면 모든 items가 결과에 포함됩니다.",
       "v-model": "선택한 항목의 id입니다. 선택이 비어 있으면 null입니다.",
@@ -631,6 +650,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "combobox-examples-2", title: "검색 결과와 외부 제어", section: "examples-2", phase: "examples" },
     ],
     examples: [
+      { id: "combobox-icons", section: "usage-options", title: "검색 결과의 항목 아이콘", description: "items의 icon은 검색 결과에 표시됩니다. 아래 방향키로 목록을 열고 항목을 선택합니다." },
       { id: "combobox-empty", section: "usage-options", title: "검색 결과가 없을 때", description: "목록에 없는 팀 이름을 검색하면 UIComboboxEmpty에 넣은 안내 문구가 표시됩니다." },
       { id: "combobox-input-control", section: "usage-options", title: "검색어 지우기", description: "외부 버튼이 선택값과 독립된 검색어만 지웁니다." },
       { id: "combobox-async-search", section: "examples-2", title: "응답을 기다리는 검색", description: "검색을 연달아 입력해도 마지막 요청의 결과만 표시합니다." },
@@ -712,6 +732,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "examples", title: "부모와 자식의 선택 상태", section: "usage-options" },
     ],
     examples: [
+      { id: "checkbox-tree-icons", section: "usage-options", title: "체크박스 트리의 항목 아이콘", description: "노드의 icon을 지정하면 체크 표시와 이름 사이에 표시됩니다." },
       { id: "checkbox-tree-mixed", section: "usage-options", title: "혼합 상태 부모", description: "이메일만 선택되면 상위 항목이 혼합 상태입니다." },
       { id: "checkbox-tree-subtree", section: "usage-options", title: "하위 가지 전체 제한", description: "부모를 비활성화하면 subtree 정책으로 그 아래 노드도 함께 제한합니다." },
       { id: "checkbox-tree-locked-child", section: "usage-options", title: "선택이 잠긴 하위 항목", description: "상위 항목을 선택해도 잠긴 모바일 값은 바뀌지 않습니다." },
@@ -719,6 +740,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "하위 항목을 묶어 선택",
     description: "알림 채널을 선택하면 하위 항목이 함께 선택됩니다. 아래 항목 하나만 해제해 상위 항목의 혼합 상태를 확인할 수 있습니다.",
     api: {
+      "nodes[].icon": { type: "Component", description: "체크 표시와 항목 이름 사이에 표시할 아이콘입니다.", example: { id: "checkbox-tree-icons", title: "체크박스 트리의 항목 아이콘" } },
       nodes: "id, parentID, 선택 사항인 label과 icon으로 트리 항목을 구성합니다. icon은 체크 표시와 항목 이름 사이에 나타납니다.",
       "v-model": "선택된 항목의 id 배열을 연결합니다.",
       clearable: "선택을 지울 수 있는 버튼을 표시합니다.",
@@ -732,6 +754,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "transfer-examples-2", title: "이동 승인과 제한", section: "examples-2", phase: "examples" },
     ],
     examples: [
+      { id: "transfer-icons", section: "usage-options", title: "목록을 옮겨도 유지되는 아이콘", description: "항목 id로 아이콘을 찾습니다. 이메일을 옮긴 뒤에도 같은 아이콘을 확인할 수 있습니다." },
       { id: "transfer-selection", section: "usage-options", title: "여러 항목을 골라 한 번에 이동", description: "이메일과 메시지를 선택한 뒤 오른쪽 화살표를 누르면 두 항목이 함께 옮겨집니다. 웹 푸시는 왼쪽에 남습니다." },
       { id: "transfer-disabled", section: "usage-options", title: "비활성 항목을 남겨두고 전체 이동", description: "오른쪽 겹화살표를 누르면 메시지만 이동하고 비활성 상태인 이메일은 왼쪽에 남습니다." },
       { id: "transfer-typeahead", section: "usage-options", title: "이름의 첫 글자로 항목 찾기", description: "왼쪽 목록에서 R을 눌러 보고서로 포커스를 옮깁니다." },
@@ -744,7 +767,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "v-model:nodes": "두 목록의 부모 노드와 이동할 항목을 포함하는 계층 데이터를 연결합니다.",
       "source-id / target-id": "두 목록이 각각 참조하는 부모 노드의 id입니다.",
       "source-label / target-label": "목록 제목과 접근성 이름을 지정합니다.",
-      "icon-for": { type: "(id: string) => Component | undefined", description: "항목 id에 맞는 아이콘을 반환합니다. 항목을 다른 목록으로 옮겨도 같은 아이콘을 사용합니다.", example: { id: "basic-example", title: "두 목록 사이에서 채널을 이동" } },
+      "icon-for": { type: "(id: string) => Component | undefined", description: "항목 id에 맞는 아이콘을 반환합니다. 항목을 다른 목록으로 옮겨도 같은 아이콘을 사용합니다.", example: { id: "transfer-icons", title: "목록을 옮겨도 유지되는 아이콘" } },
       "#default": "직접 구성할 때 sourceItems와 targetItems로 각 목록의 현재 항목을 받습니다.",
       "#item": "기본 목록에서 id와 side를 받아 항목에 표시할 내용을 바꿉니다.",
     },
@@ -755,6 +778,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "tree-select-examples-2", title: "검색 결과와 선택값", section: "examples-2", phase: "examples" },
     ],
     examples: [
+      { id: "tree-select-icons", section: "usage-options", title: "트리 선택 항목의 아이콘", description: "노드의 icon을 지정하고 선택 목록을 열어 폴더와 팀 아이콘을 확인합니다." },
       { id: "tree-select-multiple", section: "usage-options", title: "계층에서 여러 값 선택", description: "디자인 아래 두 항목을 모두 선택할 수 있습니다." },
       { id: "tree-select-disclosure", section: "usage-options", title: "하위 팀 펼치기", description: "화살표를 누르면 하위 팀을 펼치거나 접습니다. 팀 이름을 누르면 해당 팀을 선택합니다.", parts: ["UITreeSelectContent", "UITreeSelectDisclosure", "UITreeSelectGroup", "UITreeSelectItem"] },
       { id: "tree-select-disabled-branch", section: "usage-options", title: "잠긴 가지 건너뛰기", description: "디자인 팀의 가지와 자식은 비활성으로 두고 개발 팀의 웹을 선택합니다." },
@@ -764,6 +788,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "계층형 팀 목록에서 선택",
     description: "팀 이름으로 검색하거나 화살표를 눌러 하위 팀을 펼칩니다. 선택한 팀 이름은 입력창에서 확인할 수 있습니다.",
     api: {
+      "nodes[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "tree-select-icons", title: "트리 선택 항목의 아이콘" } },
       nodes: "id, parentID, 선택 사항인 label과 icon을 전달합니다. 목록에는 아이콘을 표시하고 검색과 선택값에는 label을 사용합니다.",
       "v-model": "선택된 항목의 id 배열을 연결합니다.",
       placeholder: { type: "string", default: "검색 또는 선택", description: "검색어와 선택값이 비어 있을 때 입력에 표시합니다.", example: { id: "basic-example", title: "계층형 팀 목록에서 선택" } },
@@ -779,12 +804,14 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "tree-view-examples-2", title: "외부에서 펼치기", section: "examples-2", phase: "examples" },
     ],
     examples: [
+      { id: "tree-view-icons", section: "usage-options", title: "폴더와 파일 아이콘", description: "노드의 icon에 Vue 컴포넌트를 전달해 폴더와 파일을 구분합니다." },
       { id: "tree-view-disabled", section: "usage-options", title: "선택할 수 없는 노드", description: "Settings 노드는 선택할 수 없습니다." },
       { id: "tree-view-controlled", section: "examples-2", title: "외부에서 폴더 펼치기", description: "모두 펼치기를 눌러 외부에서 확장 상태를 변경합니다." },
     ],
     title: "폴더의 하위 항목 펼치기",
-    description: "노드마다 icon을 지정해 폴더와 파일을 구분합니다. 폴더 옆 화살표나 방향키로 하위 항목을 펼칩니다.",
+    description: "폴더 옆 화살표나 방향키로 하위 항목을 펼칩니다. v-model:expanded-values로 펼친 폴더의 id를 읽습니다.",
     api: {
+      "nodes[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "tree-view-icons", title: "폴더와 파일 아이콘" } },
       nodes: "id, parentID, 선택 사항인 label과 icon으로 트리 항목을 구성합니다. icon으로 Vue 컴포넌트를 전달하면 라벨 앞에 나타납니다.",
       "v-model:expanded-values": "현재 펼쳐진 노드 id를 외부 상태에 연결합니다.",
       "Group for": "하위 그룹이 어느 상위 항목에 속하는지 지정합니다.",
@@ -795,6 +822,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "여러 옵션을 한 그룹에서 선택",
     description: "options로 체크박스의 값과 이름을 지정합니다. 여러 옵션을 선택해 보세요.",
     api: {
+      "options[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "checkbox-group-icons", title: "체크박스 옵션의 아이콘" } },
       options: "value, label, 선택 사항인 icon과 disabled로 체크박스를 구성합니다.",
       "v-model": "선택한 값을 배열로 연결합니다.",
       "Item disabled": "이 항목의 선택을 막습니다.",
@@ -804,6 +832,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "form", title: "폼", section: "form", phase: "examples" },
     ],
     examples: [
+      { id: "checkbox-group-icons", section: "usage-options", title: "체크박스 옵션의 아이콘", description: "옵션의 icon으로 이메일과 앱 푸시를 구분합니다." },
       { id: "checkbox-group-initial", section: "usage-options", title: "일부 항목을 선택한 상태로 시작", description: "v-model에 연결한 배열에 메일과 앱을 넣으면 처음부터 선택되어 있습니다." },
       { id: "checkbox-group-readonly", section: "usage-options", title: "읽기 전용 그룹", description: "이미 선택된 항목을 그대로 표시합니다." },
       { id: "checkbox-group-disabled", section: "usage-options", title: "일부 옵션만 비활성화", description: "선택을 막을 항목의 UICheckboxGroupItem에 disabled를 지정합니다." },
@@ -920,6 +949,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "선택한 탭의 내용 표시",
     description: "items로 탭의 이름과 내용을 전달합니다. 탭을 바꾸면 선택된 항목에 해당하는 콘텐츠가 열립니다.",
     api: {
+      "items[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "tabs-icons", title: "탭 이름 앞 아이콘" } },
       items: "탭의 value, label, description과 disabled를 지정합니다. icon으로 탭 이름 앞에 아이콘을 표시합니다.",
       "v-model": "선택된 탭의 식별자를 연결합니다.",
       "#panel": "현재 탭의 item으로 콘텐츠를 직접 구성합니다.",
@@ -930,6 +960,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "tabs-examples-2", title: "외부에서 탭 전환", section: "examples-2", phase: "examples" },
     ],
     examples: [
+      { id: "tabs-icons", section: "usage-options", title: "탭 이름 앞 아이콘", description: "items의 icon을 지정해 개요와 설정 탭을 구분합니다." },
       { id: "tabs-vertical", section: "usage-options", title: "세로 탭", description: "위와 아래 방향키로 탭 사이를 이동합니다." },
       { id: "tabs-disabled", section: "usage-options", title: "비활성 탭", description: "activity를 비활성화하면 방향키 탐색에서 건너뜁니다." },
       { id: "tabs-manual", section: "usage-options", title: "키보드로 수동 활성화", description: "activation-mode를 manual로 지정합니다. 방향키는 포커스만 이동하고 Enter 또는 Space로 탭을 엽니다." },
@@ -942,6 +973,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "examples", title: "메뉴 구성과 비활성 항목", section: "usage-options" },
     ],
     examples: [
+      { id: "menu-icons", section: "usage-options", title: "메뉴 명령 앞 아이콘", description: "items의 각 명령에 icon을 지정하면 명령 이름 앞에 표시됩니다." },
       { id: "menu-submenu", section: "usage-options", title: "하위 메뉴에서 돌아오기", description: "하위 명령을 열고 Esc를 눌러 상위 항목으로 돌아옵니다.", parts: ["UIMenuSubContent"] },
       { id: "menu-unavailable", section: "usage-options", title: "비활성 명령", description: "저장 명령은 입력으로 실행되지 않습니다." },
       { id: "menu-separator", section: "usage-options", title: "성격이 다른 명령을 구분", description: "문서 편집 동작과 다운로드 사이에 구분선을 넣습니다.", parts: ["UIMenuSeparator"] },
@@ -949,6 +981,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "명령의 실행 값 받기",
     description: "항목을 누르거나 키보드로 실행해 보세요. invoke 이벤트에서 항목의 id를 받아 원하는 동작에 연결합니다.",
     api: {
+      "items[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "menu-icons", title: "메뉴 명령 앞 아이콘" } },
       items: "id와 parentID로 명령을 배치합니다. label은 명령 이름, icon은 이름 앞의 아이콘입니다.",
       "@invoke": "실행한 명령의 id를 반환합니다.",
     },
@@ -959,6 +992,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "context-menu-behavior", title: "접근과 상태", section: "behavior" },
     ],
     examples: [
+      { id: "context-menu-icons", section: "behavior", title: "명령 앞에 아이콘 표시", description: "회의 기록에서 우클릭하거나 Shift+F10을 눌러 각 명령의 아이콘을 봅니다." },
       { id: "context-menu-tabs", section: "scenarios", title: "문서 탭 고정과 복제", description: "탭에서 메뉴를 열어 고정하면 목록 앞에 표시됩니다. 탭을 복제하거나 닫을 수도 있습니다." },
       { id: "context-menu-columns", section: "scenarios", title: "표의 열 정렬과 숨기기", description: "재고나 단가 머리글에서 메뉴를 열면 해당 열을 기준으로 정렬하거나 숨길 수 있습니다." },
       { id: "context-menu-inbox", section: "scenarios", title: "받은 메일 정리", description: "메일을 읽음으로 바꾸거나 중요 표시를 붙이고 받은편지함에서 보관할 수 있습니다." },
@@ -970,6 +1004,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "대상 파일의 이름 변경과 복제",
     description: "파일에서 우클릭하거나 Shift+F10을 눌러 메뉴를 여세요. 이름 변경, 복제, 삭제는 메뉴를 연 파일에 적용됩니다.",
     api: {
+      "items[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "context-menu-icons", title: "명령 앞에 아이콘 표시" } },
       items: "우클릭 메뉴에 표시할 명령을 지정합니다. 항목에 icon을 넣으면 명령 이름 앞에 표시합니다.",
       "@invoke": "사용자가 실행한 명령의 id를 받습니다.",
       "UIContextMenuItem.icon": "명령 이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.",
@@ -983,16 +1018,18 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "examples", title: "메뉴 항목과 포커스", section: "usage-options" },
     ],
     examples: [
+      { id: "menu-button-icons", section: "usage-options", title: "열기 버튼과 명령의 아이콘", description: "trigger-icon은 열기 버튼에, items의 icon은 목록의 각 명령에 표시됩니다." },
       { id: "menu-button-links", section: "usage-options", title: "메뉴에서 문서 열기", description: "UIMenuItem에 to나 href를 지정합니다. 마우스로 클릭하거나 방향키로 항목을 찾아 Enter로 엽니다.", parts: ["UIMenuItem"] },
       { id: "menu-button-submenu", section: "usage-options", title: "하위 명령", description: "내보내기에서 하위 메뉴를 열어 파일 형식을 선택합니다.", parts: ["UIMenuSubContent"] },
       { id: "menu-button-disabled", section: "usage-options", title: "실행할 수 없는 명령", description: "Import 명령을 비활성으로 표시합니다." },
       { id: "menu-button-focus", section: "usage-options", title: "메뉴가 닫힐 때 트리거로 돌아가기", description: "메뉴에서 Escape를 누르거나 명령을 실행한 뒤 포커스가 트리거로 돌아오는지 확인합니다." },
     ],
     title: "버튼에 작업 목록 연결",
-    description: "만들기를 열고 이름과 아이콘으로 명령을 찾아 실행합니다. invoke 이벤트에서 명령 id를 받습니다.",
+    description: "만들기를 열고 명령을 골라 보세요. invoke 이벤트에서 명령 id를 받습니다.",
     api: {
+      "items[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "menu-button-icons", title: "열기 버튼과 명령의 아이콘" } },
       items: "버튼에서 열리는 메뉴의 명령입니다. 각 항목에 label, icon, shortcut을 지정할 수 있습니다.",
-      "trigger-icon": "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.",
+      "trigger-icon": { type: "Component", description: "기본 열기 버튼의 텍스트 앞에 표시할 아이콘입니다.", example: { id: "menu-button-icons", title: "열기 버튼과 명령의 아이콘" } },
       "@invoke": "누른 메뉴 항목의 id를 받습니다.",
     },
   },
@@ -1002,12 +1039,14 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "examples", title: "항목 상태와 키보드 탐색", section: "usage-options" },
     ],
     examples: [
+      { id: "menubar-icons", section: "usage-options", title: "하위 명령에 아이콘 표시", description: "파일 메뉴를 열어 하위 명령에 지정한 아이콘을 확인합니다." },
       { id: "menubar-disabled", section: "usage-options", title: "비활성 편집 명령", description: "Redo를 비활성화하면 편집 메뉴에서 선택되지 않습니다." },
       { id: "menubar-typeahead", section: "usage-options", title: "메뉴 이름으로 탐색", description: "편집 메뉴를 열고 U를 눌러 실행 취소로 이동합니다." },
     ],
     title: "메뉴 모음에 명령 배치",
     description: "최상위 메뉴와 그 하위 명령을 parentID로 연결합니다. 파일과 편집 메뉴를 열어 명령을 실행합니다.",
     api: {
+      "items[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "menubar-icons", title: "하위 명령에 아이콘 표시" } },
       items: "id와 parentID로 최상위 메뉴와 하위 명령을 구성합니다. icon으로 명령 이름 앞에 아이콘을 표시합니다.",
       "text-value": "각 id의 이름을 키보드 탐색에 사용할 텍스트로 변환합니다.",
       "Content for": "이 콘텐츠가 속한 상위 메뉴 id입니다.",
@@ -1017,6 +1056,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "한 섹션씩 펼치기",
     description: "type을 single로 설정해 한 번에 한 섹션만 표시합니다. collapsible을 지정하면 열린 섹션을 다시 눌러 모두 접을 수 있습니다.",
     api: {
+      "items[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "accordion-icons", title: "섹션 이름 앞 아이콘" } },
       items: "value와 label로 섹션을 구성합니다. icon은 섹션 이름 앞에 표시합니다.",
       type: "single은 한 섹션, multiple은 여러 섹션을 펼칠 수 있습니다.",
       collapsible: "열린 섹션을 닫아 선택이 없는 상태를 허용합니다.",
@@ -1027,6 +1067,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "accordion-examples-2", title: "외부에서 섹션 열기", section: "examples-2", phase: "examples" },
     ],
     examples: [
+      { id: "accordion-icons", section: "usage-options", title: "섹션 이름 앞 아이콘", description: "items의 icon에 Vue 컴포넌트를 전달해 섹션을 구분합니다." },
       { id: "accordion-collapse", section: "usage-options", title: "현재 항목도 닫기", description: "열린 항목을 다시 눌러 목록을 모두 닫을 수 있습니다." },
       { id: "accordion-disabled", section: "usage-options", title: "비활성 항목", description: "danger 항목을 disabled-items에 지정합니다." },
       { id: "accordion-multiple", section: "usage-options", title: "여러 섹션 함께 열기", description: "type을 multiple로 지정하고 각각의 헤더를 눌러 동시에 펼칩니다." },
@@ -1060,6 +1101,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "examples", title: "항목 탐색과 포커스", section: "usage-options" },
     ],
     examples: [
+      { id: "feed-icons", section: "usage-options", title: "활동 제목 앞 아이콘", description: "활동의 icon을 지정해 운영 배포와 검사 결과를 구분합니다." },
       { id: "feed-earlier", section: "usage-options", title: "고객 상담의 이전 기록 불러오기", description: "최근 상담 기록에서 시작해 이전 기록을 두 건씩 위에 추가합니다. 두 번째 요청에서는 예제 오류가 발생하며 다시 시도하면 전체 기록을 볼 수 있습니다.", parts: ["UIFeedLoadEarlier"] },
       { id: "feed-newer", section: "usage-options", title: "받은편지함에서 새 알림 처리", description: "새 알림을 기존 목록 뒤에 추가합니다. 알림을 읽음 처리하면 받은편지함의 안 읽은 항목 수가 갱신됩니다.", parts: ["UIFeedLoadNewer"] },
       { id: "feed-focus", section: "usage-options", title: "새 댓글이 도착해도 읽던 위치 유지", description: "3초 뒤 댓글 받기를 누른 후 기존 댓글에 포커스를 둡니다. 새 댓글이 맨 위에 추가되어도 같은 댓글에 포커스가 남습니다." },
@@ -1067,6 +1109,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "릴리스 타임라인에서 배포 경과 읽기",
     description: "결제 오류로 복구한 시점부터 수정 버전을 다시 배포한 시점까지 살펴봅니다. 항목에 포커스를 두고 Page Up 또는 Page Down으로 앞뒤 활동을 읽을 수 있습니다.",
     api: {
+      "items[].icon": { type: "Component", description: "이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example: { id: "feed-icons", title: "활동 제목 앞 아이콘" } },
       items: "활동의 id와 제목을 지정합니다. icon은 항목 제목 앞에 표시합니다.",
       "set-size": "전체 피드의 항목 수입니다.",
       "get-position": "항목 id의 전체 피드 내 위치를 반환합니다.",
@@ -1170,6 +1213,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "examples", title: "툴바 동작 조합", section: "composition", phase: "examples" },
     ],
     examples: [
+      { id: "toolbar-icons", section: "layout", title: "아이콘으로 표시하는 서식 도구", description: "기본 슬롯에 아이콘을 넣고 aria-label로 도구 이름을 지정합니다." },
       { id: "toolbar-vertical", section: "layout", title: "세로 도구 모음", description: "orientation을 vertical로 지정하면 위·아래 방향키로 이동합니다." },
       { id: "toolbar-disabled", section: "layout", title: "사용하지 못하는 도구", description: "disabled-items에 기울임을 지정하면 방향키 탐색에서 건너뜁니다." },
       { id: "toolbar-toggle", section: "composition", framed: true, title: "토글 도구와 실행 도구", description: "굵게는 상태를 유지하고 복제는 한 번의 동작을 실행합니다." },
@@ -1177,6 +1221,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "문단의 서식과 정렬 바꾸기",
     description: "글자 서식과 문단 정렬을 구분선으로 나눕니다. 방향키로 도구를 이동하고 Enter를 눌러 문단에 적용해 보세요.",
     api: {
+      "Item #default": { description: "텍스트나 아이콘을 넣습니다. 아이콘 전용 도구에는 aria-label로 동작 이름을 지정합니다.", example: { id: "toolbar-icons", title: "아이콘으로 표시하는 서식 도구" } },
       items: "도구에 연결할 값의 순서입니다.",
       orientation: "horizontal에서는 좌우, vertical에서는 위아래 방향키로 도구에 이동합니다.",
       "disabled-items": "키보드 탐색과 실행에서 제외할 항목의 값입니다.",

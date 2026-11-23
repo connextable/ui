@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ButtonToggleIconExample from "~/components/examples/ButtonToggleIconExample.vue";
+import iconSource from "~/components/examples/ButtonToggleIconExample.vue?example-code&raw";
 import { UIAnchor } from "@connextable/ui";
 import ButtonAsyncExample from "~/components/examples/ButtonAsyncExample.vue";
 import ButtonExample from "~/components/examples/ButtonExample.vue";
@@ -39,6 +41,14 @@ definePageMeta({
       <PlaygroundExampleSection id="button-types" title="버튼 종류">
         <IconButtonExample />
         <ButtonToggleExample />
+        <PlaygroundExample
+          id="button-toggle-icon"
+          title="토글 버튼에 아이콘 표시"
+          description="icon으로 고정 동작의 아이콘을 지정하고 v-model로 눌림 상태를 연결합니다."
+          :source="iconSource"
+        >
+          <ButtonToggleIconExample />
+        </PlaygroundExample>
       </PlaygroundExampleSection>
       <PlaygroundExampleSection id="link" title="링크">
         <p class="button-page__intro">

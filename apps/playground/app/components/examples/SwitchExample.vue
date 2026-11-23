@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { MessageSquare } from "@lucide/vue";
 import { UISelect, UISwitch } from "@connextable/ui";
 import { computed, ref } from "vue";
 import { vueExampleCode } from "~/utils/vue-example-code";
@@ -19,12 +18,11 @@ const attributes = computed(() => ({
 const code = computed(() => vueExampleCode("UISwitch", {
   script: [
     'import { UISwitch } from "@connextable/ui";',
-    'import { MessageSquare } from "@lucide/vue";',
     'import { ref } from "vue";',
     "",
     "const receiveCommentNotifications = ref(true);",
   ],
-  attributes: { "v-model": "receiveCommentNotifications", ...attributes.value, icon: { expression: "MessageSquare" } },
+  attributes: { "v-model": "receiveCommentNotifications", ...attributes.value },
 }));
 </script>
 
@@ -43,7 +41,7 @@ const code = computed(() => vueExampleCode("UISwitch", {
       <UISwitch v-model="readonly" size="sm" label="readonly" />
       <UISwitch v-model="disabled" size="sm" label="disabled" />
     </template>
-    <UISwitch v-model="receiveCommentNotifications" v-bind="attributes" :icon="MessageSquare" />
+    <UISwitch v-model="receiveCommentNotifications" v-bind="attributes" />
     <template #footer>
       <output>{{ receiveCommentNotifications ? '새 댓글 알림을 받습니다.' : '새 댓글 알림을 받지 않습니다.' }}</output>
     </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import RadioGroupIconExample from "~/components/examples/RadioGroupIconExample.vue";
+import iconSource from "~/components/examples/RadioGroupIconExample.vue?example-code&raw";
 import RadioGroupHorizontalExample from "~/components/examples/RadioGroupHorizontalExample.vue";
 import RadioGroupHorizontalExampleSource from "~/components/examples/RadioGroupHorizontalExample.vue?example-code&raw";
 import RadioGroupDescriptionExample from "~/components/examples/RadioGroupDescriptionExample.vue";
@@ -44,6 +46,14 @@ definePageMeta({
         <PlaygroundExample id="radio-readonly" title="읽기 전용 선택"
           description="현재 값을 계속 읽을 수 있으며 다른 값으로 바뀌지 않습니다." :source="RadioGroupReadonlyExampleSource" :heading-level="3">
           <RadioGroupReadonlyExample />
+        </PlaygroundExample>
+        <PlaygroundExample
+          id="radio-icons"
+          title="라디오 옵션 아이콘"
+          description="options의 icon으로 이메일과 앱 푸시를 구분합니다."
+          :source="iconSource"
+        >
+          <RadioGroupIconExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>
     </PlaygroundExampleSection>

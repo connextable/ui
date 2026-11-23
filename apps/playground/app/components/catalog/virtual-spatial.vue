@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { UIDataLabel, UIDataStatus, UIDataSurface, UIVirtualSpatial } from "@connextable/ui";
-import { Boxes } from "@lucide/vue";
 
 const nodes = Array.from({ length: 1000 }, (_, index) => ({
   id: `선반 ${index + 1}`,
@@ -25,9 +24,7 @@ const nodes = Array.from({ length: 1000 }, (_, index) => ({
       aria-label="좌표로 배치된 지점"
     >
       <template #item="{ value: node }">
-        <UIDataLabel :label="node.id">
-          <template #icon><Boxes :size="15" aria-hidden="true" /></template>
-        </UIDataLabel>
+        <UIDataLabel :label="node.id" />
         <UIDataStatus :tone="node.checked ? 'success' : 'warning'">{{ node.checked ? '점검 완료' : '점검 대기' }}</UIDataStatus>
       </template>
     </UIVirtualSpatial>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SelectIconExample from "~/components/select/SelectIconExample.vue";
+import iconSource from "~/components/select/SelectIconExample.vue?example-code&raw";
 import SelectControlledOpenExample from "~/components/examples/SelectControlledOpenExample.vue";
 import SelectControlledOpenExampleSource from "~/components/examples/SelectControlledOpenExample.vue?example-code&raw";
 import SelectReadonlyExample from "~/components/examples/SelectReadonlyExample.vue";
@@ -65,6 +67,14 @@ const parts = {
         <PlaygroundExample id="select-typeahead" title="키보드로 이름 검색"
           description="목록을 열고 P 또는 M을 눌러 해당 글자로 시작하는 형식으로 이동합니다." :source="SelectTypeaheadExampleSource" :heading-level="3">
           <SelectTypeaheadExample />
+        </PlaygroundExample>
+        <PlaygroundExample
+          id="select-icons"
+          title="선택지와 선택값의 아이콘"
+          description="options의 icon은 목록과 선택값에 표시됩니다. 보기 방식을 바꿔 비교합니다."
+          :source="iconSource"
+        >
+          <SelectIconExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>
     </PlaygroundExampleSection>

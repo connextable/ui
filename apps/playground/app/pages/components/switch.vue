@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SwitchIconExample from "~/components/examples/SwitchIconExample.vue";
+import iconSource from "~/components/examples/SwitchIconExample.vue?example-code&raw";
 import SwitchThumbExample from "~/components/examples/SwitchThumbExample.vue";
 import thumbSource from "~/components/examples/SwitchThumbExample.vue?example-code&raw";
 import SwitchDefaultExample from "~/components/examples/SwitchDefaultExample.vue";
@@ -52,6 +54,14 @@ definePageMeta({
           :source="switchSizeExampleSource"
         >
           <SwitchSizeExample />
+        </PlaygroundExample>
+        <PlaygroundExample
+          id="switch-icon"
+          title="스위치 라벨 아이콘"
+          description="icon으로 배포 알림 라벨 앞에 아이콘을 표시합니다."
+          :source="iconSource"
+        >
+          <SwitchIconExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>
     </PlaygroundExampleSection>

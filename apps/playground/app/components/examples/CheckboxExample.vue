@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Bell } from "@lucide/vue";
 import { UICheckbox, UISwitch, type UICheckboxValue } from "@connextable/ui";
 import { computed, ref } from "vue";
 import { vueExampleCode } from "~/utils/vue-example-code";
@@ -17,12 +16,11 @@ const attributes = computed(() => ({
 const code = computed(() => vueExampleCode("UICheckbox", {
   script: [
     'import { UICheckbox, type UICheckboxValue } from "@connextable/ui";',
-    'import { Bell } from "@lucide/vue";',
     'import { ref } from "vue";',
     "",
     "const checked = ref<UICheckboxValue>(false);",
   ],
-  attributes: { "v-model": "checked", ...attributes.value, icon: { expression: "Bell" } },
+  attributes: { "v-model": "checked", ...attributes.value },
 }));
 </script>
 
@@ -39,7 +37,7 @@ const code = computed(() => vueExampleCode("UICheckbox", {
       <UISwitch v-model="disabled" size="sm" label="disabled" />
       <UISwitch v-model="readonly" size="sm" label="readonly" />
     </template>
-    <UICheckbox v-model="checked" v-bind="attributes" :icon="Bell" />
+    <UICheckbox v-model="checked" v-bind="attributes" />
     <template #footer><output>{{ checked ? "알림 켜짐" : "알림 꺼짐" }}</output></template>
   </PlaygroundExample>
 </template>

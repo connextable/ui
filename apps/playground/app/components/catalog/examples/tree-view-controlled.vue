@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { UIButton, UITreeView } from "@connextable/ui";
-import { FileCode, Folder } from "@lucide/vue";
 import { ref } from "vue";
 
 const nodes = [
-  { id: "app", parentID: null, label: "앱", icon: Folder },
-  { id: "views", parentID: "app", label: "화면", icon: Folder },
-  { id: "overview", parentID: "views", label: "Overview.vue", icon: FileCode },
-  { id: "tokens", parentID: "app", label: "tokens.ts", icon: FileCode },
+  { id: "app", parentID: null, label: "앱" },
+  { id: "views", parentID: "app", label: "화면" },
+  { id: "overview", parentID: "views", label: "Overview.vue" },
+  { id: "tokens", parentID: "app", label: "tokens.ts" },
 ];
 const expandedValues = ref<readonly string[]>([]);
 const selected = ref<readonly string[]>(["overview"]);

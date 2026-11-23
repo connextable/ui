@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { Folder, Palette, PanelsTopLeft } from "@lucide/vue";
 import { UITreeSelect } from "@connextable/ui";
 import { ref } from "vue";
 
 const nodes = [
-  { id: "design", parentID: null, label: "디자인", icon: Folder },
-  { id: "ui", parentID: "design", label: "제품 디자인", icon: PanelsTopLeft },
-  { id: "brand", parentID: "design", label: "브랜드", icon: Palette },
+  { id: "design", parentID: null, label: "디자인" },
+  { id: "ui", parentID: "design", label: "제품 디자인" },
+  { id: "brand", parentID: "design", label: "브랜드" },
 ];
 
 const team = ref<readonly string[]>([]);

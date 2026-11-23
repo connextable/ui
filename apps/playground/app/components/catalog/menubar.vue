@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { FilePlus, FolderOpen, Keyboard, Redo2, Undo2 } from "@lucide/vue";
 import { UIMenubar } from "@connextable/ui";
 import { ref } from "vue";
 
 const commands = [
   { id: "file", parentID: null, label: "파일" },
-  { id: "new-project", parentID: "file", label: "새 프로젝트", icon: FilePlus },
-  { id: "open-project", parentID: "file", label: "프로젝트 열기", separatorBefore: true, icon: FolderOpen },
+  { id: "new-project", parentID: "file", label: "새 프로젝트" },
+  { id: "open-project", parentID: "file", label: "프로젝트 열기", separatorBefore: true },
   { id: "edit", parentID: null, label: "편집" },
-  { id: "undo", parentID: "edit", label: "실행 취소", icon: Undo2 },
-  { id: "redo", parentID: "edit", label: "다시 실행", icon: Redo2 },
+  { id: "undo", parentID: "edit", label: "실행 취소" },
+  { id: "redo", parentID: "edit", label: "다시 실행" },
   { id: "help", parentID: null, label: "도움말" },
-  { id: "shortcuts", parentID: "help", label: "키보드 단축키", icon: Keyboard },
+  { id: "shortcuts", parentID: "help", label: "키보드 단축키" },
 ];
 const lastAction = ref("");
 </script>

@@ -75,8 +75,8 @@ definePageMeta({
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="practical-examples" title="실전 예제">
       <PlaygroundExampleSection id="examples" title="좁은 너비의 입력">
-        <PlaygroundExample id="input-long" title="좁은 입력 영역"
-          description="긴 검색어의 끝으로 이동하고 앞 아이콘과 지우기 버튼이 제자리를 유지하는지 확인합니다." :source="InputLongValueExampleSource" :heading-level="3">
+        <PlaygroundExample id="input-long" title="좁은 검색창에서 아이콘 표시"
+          description="icon으로 검색 아이콘을 지정합니다. 긴 검색어의 끝으로 이동해도 아이콘과 지우기 버튼은 제자리를 유지합니다." :source="InputLongValueExampleSource" :heading-level="3">
           <InputLongValueExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>

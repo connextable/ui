@@ -2,7 +2,6 @@
 import { UIWindowSplitter } from "@connextable/ui";
 
 import { ref } from "vue";
-import { FileCode2, Folder } from "@lucide/vue";
 
 const size = ref("34");
 const sources = {
@@ -26,7 +25,7 @@ const selected = ref<keyof typeof sources>("App.vue");
     <template #before>
       <header class="split-example__header"><strong>프로젝트</strong></header>
       <div class="split-example__files">
-        <span class="split-example__folder"><Folder :size="16" aria-hidden="true" /> src</span>
+        <span class="split-example__folder">src</span>
         <button
           v-for="(_, file) in sources"
           :key="file"
@@ -34,7 +33,7 @@ const selected = ref<keyof typeof sources>("App.vue");
           class="split-example__file"
           :aria-pressed="selected === file"
           @click="selected = file"
-        ><FileCode2 :size="15" aria-hidden="true" /> <span>{{ file }}</span></button>
+        >{{ file }}</button>
       </div>
     </template>
     <template #after>
@@ -80,9 +79,6 @@ const selected = ref<keyof typeof sources>("App.vue");
 
 .split-example__folder,
 .split-example__file {
-  display: flex;
-  align-items: center;
-  gap: var(--ui-space-xs);
   padding: var(--ui-space-xs);
   border: 0;
   border-radius: var(--ui-radius-sm);
@@ -90,6 +86,7 @@ const selected = ref<keyof typeof sources>("App.vue");
   font: inherit;
   font-size: var(--ui-font-size-body-sm);
   text-align: start;
+  overflow-wrap: anywhere;
 }
 
 .split-example__file {
@@ -105,15 +102,6 @@ const selected = ref<keyof typeof sources>("App.vue");
 
 .split-example__file:hover {
   background: var(--ui-color-surface-active);
-}
-
-.split-example__files svg {
-  flex: none;
-}
-
-.split-example__file span {
-  min-inline-size: 0;
-  overflow-wrap: anywhere;
 }
 
 .split-example pre {

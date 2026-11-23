@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { UIDataLabel, UIDataSurface, UIVirtualMasonry } from "@connextable/ui";
-import { NotebookPen } from "@lucide/vue";
 
 const notes = [
   { title: "접근성 검토", text: "로그인 폼을 키보드만으로 탐색하고 오류가 난 필드로 포커스가 이동하는지 확인했다." },
@@ -27,9 +26,7 @@ const cards = Array.from({ length: 1000 }, (_, index) => ({ id: index + 1, ...no
     >
       <template #item="{ value: card }">
         <article>
-          <UIDataLabel :label="card.title" :detail="`메모 ${card.id}`">
-            <template #icon><NotebookPen :size="15" aria-hidden="true" /></template>
-          </UIDataLabel>
+          <UIDataLabel :label="card.title" :detail="`메모 ${card.id}`" />
           <p class="note-text">{{ card.text }}</p>
         </article>
       </template>

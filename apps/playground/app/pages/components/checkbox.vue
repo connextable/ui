@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import CheckboxIconExample from "~/components/examples/CheckboxIconExample.vue";
+import iconSource from "~/components/examples/CheckboxIconExample.vue?example-code&raw";
 import CheckboxReadonlyExample from "~/components/examples/CheckboxReadonlyExample.vue";
 import CheckboxReadonlyExampleSource from "~/components/examples/CheckboxReadonlyExample.vue?example-code&raw";
 import CheckboxIndicatorExample from "~/components/examples/CheckboxIndicatorExample.vue";
@@ -46,6 +48,14 @@ definePageMeta({
         <PlaygroundExample id="checkbox-readonly" title="읽기 전용"
           description="켜진 상태를 표시합니다. 사용자 입력으로는 상태가 바뀌지 않습니다." :source="CheckboxReadonlyExampleSource" :heading-level="3">
           <CheckboxReadonlyExample />
+        </PlaygroundExample>
+        <PlaygroundExample
+          id="checkbox-icon"
+          title="체크박스 라벨 아이콘"
+          description="icon을 지정하면 체크 표시와 라벨 사이에 아이콘이 나타납니다."
+          :source="iconSource"
+        >
+          <CheckboxIconExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>
     </PlaygroundExampleSection>

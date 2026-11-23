@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { UIDataLabel, UIDataStatus, UIDataSurface, UIVirtualGrid } from "@connextable/ui";
-import { Package } from "@lucide/vue";
 
 const items = Array.from({ length: 1000 }, (_, index) => ({
   id: `tile-${index}`,
@@ -24,9 +23,7 @@ const items = Array.from({ length: 1000 }, (_, index) => ({
       aria-label="품목별 재고"
     >
       <template #item="{ value }">
-        <UIDataLabel :label="value.title" :detail="value.code">
-          <template #icon><Package :size="16" aria-hidden="true" /></template>
-        </UIDataLabel>
+        <UIDataLabel :label="value.title" :detail="value.code" />
         <div class="tile-stock">
           <UIDataStatus :tone="value.quantity < 20 ? 'warning' : 'success'">재고 {{ value.quantity }}개</UIDataStatus>
         </div>

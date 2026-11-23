@@ -2,7 +2,6 @@
 import {
   UIButton, UIContextMenu, UIInput,
 } from "@connextable/ui";
-import { Copy, FileText, Pencil, Trash2 } from "@lucide/vue";
 import { nextTick, ref, useId } from "vue";
 
 const initialFiles = [
@@ -10,9 +9,9 @@ const initialFiles = [
   { id: 2, name: "업데이트 안내.txt", size: "12 KB" },
 ];
 const commands = [
-  { id: "rename", parentID: null, label: "이름 변경", icon: Pencil },
-  { id: "duplicate", parentID: null, label: "복제", icon: Copy },
-  { id: "delete", parentID: null, label: "삭제", icon: Trash2, tone: "danger", separatorBefore: true },
+  { id: "rename", parentID: null, label: "이름 변경" },
+  { id: "duplicate", parentID: null, label: "복제" },
+  { id: "delete", parentID: null, label: "삭제", tone: "danger", separatorBefore: true },
 ] as const;
 const files = ref([...initialFiles]);
 const nameInputID = useId();
@@ -56,7 +55,6 @@ function rename() {
         <UIContextMenu :items="commands" :label="`${file.name} 작업`" @invoke="invoke($event, file)">
           <template #trigger>
             <div tabindex="0" aria-keyshortcuts="Shift+F10" class="file-example__row">
-              <FileText aria-hidden="true" />
               <span>{{ file.name }}</span>
               <small>{{ file.size }}</small>
             </div>
@@ -92,7 +90,7 @@ function rename() {
 
 .file-example__row {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   justify-items: start;
   gap: var(--ui-space-sm);
   padding: var(--ui-space-sm) var(--ui-space-md);
@@ -103,12 +101,6 @@ function rename() {
 
 .file-example__row:hover {
   background: var(--ui-color-surface-hover);
-}
-
-.file-example__row svg {
-  inline-size: 1em;
-  block-size: 1em;
-  color: var(--ui-color-accent);
 }
 
 .file-example__row span {

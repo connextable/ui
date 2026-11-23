@@ -46,14 +46,14 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     "#loading": note("로딩 중 가운데 표시할 진행 표시를 직접 지정합니다.", example("UIIconButton", "아이콘 버튼 로딩")),
     "@click": note("실행 가능한 버튼을 누르면 MouseEvent를 받습니다.", example("button-example", "버튼 기본 사용법")),
     "IconButton icon": { ...note("버튼에 표시할 아이콘을 전달합니다. aria-label을 사용해 동작 이름을 붙입니다.", example("UIIconButton", "아이콘 버튼"), "Component"), owner: "UIIconButton", label: "icon" },
-    "ToggleButton icon": { ...note("토글의 텍스트 옆에 아이콘을 표시합니다.", example("UIToggleButton", "토글 버튼"), "Component"), owner: "UIToggleButton", label: "icon / trailing-icon" },
+    "ToggleButton icon": { ...note("토글의 텍스트 옆에 아이콘을 표시합니다.", example("button-toggle-icon", "토글 버튼에 아이콘 표시"), "Component"), owner: "UIToggleButton", label: "icon / trailing-icon" },
     "ToggleButton readonly": { owner: "UIToggleButton", label: "readonly", group: "입력 상태", type: "boolean", description: "눌림 상태를 표시하고 사용자가 전환하는 동작을 막습니다.", example: example("UIToggleButton", "토글 버튼") },
     "ToggleButton disabled": { owner: "UIToggleButton", label: "disabled", group: "입력 상태", type: "boolean", description: "토글과 키보드 포커스를 비활성화합니다.", example: example("UIToggleButton", "토글 버튼") },
   },
   checkbox: {
     "v-model": note("선택은 true, 해제는 false, 일부 선택은 indeterminate로 표현합니다.", example("checkbox-select-all", "전체 선택"), "boolean | 'indeterminate'"),
     "label / description": note("label로 입력 이름을 지정하고 description으로 선택 조건을 보충합니다.", checkbox),
-    icon: note("체크 표시와 라벨 사이에 아이콘을 표시합니다.", example("checkbox-example", "체크박스 기본 사용법"), "Component"),
+    icon: note("체크 표시와 라벨 사이에 아이콘을 표시합니다.", example("checkbox-icon", "체크박스 라벨 아이콘"), "Component"),
     readonly: note("포커스를 유지하며 클릭과 Space를 통한 값 변경을 막습니다.", example("checkbox-readonly", "읽기 전용"), "boolean", "false"),
     disabled: note("체크 동작과 Tab 진입을 막습니다.", example("checkbox-disabled", "비활성"), "boolean", "false"),
     "#indicator": note("선택되거나 일부 선택됐을 때 기본 체크 표시를 교체합니다.", example("UICheckboxIndicator", "체크 표시")),
@@ -86,13 +86,13 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
   },
   input: {
     "v-model": note("입력 중 텍스트와 바깥 모델을 연결합니다.", input),
-    placeholder: note("빈 입력창에 입력할 내용이나 형식의 예를 표시합니다.", example("input-leading", "입력 앞 아이콘"), "string"),
-    icon: note("입력 앞에 아이콘을 표시합니다. 사용자 정의 내용은 leading 슬롯에 넣습니다.", example("input-example", "입력 기본 사용법"), "Component"),
+    placeholder: note("빈 입력창에 입력할 내용이나 형식의 예를 표시합니다.", example("input-leading", "앞쪽 슬롯"), "string"),
+    icon: note("입력 앞에 아이콘을 표시합니다. 사용자 정의 내용은 leading 슬롯에 넣습니다.", example("input-long", "좁은 검색창에서 아이콘 표시"), "Component"),
     multiline: note("여러 줄 입력으로 표시합니다.", example("input-multiline", "여러 줄 입력"), "boolean", "false"),
     clearable: note("편집할 수 있는 값이 있을 때 지우기 버튼을 표시합니다.", example("input-long", "좁은 입력과 지우기"), "boolean", "false"),
     readonly: note("값을 읽거나 복사할 수 있고 입력은 잠깁니다.", example("input-readonly", "읽기 전용"), "boolean", "false"),
     disabled: note("입력과 키보드 포커스를 비활성화합니다.", example("input-states", "입력 상태"), "boolean", "false"),
-    "#leading": note("입력 앞에 아이콘 또는 단위를 배치합니다.", example("input-leading", "입력 앞 아이콘")),
+    "#leading": note("입력 앞에 아이콘 또는 단위를 배치합니다.", example("input-leading", "앞쪽 슬롯")),
     "#trailing": note("입력 뒤에 보조 콘텐츠를 배치합니다.", example("input-trailing", "입력 뒤 액션")),
   },
   progress: {
@@ -103,6 +103,7 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
   },
   "radio-group": {
     options: note("각 선택지의 value와 label을 전달합니다. description, icon과 disabled는 선택 사항입니다.", example("radio-example", "한 항목 선택"), "readonly UIRadioGroupOption[]"),
+    "options[].icon": note("각 선택지의 라벨 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example("radio-icons", "라디오 옵션 아이콘"), "Component"),
     "v-model": note("선택된 항목의 value를 읽고 변경합니다.", radio, "string"),
     orientation: note("항목의 배치 방향과 그룹 내부의 방향키 탐색을 지정합니다.", example("radio-horizontal", "가로 배치")),
     readonly: note("선택값을 유지하며 읽고 탐색할 수 있습니다.", example("radio-readonly", "읽기 전용"), "boolean", "false"),
@@ -110,8 +111,9 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     name: note("폼으로 보낼 선택값의 필드 이름입니다.", example("radio-form", "폼에 연결"), "string"),
   },
   select: {
-    options: note("value와 label로 선택지를 구성합니다. icon은 목록과 선택값에 표시하고, disabled로 지정한 항목은 선택할 수 없습니다.", select, "readonly UISelectOption[]"),
-    "Item icon": { ...note("UISelectItem을 직접 조합할 때 항목 이름 앞에 표시할 아이콘을 지정합니다. leading 슬롯으로 바꿀 수 있습니다.", example("UISelectItem", "선택 항목"), "Component"), owner: "UISelectItem", label: "icon" },
+    options: note("value와 label로 선택지를 구성합니다. disabled로 지정한 항목은 선택할 수 없습니다.", select, "readonly UISelectOption[]"),
+    "options[].icon": note("목록 항목과 선택값의 이름 앞에 표시할 Vue 아이콘 컴포넌트입니다.", example("select-icons", "선택지와 선택값의 아이콘"), "Component"),
+    "Item icon": { ...note("UISelectItem을 직접 조합할 때 항목 이름 앞에 표시할 아이콘을 지정합니다. leading 슬롯으로 바꿀 수 있습니다.", example("select-icons", "선택지와 선택값의 아이콘"), "Component"), owner: "UISelectItem", label: "icon" },
     "v-model": note("현재 value를 받습니다. 지우면 null로 돌아갑니다.", select, "string | null"),
     placeholder: note("아직 항목을 선택하지 않았을 때 표시할 문구입니다.", select, "string", "선택"),
     "v-model:open": note("외부 버튼과 팝업 열림 상태를 공유합니다.", example("select-controlled-open", "열림 상태 제어"), "boolean"),
@@ -130,7 +132,7 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     readonly: note("현재 상태를 읽을 수 있고 클릭과 Space로 전환되지 않습니다.", example("switch-readonly", "읽기 전용"), "boolean", "false"),
     disabled: note("조작과 Tab 포커스를 비활성화합니다.", example("switch-disabled", "비활성"), "boolean", "false"),
     size: note("트랙과 손잡이 크기를 함께 변경합니다.", example("switch-size", "스위치 크기"), "'sm' | 'md' | 'lg'", "md"),
-    icon: note("스위치 라벨 앞에 아이콘을 표시합니다.", example("switch-example", "스위치 기본 사용법"), "Component"),
+    icon: note("스위치 라벨 앞에 아이콘을 표시합니다.", example("switch-icon", "스위치 라벨 아이콘"), "Component"),
   },
 };
 

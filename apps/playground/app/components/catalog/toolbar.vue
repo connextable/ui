@@ -6,16 +6,15 @@ import {
 } from "@connextable/ui";
 
 import { ref } from "vue";
-import { AlignCenter, AlignLeft, Bold, Italic, Underline } from "@lucide/vue";
 
 const formatting = [
-  { id: "bold", label: "굵게", icon: Bold },
-  { id: "italic", label: "기울임", icon: Italic },
-  { id: "underline", label: "밑줄", icon: Underline },
+  { id: "bold", label: "굵게" },
+  { id: "italic", label: "기울임" },
+  { id: "underline", label: "밑줄" },
 ] as const;
 const alignment = [
-  { id: "left", label: "왼쪽 정렬", icon: AlignLeft },
-  { id: "center", label: "가운데 정렬", icon: AlignCenter },
+  { id: "left", label: "왼쪽 정렬" },
+  { id: "center", label: "가운데 정렬" },
 ] as const;
 const items = [...formatting, ...alignment].map(({ id }) => id);
 const formats = ref({ bold: false, italic: false, underline: false });
@@ -32,12 +31,12 @@ const activeItem = ref<string | null>("bold");
 <template>
   <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
     <UIToolbar v-model="activeItem" :items="items" label="문단 서식" @invoke="apply">
-      <UIToolbarItem v-for="tool in formatting" :key="tool.id" :value="tool.id" :aria-label="tool.label" :aria-pressed="formats[tool.id]">
-        <component :is="tool.icon" :size="16" aria-hidden="true" />
+      <UIToolbarItem v-for="tool in formatting" :key="tool.id" :value="tool.id" :aria-pressed="formats[tool.id]">
+        {{ tool.label }}
       </UIToolbarItem>
       <UIToolbarSeparator />
-      <UIToolbarItem v-for="tool in alignment" :key="tool.id" :value="tool.id" :aria-label="tool.label" :aria-pressed="align === tool.id">
-        <component :is="tool.icon" :size="16" aria-hidden="true" />
+      <UIToolbarItem v-for="tool in alignment" :key="tool.id" :value="tool.id" :aria-pressed="align === tool.id">
+        {{ tool.label }}
       </UIToolbarItem>
     </UIToolbar>
     <template #footer>

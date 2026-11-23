@@ -66,17 +66,13 @@ const leading = ref<string | null>("Plus");
 const trailing = ref<string | null>("none");
 const loading = ref(true);
 const disabled = ref(true);
-const withIcon = ref(false);
 
 function iconName(value: string | null) {
   return Object.keys(icons).find(name => name === value) as keyof typeof icons | undefined;
 }
 
-const leadingIcon = computed(() => props.topic === "icons"
-  ? iconName(leading.value)
-  : props.topic === "loading" && withIcon.value ? "Check" : undefined);
-const trailingIcon = computed(() => props.topic === "icons" ? iconName(trailing.value)
-  : props.topic === "loading" && withIcon.value ? "ArrowRight" : undefined);
+const leadingIcon = computed(() => props.topic === "icons" ? iconName(leading.value) : undefined);
+const trailingIcon = computed(() => props.topic === "icons" ? iconName(trailing.value) : undefined);
 const buttonLabel = computed(() => {
   if (props.topic === "label") return label.value.trim() || "문서 저장";
   if (props.topic === "icons") return "새 문서";
@@ -137,10 +133,7 @@ const code = computed(() => buttonExampleCode(attributes.value, {
       <PlaygroundExampleControl v-if="props.topic === 'icons'" v-slot="{ labelId }" label="trailing-icon">
         <UISelect v-model="trailing" :options="iconOptions" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <template v-if="props.topic === 'loading'">
-        <UISwitch v-model="loading" label="loading" size="sm" />
-        <UISwitch v-model="withIcon" label="앞·뒤 아이콘 사용" size="sm" />
-      </template>
+      <UISwitch v-if="props.topic === 'loading'" v-model="loading" label="loading" size="sm" />
       <UISwitch v-if="props.topic === 'disabled'" v-model="disabled" label="disabled" size="sm" />
     </template>
     <UIButton

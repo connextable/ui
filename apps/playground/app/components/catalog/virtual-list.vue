@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import { UIDataLabel, UIDataSurface, UIVirtualList } from "@connextable/ui";
-import { Bell, CalendarPlus, FileCheck, UserRound } from "@lucide/vue";
 import { ref } from "vue";
 
 const rows = Array.from({ length: 50_000 }, (_, index) => index + 1);
 const visible = ref({ first: 1, last: 1, rendered: 0 });
 const number = new Intl.NumberFormat("ko-KR");
-const changes = [
-  { title: "문서 게시", icon: Bell },
-  { title: "담당자 변경", icon: UserRound },
-  { title: "검토 완료", icon: FileCheck },
-  { title: "일정 등록", icon: CalendarPlus },
-];
+const changes = ["문서 게시", "담당자 변경", "검토 완료", "일정 등록"];
 </script>
 
 <template>
@@ -32,9 +26,7 @@ const changes = [
     >
       <template #item="{ value }">
         <span class="activity-row">
-          <UIDataLabel :label="changes[(value - 1) % changes.length]!.title">
-            <template #icon><component :is="changes[(value - 1) % changes.length]!.icon" :size="15" aria-hidden="true" /></template>
-          </UIDataLabel>
+          <UIDataLabel :label="changes[(value - 1) % changes.length]!" />
           <span class="activity-row__number">#{{ number.format(value) }}</span>
         </span>
       </template>
