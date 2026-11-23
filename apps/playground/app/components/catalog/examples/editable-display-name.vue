@@ -2,9 +2,12 @@
 import { UIEditable } from "@connextable/ui";
 import { ref } from "vue";
 
-const text = ref("알림에 표시할 이름");
+const title = ref("11월 정산 배포");
 </script>
 
 <template>
-  <UIEditable v-model="text" label="알림 표시 이름" />
+  <p>
+    배포 목록 /
+    <strong><UIEditable v-model="title" label="배포 이름" /></strong>
+  </p>
 </template>

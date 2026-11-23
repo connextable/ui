@@ -1,5 +1,6 @@
+import { Check, X } from "@lucide/vue";
 import { ComboboxEditor } from "@sectile/vue/combobox";
-import { EditableArea, EditableInput, EditablePreview, EditableRoot, type EditableRootSlotProps } from "@sectile/vue/editable";
+import { EditableArea, EditableCancelTrigger, EditableInput, EditablePreview, EditableRoot, EditableSubmitTrigger, type EditableRootSlotProps } from "@sectile/vue/editable";
 import { QuantityFieldInput } from "@sectile/vue/quantity-field";
 import { defineComponent, h } from "vue";
 import { controlFlag } from "../clear/clearable";
@@ -7,6 +8,7 @@ import { withClearableControl, withClearableModel, type ClearableComponent } fro
 import { definedControlAttrs, type FormControlProps } from "../control-attrs";
 import { CascadeListComposition } from "./cascade-composition";
 import { ComboboxComposition } from "./combobox-composition";
+import { iconButtonPart } from "./icon-button-part";
 import QuantityFieldComposition from "./QuantityFieldComposition.vue";
 import { CheckboxGroupComposition, ListboxComposition, ToggleGroupComposition } from "./selection-composition";
 import { CheckboxTreeComposition } from "./tree-choice-composition";
@@ -27,8 +29,8 @@ const EditableComposition = defineComponent({
   setup(props, { attrs, slots }) {
     return () => {
       if (slots.default || controlFlag(attrs.asChild ?? attrs["as-child"])) return h(EditableRoot, { ...attrs, ...definedControlAttrs(props) }, slots);
-      return h(EditableRoot, { ...attrs, ...definedControlAttrs({ name: props.name, required: props.required }) }, {
-        default: (state: EditableRootSlotProps) => h(UIEditableArea, null, () => [
+      return h(EditableRoot, { as: "span", ...attrs, ...definedControlAttrs({ name: props.name, required: props.required }) }, {
+        default: (state: EditableRootSlotProps) => h(UIEditableArea, { as: "span" }, () => [
           h(EditablePreview, {
             as: "button", type: "button", disabled: state.disabled,
             "data-placeholder": !state.value && !!props.placeholder || undefined,
@@ -51,6 +53,8 @@ const EditableComposition = defineComponent({
 
 export const UIEditableArea: typeof EditableArea = withClearableControl(EditableArea, "anchor");
 export const UIEditable: ClearableComponent<typeof EditableComposition> = withClearableModel(EditableComposition, "", { label: "값 지우기" });
+export const UIEditableSubmitTrigger = iconButtonPart(EditableSubmitTrigger, Check, "편집 저장", "ghost");
+export const UIEditableCancelTrigger = iconButtonPart(EditableCancelTrigger, X, "편집 취소", "ghost");
 export const UIListbox: ClearableComponent<typeof ListboxComposition> = withClearableModel(ListboxComposition,
   attrs => (attrs.selectionMode ?? attrs["selection-mode"]) === "multiple" ? [] : "", panel);
 export const UICheckboxGroup: ClearableComponent<typeof CheckboxGroupComposition> = withClearableModel(CheckboxGroupComposition, []);
@@ -93,8 +97,6 @@ export {
   EditablePreview as UIEditablePreview,
   EditableInput as UIEditableInput,
   EditableEditTrigger as UIEditableEditTrigger,
-  EditableSubmitTrigger as UIEditableSubmitTrigger,
-  EditableCancelTrigger as UIEditableCancelTrigger,
 } from "@sectile/vue/editable";
 export {
   ListboxItem as UIListboxItem,

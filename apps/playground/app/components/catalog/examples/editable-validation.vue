@@ -3,11 +3,9 @@ import {
   UIEditable,
   UIEditableArea,
   UIEditableCancelTrigger,
-  UIEditableEditTrigger,
   UIEditableInput,
   UIEditablePreview,
   UIEditableSubmitTrigger,
-  UIFormActions,
 } from "@connextable/ui";
 import { ref } from "vue";
 
@@ -18,15 +16,15 @@ const text = ref("제품 설계");
 
 <template>
   <UIEditable v-model="text" label="작업 이름" :policies="policies" v-slot="{ value, draft, editing }">
-    <UIEditableArea>
+    <UIEditableArea as="span">
       <UIEditablePreview as="button" type="button">{{ value }}</UIEditablePreview>
-      <UIEditableInput aria-label="새 작업 이름" placeholder="세 글자 이상" />
+      <UIEditableInput
+        placeholder="세 글자 이상"
+        :aria-invalid="editing && !policies.validate(draft) || undefined"
+      />
+      <UIEditableSubmitTrigger />
+      <UIEditableCancelTrigger />
     </UIEditableArea>
-    <UIFormActions>
-      <UIEditableEditTrigger>수정</UIEditableEditTrigger>
-      <UIEditableSubmitTrigger>저장</UIEditableSubmitTrigger>
-      <UIEditableCancelTrigger>취소</UIEditableCancelTrigger>
-    </UIFormActions>
     <p v-if="editing && !policies.validate(draft)" aria-live="polite">이름은 세 글자 이상이어야 합니다.</p>
   </UIEditable>
 </template>

@@ -1,7 +1,12 @@
 import { defineComponent, h, type Component } from "vue";
-import UIButton from "../button/UIButton.vue";
+import UIButton, { type UIButtonProps } from "../button/UIButton.vue";
 
-export function iconButtonPart<Part extends Component>(Part: Part, Icon: Component, label: string): Part {
+export function iconButtonPart<Part extends Component>(
+  Part: Part,
+  Icon: Component,
+  label: string,
+  variant: UIButtonProps["variant"] = "outline",
+): Part {
   return defineComponent({
     inheritAttrs: false,
     setup(_, { attrs, slots }) {
@@ -10,7 +15,7 @@ export function iconButtonPart<Part extends Component>(Part: Part, Icon: Compone
           return h(Part, attrs, slots);
         }
         return h(Part, { "aria-label": label, ...attrs, asChild: true }, {
-          default: () => h(UIButton, { variant: "outline", size: "sm", iconOnly: true }, {
+          default: () => h(UIButton, { variant, size: "sm", iconOnly: true }, {
             default: () => h(Icon, { "aria-hidden": "true" }),
           }),
         });
