@@ -14,13 +14,30 @@ export default defineNuxtConfig({
 
 | `connextableUI` 설정 | 기본값 | 동작 |
 | --- | --- | --- |
-| `prefix` | `"UI"` | 자동 임포트 이름의 `UI`를 바꿉니다. `"App"`이면 `<AppButton>`으로 사용합니다. |
+| `prefix` | `"UI"` | Nuxt가 자동 등록하는 컴포넌트 이름의 접두사를 바꿉니다. |
 | `components` | `true` | 컴포넌트 자동 임포트를 켭니다. |
 | `composables` | `true` | `useUI…` 컴포저블 자동 임포트를 켭니다. |
 | `css` | `true` | `@connextable/ui/styles.css`를 등록합니다. |
 | `nuxtLink` | `true` | 버튼, 앵커, 메뉴의 링크를 NuxtLink에 연결합니다. |
 
-예를 들어 `connextableUI: { prefix: "App", css: false }`로 템플릿 이름을 변경하고 스타일시트를 직접 불러올 수 있습니다.
+### 컴포넌트 접두사 바꾸기
+
+`nuxt.config.ts`의 `connextableUI.prefix`에 사용할 접두사를 지정합니다.
+
+```ts
+export default defineNuxtConfig({
+  modules: ["@connextable/ui/nuxt"],
+  connextableUI: { prefix: "App" },
+});
+```
+
+```vue
+<template>
+  <AppButton>저장</AppButton>
+</template>
+```
+
+이 설정에서 `UIInView`는 `<AppInView>`로 자동 등록됩니다. 직접 import할 때는 `@connextable/ui`의 `UIButton`처럼 원래 export 이름을 사용합니다. 컴포저블도 `useUIScrollArea`처럼 원래 이름으로 자동 등록됩니다.
 
 ## 링크로 이동하기
 
