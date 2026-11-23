@@ -44,17 +44,17 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
   },
   "in-view": {
-    title: "점검 기록이 처음 보일 때 첨부 내용 표시",
-    description: "목록 아래로 스크롤해 9일 기록을 드러내세요. 한 번 표시한 내용은 목록 위로 올라가도 유지됩니다.",
+    title: "스크롤하면 나타나는 점검 메모",
+    description: "목록을 아래로 내려 11월 9일 기록이 보이면 점검 메모가 나타납니다. 위로 올라갔다가 다시 내려와도 메모는 그대로입니다.",
     api: {
       "as / as-child": "기본 요소는 div입니다. as-child로 기존 li 또는 article 한 개를 관찰 대상으로 사용합니다.",
       root: "안쪽 스크롤 영역을 지정합니다. 생략하거나 null을 넘기면 문서 뷰포트를 관찰합니다.",
       "root-margin": "관찰 영역을 늘리거나 줄입니다. 아래쪽 여백을 늘리면 요소가 보이기 전에 자료를 준비할 수 있습니다.",
       threshold: { default: "0", description: "보여야 하는 요소 면적의 비율입니다. 0부터 1 사이 값을 사용합니다." },
-      once: "같은 요소가 처음 들어오면 관찰을 끝내고 상태를 유지합니다. 관찰 요소를 바꾸면 다시 시작합니다.",
-      "disabled / fallback": "disabled가 켜진 동안 관찰을 멈춥니다. fallback을 켜면 IntersectionObserver를 지원하지 않는 환경에서 마운트 후 진입 처리합니다.",
-      "@enter / @leave": "교차 상태가 바뀌면 관찰 결과를 전달합니다. fallback 진입에서는 null을 전달합니다.",
-      "#default": "현재 관찰 상태 inView와 해당 요소가 한 번이라도 진입했는지 나타내는 hasEntered를 받습니다.",
+      once: "요소가 처음 보이면 관찰을 멈춥니다. 화면에서 벗어나도 inView와 hasEntered가 true로 유지됩니다. 관찰 대상을 바꾸면 새로 관찰합니다.",
+      "disabled / fallback": "disabled를 켜면 관찰을 멈춥니다. IntersectionObserver를 지원하지 않는 환경에서 fallback을 켜면, 마운트한 뒤 요소가 보인 것으로 처리합니다.",
+      "@enter / @leave": "요소가 보이면 enter, 보이지 않게 되면 leave로 관찰 결과를 전달합니다. fallback이 적용되면 enter에서 null을 받습니다.",
+      "#default": "inView로 요소가 보이는지, hasEntered로 지금까지 한 번이라도 보였는지 확인합니다.",
     },
   },
   "confirm-provider": {

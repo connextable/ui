@@ -11,9 +11,9 @@ const viewport = useTemplateRef<HTMLElement>("viewport");
       <li v-for="day in 8" :key="day">11월 {{ day }}일 점검 완료</li>
       <UIInView :root="viewport" :threshold="0.5" once fallback as-child v-slot="{ hasEntered }">
         <li>
-          <strong>11월 9일 첨부 기록</strong>
+          <strong>11월 9일 점검 완료</strong>
           <p v-if="hasEntered">공용 장비 3대를 확인했습니다. 다음 점검은 11월 16일입니다.</p>
-          <p v-else>스크롤하여 첨부 기록을 확인하세요.</p>
+          <p v-else>메모를 보려면 조금 더 내려 보세요.</p>
         </li>
       </UIInView>
     </ol>
