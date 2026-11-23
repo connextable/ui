@@ -57,14 +57,14 @@ function createTreeChoice<Root extends typeof CheckboxTreeRoot | typeof TreeView
   }) as unknown as LabeledTreeRoot<Root>;
 }
 
-export const CheckboxTreeComposition = createTreeChoice("UICheckboxTree", CheckboxTreeRoot, {
+export const CheckboxTreeComposition: LabeledTreeRoot<typeof CheckboxTreeRoot> = createTreeChoice("UICheckboxTree", CheckboxTreeRoot, {
   item: CheckboxTreeItem,
   group: UICheckboxTreeGroup,
   disclosure: CheckboxTreeDisclosure,
   beforeLabel: () => h(UICheckboxBox),
 });
 
-export const UITreeView = createTreeChoice("UITreeView", TreeViewRoot, {
+export const UITreeView: LabeledTreeRoot<typeof TreeViewRoot> = createTreeChoice("UITreeView", TreeViewRoot, {
   item: TreeViewItem,
   group: UITreeViewGroup,
   disclosure: TreeViewDisclosure,

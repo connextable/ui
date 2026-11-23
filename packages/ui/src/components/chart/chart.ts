@@ -136,7 +136,17 @@ export const UIChart = themedRoot(ChartRoot);
 
 const themedSuites = new WeakMap<object, object>();
 
-export function createUIChartComponents<ID extends string | number>(controller: Parameters<typeof createChartComponents<ID>>[0]) {
+type UIChartComponents<ID extends string | number> = Readonly<
+  Omit<ReturnType<typeof createChartComponents<ID>>, "Bars" | "Canvas" | "Grid" | "GridLines" | "AxisTicks" | "Ticks" | "Root" | "Plot" | "Legend"> & {
+    Root: UIChartComponent;
+    Plot: typeof UIChartPlot;
+    Legend: typeof UIChartLegend;
+  }
+>;
+
+export function createUIChartComponents<ID extends string | number>(
+  controller: Parameters<typeof createChartComponents<ID>>[0],
+): UIChartComponents<ID> {
   const suite = createChartComponents(controller);
   const buildSuite = () => {
     const { Bars: _bars, Canvas: _canvas, Grid: _grid, GridLines: _gridLines, AxisTicks: _axisTicks, Ticks: _ticks, ...parts } = suite;

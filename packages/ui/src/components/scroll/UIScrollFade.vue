@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<{
   sticky?: readonly (HTMLElement | null)[];
 }>(), { edges: () => scrollEdges });
 
-const element = useTemplateRef("element");
+const element = useTemplateRef<HTMLDivElement>("element");
 const insets = shallowRef({ top: 0, right: 0, bottom: 0, left: 0 });
 defineExpose({ element, insets: readonly(insets) });
 
