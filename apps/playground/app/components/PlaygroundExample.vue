@@ -175,6 +175,10 @@ watch(codeOpen, revealSource, { immediate: true });
   gap: var(--ui-space-sm);
 }
 
+.playground-example__preview:has(:deep([data-scope="editable"]:is([data-part="submit-trigger"], [data-part="cancel-trigger"]))) {
+  padding-block: calc(var(--ui-space-md) + 2 * var(--ui-space-sm));
+}
+
 .playground-example__header,
 .playground-example__footer {
   --ui-form-max-inline-size: 26rem;
