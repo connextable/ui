@@ -14,7 +14,7 @@ const selectedCount = computed(() => regions.filter(region => checkedRegions[reg
 
 <template>
   <UIPopover :side-offset="10">
-    <UIPopoverTrigger as-child><UIButton variant="outline">배포 리전 · {{ selectedCount }}개</UIButton></UIPopoverTrigger>
+    <UIPopoverTrigger as-child><UIButton variant="outline">배포 리전 ({{ selectedCount }}개)</UIButton></UIPopoverTrigger>
     <UIPopoverPortal>
       <UIPopoverContent class="region-panel">
         <UIPopoverArrow />

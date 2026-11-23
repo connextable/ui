@@ -44,7 +44,7 @@ const number = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 1 });
       </UIChartActions>
     </template>
     <template #tooltip="{ id, title, series, value }">
-      <strong>{{ title }} · {{ labels.get(String(id))?.count }}건</strong>
+      <strong>{{ title }} {{ labels.get(String(id))?.count }}건</strong>
       <div class="ui-chart-tooltip__value">
         <span>{{ series }}</span>
         <strong>{{ typeof value === "number" ? number.format(value) : value }}%</strong>

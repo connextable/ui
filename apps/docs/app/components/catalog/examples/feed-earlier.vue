@@ -5,7 +5,7 @@ import { computed, onBeforeUnmount, ref, useId } from "vue";
 
 const prefix = useId();
 const history = [
-  { id: "opened", title: "배송지 정정 문의 접수", actor: "고객", time: "09:12", detail: "주문을 완료한 뒤 배송 주소의 동·호수가 이전 주소로 표시된 것을 확인했습니다." },
+  { id: "opened", title: "배송지 정정 문의 접수", actor: "고객", time: "09:12", detail: "주문을 완료한 뒤 배송 주소의 동과 호수가 이전 주소로 표시된 것을 확인했습니다." },
   { id: "assigned", title: "배송 상담팀 배정", actor: "고객센터", time: "09:15", detail: "택배사로 송장을 전달하기 전에 주소를 변경할 수 있는지 확인을 요청했습니다." },
   { id: "held", title: "출고 잠시 보류", actor: "물류팀", time: "09:19", detail: "상품은 포장 중입니다. 주소가 확인되면 기존 송장을 취소하고 다시 발급합니다." },
   { id: "verified", title: "새 주소 확인", actor: "고객", time: "09:31", detail: "고객이 계정에서 수정된 배송 정보를 확인하고 출고에 동의했습니다." },
@@ -59,7 +59,7 @@ onBeforeUnmount(() => clearTimeout(timer));
     <div class="feed-demo">
       <header class="feed-demo__header">
         <strong>배송지 정정 문의</strong>
-        <span class="feed-demo__meta">CS-1042 · {{ visible.length }} / {{ history.length }}건</span>
+        <span class="feed-demo__meta">CS-1042 ({{ visible.length }} / {{ history.length }}건)</span>
       </header>
       <UIFeed
         v-slot="{ pending }" :items="items" :revision="revision" :request-generation="requestGeneration"

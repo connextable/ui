@@ -38,7 +38,7 @@ const SelectionSummary = defineComponent({
       const selected = teams.filter(team => ids.value.includes(team.id));
       const total = selected.reduce((sum, team) => sum + team.count, 0);
       return h("output", selected.length
-        ? [h("strong", `${selected.length}개 팀 · ${total}건`), ` · ${selected.map(team => team.name).join(", ")}`]
+        ? [h("strong", `${selected.length}개 팀의 ${total}건`), ` (${selected.map(team => team.name).join(", ")})`]
         : "선택한 팀 없음");
     };
   },

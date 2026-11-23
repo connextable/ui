@@ -62,7 +62,7 @@ export const catalog: readonly CatalogEntry[] = [
   {
     slug: "temporal-provider",
     title: "UITemporalProvider",
-    description: "하위 날짜·시간 입력에 기준 날짜와 서식을 전달합니다.",
+    description: "하위 날짜와 시간 입력에 기준 날짜와 서식을 전달합니다.",
     parts: ["useTemporalReferenceDate", "useTemporalFormatter", "useTemporalDisplay"],
   },
   {

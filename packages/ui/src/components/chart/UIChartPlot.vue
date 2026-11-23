@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ChartPlot, useChartContext } from "@sectile/vue/chart";
 import { computed } from "vue";
+import { chartAxisTitle } from "./chart-renderer";
 
 const { controller, snapshot } = useChartContext();
 const definition = computed(() => snapshot.value ? controller.value?.getDefinition() : undefined);
@@ -8,7 +9,7 @@ const titles = computed(() => {
   const axes = definition.value?.axes ?? [];
   const title = (orientation: "x" | "y") => axes
     .filter(axis => axis.orientation === orientation)
-    .map(axis => [axis.label, axis.unit].filter(Boolean).join(" · "))
+    .map(axis => chartAxisTitle(axis.label, axis.unit))
     .filter(Boolean)
     .join(" / ");
   return { x: title("x"), y: title("y") };

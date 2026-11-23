@@ -12,6 +12,6 @@ const lengthId = useId();
       <label :for="lengthId">부품 길이</label>
       <UINumberField :id="lengthId" v-model="value" unit="cm" placeholder="예: 12.75" clearable />
     </div>
-    <template #footer><output>확정한 숫자 · {{ value ?? "없음" }}</output></template>
+    <template #footer><output>확정한 숫자 <strong>{{ value ?? "없음" }}</strong></output></template>
   </PlaygroundExample>
 </template>

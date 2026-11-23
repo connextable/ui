@@ -32,7 +32,7 @@ const changes = ["문서 게시", "담당자 변경", "검토 완료", "일정 �
       </template>
     </UIVirtualList>
     <template #footer>
-      <output>{{ number.format(visible.first) }}–{{ number.format(visible.last) }}번 표시 · DOM {{ visible.rendered }}행</output>
+      <output>{{ number.format(visible.first) }}–{{ number.format(visible.last) }}번 표시, DOM {{ visible.rendered }}행 렌더링</output>
     </template>
   </UIDataSurface>
 </template>

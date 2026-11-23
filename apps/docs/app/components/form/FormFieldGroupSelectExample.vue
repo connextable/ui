@@ -15,7 +15,7 @@ const submitted = ref("");
 <template>
   <UIForm
     :schema="schema"
-    @submit="({ values }) => { submitted = `${values.contact.address} · ${values.contact.channel}` }"
+    @submit="({ values }) => { submitted = `${values.contact.address} (${values.contact.channel})` }"
   >
     <UIFormFieldGroup v-model="contact" name="contact" label="연락처" v-slot="{ field, bindModel }">
       <label>

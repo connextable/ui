@@ -49,7 +49,7 @@ function reset() {
         <UIChartCenter label="완료율" :value="`${percent}%`" />
       </UIChartPlot>
       <UIChartActions>
-        <output aria-live="off">배치 #{{ Math.floor(step / cycleLength) + 1 }} · 총 {{ total }}건</output>
+        <output aria-live="off">배치 #{{ Math.floor(step / cycleLength) + 1 }} (총 {{ total }}건)</output>
         <UIButton size="sm" variant="outline" :disabled="step === 0 && !running" @click="reset">초기화</UIButton>
         <UIButton size="sm" variant="outline" :disabled="running" @click="step++">한 단계 진행</UIButton>
         <UIButton size="sm" variant="outline" @click="running = !running">{{ running ? "일시정지" : "재생" }}</UIButton>

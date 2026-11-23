@@ -97,7 +97,7 @@ const end = computed(() => start.value + rows.value.length);
       </div>
     </div>
     <template #footer>
-      <output>총 {{ number.format(total) }}건 · 렌더링 {{ rows.length }}행</output>
+      <output>총 {{ number.format(total) }}건 중 {{ rows.length }}행 렌더링</output>
     </template>
   </UIDataSurface>
 </template>

@@ -22,8 +22,8 @@ const state = createDenseTrackGridLayout(
 
 <template>
   <UIDataSurface>
-    <template #toolbar><strong>행·열 배치</strong><output>{{ count }}행 × {{ count }}열</output></template>
-    <UIVirtualizer :default-state="state" :strategy="trackGridLayoutStrategy" role="region" tabindex="0" aria-label="행·열 배치" v-slot="{ placements }">
+    <template #toolbar><strong>행과 열 배치</strong><output>{{ count }}행 × {{ count }}열</output></template>
+    <UIVirtualizer :default-state="state" :strategy="trackGridLayoutStrategy" role="region" tabindex="0" aria-label="행과 열 배치" v-slot="{ placements }">
       <UIVirtualizerSurface>
         <UIVirtualizerItem v-for="item in placements" :key="item.id" :placement="item" size="both">
           {{ item.id }}

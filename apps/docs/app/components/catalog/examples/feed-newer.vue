@@ -74,7 +74,7 @@ onBeforeUnmount(() => clearTimeout(timer));
             </div>
             <p>{{ notice.detail }}</p>
             <div class="feed-demo__row">
-              <span class="feed-demo__meta">{{ notice.team }} · <time :datetime="notice.time">{{ notice.time }}</time></span>
+              <span class="feed-demo__meta"><strong>{{ notice.team }}</strong> <time :datetime="notice.time">{{ notice.time }}</time></span>
               <UIButton
                 variant="ghost" size="sm" :aria-label="`${notice.title} ${read.has(notice.id) ? '안 읽음으로 표시' : '읽음 처리'}`"
                 @click.stop="toggleRead(notice.id)"

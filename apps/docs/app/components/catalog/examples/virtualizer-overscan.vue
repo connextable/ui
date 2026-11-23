@@ -24,7 +24,7 @@ const counts = ref({ visible: 0, mounted: 0 });
       @plan-change="plan => counts = { visible: plan.placements.filter(item => item.visible).length, mounted: plan.placements.length }">
       <UIVirtualizerSurface>
         <UIVirtualizerItem v-for="item in placements" :key="item.id" :placement="item" size="both">
-          R{{ Math.floor(Number(item.id) / columns) + 1 }} · C{{ Number(item.id) % columns + 1 }}
+          R{{ Math.floor(Number(item.id) / columns) + 1 }} C{{ Number(item.id) % columns + 1 }}
         </UIVirtualizerItem>
       </UIVirtualizerSurface>
     </UIVirtualizer>
@@ -32,7 +32,7 @@ const counts = ref({ visible: 0, mounted: 0 });
       <UIButton size="sm" variant="outline" :aria-pressed="overscan" @click="overscan = !overscan">준비 범위 확장</UIButton>
     </UIDataActions>
     <template #footer>
-      <output>보이는 셀 {{ counts.visible }}개 · 준비한 셀 {{ counts.mounted }}개</output>
+      <output>보이는 셀 {{ counts.visible }}개, 준비한 셀 {{ counts.mounted }}개</output>
     </template>
   </PlaygroundExample>
 </template>

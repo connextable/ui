@@ -48,7 +48,7 @@ const ComparisonLegend = defineComponent({
     </UIChartCartesian>
     <UIChartPlot><UIChartRenderer /></UIChartPlot>
     <UIChartActions>
-      <output>월요일 · 이번 주 {{ current[0]?.count }}건 · {{ reference.label }} {{ reference.data[0]?.count }}건</output>
+      <output><strong>월요일</strong> 이번 주 {{ current[0]?.count }}건, {{ reference.label }} {{ reference.data[0]?.count }}건</output>
       <UIButton size="sm" variant="outline" @click="compareEarlier = !compareEarlier">
         {{ compareEarlier ? "지난주와 비교" : "지지난주와 비교" }}
       </UIButton>

@@ -45,7 +45,7 @@ const code = computed(() => vueExampleCode("UIInput", {
     :id="multiline ? 'input-multiline' : 'input-example'"
     :title="multiline ? '여러 줄 입력' : '텍스트 입력'"
     :description="multiline
-      ? 'multiline과 rows로 여러 줄 입력을 구성합니다. 테두리형과 배경형을 비교하고 읽기 전용·비활성·오류 상태를 바꿔 보세요.'
+      ? 'multiline과 rows로 여러 줄 입력을 구성합니다. 테두리형과 배경형을 비교하고 읽기 전용, 비활성, 오류 상태를 바꿔 보세요.'
       : 'v-model로 입력값을 연결합니다. 크기, 모양, 지우기 버튼, 읽기 전용과 비활성 상태를 바꿔 볼 수 있습니다.'"
     :code="code"
   >

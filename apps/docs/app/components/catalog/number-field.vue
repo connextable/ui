@@ -36,6 +36,6 @@ const code = computed(() => vueExampleCode("UINumberField", {
       <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
     </template>
     <UINumberField v-model="length" v-bind="attributes" />
-    <template #footer><output>확정한 숫자 · {{ length ?? "없음" }}</output></template>
+    <template #footer><output>확정한 숫자 <strong>{{ length ?? "없음" }}</strong></output></template>
   </PlaygroundExample>
 </template>

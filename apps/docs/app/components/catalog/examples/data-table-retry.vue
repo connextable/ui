@@ -55,7 +55,7 @@ function requestAgain() {
     <template #footer>
       <output aria-live="polite">
         {{ failed ? '불러오지 못했습니다. 마지막 응답을 표시합니다.'
-          : table.status.value === 'loading' ? '가상 응답을 기다리는 중' : '서비스 2개 · 최신 응답' }}
+          : table.status.value === 'loading' ? '가상 응답을 기다리는 중' : '서비스 2개의 최신 응답' }}
       </output>
     </template>
   </PlaygroundExample>

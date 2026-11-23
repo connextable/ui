@@ -11,7 +11,7 @@ import { bunnyExcerpt } from "~/data/lightbox-media";
         <img :src="bunnyExcerpt.poster" alt="" loading="lazy" />
         <div>
           <strong>빅 벅 버니</strong>
-          <p>예고편 · 16초</p>
+          <p>16초 예고편</p>
           <UIButton aria-haspopup="dialog" @click="openAt(0, $event)">
             <template #leading><Play /></template>
             예고편 열기

@@ -54,7 +54,7 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
       </UIReorderFeedback>
     </UITreeReorder>
     <template #footer>
-      <output>앨범 대표 사진 · {{ nodes.find(node => node.parentID === "album")?.id }}</output>
+      <output>앨범 대표 사진 <strong>{{ nodes.find(node => node.parentID === "album")?.id }}</strong></output>
     </template>
   </PlaygroundExample>
 </template>

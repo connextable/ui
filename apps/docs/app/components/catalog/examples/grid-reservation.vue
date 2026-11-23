@@ -21,6 +21,6 @@ const selection = ref<string | null>(null);
         </UIGridCell>
       </UIGridRow>
     </UIGrid>
-    <template #footer><output aria-live="polite">{{ selection ? `선택한 시간 · ${selection}` : "예약 가능한 시간을 선택하세요." }}</output></template>
+    <template #footer><output aria-live="polite">{{ selection ? `${selection} 선택됨` : "예약 가능한 시간을 선택하세요." }}</output></template>
   </UIDataSurface>
 </template>

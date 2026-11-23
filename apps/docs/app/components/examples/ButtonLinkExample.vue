@@ -13,7 +13,7 @@ const prefetchOptions = [
   { value: "default", label: "Nuxt 기본값" },
   { value: "on", label: "사용" },
   { value: "visibility", label: "화면에 보일 때" },
-  { value: "interaction", label: "포인터·포커스 진입" },
+  { value: "interaction", label: "포인터가 닿거나 포커스할 때" },
   { value: "off", label: "사용 안 함" },
 ];
 const destination = ref<string | null>("route");

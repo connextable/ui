@@ -33,7 +33,7 @@ const examples = reactive([
     />
     <template #footer>
       <output v-for="example in examples" :key="example.label">
-        {{ example.label }} 기준값 · {{ example.model ? `${example.model.value} ${example.symbol}` : "없음" }}
+        {{ example.label }} 기준값 <strong>{{ example.model ? `${example.model.value} ${example.symbol}` : "없음" }}</strong>
       </output>
     </template>
   </PlaygroundExample>

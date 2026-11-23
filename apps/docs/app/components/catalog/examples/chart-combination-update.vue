@@ -25,7 +25,7 @@ const targets = months.map((month, index) => ({ id: `target-${index}`, month, va
     </UIChartCartesian>
     <UIChartPlot><UIChartRenderer /></UIChartPlot>
     <UIChartActions>
-      <output>{{ updated ? "확정 실적" : "잠정 실적" }} · 9월 {{ orders.at(-1)?.value }}건 / 목표 {{ targets.at(-1)?.value }}건</output>
+      <output>{{ updated ? "확정 실적" : "잠정 실적" }} (9월 {{ orders.at(-1)?.value }}건, 목표 {{ targets.at(-1)?.value }}건)</output>
       <UIButton size="sm" variant="outline" @click="updated = !updated">{{ updated ? "잠정 실적 보기" : "확정 실적 보기" }}</UIButton>
     </UIChartActions>
   </UIChart>

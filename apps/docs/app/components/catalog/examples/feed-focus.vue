@@ -46,7 +46,7 @@ onBeforeUnmount(() => clearTimeout(timer));
       <header class="feed-demo__header">
         <div class="feed-demo__body">
           <strong>결제 개선 배포 스레드</strong>
-          <span class="feed-demo__meta">댓글 {{ comments.length }}개 · 최신순</span>
+          <span class="feed-demo__meta">댓글 {{ comments.length }}개 (최신순)</span>
         </div>
         <UIButton size="sm" variant="outline" :disabled="receiving || received" @click="simulateIncomingComment">
           <template #leading><MessageSquare /></template>
@@ -64,13 +64,13 @@ onBeforeUnmount(() => clearTimeout(timer));
           >
             <div class="feed-demo__row">
               <h4 :id="`${prefix}-${comment.id}`" class="feed-demo__title">{{ comment.title }}</h4>
-              <span class="feed-demo__meta">{{ comment.author }} · <time :datetime="comment.time">{{ comment.time }}</time></span>
+              <span class="feed-demo__meta"><strong>{{ comment.author }}</strong> <time :datetime="comment.time">{{ comment.time }}</time></span>
             </div>
             <p>{{ comment.message }}</p>
           </UIFeedItem>
         </div>
         <span class="feed-demo__meta">
-          현재 항목 · {{ comments.find(({ id }) => id === highlightedValue)?.title }}
+          현재 항목 <strong>{{ comments.find(({ id }) => id === highlightedValue)?.title }}</strong>
         </span>
       </UIFeed>
     </div>

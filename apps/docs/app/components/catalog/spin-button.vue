@@ -42,6 +42,6 @@ const code = computed(() => vueExampleCode("UISpinButton", {
       </PlaygroundExampleControl>
     </template>
     <UISpinButton v-model="count" v-bind="attributes" />
-    <template #footer><output>주문 수량 · {{ count }}개</output></template>
+    <template #footer><output>주문 수량 <strong>{{ count }}개</strong></output></template>
   </PlaygroundExample>
 </template>

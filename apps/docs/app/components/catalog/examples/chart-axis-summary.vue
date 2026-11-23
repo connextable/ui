@@ -38,7 +38,7 @@ const AxisSummary = defineComponent({
       const current = axis.value;
       if (current?.domain.kind !== "numeric") return null;
       const range = `${number.format(current.domain.minimum)}–${number.format(current.domain.maximum)}건`;
-      return h("output", `Y축 · ${current.scale === "logarithmic" ? "로그" : "선형"} · ${range}`);
+      return h("output", `${current.scale === "logarithmic" ? "로그" : "선형"} Y축 (${range})`);
     };
   },
 });

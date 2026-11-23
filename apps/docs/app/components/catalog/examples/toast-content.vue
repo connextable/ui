@@ -26,7 +26,7 @@ let nextID = 0;
             <FileSpreadsheet :size="17" aria-hidden="true" />
             <div>
               <strong>{{ report.file }}</strong>
-              <div class="toast-report__meta">주문 {{ report.rows }}건 · {{ report.size }}</div>
+              <div class="toast-report__meta">주문 {{ report.rows }}건 ({{ report.size }})</div>
             </div>
           </div>
         </div>

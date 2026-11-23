@@ -21,8 +21,8 @@ const active = ref(false);
           <template #trailing><span aria-live="polite">{{ active ? "1건" : "2건" }}</span></template>
         </UIDashboardToolbar>
       </template>
-      <p>{{ active ? "타입 검사 진행 중" : "빌드 완료 · 타입 검사 진행 중" }}</p>
-      <template #footer>최근 갱신 · 지금</template>
+      <p>{{ active ? "타입 검사 진행 중" : "빌드를 마쳤으며 타입 검사 진행 중" }}</p>
+      <template #footer>방금 갱신됨</template>
     </UIDashboardPanel>
   </UIDashboard>
 </template>

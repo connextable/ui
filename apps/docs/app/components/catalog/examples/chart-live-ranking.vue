@@ -47,7 +47,7 @@ watchEffect(onCleanup => {
     </UIChartCartesian>
     <UIChartPlot><UIChartRenderer /></UIChartPlot>
     <UIChartActions>
-      <output aria-live="off">{{ timeLabel }} · 1위 {{ leader.name }} {{ leader.users }}명</output>
+      <output aria-live="off">{{ timeLabel }} 1위 {{ leader.name }} {{ leader.users }}명</output>
       <UIButton size="sm" variant="outline" @click="running = !running">{{ running ? "일시정지" : "재생" }}</UIButton>
     </UIChartActions>
   </UIChart>

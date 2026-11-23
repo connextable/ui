@@ -57,7 +57,7 @@ const Table = createUIDataTableComponents(table);
           @click="table.dispatch({ type: 'set-access', accessState: pageAccess(accessState.page + 1) })"><ChevronRight /></UIButton>
       </UIDataActions>
       <template #footer>
-        <output>{{ number.format(accessState.page) }} / {{ number.format(lastPage) }} 페이지 · 총 {{ number.format(total) }}건</output>
+        <output>{{ number.format(accessState.page) }} / {{ number.format(lastPage) }} 페이지 (총 {{ number.format(total) }}건)</output>
       </template>
     </PlaygroundExample>
   </Table.Provider>

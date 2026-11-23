@@ -25,7 +25,7 @@ const state = createDenseTrackGridLayout(
 <template>
   <UIDataSurface>
     <template #toolbar>
-      <output>{{ current ? `선택한 위치 · ${current}` : `${rows}행 × ${columns}열` }}</output>
+      <output>{{ current ? `${current} 선택됨` : `${rows}행 × ${columns}열` }}</output>
       <UIButton size="sm" variant="outline" @click="current = target; worksheet?.scrollTo(target, 'center')">
         {{ target }}로 이동
       </UIButton>

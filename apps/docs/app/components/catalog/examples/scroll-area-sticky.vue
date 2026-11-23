@@ -30,7 +30,7 @@ const visible = computed(() => readyOnly.value === true ? requests.filter(reques
     <template #header="{ viewportId }">
       <div class="review-queue__header">
         <div class="review-queue__bar">
-          <strong>받은 검토 요청 · {{ visible.length }}건</strong>
+          <strong>받은 검토 요청 {{ visible.length }}건</strong>
           <UIButton variant="outline" size="sm" :aria-expanded="filterOpen" :aria-controls="`${viewportId}-filters`"
             @click="filterOpen = !filterOpen">{{ filterOpen ? '필터 접기' : '필터 펼치기' }}</UIButton>
         </div>
@@ -55,7 +55,7 @@ const visible = computed(() => readyOnly.value === true ? requests.filter(reques
             @click="summaryOpen = !summaryOpen">{{ summaryOpen ? '요약 접기' : '요약 펼치기' }}</UIButton>
         </div>
         <div v-show="summaryOpen" :id="`${viewportId}-summary`" class="review-queue__details">
-          <p>{{ selected.length ? selected.slice(0, 3).join(' · ') : '목록에서 검토 요청을 선택하세요.' }}</p>
+          <p>{{ selected.length ? selected.slice(0, 3).join(', ') : '목록에서 검토 요청을 선택하세요.' }}</p>
           <p v-if="selected.length > 3">외 {{ selected.length - 3 }}건</p>
         </div>
       </div>

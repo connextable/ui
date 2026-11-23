@@ -26,7 +26,7 @@ const firstVisible = ref<string | number>();
       </UIDataActions>
     </div>
     <template #footer>
-      <output aria-live="off">화면 첫 항목 {{ firstVisible ?? "준비 중" }} · 앞에서 추가한 기록 {{ olderCount }}개</output>
+      <output aria-live="off">화면 첫 항목 {{ firstVisible ?? "준비 중" }}, 앞에서 추가한 기록 {{ olderCount }}개</output>
     </template>
   </PlaygroundExample>
 </template>

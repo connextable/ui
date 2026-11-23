@@ -18,7 +18,7 @@ function resetDraft(open: boolean) {
     <UIDialogContent>
       <UIDialogTitle>이름 편집</UIDialogTitle>
       <UIInput ref="name" v-model="draftName" aria-label="표시 이름" />
-      <template #footer-leading>현재 이름 · {{ savedName }}</template>
+      <template #footer-leading>현재 이름 <strong>{{ savedName }}</strong></template>
       <template #actions>
         <UIDialogClose as-child>
           <UIButton size="sm" :disabled="!draftName.trim()" @click="savedName = draftName.trim()">저장</UIButton>

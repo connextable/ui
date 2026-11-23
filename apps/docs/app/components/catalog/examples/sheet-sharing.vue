@@ -13,7 +13,7 @@ const scopeLabel = computed(() => scopes.find(option => option.value === scope.v
 
 <template>
   <UISheet @update:open="open => { if (open) draft = scope }">
-    <UISheetTrigger as-child><UIButton variant="outline">공유 범위 · {{ scopeLabel }}</UIButton></UISheetTrigger>
+    <UISheetTrigger as-child><UIButton variant="outline">공유 범위 ({{ scopeLabel }})</UIButton></UISheetTrigger>
     <UISheetOverlay />
     <UISheetContent>
       <UISheetTitle>정산 보고서 공유</UISheetTitle>

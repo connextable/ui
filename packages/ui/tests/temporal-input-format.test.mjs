@@ -17,7 +17,7 @@ const minutes = { ...seconds, second: 0 };
 const inputFormats = {
   date: { order: ["day", "month", "year"], separator: "/" },
   time: { hourCycle: "h12", separator: ".", fractionSeparator: ",", dayPeriods: ["AM", "PM"] },
-  dateTime: { order: ["time", "date"], separator: " · " },
+  dateTime: { order: ["time", "date"], separator: ", " },
 };
 
 function assertInput(html, id, value, placeholder) {
@@ -74,7 +74,7 @@ test("custom formats reach the SSR input values and placeholders of fields and p
   assertInput(html, "date", "22/08/2026", "DD/MM/YYYY");
   assertInput(html, "native-date", "2026-08-22");
   assertInput(html, "time", "05.30.12,345 PM", "hh.mm.ss,SSS AM/PM");
-  assertInput(html, "appointment", "05.30.12 PM · 22/08/2026", "hh.mm.ss AM/PM · DD/MM/YYYY");
+  assertInput(html, "appointment", "05.30.12 PM, 22/08/2026", "hh.mm.ss AM/PM, DD/MM/YYYY");
   assertInput(html, "range-start", "22/08/2026", "DD/MM/YYYY");
   assertInput(html, "range-end", "25/08/2026", "DD/MM/YYYY");
   assertInput(html, "picker-date", "22/08/2026", "DD/MM/YYYY");

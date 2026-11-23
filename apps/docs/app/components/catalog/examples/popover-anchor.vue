@@ -17,7 +17,7 @@ import {
 <template>
   <UIPopover side="bottom" align="center">
     <UIPopoverTrigger as-child><UIButton variant="outline">팀 정보 열기</UIButton></UIPopoverTrigger>
-    <UIPopoverAnchor>현재 팀 · 디자인</UIPopoverAnchor>
+    <UIPopoverAnchor>현재 팀 <strong>디자인</strong></UIPopoverAnchor>
     <UIPopoverContent>
       <UIPopoverArrow />
       <UIPopoverTitle>제품 디자인팀</UIPopoverTitle>

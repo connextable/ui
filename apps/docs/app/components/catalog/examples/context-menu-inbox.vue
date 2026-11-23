@@ -29,7 +29,7 @@ function invoke(command: string) {
         <component :is="read ? MailOpen : Mail" aria-hidden="true" />
         <span>
           <b>디자인 검토 요청</b>
-          <small>제품팀 · {{ read ? "읽음" : "읽지 않음" }}</small>
+          <small>제품팀 ({{ read ? "읽음" : "읽지 않음" }})</small>
         </span>
         <Star v-if="starred" fill="currentColor" aria-label="중요 표시됨" role="img" />
       </UIContextMenuTrigger>

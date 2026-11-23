@@ -39,7 +39,7 @@ function bitmapSize(viewport: Viewport) {
   const ratio = viewport.devicePixelRatio ?? 1;
   const width = Math.round(viewport.width * ratio);
   const height = Math.round(viewport.height * ratio);
-  return `${number.format(width)} × ${number.format(height)} px · ${number.format(width * height)} 픽셀`;
+  return `${number.format(width)} × ${number.format(height)} px (${number.format(width * height)} 픽셀)`;
 }
 
 function detailBounds(plot: Plot) {
@@ -96,13 +96,13 @@ function copyDetail(scale: number, { layout, viewport }: Projection) {
         <UIChart
           v-slot="{ projection }"
           :dom="{
-            accessibilityLabel: `진동 센서 파형 · ${view.label}`,
+            accessibilityLabel: `진동 센서 파형 (${view.label})`,
             accessibilityLimit: 48,
             renderPolicy: { type: 'fixed', renderScale: view.scale, maximumRepresentatives: 2_400 },
             onProjectionChange: next => copyDetail(view.scale, next),
             getAccessibleDatumLabel: id => {
               const sample = samples[Number(id)];
-              return sample ? `${sample.time} ms · ${voltage.format(sample.amplitude)} V` : String(id);
+              return sample ? `${sample.time} ms에서 ${voltage.format(sample.amplitude)} V` : String(id);
             },
           }"
         >

@@ -297,7 +297,7 @@ const DataTreeGrid = createUIDataTreeGridComponents(tree, {
 />
 ```
 
-트리 그리드가 행 선택과 그룹의 미선택·일부 선택·전체 선택을 동기화합니다. 그룹을 해제해도 그룹 밖의 선택은 유지됩니다. 선택 ID는 기존 `rowSelection` 모델에 저장되므로 컨트롤러의 `limits.maxSelectionIDs`가 적용됩니다. `onGroupSelectionError`에는 ID 조회나 선택 반영에서 발생한 오류가 전달됩니다.
+트리 그리드가 행 선택과 그룹의 미선택, 일부 선택, 전체 선택을 동기화합니다. 그룹을 해제해도 그룹 밖의 선택은 유지됩니다. 선택 ID는 기존 `rowSelection` 모델에 저장되므로 컨트롤러의 `limits.maxSelectionIDs`가 적용됩니다. `onGroupSelectionError`에는 ID 조회나 선택 반영에서 발생한 오류가 전달됩니다.
 
 ## 날짜와 시간 선택
 

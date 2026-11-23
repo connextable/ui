@@ -22,7 +22,7 @@ const topics = {
   },
   icons: {
     id: "button-leading-icon",
-    title: "앞·뒤 아이콘",
+    title: "앞과 뒤에 아이콘 배치",
     description: "icon으로 라벨 앞, trailing-icon으로 라벨 뒤에 아이콘을 배치합니다. 두 위치를 함께 사용할 수도 있습니다.",
   },
   loading: {

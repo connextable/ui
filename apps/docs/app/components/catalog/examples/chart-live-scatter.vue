@@ -50,7 +50,7 @@ watchEffect(onCleanup => {
     <UIChartPlot><UIChartRenderer /></UIChartPlot>
     <UIChartActions>
       <output aria-live="off">
-        관측 #{{ phase + 1 }} · {{ sample.length }}점 · X축 0–{{ loadDomain.maximum }}건 · Y축 0–{{ latencyDomain.maximum }}ms
+        관측 #{{ phase + 1 }} ({{ sample.length }}점), X축 0–{{ loadDomain.maximum }}건, Y축 0–{{ latencyDomain.maximum }}ms
       </output>
       <UIButton size="sm" variant="outline" @click="running = !running">{{ running ? "일시정지" : "재생" }}</UIButton>
     </UIChartActions>

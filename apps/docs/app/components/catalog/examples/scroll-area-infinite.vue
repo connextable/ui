@@ -61,7 +61,10 @@ const { loading, failure, canLoadMore, loadMore } = useInfiniteScroll(scroll, {
           aria-label="최근 활동" tabindex="0" :aria-busy="loading" :state="state" :edges="['bottom']">
           <ul ref="content">
             <li v-for="entry in history.slice(0, displayed)" :key="entry.time">
-              <div><strong>{{ entry.project }} · {{ entry.title }}</strong><time :datetime="entry.time">{{ entry.date }}</time></div>
+              <div>
+                <strong>{{ entry.title }}</strong>
+                <small>{{ entry.project }} <time :datetime="entry.time">{{ entry.date }}</time></small>
+              </div>
               <p>{{ entry.person }} 님이 {{ entry.detail }}</p>
             </li>
           </ul>
@@ -92,7 +95,7 @@ const { loading, failure, canLoadMore, loadMore } = useInfiniteScroll(scroll, {
 .activity-scroll__viewport li { padding: 1rem var(--ui-space-sm); font-size: var(--ui-font-size-body); }
 .activity-scroll__viewport li + li { border-block-start: 1px solid var(--ui-color-divider); }
 .activity-scroll__viewport li div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--ui-space-xs) var(--ui-space-md); }
-.activity-scroll__viewport time, .activity-scroll__viewport li p { color: var(--ui-color-text-muted); font-size: var(--ui-font-size-body-sm); }
+.activity-scroll__viewport small, .activity-scroll__viewport li p { color: var(--ui-color-text-muted); font-size: var(--ui-font-size-body-sm); }
 .activity-scroll__viewport li p { margin: var(--ui-space-xs) 0 0; }
 .activity-scroll__tools, .activity-scroll__actions { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--ui-space-sm); }
 .activity-scroll__tools { margin-block-end: var(--ui-space-sm); }

@@ -34,7 +34,7 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     type: note("submit은 폼을 제출하고 reset은 초기화합니다.", buttonForm, "'button' | 'submit' | 'reset'", "button"),
     form: note("폼 밖의 버튼을 폼 요소의 id와 연결합니다.", buttonForm, "string"),
     "icon-only": note("아이콘 전용 원형 버튼을 만듭니다. UIIconButton에서도 같은 모양을 사용할 수 있습니다.", example("UIIconButton", "아이콘 버튼"), "boolean", "false"),
-    "icon / trailing-icon": note("텍스트 앞과 뒤에 배치할 Vue 아이콘 컴포넌트를 전달합니다. 각 위치의 슬롯으로 표시 내용을 직접 구성할 수 있습니다.", example("button-leading-icon", "앞·뒤 아이콘"), "Component"),
+    "icon / trailing-icon": note("텍스트 앞과 뒤에 배치할 Vue 아이콘 컴포넌트를 전달합니다. 각 위치의 슬롯으로 표시 내용을 직접 구성할 수 있습니다.", example("button-leading-icon", "앞과 뒤에 아이콘 배치"), "Component"),
     to: note("Nuxt 내부 경로 문자열이나 라우트 객체를 전달합니다. href보다 우선합니다.", buttonLink, "RouteLocationRaw"),
     href: note("일반 URL이나 파일 경로로 이동합니다. Nuxt 모듈 없이도 문자열 링크로 동작합니다.", buttonLink, "string"),
     "target / rel": note("_blank로 새 탭에서 열고 rel로 noopener 등의 링크 관계를 지정합니다.", buttonLink),
@@ -73,7 +73,7 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     "#default": note("UIDisclosureTrigger와 UIDisclosureContent를 연결합니다.", disclosure),
   },
   form: {
-    "@submit": note("UIFormSubmitEvent의 values에서 필드 이름으로 제출값을 읽습니다. 중첩 경로는 객체와 배열로 조립되며, schema가 있으면 검증·변환된 값이 전달됩니다.", example("form-submit", "기본 제출"), "UIFormSubmitEvent"),
+    "@submit": note("UIFormSubmitEvent의 values에서 필드 이름으로 제출값을 읽습니다. 중첩 경로는 객체와 배열로 조립되며, schema가 있으면 검증하고 변환한 값이 전달됩니다.", example("form-submit", "기본 제출"), "UIFormSubmitEvent"),
     schema: note("필드 값을 검증하고 지원하는 스키마 변환을 제출 데이터에 적용합니다.", example("form-schema", "스키마 검사와 제출")),
     "Field name": { ...note("제출 객체에서 사용할 필드 키입니다. 같은 필드 안에 라벨과 입력을 배치합니다.", form, "string"), owner: "UIFormField", label: "name" },
     "Field required": { ...note("라벨에 필수 표시를 추가합니다. PIN은 모든 자리, 다중 선택은 한 개 이상의 값이 필요합니다.", example("composite-fields", "복합 입력 검증과 제출"), "boolean"), owner: "UIFormField", label: "required" },
@@ -84,7 +84,7 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     "Control get-value / reset": { ...note("get-value로 현재 입력 모델을 읽고 reset에서 처음 값으로 되돌립니다. 기본 슬롯에는 부모 필드에서 상속한 입력 상태를 전달합니다.", example("UIFormControl", "직접 만든 입력을 폼에 연결")), owner: "UIFormControl", label: "get-value / reset" },
     useFormControl: { group: "컴포저블", description: "복합 위젯의 제어 요소, 포커스 대상, 제출 요소를 UIFormField에 등록합니다. 결과의 controlProps와 flags를 해당 요소에 연결합니다." },
     useNativeFormControl: { group: "컴포저블", description: "스크립트에서 직접 관리하는 input 또는 textarea를 등록합니다. controlProps를 입력에 적용하고 reset을 연결할 수 있습니다." },
-    "#default": note("필드, 오류 요약, 제출·초기화 버튼을 한 폼으로 조합합니다.", example("UIFormActions", "폼 동작")),
+    "#default": note("필드, 오류 요약, 제출과 초기화 버튼을 한 폼으로 조합합니다.", example("UIFormActions", "폼 동작")),
     "#output": note("제출 결과를 폼 하단에 표시합니다.", example("UIFormActions", "폼 동작")),
   },
   input: {

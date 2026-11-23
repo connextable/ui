@@ -48,9 +48,8 @@ onMounted(() => {
         <div class="design-controls__size">
           <strong :id="`design-size-${size}`">{{ size }}</strong>
           <span v-if="metrics[size]" class="design-controls__metrics">
-            높이 <code>{{ metrics[size]?.height }}</code>
-            <span aria-hidden="true">·</span>
-            모서리 <code>{{ metrics[size]?.radius }}</code>
+            <span>높이 <code>{{ metrics[size]?.height }}</code></span>
+            <span>모서리 <code>{{ metrics[size]?.radius }}</code></span>
           </span>
         </div>
         <div class="design-controls__sample">
@@ -95,6 +94,9 @@ onMounted(() => {
 }
 
 .design-controls__metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ui-space-xs) var(--ui-space-sm);
   color: var(--ui-color-text-muted);
   font-size: var(--ui-font-size-metadata);
 }

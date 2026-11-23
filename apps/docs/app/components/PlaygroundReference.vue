@@ -56,7 +56,7 @@ const sections = computed(() => [
             class="playground-reference__group-heading"
             data-playground-heading
             tabindex="-1"
-          >{{ block.owner ? `${block.owner} · ${group.title}` : group.title }}</h3>
+          ><code v-if="block.owner">{{ block.owner }} </code>{{ group.title }}</h3>
           <dl class="playground-reference__entries">
             <div v-for="entry in group.entries" :id="entry.anchor" :key="entry.name" :tabindex="entry.anchor ? -1 : undefined">
               <dt>

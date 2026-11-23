@@ -8,7 +8,7 @@ import { ref } from "vue";
 const inputFormats: UITemporalInputFormats = {
   date: { order: ["day", "month", "year"], separator: "/" },
   time: { hourCycle: "h12", separator: ".", dayPeriods: ["오전", "오후"] },
-  dateTime: { order: ["time", "date"], separator: " · " },
+  dateTime: { order: ["time", "date"], separator: ", " },
 };
 const custom = ref(true);
 const date = ref({ year: 2026, month: 8, day: 22 });

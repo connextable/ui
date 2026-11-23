@@ -25,7 +25,7 @@ const firstVisible = computed(() => plan.value?.placements.find(item => item.vis
 
 <template>
   <div>
-    <p>보이는 항목 {{ visibleCount }}개 · 첫 셀 {{ firstVisible ?? "준비 중" }}</p>
+    <p>보이는 항목 {{ visibleCount }}개, 첫 셀 {{ firstVisible ?? "준비 중" }}</p>
     <section ref="scrollport" data-ui-virtual-scrollport aria-label="렌더 범위를 관찰하는 가상 배치" tabindex="0">
       <div ref="surface" class="surface" :style="{
         width: `${plan?.contentSize.width ?? 0}px`,

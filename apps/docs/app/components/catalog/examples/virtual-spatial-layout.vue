@@ -27,7 +27,7 @@ const position = computed(() => {
       <UIButton size="sm" variant="outline" :aria-pressed="compact" @click="compact = !compact">4열로 배치</UIButton>
     </UIDataActions>
     <template #footer>
-      <output>{{ compact ? '4열 배치' : '8열 배치' }} · 구역 {{ stations.length }}개</output>
+      <output>{{ compact ? '4열 배치' : '8열 배치' }} (구역 {{ stations.length }}개)</output>
     </template>
   </PlaygroundExample>
 </template>

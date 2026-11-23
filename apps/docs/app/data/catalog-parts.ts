@@ -101,7 +101,7 @@ const roles: Readonly<Record<string, string>> = {
   Slide: "슬라이드 하나와 그 식별자를 연결합니다.",
   LoadEarlier: "현재 범위보다 앞에 표시할 항목을 요청하는 버튼입니다.",
   LoadNewer: "현재 범위보다 뒤에 표시할 항목을 요청하는 버튼입니다.",
-  Cartesian: "X축·Y축을 사용하는 좌표계의 내용과 설정을 묶습니다.",
+  Cartesian: "두 축을 사용하는 좌표계의 내용과 설정을 묶습니다.",
   Radial: "원형 좌표계의 내용과 설정을 묶습니다.",
   XAxis: "가로축에 사용할 필드와 스케일을 지정합니다.",
   YAxis: "세로축에 사용할 필드와 스케일을 지정합니다.",
@@ -165,14 +165,14 @@ const partRoles: Readonly<Record<string, string>> = {
   UIDrawerHandle: "패널을 끌어 닫는 조작 영역을 표시합니다.",
   UISheetHandle: "시트를 가장자리 쪽으로 끌어 닫는 조작 영역입니다.",
   UIToastViewport: "최근 알림을 앞에 쌓고 마우스나 키보드 포커스로 펼칩니다.",
-  UIStepperIndicator: "완료됨·진행 중 같은 단계 상태를 표시합니다.",
+  UIStepperIndicator: "완료 또는 진행 중 같은 단계 상태를 표시합니다.",
   UICarouselIndicator: "해당 슬라이드로 이동하고 현재 슬라이드를 표시합니다.",
-  UITimerArea: "시간을 표시하는 분·초 항목을 묶습니다.",
+  UITimerArea: "시간을 표시하는 분과 초 항목을 묶습니다.",
   UITimerItem: "분이나 초처럼 시간의 특정 단위를 표시합니다.",
   UIChartLegend: "차트 밖에 계열 이름, 색, 값을 함께 표시합니다.",
   UIChartScaleLegend: "연속 색상의 최솟값과 최댓값을 표시합니다.",
   UIChartCenter: "도넛 중앙에 값과 라벨을 표시합니다.",
-  UIChartViewToolbar: "축 가까이에 이동, 확대·축소, 초기화 버튼을 겹쳐 배치합니다.",
+  UIChartViewToolbar: "축 가까이에 이동, 확대와 축소, 초기화 버튼을 겹쳐 배치합니다.",
   UIChartActions: "차트 아래의 출력과 동작 버튼을 하나의 영역에 배치합니다.",
   UIHostPortal: "Provider가 지정한 DOM 대상으로 콘텐츠를 보냅니다.",
   UICheckboxTreeIndicator: "트리 행의 미선택, 선택 및 혼합 체크 상태를 표시합니다.",
@@ -189,7 +189,7 @@ const partRoles: Readonly<Record<string, string>> = {
   UITabularFilterPopover: "표의 열 머리글에서 필터 편집 패널을 엽니다.",
   createUITooltipGroup: "여러 도움말에서 열기 지연과 활성 도움말을 공유합니다.",
   useTemporalReferenceDate: "하위 컴포넌트에서 Provider의 기준 날짜를 읽습니다.",
-  useTemporalFormatter: "하위 컴포넌트에서 Provider의 날짜·시간 포매터를 읽습니다.",
+  useTemporalFormatter: "하위 컴포넌트에서 Provider의 날짜와 시간 포매터를 읽습니다.",
   useTemporalDisplay: "Provider 설정을 사용해 달력 제목, 날짜와 날짜 범위의 표시 문자열을 만듭니다.",
   useVirtualizer: "가상화의 상태와 배치 작업을 Vue에서 연결합니다.",
   useScrollArea: "원하는 DOM 요소의 스크롤 위치, 크기, 가장자리까지의 거리를 읽고 위치를 이동합니다.",
@@ -207,8 +207,8 @@ const partRoles: Readonly<Record<string, string>> = {
   useDataTable: "데이터 소스를 Vue에서 사용할 테이블 컨트롤러로 연결합니다.",
   useDataGrid: "데이터 소스를 탐색 가능한 그리드 컨트롤러로 연결합니다.",
   useDataTreeGrid: "데이터 소스와 계층의 확장 상태를 트리 그리드에 연결합니다.",
-  createUIDataTableComponents: "테이블 컨트롤러의 행·셀에 맞는 Vue 컴포넌트 모음을 만듭니다.",
-  createUIDataGridComponents: "그리드 컨트롤러의 행·셀에 맞는 Vue 컴포넌트 모음을 만듭니다.",
+  createUIDataTableComponents: "테이블 컨트롤러의 행과 셀에 맞는 Vue 컴포넌트 모음을 만듭니다.",
+  createUIDataGridComponents: "그리드 컨트롤러의 행과 셀에 맞는 Vue 컴포넌트 모음을 만듭니다.",
   createUIDataTreeGridComponents: "트리 그리드 컨트롤러에 맞는 Vue 컴포넌트 모음을 만듭니다.",
   createUITabularSource: "열과 행을 가져오는 함수로 표, 그리드, 트리 그리드에 연결할 데이터 소스를 만듭니다.",
   useDataTableContext: "하위 컴포넌트에서 테이블 Provider의 상태를 읽습니다.",
@@ -246,7 +246,7 @@ const tabularParts: Readonly<Record<string, string>> = {
 const suffixes = Object.keys(roles).sort((a, b) => b.length - a.length);
 
 export function describeCatalogPart(part: string): string | undefined {
-  if (part === "DataTreeGrid.BulkSelectionControl") return "현재 검색 결과 전체를 선택하거나 해제합니다. loadGroupLeafIDs를 연결하면 원격 그룹의 전체·일부 선택 상태를 표시하고 접힌 하위 행까지 제어합니다.";
+  if (part === "DataTreeGrid.BulkSelectionControl") return "현재 검색 결과 전체를 선택하거나 해제합니다. loadGroupLeafIDs를 연결하면 원격 그룹의 전체와 일부 선택 상태를 표시하고 접힌 하위 행까지 제어합니다.";
   if (partRoles[part]) return partRoles[part];
   const tabularPart = /^(?:DataTable|DataGrid|DataTreeGrid)\.(.+)$/.exec(part)?.[1];
   if (tabularPart) return tabularParts[tabularPart];

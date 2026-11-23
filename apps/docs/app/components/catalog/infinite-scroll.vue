@@ -33,7 +33,7 @@ const loadMore = createUIAsyncAction(async ({ signal }: UIInfiniteScrollRequest)
         </div>
       </div>
       <template #footer>
-        <output>{{ failure ? "불러오기 실패 · 다시 시도해 주세요." : `${shown} / ${total}건` }}</output>
+        <output>{{ failure ? "불러오지 못했습니다. 다시 시도해 주세요." : `${shown} / ${total}건` }}</output>
       </template>
     </PlaygroundExample>
   </UIInfiniteScroll>

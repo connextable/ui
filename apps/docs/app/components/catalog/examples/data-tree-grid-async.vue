@@ -38,7 +38,7 @@ const Tree = createUIDataTreeGridComponents(tree);
       <Tree.Root aria-label="부서별 프로젝트" :aria-busy="tree.status.value === 'loading'">
         <Tree.Header>
           <Tree.HeaderRow>
-            <Tree.ColumnHeader column="name">부서 · 프로젝트</Tree.ColumnHeader>
+            <Tree.ColumnHeader column="name">부서와 프로젝트</Tree.ColumnHeader>
             <Tree.ColumnHeader column="summary">요약</Tree.ColumnHeader>
           </Tree.HeaderRow>
         </Tree.Header>

@@ -19,7 +19,7 @@ const stock = [
         <dl class="stock">
           <div v-for="item in stock" :key="item.location">
             <dt>{{ item.location }}</dt>
-            <dd>{{ item.available }} · {{ item.dispatch }}</dd>
+            <dd><span>{{ item.available }}</span><br /><span>{{ item.dispatch }}</span></dd>
           </div>
         </dl>
         <UIFormActions>

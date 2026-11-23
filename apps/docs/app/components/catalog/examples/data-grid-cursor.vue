@@ -26,7 +26,7 @@ const CursorSummary = defineComponent({
       const address = snapshot.value.cursor.current;
       const row = tasks.find(task => task.id === address?.rowID);
       const column = address?.columnID === "status" ? "상태" : "작업";
-      return h("p", { "aria-live": "polite" }, row ? `현재 셀 ${row.cells.task} · ${column}` : "현재 셀 없음");
+      return h("p", { "aria-live": "polite" }, row ? `${row.cells.task} 행의 ${column} 셀` : "현재 셀 없음");
     };
   },
 });

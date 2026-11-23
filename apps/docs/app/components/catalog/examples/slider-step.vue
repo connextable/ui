@@ -8,6 +8,6 @@ const volume = ref("50");
 <template>
   <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
     <UISlider v-model="volume" min="0" max="100" step="25" label="볼륨" />
-    <template #footer><output>볼륨 · {{ volume }}%</output></template>
+    <template #footer><output>볼륨 <strong>{{ volume }}%</strong></output></template>
   </PlaygroundExample>
 </template>

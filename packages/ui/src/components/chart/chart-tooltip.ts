@@ -144,7 +144,7 @@ function tooltipMark(
   const xLabel = displayValue(x, xAxis);
   const yLabel = displayValue(y, yAxis);
   const title = batch.type === "cell"
-    ? [xLabel, yLabel].filter(Boolean).join(" · ") || label
+    ? [xLabel, yLabel].filter(Boolean).join(", ") || label
     : (horizontalBar ? yLabel : xLabel) ?? label;
   description ??= batch.type === "cell" ? displayValue(value) : horizontalBar ? xLabel : yLabel;
   const datum: ChartTooltipDatum = {

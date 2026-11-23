@@ -13,7 +13,7 @@ import {
     <UITooltipTrigger>단축키</UITooltipTrigger>
     <UITooltipContent>
       <UITooltipArrow />
-      검색 열기 · ⌘K
+      검색 열기 (⌘K)
     </UITooltipContent>
   </UITooltip>
 </template>

@@ -66,7 +66,7 @@ const displayedVariants = computed(() => {
     labels.push(variant.label);
     cards.set(key, labels);
   }
-  return Array.from(cards, ([key, labels]) => ({ key, label: labels.join(" · ") }));
+  return Array.from(cards, ([key, labels]) => ({ key, labels }));
 });
 
 const focusable = "button, input:not([type=hidden]), select, textarea, a[href], [tabindex], [contenteditable=true]";
@@ -273,7 +273,7 @@ watch([board, styles, specimen], ([container, library, sample]) => {
       <figure v-for="variant in displayedVariants" :key="variant.key" class="playground-visual-states__card">
         <div class="playground-visual-states__sample" :data-interaction="variant.key"
           :data-fill="specimen?.root.matches(fillCard) || undefined" inert aria-hidden="true" />
-        <figcaption>{{ variant.label }}</figcaption>
+        <figcaption><span v-for="label in variant.labels" :key="label">{{ label }}</span></figcaption>
       </figure>
     </div>
     <p v-if="specimen && !specimen.target && !specimen.keyboardScroll && !specimen.root.matches(measurement)">기본 예제에는 비교할 인터랙션 스타일이 없습니다.</p>
@@ -326,11 +326,21 @@ watch([board, styles, specimen], ([container, library, sample]) => {
 }
 
 .playground-visual-states figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--ui-space-xs);
   padding: var(--ui-space-xs) var(--ui-space-sm);
   border-block-start: 1px solid var(--ui-color-divider);
   color: var(--ui-color-text-muted);
   font-size: var(--ui-font-size-body-sm);
   text-align: center;
+}
+
+.playground-visual-states figcaption > span {
+  padding-inline: var(--ui-space-xs);
+  border: 1px solid var(--ui-color-divider);
+  border-radius: var(--ui-radius-sm);
 }
 
 .playground-visual-states p {

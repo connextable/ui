@@ -132,7 +132,7 @@ onUnmounted(() => clearInterval(timer));
       <UIChartPlot><UIChartRenderer /></UIChartPlot>
       <UIChartActions>
         <output aria-live="off">
-          {{ format.format(latest.date) }} · 시가 {{ latest.open }} · 고가 {{ latest.high }} · 저가 {{ latest.low }} · 종가 {{ latest.close }}
+          <strong>{{ format.format(latest.date) }}</strong> 시가 {{ latest.open }}, 고가 {{ latest.high }}, 저가 {{ latest.low }}, 종가 {{ latest.close }}
         </output>
         <UIChartViewControls axis="date">
           <UIChartZoomControl direction="in" label="확대">확대</UIChartZoomControl>

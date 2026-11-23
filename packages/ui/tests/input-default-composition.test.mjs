@@ -71,8 +71,8 @@ test("editable and numeric roots supply the common input and actions", async () 
 test("composed editors pass placeholders to their inputs without using them as values", async () => {
   const pin = await render(UIPinInput, { length: 4, label: "인증 코드" });
   assert.equal([...pin.matchAll(/<input[^>]+placeholder="◦"/g)].length, 4);
-  const masked = await render(UIPinInput, { length: 4, mask: true, placeholder: "·" });
-  assert.equal([...masked.matchAll(/<input[^>]+placeholder="·"/g)].length, 4);
+  const masked = await render(UIPinInput, { length: 4, mask: true, placeholder: "○" });
+  assert.equal([...masked.matchAll(/<input[^>]+placeholder="○"/g)].length, 4);
 
   const editable = await render(UIEditable, { placeholder: "회의 제목" });
   assert.match(editable, /<button[^>]+data-placeholder[^>]*>회의 제목<\/button>/);

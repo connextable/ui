@@ -38,7 +38,7 @@ const Tree = createUIDataTreeGridComponents(tree);
       <Tree.Root aria-label="지역별 경보">
         <Tree.Header>
           <Tree.HeaderRow>
-            <Tree.ColumnHeader column="name">지역 · 지점</Tree.ColumnHeader>
+            <Tree.ColumnHeader column="name">지역과 지점</Tree.ColumnHeader>
             <Tree.ColumnHeader column="alerts" data-ui-tabular-align="end">미처리 경보</Tree.ColumnHeader>
           </Tree.HeaderRow>
         </Tree.Header>

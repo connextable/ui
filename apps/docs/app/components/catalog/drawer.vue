@@ -15,7 +15,7 @@ function applyFilters(close: () => void) {
 
 <template>
   <UIDrawer
-    :trigger-label="applied ? `배포 필터 · ${applied}개` : '배포 필터'"
+    :trigger-label="applied ? `배포 필터 (${applied}개)` : '배포 필터'"
     side="right"
     :swipe-to-dismiss="false"
     title="배포 필터"

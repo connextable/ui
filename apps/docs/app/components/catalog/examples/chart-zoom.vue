@@ -52,13 +52,13 @@ const samples = Array.from({ length: 64 }, (_, id) => {
       </template>
     </UIChartPlot>
     <p :id="instructionsId" class="ui-chart-view-hint">
-      드래그로 이동하고 Ctrl + 휠 또는 두 손가락 핀치로 확대·축소합니다.
+      드래그로 이동하고 Ctrl + 휠 또는 두 손가락 핀치로 확대하거나 축소합니다.
       각 축 가까이에 있는 버튼으로 한 축씩 조절할 수 있습니다.
     </p>
     <output aria-live="off">
       <span v-for="({ axisID, visible }, index) in state?.view?.axes" :key="axisID">
         <template v-if="visible.kind === 'continuous'">
-          {{ index ? " · " : "" }}{{ axes.find(axis => axis.id === axisID)?.label }}
+          {{ index ? ", " : "" }}{{ axes.find(axis => axis.id === axisID)?.label }}
           {{ visible.minimum.toFixed(0) }}–{{ visible.maximum.toFixed(0) }}
         </template>
       </span>

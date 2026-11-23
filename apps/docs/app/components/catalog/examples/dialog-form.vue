@@ -54,7 +54,7 @@ function createProject() {
       </UIDialog>
     </div>
     <template #footer v-if="project">
-      <output>프로젝트를 만들었습니다 · {{ project }}</output>
+      <output><strong>{{ project }}</strong> 프로젝트를 만들었습니다.</output>
     </template>
   </PlaygroundExample>
 </template>

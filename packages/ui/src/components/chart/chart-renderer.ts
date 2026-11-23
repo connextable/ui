@@ -28,6 +28,10 @@ export type ChartTickFormatter = (value: string | number, axis: ChartAxisLayout[
 export type ChartGrid = "auto" | "x" | "y" | "both" | "none";
 type GridOpacity = Readonly<{ x: number; y: number; categorical: number }>;
 
+export function chartAxisTitle(label?: string, unit?: string) {
+  return label && unit ? `${label} (${unit})` : label || unit || "";
+}
+
 const dateFormatter = new Intl.DateTimeFormat("en-US", { month: "numeric", day: "numeric", timeZone: "UTC" });
 const yearFormatter = new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "numeric", day: "numeric", timeZone: "UTC" });
 const timeFormatter = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" });
@@ -228,7 +232,7 @@ function paintAxes(
     }
 
     if (hasExternalTitles) continue;
-    const label = [axis.label, axis.unit].filter(Boolean).join(" · ");
+    const label = chartAxisTitle(axis.label, axis.unit);
     if (!label) continue;
     const fitted = fitAxisText(context, label, plot.width);
     if (!fitted) continue;

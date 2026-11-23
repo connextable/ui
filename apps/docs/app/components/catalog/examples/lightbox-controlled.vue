@@ -18,13 +18,13 @@ const index = ref(1);
           </UIButton>
         </template>
         <template #caption="{ item, index: position, total }">
-          <strong>{{ position + 1 }}번째 관찰 자료 · {{ item.label }}</strong>
+          <strong>{{ position + 1 }}번째 관찰 자료 {{ item.label }}</strong>
           <p>{{ item.description }} 총 {{ total }}개입니다.</p>
         </template>
       </UILightbox>
     </div>
     <template #footer>
-      <output>마지막으로 본 자료 · {{ observationMedia[index]?.label }}</output>
+      <output>마지막으로 본 자료 <strong>{{ observationMedia[index]?.label }}</strong></output>
     </template>
   </PlaygroundExample>
 </template>

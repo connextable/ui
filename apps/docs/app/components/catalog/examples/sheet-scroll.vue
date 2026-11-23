@@ -16,7 +16,7 @@ const pickup = ref("");
 
 <template>
   <UISheet>
-    <UISheetTrigger as-child><UIButton variant="outline">수령 지점{{ pickup ? ` · ${pickup}` : " 선택" }}</UIButton></UISheetTrigger>
+    <UISheetTrigger as-child><UIButton variant="outline">수령 지점{{ pickup ? ` (${pickup})` : " 선택" }}</UIButton></UISheetTrigger>
     <UISheetOverlay />
     <UISheetContent size="lg">
       <UISheetTitle>방문 수령 지점</UISheetTitle>
@@ -24,7 +24,8 @@ const pickup = ref("");
       <div class="pickup-options" role="group" aria-label="수령 지점 목록">
         <UISheetClose v-for="zone in zones" :key="zone.city" as-child>
           <UIButton align="start" variant="outline" @click="pickup = zone.city">
-            {{ zone.city }} · {{ zone.district }} · {{ zone.time }}
+            <span>{{ zone.city }} {{ zone.district }}</span>
+            <small>{{ zone.time }}</small>
           </UIButton>
         </UISheetClose>
       </div>

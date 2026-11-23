@@ -14,6 +14,6 @@ const value = ref<string | null>(null);
       </UIFormField>
       <UIFormActions><UIButton type="submit" size="sm">제출</UIButton></UIFormActions>
     </UIForm>
-    <template #footer><output>제출값 · {{ result || "제출 전" }}</output></template>
+    <template #footer><output>제출값 <strong>{{ result || "제출 전" }}</strong></output></template>
   </PlaygroundExample>
 </template>

@@ -6,7 +6,7 @@ const submitted = ref("");
 
 function submit({ values }: UIFormSubmitEvent) {
   const { topics } = values;
-  submitted.value = Array.isArray(topics) ? topics.join(" · ") : String(topics ?? "");
+  submitted.value = Array.isArray(topics) ? topics.join(", ") : String(topics ?? "");
 }
 
 const initialTags = ["프로젝트", "회의"];

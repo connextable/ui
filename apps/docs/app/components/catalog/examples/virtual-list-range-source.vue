@@ -30,15 +30,15 @@ onScopeDispose(() => pending.forEach(timer => clearTimeout(timer)));
 <template>
   <UIDataSurface>
     <template #toolbar>
-      <output>가상 소스 · 10,000건</output>
+      <output>가상 소스 10,000건</output>
       <UIButton size="sm" variant="outline" @click="list?.scrollToID(9001, 'start')">9,001번으로 이동</UIButton>
     </template>
     <UIVirtualList ref="list" :items="ids" :get-i-d="id => id" :size-policy="{ kind: 'fixed', extent: 46 }"
       aria-label="범위별로 받아 오는 서비스 기록"
       @plan-change="plan => loadRange(plan.placements.filter(item => item.visible).map(item => Number(item.id)))">
       <template #item="{ value }">
-        <UIDataLabel v-if="cache.has(value)" :label="`#${value} · ${cache.get(value)}`" />
-        <template v-else><UISpinner /> <span>#{{ value }} · 불러오는 중</span></template>
+        <UIDataLabel v-if="cache.has(value)" :label="`#${value} ${cache.get(value)}`" />
+        <template v-else><UISpinner /> <span>#{{ value }} 불러오는 중</span></template>
       </template>
     </UIVirtualList>
     <template #footer><output>{{ cache.size }}건을 받아 두었습니다.</output></template>

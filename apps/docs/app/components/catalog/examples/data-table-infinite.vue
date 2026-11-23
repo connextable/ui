@@ -76,7 +76,7 @@ watchPostEffect(onCleanup => {
       <template #footer>
         <output aria-live="polite">
           {{ rows.length }} / {{ total }}건
-          {{ status === 'loading' ? '· 불러오는 중' : status === 'error' ? '· 요청 실패' : rows.length === total ? '· 끝' : '' }}
+          {{ status === 'loading' ? '(불러오는 중)' : status === 'error' ? '(요청 실패)' : rows.length === total ? '(끝)' : '' }}
         </output>
         <UIButton v-if="rows.length < total" size="sm" variant="outline" :loading="status === 'loading'" @click="loadMore">
           {{ status === 'error' ? "다시 시도" : "다음 기록 불러오기" }}

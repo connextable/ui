@@ -44,7 +44,7 @@ const latencyDomain = { kind: "numeric", minimum: 0, maximum: 180 } as const;
       accessibilityLabel: '동시 요청 수와 응답 시간의 눈금 비교',
       getAccessibleDatumLabel: id => {
         const reading = readings.find(row => row.id === id);
-        return reading ? `동시 요청 ${reading.load}건 · ${reading.latency} ms` : String(id);
+        return reading ? `동시 요청 ${reading.load}건에 ${reading.latency} ms` : String(id);
       },
     }"
   >
@@ -56,7 +56,7 @@ const latencyDomain = { kind: "numeric", minimum: 0, maximum: 180 } as const;
     <UIChartPlot><UIChartRenderer /></UIChartPlot>
     <UIChartActions>
       <output v-if="projection?.layout">
-        세로 {{ vertical ? "켜짐" : "꺼짐" }} · 가로 {{ horizontal ? "켜짐" : "꺼짐" }} ·
+        세로 {{ vertical ? "켜짐" : "꺼짐" }}, 가로 {{ horizontal ? "켜짐" : "꺼짐" }},
         축마다 눈금 {{ projection.layout.axes[0]?.ticks.length }}개
       </output>
       <UIButton size="sm" variant="outline" :aria-pressed="vertical" @click="vertical = !vertical">세로 보조선</UIButton>

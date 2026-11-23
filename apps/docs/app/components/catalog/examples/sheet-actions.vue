@@ -34,7 +34,7 @@ const archived = ref(false);
       </UISheet>
     </div>
     <template #footer>
-      <output>{{ archived ? "보관함" : "작업 목록" }} · 사본 {{ copies }}개</output>
+      <output>{{ archived ? "보관함" : "작업 목록" }} (사본 {{ copies }}개)</output>
     </template>
   </PlaygroundExample>
 </template>

@@ -43,7 +43,7 @@ function reset() {
 <template>
   <UIDataSurface>
     <template #toolbar>
-      <output aria-live="polite">{{ selected.length }}개 선택 · {{ archived }}개 보관</output>
+      <output aria-live="polite">{{ selected.length }}개 선택, {{ archived }}개 보관</output>
       <UIButton size="sm" :disabled="!selected.length" @click="archive">
         <template #leading><Archive /></template>선택 항목 보관
       </UIButton>

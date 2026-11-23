@@ -31,7 +31,7 @@ function toggle(id: number) {
       </template>
     </UIVirtualGrid>
     <template #footer>
-      <output aria-live="polite">{{ chosen.length }}개 선택 · 합계 {{ total }}g</output>
+      <output aria-live="polite">{{ chosen.length }}개 선택, 합계 {{ total }}g</output>
       <UIButton variant="outline" size="sm" :disabled="chosen.length === 0" @click="chosen = []">선택 지우기</UIButton>
     </template>
   </UIDataSurface>

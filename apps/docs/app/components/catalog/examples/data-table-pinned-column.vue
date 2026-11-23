@@ -32,7 +32,7 @@ const number = new Intl.NumberFormat("ko-KR");
 
 <template>
   <UIDataSurface>
-    <template #toolbar><strong>채널별 월간 요청</strong><output>1–8월 · 건</output></template>
+    <template #toolbar><strong>채널별 월간 요청</strong><output>1–8월 요청 건수</output></template>
     <div data-ui-tabular-scroll tabindex="0" role="region" aria-label="월간 요청 가로 스크롤">
       <Table.Provider>
         <Table.Root class="monthly-table" aria-label="채널별 월간 요청">

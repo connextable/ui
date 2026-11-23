@@ -34,6 +34,6 @@ const code = computed(() => vueExampleCode("UITagsInput", {
       <UISwitch variant="outline" v-model="reorderable" size="sm" label="reorderable" />
     </template>
     <UITagsInput v-model="tags" v-bind="attributes" />
-    <template #footer><output>{{ tags.length }}개 · {{ tags.join(", ") || "등록한 태그 없음" }}</output></template>
+    <template #footer><output>{{ tags.length ? `태그 ${tags.length}개 (${tags.join(", ")})` : "등록한 태그 없음" }}</output></template>
   </PlaygroundExample>
 </template>

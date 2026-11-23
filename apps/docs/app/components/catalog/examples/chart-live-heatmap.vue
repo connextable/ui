@@ -40,7 +40,7 @@ watchEffect(onCleanup => {
     </UIChartCartesian>
     <UIChartPlot><UIChartRenderer /></UIChartPlot>
     <UIChartActions>
-      <output aria-live="off">{{ columns[0]?.label }}–{{ columns.at(-1)?.label }} · 최근 {{ windowSize }}분</output>
+      <output aria-live="off">최근 {{ windowSize }}분 ({{ columns[0]?.label }}–{{ columns.at(-1)?.label }})</output>
       <UIButton size="sm" variant="outline" @click="running = !running">{{ running ? "일시정지" : "재생" }}</UIButton>
     </UIChartActions>
   </UIChart>

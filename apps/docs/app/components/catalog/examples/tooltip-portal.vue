@@ -15,7 +15,7 @@ import {
     <UITooltipPortal>
       <UITooltipContent>
       <UITooltipArrow />
-      키보드 단축키 · ⌘K
+      키보드 단축키 ⌘K
       </UITooltipContent>
     </UITooltipPortal>
   </UITooltip>

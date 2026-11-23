@@ -27,6 +27,6 @@ function submit({ values }: UIFormSubmitEvent) {
         <UIFormSubmit size="sm">제출</UIFormSubmit>
       </UIFormActions>
     </UIForm>
-    <template #footer><output>{{ submitted ? `제출한 이름 · ${submitted}` : "제출 전" }}</output></template>
+    <template #footer><output>{{ submitted ? `${submitted} 제출 완료` : "제출 전" }}</output></template>
   </PlaygroundExample>
 </template>

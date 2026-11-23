@@ -25,12 +25,12 @@ const rows = new Map(calls.map(call => [call.id, call]));
       v-for="panel in panels"
       :key="panel.id"
       :dom="{
-        accessibilityLabel: `상담 시간과 점수 · ${panel.label}`,
+        accessibilityLabel: `상담 시간과 점수 (${panel.label})`,
         accessibilityLimit: 48,
         renderPolicy: { type: 'fixed', maximumRepresentatives: panel.maximum },
         getAccessibleDatumLabel: id => {
           const row = rows.get(String(id));
-          return row ? `${row.time}분 · ${row.score}점` : String(id);
+          return row ? `${row.time}분에 ${row.score}점` : String(id);
         },
       }"
     >
@@ -44,7 +44,7 @@ const rows = new Map(calls.map(call => [call.id, call]));
         <UIChartPlot><UIChartRenderer /></UIChartPlot>
         <UIChartActions>
           <output v-if="projection">
-            {{ calls.length }}개 표본 · {{ panel.id === "raw" ? "관측점" : "집계 원" }} {{ projection.diagnostics.emittedPrimitives }}개
+            {{ calls.length }}개 표본, {{ panel.id === "raw" ? "관측점" : "집계 원" }} {{ projection.diagnostics.emittedPrimitives }}개
           </output>
         </UIChartActions>
       </template>

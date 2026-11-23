@@ -77,7 +77,7 @@ onUnmounted(() => clearInterval(timer));
     </UIChartCartesian>
     <UIChartPlot><UIChartRenderer /></UIChartPlot>
     <UIChartActions>
-      <output aria-live="off">{{ updateLabel }} · 관측 #{{ latest.id + 1 }} · {{ latest.count }}건</output>
+      <output aria-live="off">{{ updateLabel }}, 관측 #{{ latest.id + 1 }} ({{ latest.count }}건)</output>
       <UIButton variant="outline" size="sm" @click="toggleRunning">
         {{ running ? "일시정지" : "재생" }}
       </UIButton>

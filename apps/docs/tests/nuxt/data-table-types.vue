@@ -24,13 +24,13 @@ createTableData({ rows: [{ id: "invoice", cells: { paidOn: new Date() } }], colu
 <template>
   <UIDataTable :data="data" label="Invoices">
     <template #cell="{ columnID, row, value }">
-      <span v-if="columnID === 'amount'">{{ value.toFixed(0) }} · {{ row.cells.status }}</span>
+      <span v-if="columnID === 'amount'">{{ value.toFixed(0) }} ({{ row.cells.status }})</span>
       <span v-else>{{ value.toUpperCase() }}</span>
     </template>
   </UIDataTable>
   <UIDataGrid :data="dateData" label="Invoice grid">
     <template #cell="{ columnID, value, row }">
-      <span>{{ value?.toUpperCase() }} · {{ row.cells.amount.toFixed(0) }}</span>
+      <span>{{ value?.toUpperCase() }} ({{ row.cells.amount.toFixed(0) }})</span>
       <!-- @vue-expect-error The slot only receives registered columns. -->
       <span v-if="columnID === 'amount'">{{ value }}</span>
       <!-- @vue-expect-error A missing cell produces null. -->

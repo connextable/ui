@@ -93,7 +93,7 @@ function paste(event: ClipboardEvent, scope: TagsInputRootSlotProps) {
     input.dispatchEvent(new Event("input", { bubbles: true }));
   }
   const added = drafts.length - skipped;
-  notice.value = skipped ? `${added}개 추가 · ${skipped}개 제외` : `${added}개 추가`;
+  notice.value = skipped ? `${added}개를 추가하고 ${skipped}개를 제외했습니다.` : `${added}개 추가`;
 }
 
 </script>

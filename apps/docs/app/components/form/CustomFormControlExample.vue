@@ -9,7 +9,7 @@ const disabled = ref(false);
 const message = ref("");
 
 function submit({ values }: UIFormSubmitEvent) {
-  message.value = typeof values.reference === "string" ? `제출한 참조 번호 · ${values.reference}` : "제출된 참조 번호 없음";
+  message.value = typeof values.reference === "string" ? `참조 번호 ${values.reference} 제출 완료` : "제출된 참조 번호 없음";
 }
 </script>
 

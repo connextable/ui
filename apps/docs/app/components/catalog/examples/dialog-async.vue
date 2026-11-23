@@ -46,7 +46,7 @@ onBeforeUnmount(() => clearTimeout(timer));
       </UIDialog>
     </div>
     <template #footer v-if="didSave">
-      <output>저장된 알림 · {{ saved }}</output>
+      <output>저장된 알림 <strong>{{ saved }}</strong></output>
     </template>
   </PlaygroundExample>
 </template>

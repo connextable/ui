@@ -33,7 +33,7 @@ async function changeStep(review: boolean) {
           <UIDialogContent>
             <UIDialogTitle ref="title" tabindex="-1">{{ reviewing ? "부여할 권한 확인" : "정산 보고서 권한" }}</UIDialogTitle>
             <UIDialogDescription>정지우 님이 11월 정산 보고서에서 할 수 있는 작업을 지정합니다.</UIDialogDescription>
-            <p v-if="reviewing">부여할 권한 · {{ roles.find(option => option.value === role)?.label }}</p>
+            <p v-if="reviewing">부여할 권한 <strong>{{ roles.find(option => option.value === role)?.label }}</strong></p>
             <UIRadioGroup v-else v-model="role" :options="roles" label="보고서 권한" />
             <template #footer-leading>{{ reviewing ? "2 / 2단계" : "1 / 2단계" }}</template>
             <template #actions>

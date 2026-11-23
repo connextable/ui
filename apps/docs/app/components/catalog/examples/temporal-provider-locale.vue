@@ -3,8 +3,8 @@ import { UIButton, UIDateField, UIFormActions, UITemporalProvider, UITimeField }
 import { ref } from "vue";
 
 const locales = [
-  { value: "ko-KR-u-hc-h23", label: "한국어 · 24시간제" },
-  { value: "en-US-u-hc-h12", label: "영어(미국) · 12시간제" },
+  { value: "ko-KR-u-hc-h23", label: "한국어 (24시간제)" },
+  { value: "en-US-u-hc-h12", label: "미국 영어 (12시간제)" },
 ] as const;
 const locale = ref<string>(locales[0].value);
 const date = ref({ year: 2026, month: 8, day: 22 });

@@ -49,7 +49,10 @@ const Table = createUIDataTableComponents(table);
       </Table.Root>
     </Table.Provider>
     <template #footer>
-      <output aria-live="polite">{{ opened ? `${opened.cells.name} · ${opened.cells.note}` : "상세 버튼을 눌러 사용 목적을 확인하세요." }}</output>
+      <output aria-live="polite">
+        <template v-if="opened"><strong>{{ opened.cells.name }}</strong> {{ opened.cells.note }}</template>
+        <template v-else>상세 버튼을 눌러 사용 목적을 확인하세요.</template>
+      </output>
     </template>
   </UIDataSurface>
 </template>

@@ -44,7 +44,7 @@ watchEffect(onCleanup => {
     </UIChartCartesian>
     <UIChartPlot><UIChartRenderer /></UIChartPlot>
     <UIChartActions>
-      <output aria-live="off">{{ latest.hour }} 집계 중 · {{ latest.count }}건</output>
+      <output aria-live="off">{{ latest.hour }}에 {{ latest.count }}건 집계 중</output>
       <UIButton size="sm" variant="outline" @click="running = !running">{{ running ? "일시정지" : "재생" }}</UIButton>
     </UIChartActions>
   </UIChart>

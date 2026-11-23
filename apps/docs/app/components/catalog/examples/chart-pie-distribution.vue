@@ -33,7 +33,7 @@ const share = new Intl.NumberFormat("ko-KR", { style: "percent", maximumFraction
       </UIChartRadial>
       <UIChartPlot><UIChartRenderer /></UIChartPlot>
       <UIChartActions>
-        <output>{{ period.name }} · 방문 {{ count.format(total) }}건</output>
+        <output>{{ period.name }} 방문 {{ count.format(total) }}건</output>
         <UIButton size="sm" variant="outline" :disabled="month === 0" @click="month--">이전 달</UIButton>
         <UIButton size="sm" variant="outline" :disabled="month === periods.length - 1" @click="month++">다음 달</UIButton>
       </UIChartActions>

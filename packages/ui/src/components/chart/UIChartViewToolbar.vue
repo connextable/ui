@@ -33,7 +33,7 @@ const { top, right, bottom, left } = DEFAULT_CHART_PLOT_INSETS;
 const insets = { "--ui-chart-view-insets": `${top}px ${right}px ${bottom}px ${left}px` };
 
 function actionLabel(axis: string, action: ViewAction) {
-  return `${axis} · ${labels[action] ?? defaults[action]}`;
+  return `${axis} ${labels[action] ?? defaults[action]}`;
 }
 </script>
 

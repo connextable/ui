@@ -111,7 +111,7 @@ const dom = {
   accessibilityLimit: 48,
   renderPolicy: { type: "fixed", maximumRepresentatives: 16_384 } as const,
   getAccessibleDatumLabel: (id: number | string) =>
-    typeof id === "number" ? `${time.format(id * minute)} · ${number.format(requestCount(id))}건` : String(id),
+    typeof id === "number" ? `${time.format(id * minute)}에 ${number.format(requestCount(id))}건` : String(id),
 };
 </script>
 
@@ -143,8 +143,8 @@ const dom = {
       <output v-if="projection" aria-live="off">
         {{ windowLabel(state?.view ?? null) }} UTC
         <br>
-        캐시 {{ sampleCount / minutesPerDay }}일 · {{ number.format(sampleCount) }}개 관측값
-        · 그린 점 {{ number.format(projection.diagnostics.emittedPrimitives) }}개
+        캐시한 관측값 {{ number.format(sampleCount) }}개 ({{ sampleCount / minutesPerDay }}일),
+        그린 점 {{ number.format(projection.diagnostics.emittedPrimitives) }}개
       </output>
     </UIChartActions>
   </UIChart>

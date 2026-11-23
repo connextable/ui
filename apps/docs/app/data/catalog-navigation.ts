@@ -1,6 +1,6 @@
 export const catalogNavigation = [
   { title: "동작", slugs: ["button", "toolbar", "copy-to-clipboard", "async-action"] },
-  { title: "입력·폼", slugs: [
+  { title: "입력 폼", slugs: [
     "input", "editable", "pin-input", "tags-input",
     "number-field", "spin-button", "quantity-field", "slider", "multi-thumb-slider",
     "file-input", "file-upload", "form",
@@ -10,7 +10,7 @@ export const catalogNavigation = [
     "select", "listbox", "combobox", "cascade-list", "cascade-select", "tree-select",
     "transfer", "color-picker", "rating",
   ] },
-  { title: "날짜·시간", slugs: [
+  { title: "날짜와 시간", slugs: [
     "calendar", "date-field", "date-picker", "range-calendar", "date-range-field", "date-range-picker",
     "time-field", "time-picker", "time-range-field",
     "date-time-field", "date-time-picker", "date-time-range-field", "date-time-range-picker",
@@ -20,7 +20,7 @@ export const catalogNavigation = [
   { title: "메뉴", slugs: ["menu-button", "menu", "context-menu", "menubar"] },
   { title: "오버레이", slugs: ["dialog", "alert-dialog", "confirm-provider", "drawer", "sheet", "popover", "tooltip"] },
   { title: "레이아웃", slugs: ["dashboard", "window-splitter", "scroll-area", "infinite-scroll", "disclosure", "accordion"] },
-  { title: "콘텐츠·미디어", slugs: ["image", "carousel", "lightbox", "fullscreen", "media-gesture", "feed"] },
+  { title: "콘텐츠와 미디어", slugs: ["image", "carousel", "lightbox", "fullscreen", "media-gesture", "feed"] },
   { title: "상태 표시", slugs: ["toast", "spinner", "progress", "meter", "meter-group", "timer"] },
   { title: "표와 그리드", slugs: ["data-table", "grid", "data-grid", "tree-grid", "data-tree-grid"] },
   { title: "데이터", slugs: ["chart", "reorder", "tree-reorder"] },

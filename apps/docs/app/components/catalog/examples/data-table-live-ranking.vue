@@ -36,7 +36,7 @@ watchEffect(onCleanup => {
 <template>
   <UIDataSurface>
     <template #toolbar>
-      <output>가상 집계 · {{ updateCount }}회 갱신</output>
+      <output>가상 집계 {{ updateCount }}회 갱신</output>
       <UIButton size="sm" variant="outline" @click="running = !running">{{ running ? "일시정지" : "재생" }}</UIButton>
     </template>
     <Table.Provider>

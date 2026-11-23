@@ -36,6 +36,6 @@ const code = computed(() => vueExampleCode("UISlider", {
       <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
     </template>
     <UISlider v-model="value" v-bind="attributes" />
-    <template #footer><output>밝기 · {{ value }}%</output></template>
+    <template #footer><output>밝기 <strong>{{ value }}%</strong></output></template>
   </PlaygroundExample>
 </template>

@@ -31,6 +31,6 @@ const code = computed(() => vueExampleCode("UIEditable", {
       <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
     </template>
     <UIEditable v-model="text" v-bind="attributes" />
-    <template #footer><output>확정한 이름 · {{ text || "없음" }}</output></template>
+    <template #footer><output>확정한 이름 <strong>{{ text || "없음" }}</strong></output></template>
   </PlaygroundExample>
 </template>

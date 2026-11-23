@@ -13,7 +13,7 @@ function choose(value: string, close: () => void) {
 
 <template>
   <UISheet
-    :trigger-label="`정렬 · ${chosen}`"
+    :trigger-label="`정렬 (${chosen})`"
     side="bottom"
     swipe-to-dismiss
     title="문서 정렬"

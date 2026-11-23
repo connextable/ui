@@ -42,7 +42,7 @@ export const bunnyExcerpt: UILightboxVideo = {
   id: "bunny",
   kind: "video",
   label: "빅 벅 버니 예고편",
-  description: "© 2008 Blender Foundation / www.bigbuckbunny.org · CC BY 3.0 · 예고편 일부",
+  description: "예고편 일부. © 2008 Blender Foundation (www.bigbuckbunny.org), CC BY 3.0.",
   poster: "/lightbox/bunny-poster.jpg",
   sources: [{ src: "/lightbox-media/bunny-excerpt", type: "video/mp4" }],
   tracks: [{ src: "/lightbox/bunny.ko.vtt", srclang: "ko", label: "한국어" }],

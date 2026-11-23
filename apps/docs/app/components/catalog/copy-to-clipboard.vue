@@ -17,7 +17,7 @@ const orderNumber = "ORD-2026-0148";
       </div>
       <template #footer>
         <output>
-          {{ copied ? "주문번호를 복사했습니다." : status === "failed" ? "복사 실패 · 번호를 직접 복사해 주세요." : "복사 대기 중" }}
+          {{ copied ? "주문번호를 복사했습니다." : status === "failed" ? "복사에 실패했습니다. 번호를 직접 복사해 주세요." : "복사 대기 중" }}
         </output>
       </template>
     </PlaygroundExample>

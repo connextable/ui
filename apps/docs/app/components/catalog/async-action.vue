@@ -31,7 +31,7 @@ const createExport = createUIAsyncAction(async ({ signal }) => {
       </div>
       <template #footer>
         <output>
-          {{ pending ? '준비 중…' : status === 'failed' ? '준비 실패 · 다시 시도해 주세요.' : result ? `${result} 준비 완료` : '내보내기 대기 중' }}
+          {{ pending ? '준비 중…' : status === 'failed' ? '준비에 실패했습니다. 다시 시도해 주세요.' : result ? `${result} 준비 완료` : '내보내기 대기 중' }}
         </output>
       </template>
     </PlaygroundExample>
