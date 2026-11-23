@@ -46,7 +46,14 @@ if (import.meta.client) {
     </div>
     <div class="playground-code-block__actions">
       <span role="status">{{ copyStatus === "copied" ? "복사됨" : copyStatus === "failed" ? "복사 실패" : "" }}</span>
-      <UIIconButton aria-label="Vue 코드 복사" title="Vue 코드 복사" size="sm" variant="outline" @click="copyCode">
+      <UIIconButton
+        class="playground-code-block__copy"
+        aria-label="Vue 코드 복사"
+        title="Vue 코드 복사"
+        size="sm"
+        variant="ghost"
+        @click="copyCode"
+      >
         <Check v-if="copyStatus === 'copied'" />
         <Copy v-else />
       </UIIconButton>
@@ -66,14 +73,13 @@ if (import.meta.client) {
   display: flex;
   align-items: center;
   gap: var(--ui-space-xs);
-  border-radius: var(--ui-radius-sm);
-  background: var(--ui-color-surface);
   color: var(--ui-color-text-muted);
   font-size: var(--ui-font-size-metadata);
 }
 
-.playground-code-block__actions > span:not(:empty) {
-  padding-inline-start: var(--ui-space-xs);
+.playground-code-block__actions > .playground-code-block__copy[data-variant="ghost"] {
+  --ui-button-hover: transparent;
+  --ui-button-pressed: transparent;
 }
 
 .playground-code-block :deep(pre) {
