@@ -7,8 +7,9 @@ import { useInputState } from "../control-attrs";
 import { useCompositeValueForm } from "../form/composite-value";
 
 type PinInputInstance = InstanceType<typeof PinInputRoot>;
-type PinInputWithPlaceholder = new () => Omit<PinInputInstance, "$props"> & {
-  $props: PinInputInstance["$props"] & { placeholder?: string; onCompletion?: (completed: boolean) => void };
+type PinInputComponent = new () => Omit<PinInputInstance, "$props" | "$emit"> & {
+  $props: Omit<PinInputInstance["$props"], "onComplete"> & { placeholder?: string; onCompletion?: (completed: boolean) => void };
+  $emit: InstanceType<typeof PinInputComposition>["$emit"];
 };
 
 const inputSelector = '[data-scope="pin-input"][data-part="input"]';
@@ -29,7 +30,6 @@ const PinInputComposition = defineComponent({
   },
   emits: {
     "update:modelValue": (_value: string) => true,
-    complete: (_value: string) => true,
     completion: (_completed: boolean) => true,
   },
   setup(props, { attrs, slots, emit }) {
@@ -60,7 +60,6 @@ const PinInputComposition = defineComponent({
       current.splice(start, replacement.length, ...replacement);
       const value = current.join("");
       if (value !== state.value) emit("update:modelValue", value);
-      if (current.length === count) emit("complete", value);
       if (event.currentTarget instanceof HTMLInputElement) {
         const root = event.currentTarget.closest(rootSelector);
         void nextTick(() => root?.querySelectorAll<HTMLInputElement>(inputSelector)[Math.min(count - 1, start + replacement.length)]?.focus());
@@ -87,8 +86,10 @@ const PinInputComposition = defineComponent({
     }
 
     return () => {
+      // The wrapper reports completion from its own model, including clear and paste.
+      const { onComplete: _onComplete, onCompleteOnce: _onCompleteOnce, ...rootAttrs } = attrs;
       const bindings = {
-        ...attrs,
+        ...rootAttrs,
         ...stateAttrs.value,
         modelValue: props.modelValue,
         length: props.length,
@@ -96,7 +97,6 @@ const PinInputComposition = defineComponent({
         readonly: readonly.value,
         disabled: disabled.value,
         "onUpdate:modelValue": (value: string) => { if (editable.value) emit("update:modelValue", value); },
-        onComplete: (value: string) => { if (editable.value) emit("complete", value); },
       };
       if (controlFlag(attrs.asChild ?? attrs["as-child"])) return renderForm(metadata => h(PinInputRoot, { ...metadata, ...bindings }, slots));
       return renderForm(metadata => h(PinInputRoot, mergeProps({ ...metadata, ...bindings }, {
@@ -110,8 +110,8 @@ const PinInputComposition = defineComponent({
       }));
     };
   },
-}) as unknown as PinInputWithPlaceholder;
+});
 
-export const UIPinInput: ClearableComponent<typeof PinInputComposition> = withClearableModel(PinInputComposition, "", {
+export const UIPinInput: ClearableComponent<PinInputComponent> = withClearableModel(PinInputComposition as unknown as PinInputComponent, "", {
   label: "인증 코드 지우기",
 });

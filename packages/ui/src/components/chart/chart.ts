@@ -138,12 +138,15 @@ const themedSuites = new WeakMap<object, object>();
 
 export function createUIChartComponents<ID extends string | number>(controller: Parameters<typeof createChartComponents<ID>>[0]) {
   const suite = createChartComponents(controller);
-  const buildSuite = () => Object.freeze({
-    ...suite,
-    Root: themedRoot(suite.Root as typeof ChartRoot, controller),
-    Plot: UIChartPlot,
-    Legend: UIChartLegend,
-  });
+  const buildSuite = () => {
+    const { Bars: _bars, Canvas: _canvas, Grid: _grid, GridLines: _gridLines, AxisTicks: _axisTicks, Ticks: _ticks, ...parts } = suite;
+    return Object.freeze({
+      ...parts,
+      Root: themedRoot(suite.Root as typeof ChartRoot, controller),
+      Plot: UIChartPlot,
+      Legend: UIChartLegend,
+    });
+  };
   const cached = themedSuites.get(suite) as ReturnType<typeof buildSuite> | undefined;
   if (cached) return cached;
   const themed = buildSuite();

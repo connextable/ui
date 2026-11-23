@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIChart, UIChartBars, UIChartCartesian, UIChartLegend, UIChartPlot, UIChartRenderer, UIChartXAxis, UIChartYAxis } from "@connextable/ui";
+import { UIChart, UIChartBar, UIChartCartesian, UIChartLegend, UIChartPlot, UIChartRenderer, UIChartXAxis, UIChartYAxis } from "@connextable/ui";
 
 const channels = [
   { id: "web", label: "웹" },
@@ -52,7 +52,7 @@ const format = new Intl.NumberFormat("ko-KR");
     <UIChartCartesian>
       <UIChartXAxis id="month" scale="categorical" field="slot" :ticks="groups.length" :domain="{ kind: 'categorical', values: groups }" />
       <UIChartYAxis id="count" scale="linear" field="count" :domain="{ kind: 'numeric', minimum: 0, maximum: 1200 }" :ticks="5" label="주문 수" unit="건" />
-      <UIChartBars v-for="layer in layers" :id="layer.id" :key="layer.id" :data="layer.data" :label="layer.label" x-axis="month" y-axis="count" />
+      <UIChartBar v-for="layer in layers" :id="layer.id" :key="layer.id" :data="layer.data" :label="layer.label" x-axis="month" y-axis="count" />
     </UIChartCartesian>
     <UIChartPlot><UIChartRenderer /></UIChartPlot>
   </UIChart>

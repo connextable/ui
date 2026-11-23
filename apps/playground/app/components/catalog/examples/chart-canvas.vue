@@ -2,7 +2,7 @@
 import {
   UIChart,
   UIChartActions,
-  UIChartCanvas,
+  UIChartRenderer,
   UIChartCartesian,
   UIChartLegend,
   UIChartLine,
@@ -113,7 +113,7 @@ function copyDetail(scale: number, { layout, viewport }: Projection) {
             <UIChartLine id="waveform" :data="samples" x-axis="time" y-axis="amplitude" label="진폭 (V)" />
           </UIChartCartesian>
           <UIChartPlot>
-            <UIChartCanvas />
+            <UIChartRenderer />
             <span v-if="projection?.layout" class="canvas-comparison__area" :style="detailStyle(projection.layout.plot)" aria-hidden="true" />
           </UIChartPlot>
           <UIChartActions>
