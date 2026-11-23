@@ -46,11 +46,10 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
   },
   "in-view": {
-    framed: true,
-    title: "스크롤로 새 알림 확인",
-    description: "알림 목록을 아래로 내려 보세요. 새 알림이 화면에 전부 들어오면 카드가 잠깐 강조되고, ‘확인함’으로 바뀌면서 아래의 새 알림 수가 줄어듭니다.",
+    title: "스크롤로 사진 등장 효과 주기",
+    description: "미리보기 안에서 아래로 스크롤해 보세요. 사진 영역의 60%가 보이는 순간 사진이 위로 살짝 올라오며 선명해집니다. 이미 본 사진은 다시 내려와도 그대로 보입니다.",
     api: {
-      "as / as-child": "기본 요소는 div입니다. as-child로 기존 li 또는 article 한 개를 관찰 대상으로 사용합니다.",
+      "as / as-child": "기본 요소는 div입니다. as-child로 슬롯의 단일 요소를 관찰 대상으로 사용합니다.",
       root: "안쪽 스크롤 영역을 지정합니다. 생략하거나 null을 넘기면 문서 뷰포트를 관찰합니다.",
       "root-margin": "관찰 영역을 늘리거나 줄입니다. 아래쪽 여백을 늘리면 요소가 보이기 전에 자료를 준비할 수 있습니다.",
       threshold: { default: "0", description: "보여야 하는 요소 면적의 비율입니다. 0부터 1 사이 값을 사용합니다." },

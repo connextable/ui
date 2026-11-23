@@ -1,123 +1,89 @@
 <script setup lang="ts">
-import { UIDataStatus, UIInView } from "@connextable/ui";
-import { Check } from "@lucide/vue";
-import { computed, ref } from "vue";
+import { UIInView } from "@connextable/ui";
 
-const notifications = [
-  { id: 1, title: "초안 공유", detail: "민지가 새 도움말 초안을 올렸습니다." },
-  { id: 2, title: "검토 완료", detail: "도움말에 수정 의견 2개가 달렸습니다." },
-  { id: 3, title: "수정본 도착", detail: "검토 의견을 반영한 초안이 올라왔습니다.", fresh: true },
-  { id: 4, title: "공개 일정 확정", detail: "새 도움말은 금요일 오전 10시에 공개됩니다.", fresh: true },
+const photos = [
+  { src: "/lightbox/pink-flower.jpg", caption: "연분홍 꽃잎", alt: "연분홍 꽃잎이 여러 겹으로 포개진 모습" },
+  { src: "/lightbox/purple-flowers.jpg", caption: "보랏빛 꽃 무리", alt: "작은 보라색 꽃들이 모여 핀 모습" },
 ];
-
-const confirmed = ref(new Set<number>());
-const remaining = computed(() =>
-  notifications.filter(item => item.fresh && !confirmed.value.has(item.id)).length,
-);
 </script>
 
 <template>
-  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
-    <div class="notification-demo">
-      <header><strong>프로젝트 알림</strong></header>
-      <ul class="notification-demo__list ui-scrollbar" aria-label="프로젝트 알림 목록" tabindex="0">
-        <UIInView
-          v-for="item in notifications"
-          :key="item.id"
-          :disabled="!item.fresh"
-          :threshold="1"
-          once
-          as-child
-          @enter="confirmed.add(item.id)"
-        >
-          <li class="notification-demo__item" :data-confirmed="confirmed.has(item.id) || undefined">
-            <div>
-              <strong>{{ item.title }}</strong>
-              <p>{{ item.detail }}</p>
-            </div>
-            <UIDataStatus
-              v-if="item.fresh"
-              :tone="confirmed.has(item.id) ? 'success' : 'accent'"
-              :icon="confirmed.has(item.id) ? Check : undefined"
-            >
-              {{ confirmed.has(item.id) ? "확인함" : "새 알림" }}
-            </UIDataStatus>
-          </li>
-        </UIInView>
-      </ul>
-    </div>
-    <template #footer>
-      <output>{{ remaining ? `새 알림 ${remaining}개` : "새 알림 없음" }}</output>
-    </template>
-  </PlaygroundExample>
+  <section class="photo-story ui-scrollbar" aria-label="봄꽃 사진 모음" tabindex="0">
+    <header class="photo-story__intro">
+      <strong>봄꽃 가까이 보기</strong>
+    </header>
+    <figure v-for="photo in photos" :key="photo.src">
+      <UIInView v-slot="{ hasEntered }" :threshold="0.6" once fallback as-child>
+        <div class="photo-story__frame" :data-revealed="hasEntered || undefined">
+          <img :src="photo.src" :alt="photo.alt" />
+        </div>
+      </UIInView>
+      <figcaption>{{ photo.caption }}</figcaption>
+    </figure>
+  </section>
 </template>
 
 <style scoped>
-.notification-demo {
-  inline-size: min(100%, 28rem);
-  overflow: hidden;
+.photo-story {
+  box-sizing: border-box;
+  inline-size: min(100%, 26rem);
+  block-size: 16rem;
+  overflow: auto;
   border: 1px solid var(--ui-color-border);
   border-radius: var(--ui-radius-md);
 }
 
-.notification-demo header {
-  padding: var(--ui-space-md);
-  background: var(--ui-color-surface);
-  border-block-end: 1px solid var(--ui-color-border);
-}
-
-.notification-demo__list {
-  block-size: 14rem;
-  overflow: auto;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.notification-demo__list:focus-visible {
+.photo-story:focus-visible {
   outline: var(--ui-focus-ring-width) solid var(--ui-color-focus);
   outline-offset: calc(-1 * var(--ui-focus-ring-width));
 }
 
-.notification-demo__item {
+.photo-story__intro {
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  align-content: center;
-  gap: var(--ui-space-sm);
-  min-block-size: 6rem;
+  place-items: center;
+  min-block-size: 9.5rem;
   padding: var(--ui-space-md);
-  border-block-end: 1px solid var(--ui-color-border);
+  background: var(--ui-color-surface);
+  text-align: center;
+  font-size: 1.125rem;
 }
 
-.notification-demo__item p {
-  margin: var(--ui-space-xs) 0 0;
+.photo-story figure {
+  margin: var(--ui-space-md);
+}
+
+.photo-story figcaption {
+  margin-block-start: var(--ui-space-xs);
   color: var(--ui-color-text-muted);
   font-size: var(--ui-font-size-body-sm);
 }
 
-.notification-demo__item .ui-data-status {
-  justify-content: center;
-  min-inline-size: 4.5rem;
-  white-space: nowrap;
+.photo-story__frame {
+  aspect-ratio: 16 / 10;
+  min-block-size: 10rem;
+  overflow: hidden;
+  border-radius: var(--ui-radius-sm);
+  background: var(--ui-color-surface);
+}
+
+.photo-story__frame img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .notification-demo__item[data-confirmed] {
-    animation: notification-confirmed calc(var(--ui-motion-standard) * 3) var(--ui-ease-out);
+  .photo-story__frame img {
+    transition:
+      opacity calc(var(--ui-motion-standard) * 3) var(--ui-ease-out),
+      transform calc(var(--ui-motion-standard) * 3) var(--ui-ease-out);
   }
 
-  @keyframes notification-confirmed {
-    0%, 30% {
-      background-color: var(--ui-color-accent-soft);
-      box-shadow: inset 0 0 0 2px var(--ui-color-accent);
-    }
-
-    100% {
-      background-color: transparent;
-      box-shadow: inset 0 0 0 0 transparent;
-    }
+  .photo-story__frame:not([data-revealed]) img {
+    opacity: 0.2;
+    transform: translateY(1rem) scale(0.96);
   }
 }
 </style>
