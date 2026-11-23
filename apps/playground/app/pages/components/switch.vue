@@ -64,8 +64,6 @@ definePageMeta({
           <SwitchIconExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>
-    </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="practical-examples" title="실전 예제">
       <PlaygroundFormSection>
         <PlaygroundExample
           id="switch-form"

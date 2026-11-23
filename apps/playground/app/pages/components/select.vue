@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import SelectIconExample from "~/components/select/SelectIconExample.vue";
 import iconSource from "~/components/select/SelectIconExample.vue?example-code&raw";
-import SelectControlledOpenExample from "~/components/examples/SelectControlledOpenExample.vue";
-import SelectControlledOpenExampleSource from "~/components/examples/SelectControlledOpenExample.vue?example-code&raw";
 import SelectReadonlyExample from "~/components/examples/SelectReadonlyExample.vue";
 import SelectReadonlyExampleSource from "~/components/examples/SelectReadonlyExample.vue?example-code&raw";
 import SelectTypeaheadExample from "~/components/examples/SelectTypeaheadExample.vue";
@@ -77,13 +75,7 @@ const parts = {
           <SelectIconExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>
-    </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="practical-examples" title="실전 예제">
-      <PlaygroundExampleSection id="examples" title="외부 제어와 긴 목록">
-        <PlaygroundExample id="select-controlled-open" title="열림 상태 제어"
-          description="외부 버튼의 동작을 v-model:open에 연결합니다." :source="SelectControlledOpenExampleSource" :heading-level="3">
-          <SelectControlledOpenExample />
-        </PlaygroundExample>
+      <PlaygroundExampleSection id="examples" title="긴 옵션 목록">
         <PlaygroundExample
           id="select-content-scroll"
           title="긴 옵션 목록"

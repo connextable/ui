@@ -2,12 +2,8 @@
 import InputLongValueExample from "~/components/examples/InputLongValueExample.vue";
 import InputLongValueExampleSource from "~/components/examples/InputLongValueExample.vue?example-code&raw";
 import InputExample from "~/components/examples/InputExample.vue";
-import InputMultilineExample from "~/components/examples/InputMultilineExample.vue";
-import multilineSource from "~/components/examples/InputMultilineExample.vue?example-code&raw";
 import InputLeadingExample from "~/components/examples/InputLeadingExample.vue";
 import inputLeadingSource from "~/components/examples/InputLeadingExample.vue?example-code&raw";
-import InputTrailingExample from "~/components/examples/InputTrailingExample.vue";
-import inputTrailingSource from "~/components/examples/InputTrailingExample.vue?example-code&raw";
 import InputReadonlyExample from "~/components/examples/InputReadonlyExample.vue";
 import inputReadonlyExampleSource from "~/components/examples/InputReadonlyExample.vue?example-code&raw";
 import InputStatesExample from "~/components/examples/InputStatesExample.vue";
@@ -29,29 +25,14 @@ definePageMeta({
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
       <PlaygroundExampleSection id="input-layouts" title="입력 모양과 안쪽 액션">
-        <PlaygroundExample :heading-level="3"
-          id="input-multiline"
-          title="여러 줄 입력"
-          description="multiline을 사용하면 여러 줄을 입력할 수 있습니다. v-model에 연결한 상태에 초기 내용을 지정합니다."
-          :source="multilineSource"
-        >
-          <InputMultilineExample />
-        </PlaygroundExample>
+        <InputExample multiline />
         <PlaygroundExample :heading-level="3"
           id="input-leading"
-          title="앞쪽 슬롯"
-          description="leading 슬롯에 입력값 앞에 표시할 접두사를 넣습니다."
+          title="주소의 고정 접두사와 접미사"
+          description="leading과 trailing으로 주소의 고정 부분을 배치합니다. 입력 모델에는 사용자가 입력한 팀 주소만 들어갑니다."
           :source="inputLeadingSource"
         >
           <InputLeadingExample />
-        </PlaygroundExample>
-        <PlaygroundExample :heading-level="3"
-          id="input-trailing"
-          title="입력값 지우기"
-          description="clearable을 지정하면 값이 있을 때 지우기 버튼이 표시됩니다. clear-label로 버튼 이름을 지정합니다."
-          :source="inputTrailingSource"
-        >
-          <InputTrailingExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>
       <PlaygroundExampleSection id="input-states-section" title="읽기 전용과 오류">
@@ -72,8 +53,6 @@ definePageMeta({
           <InputStatesExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>
-    </PlaygroundExampleSection>
-    <PlaygroundExampleSection id="practical-examples" title="실전 예제">
       <PlaygroundExampleSection id="examples" title="좁은 너비의 입력">
         <PlaygroundExample id="input-long" title="좁은 검색창에서 아이콘 표시"
           description="icon으로 검색 아이콘을 지정합니다. 긴 검색어의 끝으로 이동해도 아이콘과 지우기 버튼은 제자리를 유지합니다." :source="InputLongValueExampleSource" :heading-level="3">

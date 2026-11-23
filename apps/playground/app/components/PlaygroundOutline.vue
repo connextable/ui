@@ -87,12 +87,14 @@ watch(() => props.content, (content, _previous, onCleanup) => {
     return;
   }
   const collectHeadings = () => {
-    headings.value = Array.from(content.querySelectorAll<HTMLElement>(headingSelector), element => ({
+    const all = Array.from(content.querySelectorAll<HTMLElement>(headingSelector), element => ({
       element,
       id: element.id,
       text: element.textContent?.trim() ?? "",
       level: Number(element.tagName.slice(1)),
     }));
+    const firstLevel = Math.min(...all.map(heading => heading.level));
+    headings.value = all.filter(heading => heading.level <= firstLevel + 1);
     onScroll();
   };
   collectHeadings();

@@ -66,7 +66,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "navigation-menu": {
     sections: [
       { id: "examples", title: "메뉴 구성", section: "structure" },
-      { id: "navigation-menu-behavior", title: "탐색 동작", section: "behavior", phase: "examples" },
+      { id: "navigation-menu-behavior", title: "탐색 동작", section: "behavior" },
     ],
     examples: [
       { id: "navigation-menu-links", section: "structure", title: "직접 이동과 현재 페이지", description: "current에 현재 링크의 id를 지정하면 해당 링크에 aria-current가 적용됩니다.", parts: ["UINavigationMenuPopover"] },
@@ -403,13 +403,11 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "cascade-select": {
     sections: [
       { id: "examples", title: "선택 상태와 표시", section: "usage-options" },
-      { id: "cascade-select-examples-2", title: "외부에서 선택 창 열기", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "cascade-select-icons", section: "usage-options", title: "선택 목록의 계층 아이콘", description: "노드의 icon을 지정하고 목록을 열어 각 열에서 아이콘을 확인합니다." },
       { id: "cascade-select-disabled", section: "usage-options", title: "선택할 수 없는 경로", description: "서울 옵션을 비활성화한 상태에서 지역을 탐색합니다." },
       { id: "cascade-select-markers", section: "usage-options", title: "선택과 하위 계층 표시", description: "체크는 선택값, 꺾쇠는 다음 단계가 있는 항목을 표시합니다.", parts: ["UICascadeSelectItemIndicator", "UICascadeSelectItemChevron"] },
-      { id: "cascade-select-controlled", section: "examples-2", title: "별도 버튼으로 지역 선택 열기", description: "바깥 버튼에서 선택 창의 열림 상태를 제어합니다." },
     ],
     title: "목록을 열어 계층 안에서 선택",
     description: "트리거에서 지역 목록을 열고 각 열의 항목을 선택합니다. 다음 열에는 선택한 항목의 하위 항목이 나타납니다.",
@@ -426,7 +424,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "color-picker": {
     sections: [
       { id: "examples", title: "색상 입력과 표시 형식", section: "usage-options" },
-      { id: "color-picker-examples-2", title: "대체 입력 방식", section: "examples-2", phase: "examples" },
+      { id: "color-picker-examples-2", title: "대체 입력 방식", section: "examples-2" },
     ],
     examples: [
       { id: "color-picker-text", section: "usage-options", title: "텍스트로 색상 입력", description: "HEX 값을 입력해 선택색을 바꿉니다.", parts: ["UIColorPickerTextInput"] },
@@ -459,7 +457,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
     sections: [
       { id: "number-field-states-section", title: "입력 상태", section: "states" },
-      { id: "examples", title: "숫자 편집과 확정", section: "editing", phase: "examples" },
+      { id: "examples", title: "숫자 편집과 확정", section: "editing" },
       { id: "form", title: "폼", section: "form", phase: "examples" },
     ],
     examples: [
@@ -495,15 +493,11 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   editable: {
     framed: true,
     sections: [
-      { id: "editable-states", title: "확정과 편집 상태", section: "states" },
       { id: "editable-validation-settings", title: "편집 내용 검증", section: "validation" },
       { id: "examples", title: "문서 안에서 이름 수정", section: "inline", phase: "examples" },
     ],
     examples: [
-      { id: "editable-cancel", section: "states", title: "편집 취소", description: "문구를 수정하고 Escape로 기존 문구를 복원합니다." },
       { id: "editable-display-name", section: "inline", title: "배포 경로에서 이름 바꾸기", description: "경로의 마지막 이름을 눌러 같은 자리에서 수정합니다." },
-      { id: "editable-blur", section: "states", title: "바깥을 눌러 확정", description: "submit-on-blur를 지정하고 편집 영역 밖을 누르면 값을 확정합니다." },
-      { id: "editable-readonly", section: "states", title: "인라인 편집 잠금", description: "readonly를 지정하면 문구를 표시하고 편집 시작을 막습니다." },
       { id: "editable-validation", section: "validation", title: "이름 길이 제한", description: "policies.validate로 이름을 검사합니다. 세 글자 미만이면 편집을 유지하므로 같은 자리에서 수정할 수 있습니다." },
     ],
     title: "표시 중인 값을 바로 편집",
@@ -574,7 +568,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
     sections: [
       { id: "slider-settings", title: "방향·간격·읽기 전용", section: "settings" },
-      { id: "examples", title: "값 서식", section: "format", phase: "examples" },
+      { id: "examples", title: "값 서식", section: "format" },
     ],
     examples: [
       { id: "slider-vertical", section: "settings", title: "세로 방향", description: "손잡이를 위아래로 움직여 값을 바꿉니다." },
@@ -587,7 +581,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     framed: true,
     sections: [
       { id: "spin-button-settings", title: "증감 간격과 범위", section: "settings" },
-      { id: "examples", title: "수량과 시간 조절", section: "editing", phase: "examples" },
+      { id: "examples", title: "수량과 시간 조절", section: "editing" },
     ],
     examples: [
       { id: "spin-button-page-step", section: "settings", title: "큰 단위 증감", description: "Page Up과 Page Down으로 한 번에 다섯 단위를 움직입니다." },
@@ -610,14 +604,12 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   stepper: {
     sections: [
       { id: "examples", title: "단계 표시와 배치", section: "usage-options" },
-      { id: "stepper-examples-2", title: "외부 제어", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "stepper-icons", section: "usage-options", title: "단계 이름 옆 아이콘", description: "items의 icon을 지정해 배송과 결제 단계를 구분합니다." },
       { id: "stepper-indicator", section: "usage-options", title: "완료한 단계 표시", description: "단계 이름 옆에 완료 및 현재 상태를 표시합니다." },
       { id: "stepper-disabled", section: "usage-options", title: "진입할 수 없는 단계", description: "검토 단계를 비활성화합니다." },
       { id: "stepper-vertical", section: "usage-options", title: "세로 단계 목록", description: "세로 목록에서 서로 다른 단계를 선택합니다." },
-      { id: "stepper-controlled", section: "examples-2", title: "별도 버튼으로 단계 이동", description: "스테퍼 바깥의 버튼에서 v-model을 바꾸면 선택된 단계와 본문이 함께 바뀝니다." },
     ],
     title: "여러 단계 사이를 이동",
     description: "items로 단계의 이름과 설명을 전달합니다. 기본 이전·다음 버튼으로 이동하면 현재 단계의 설명이 표시됩니다.",
@@ -647,7 +639,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
     sections: [
       { id: "examples", title: "검색과 입력 상태", section: "usage-options" },
-      { id: "combobox-examples-2", title: "검색 결과와 외부 제어", section: "examples-2", phase: "examples" },
+      { id: "combobox-examples-2", title: "검색 결과와 입력 구성", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "combobox-icons", section: "usage-options", title: "검색 결과의 항목 아이콘", description: "items의 icon은 검색 결과에 표시됩니다. 아래 방향키로 목록을 열고 항목을 선택합니다." },
@@ -655,7 +647,6 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "combobox-input-control", section: "usage-options", title: "검색어 지우기", description: "외부 버튼이 선택값과 독립된 검색어만 지웁니다." },
       { id: "combobox-async-search", section: "examples-2", title: "응답을 기다리는 검색", description: "검색을 연달아 입력해도 마지막 요청의 결과만 표시합니다." },
       { id: "combobox-editor", section: "examples-2", title: "사용자 편집 요소", description: "UIComboboxEditor의 자식으로 UIInput을 전달해 검색 편집 동작을 연결합니다.", parts: ["UIComboboxEditor"] },
-      { id: "combobox-controlled", section: "examples-2", title: "선택값을 외부에서 제어", description: "서울이나 파리를 검색해서 선택해 보세요. v-model로 선택한 id를 읽고, 버튼으로 선택을 해제합니다." },
     ],
   },
   "file-input": {
@@ -775,14 +766,13 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "tree-select": {
     sections: [
       { id: "examples", title: "계층 탐색과 선택", section: "usage-options" },
-      { id: "tree-select-examples-2", title: "검색 결과와 선택값", section: "examples-2", phase: "examples" },
+      { id: "tree-select-examples-2", title: "검색 결과", section: "examples-2" },
     ],
     examples: [
       { id: "tree-select-icons", section: "usage-options", title: "트리 선택 항목의 아이콘", description: "노드의 icon을 지정하고 선택 목록을 열어 폴더와 팀 아이콘을 확인합니다." },
       { id: "tree-select-multiple", section: "usage-options", title: "계층에서 여러 값 선택", description: "디자인 아래 두 항목을 모두 선택할 수 있습니다." },
       { id: "tree-select-disclosure", section: "usage-options", title: "하위 팀 펼치기", description: "화살표를 누르면 하위 팀을 펼치거나 접습니다. 팀 이름을 누르면 해당 팀을 선택합니다.", parts: ["UITreeSelectContent", "UITreeSelectDisclosure", "UITreeSelectGroup", "UITreeSelectItem"] },
       { id: "tree-select-disabled-branch", section: "usage-options", title: "잠긴 가지 건너뛰기", description: "디자인 팀의 가지와 자식은 비활성으로 두고 개발 팀의 웹을 선택합니다." },
-      { id: "tree-select-value", section: "examples-2", framed: true, title: "선택된 노드 읽기", description: "입력에는 팀 이름이 표시되고 v-model에 연결한 노드 ID는 아래에서 확인할 수 있습니다." },
       { id: "tree-select-search-empty", section: "examples-2", title: "검색 결과가 없을 때 표시", description: "아래 방향키로 트리를 열고 ‘화면’과 ‘운영’을 입력해 결과를 비교합니다.", parts: ["UITreeSelectField", "UITreeSelectInput"] },
     ],
     title: "계층형 팀 목록에서 선택",
@@ -801,12 +791,10 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "tree-view": {
     sections: [
       { id: "examples", title: "노드 상태", section: "usage-options" },
-      { id: "tree-view-examples-2", title: "외부에서 펼치기", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "tree-view-icons", section: "usage-options", title: "폴더와 파일 아이콘", description: "노드의 icon에 Vue 컴포넌트를 전달해 폴더와 파일을 구분합니다." },
       { id: "tree-view-disabled", section: "usage-options", title: "선택할 수 없는 노드", description: "Settings 노드는 선택할 수 없습니다." },
-      { id: "tree-view-controlled", section: "examples-2", title: "외부에서 폴더 펼치기", description: "모두 펼치기를 눌러 외부에서 확장 상태를 변경합니다." },
     ],
     title: "폴더의 하위 항목 펼치기",
     description: "폴더 옆 화살표나 방향키로 하위 항목을 펼칩니다. v-model:expanded-values로 펼친 폴더의 id를 읽습니다.",
@@ -864,27 +852,18 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "pin-input": {
     framed: true,
-    sections: [
-      { id: "pin-input-settings", title: "코드 표시", section: "settings" },
-      { id: "examples", title: "인증 코드 입력", section: "editing", phase: "examples" },
-    ],
-    examples: [
-      { id: "pin-input-masked", section: "settings", title: "코드 가리기", description: "mask를 지정하면 입력한 코드가 가려집니다." },
-      { id: "pin-input-complete", section: "editing", framed: true, title: "입력 완료 이벤트", description: "네 자리 입력을 마치면 완료 메시지가 나타납니다." },
-      { id: "pin-input-paste", section: "editing", title: "코드 붙여넣기", description: "첫 칸에 2846을 붙여넣으면 네 칸을 채웁니다." },
-      { id: "pin-input-correct", section: "editing", title: "코드의 한 자리만 수정", description: "세 번째 칸의 숫자를 선택하고 새 숫자를 입력하면 나머지 칸은 그대로 유지됩니다." },
-    ],
     title: "여섯 자리 인증 코드 입력",
-    description: "숫자를 입력한 뒤 readonly와 disabled를 켜보세요. 읽기 전용에서는 칸에 포커스를 둘 수 있고, 비활성에서는 Tab으로 칸을 건너뜁니다.",
+    description: "코드를 한 자리씩 입력하거나 통째로 붙여넣습니다. 완료 상태는 completion-change에서 읽을 수 있습니다. 표시와 입력 상태는 위 설정으로 바꿉니다.",
     api: {
       length: "입력할 코드 자리 수를 지정합니다.",
       "v-model": "입력한 코드를 문자열로 연결합니다.",
-      placeholder: { type: "string", default: "–", description: "아직 채우지 않은 각 칸에 표시할 짧은 기호나 문구입니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
+      placeholder: { type: "string", default: "◦", description: "아직 채우지 않은 각 칸에 표시할 기호입니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
       mask: "입력한 문자를 가립니다.",
       clearable: "모든 칸을 비우는 버튼을 표시합니다.",
       readonly: { description: "입력한 코드를 표시하고 칸의 포커스를 유지합니다. 타이핑, 붙여넣기, 지우기로 값이 바뀌지 않습니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
       disabled: { description: "모든 칸의 입력과 키보드 포커스를 비활성화합니다. 연결된 값은 유지합니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
-      "@complete": "모든 칸이 채워지면 입력한 코드를 전달합니다.",
+      "@completion-change": { type: "(completed: boolean) => void", description: "모든 자리를 채우면 true, 다시 비어 있는 자리가 생기면 false를 전달합니다. 값은 v-model에서 읽습니다.", example: { id: "basic-example", title: "여섯 자리 인증 코드 입력" } },
+      "@complete": "기존 코드에서 사용하는 완료 이벤트입니다. 모든 칸이 채워지면 입력한 코드 문자열을 전달합니다.",
       "Input index": "이 입력 칸이 맡는 0부터 시작하는 인덱스입니다.",
     },
   },
@@ -935,9 +914,6 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     examples: [
       { id: "tags-input-paste", framed: true, title: "여러 태그 붙여넣기", description: "예제 문자열을 복사해 붙여넣으세요. 새 태그는 추가되고, 이미 있는 ‘디자인’은 제외됩니다.", section: "editing" },
       { id: "tags-input-reorder", title: "태그 순서 바꾸기", description: "칩을 끌어 놓거나, 손잡이에서 Space를 누른 뒤 방향키로 옮기고 Enter로 확정합니다. Escape로 취소하거나 Alt+방향키로 바로 옮길 수도 있습니다.", section: "editing" },
-      { id: "tags-input-clear", title: "태그 한 번에 지우기", description: "입력창 오른쪽 버튼으로 선택된 태그를 모두 지웁니다.", section: "editing", parts: ["UITagsInputClear"] },
-      { id: "tags-input-external-draft", title: "외부 버튼으로 입력값 채우기", description: "버튼으로 초안을 채우고 Enter로 태그를 확정합니다.", section: "editing" },
-      { id: "tags-input-duplicates", title: "중복 태그 제한", description: "이미 있는 ‘Vue’를 다시 입력하면 새 태그가 생기지 않습니다.", section: "policies" },
       { id: "tags-input-normalize", title: "태그 정규화", description: "TypeScript를 입력하면 소문자인 typescript로 저장됩니다.", section: "policies" },
       { id: "tags-input-limit", framed: true, title: "태그 개수 제한", description: "새 주제를 두 개까지 등록할 수 있습니다. 입력창 아래에서 현재 개수를 확인하세요.", section: "policies" },
       { id: "tags-input-readonly", title: "긴 태그를 읽기 전용으로 표시", description: "긴 태그는 너비에 맞춰 줄바꿈됩니다.", section: "composition" },
@@ -957,14 +933,12 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
     sections: [
       { id: "examples", title: "배치와 활성화 방식", section: "usage-options" },
-      { id: "tabs-examples-2", title: "외부에서 탭 전환", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "tabs-icons", section: "usage-options", title: "탭 이름 앞 아이콘", description: "items의 icon을 지정해 개요와 설정 탭을 구분합니다." },
       { id: "tabs-vertical", section: "usage-options", title: "세로 탭", description: "위와 아래 방향키로 탭 사이를 이동합니다." },
       { id: "tabs-disabled", section: "usage-options", title: "비활성 탭", description: "activity를 비활성화하면 방향키 탐색에서 건너뜁니다." },
       { id: "tabs-manual", section: "usage-options", title: "키보드로 수동 활성화", description: "activation-mode를 manual로 지정합니다. 방향키는 포커스만 이동하고 Enter 또는 Space로 탭을 엽니다." },
-      { id: "tabs-external", section: "examples-2", title: "선택을 외부에서 제어", description: "외부 버튼을 누르면 설정 탭과 패널이 함께 활성화됩니다." },
     ],
   },
   menu: {
@@ -1064,14 +1038,12 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
     sections: [
       { id: "examples", title: "펼침 방식과 항목 상태", section: "usage-options" },
-      { id: "accordion-examples-2", title: "외부에서 섹션 열기", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "accordion-icons", section: "usage-options", title: "섹션 이름 앞 아이콘", description: "items의 icon에 Vue 컴포넌트를 전달해 섹션을 구분합니다." },
       { id: "accordion-collapse", section: "usage-options", title: "현재 항목도 닫기", description: "열린 항목을 다시 눌러 목록을 모두 닫을 수 있습니다." },
       { id: "accordion-disabled", section: "usage-options", title: "비활성 항목", description: "danger 항목을 disabled-items에 지정합니다." },
       { id: "accordion-multiple", section: "usage-options", title: "여러 섹션 함께 열기", description: "type을 multiple로 지정하고 각각의 헤더를 눌러 동시에 펼칩니다." },
-      { id: "accordion-controlled", section: "examples-2", title: "외부 버튼으로 섹션 열기", description: "같은 값에 연결된 외부 버튼에서 설정 섹션을 엽니다." },
     ],
   },
   carousel: {
@@ -1087,13 +1059,11 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
     sections: [
       { id: "examples", title: "캐러셀 조작과 표시", section: "usage-options" },
-      { id: "carousel-examples-2", title: "외부에서 슬라이드 전환", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "carousel-indicators", section: "usage-options", title: "인디케이터로 바로 이동", description: "점 버튼을 눌러 해당 슬라이드로 이동합니다. 채워진 점이 현재 슬라이드를 나타냅니다." },
       { id: "carousel-autoplay", section: "usage-options", title: "자동 전환과 일시 정지", description: "슬라이드 전환을 기다린 뒤 일시 정지 버튼을 누릅니다. 같은 자리에서 자동 재생을 다시 시작할 수 있습니다." },
       { id: "carousel-viewport", section: "usage-options", title: "보이는 슬라이드 영역", description: "Viewport로 Track의 넘침을 제한합니다.", parts: ["UICarouselViewport"] },
-      { id: "carousel-controlled", section: "examples-2", title: "외부 버튼에서 슬라이드 이동", description: "v-model에 새로운 슬라이드 id를 지정해 캐러셀 바깥에서 현재 슬라이드를 변경합니다." },
     ],
   },
   feed: {
@@ -1179,25 +1149,22 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
     sections: [
       { id: "examples", title: "페이지 표시와 이동", section: "usage-options" },
-      { id: "pagination-examples-2", title: "페이지 크기와 외부 제어", section: "examples-2", phase: "examples" },
+      { id: "pagination-examples-2", title: "페이지 크기", section: "examples-2" },
     ],
     examples: [
       { id: "pagination-siblings", section: "usage-options", title: "인접 페이지 수 조절", description: "현재 페이지 양쪽에 한 페이지씩 표시하고 떨어진 범위는 생략합니다." },
       { id: "pagination-edges", section: "usage-options", title: "첫 페이지와 마지막 페이지로 이동", description: "범위의 양 끝으로 곧바로 이동합니다. 이미 도착한 방향의 버튼은 비활성화됩니다.", parts: ["UIPaginationFirst", "UIPaginationLast"] },
       { id: "pagination-empty", section: "usage-options", title: "데이터가 없을 때", description: "빈 결과에서는 이동 항목이 없는 상태를 확인합니다." },
       { id: "pagination-page-size", section: "examples-2", title: "페이지 크기 변경", description: "한 페이지에 표시할 수를 바꾸면 전체 페이지 수가 달라집니다." },
-      { id: "pagination-controlled", section: "examples-2", title: "현재 페이지를 외부에서 읽기", description: "v-model과 items-per-page를 함께 지정합니다. 다음·이전 버튼을 누르면 바깥의 페이지 표시도 바뀝니다." },
     ],
   },
   timer: {
     sections: [
       { id: "examples", title: "카운트다운과 자동 실행", section: "usage-options" },
-      { id: "timer-examples-2", title: "타이머 다시 시작", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "timer-countdown", section: "usage-options", title: "카운트다운", description: "시간을 줄여 0에 도달하는 동작을 확인합니다.", parts: ["UITimerControl"] },
       { id: "timer-auto-start", section: "usage-options", title: "자동 시작", description: "버튼을 누르기 전부터 시간이 흐릅니다." },
-      { id: "timer-reset", section: "examples-2", title: "진행된 시간을 0초로 초기화", description: "타이머를 시작하고 초기화 버튼을 누르면 0초로 돌아옵니다." },
     ],
     title: "타이머 시작과 정지",
     description: "경과 시간을 분과 초로 표시합니다. 같은 버튼에서 시작, 일시 정지, 계속을 실행하고 초기화로 0에 돌아갑니다.",
@@ -1348,7 +1315,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     sections: [
       { id: "examples", title: "셀 탐색과 행 선택", section: "navigation" },
       { id: "grid-editing", title: "셀 편집과 검증", section: "editing", phase: "examples" },
-      { id: "grid-query", title: "정렬과 필터", section: "query", phase: "examples" },
+      { id: "grid-query", title: "정렬과 필터", section: "query" },
     ],
     examples: [
       { id: "data-grid-cursor", section: "navigation", title: "현재 포커스된 셀 읽기", description: "셀을 클릭하고 방향키로 이동하면 그리드 밖의 요약도 갱신됩니다.", parts: ["useUIDataGridContext"] },
@@ -1409,7 +1376,6 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
     examples: [
       { id: "tree-grid-headers", section: "usage-options", title: "열 제목 파트", description: "그리드의 열 제목을 Header와 HeaderCell로 구성합니다.", parts: ["UITreeGridHeader", "UITreeGridHeaderCell"] },
-      { id: "tree-grid-expand", section: "usage-options", title: "외부에서 열림 상태 제어", description: "목록 바깥의 버튼으로 모든 그룹을 펼치거나 접습니다." },
       { id: "tree-grid-edit", section: "examples-2", title: "하위 행의 담당자 편집", description: "웹사이트 담당자 옆 연필 버튼을 누르세요. Enter로 적용하고 Escape로 취소합니다.", parts: ["UITreeGridEditor", "UITreeGridGroup", "UITabularEditTrigger"] },
       { id: "tree-grid-documents", section: "examples-2", title: "폴더와 파일을 계층으로 탐색", description: "팀 문서와 회의 기록을 차례로 펼칩니다. 깊이가 다른 항목을 들여쓰기로 읽을 수 있습니다." },
     ],
@@ -1634,27 +1600,27 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
     sections: [
       { id: "examples", title: "표시와 날짜 선택 조건", section: "usage-options" },
-      { id: "calendar-examples-2", title: "입력 연결과 날짜 탐색", section: "examples-2", phase: "examples" },
+      { id: "calendar-examples-2", title: "입력 연결", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "calendar-with-time", section: "usage-options", framed: true, title: "날짜와 방문 시간 고르기", description: "v-model:time을 연결해 달력에서 날짜를 고르고 아래 목록에서 시와 분을 선택합니다." },
       { id: "calendar-week", section: "usage-options", title: "주 단위 보기", description: "default-view를 week로 지정하면 한 주를 먼저 표시합니다. 이전·다음 버튼으로 주를 이동합니다." },
       { id: "calendar-unavailable", section: "usage-options", title: "선택을 제한한 날짜", description: "8월 24일을 선택할 수 없는 날짜로 표시합니다." },
       { id: "calendar-input", section: "examples-2", title: "입력과 달력의 날짜 제출", description: "날짜 입력과 달력이 선택값을 공유합니다. 제출한 날짜는 values.releaseDate에서 읽습니다.", parts: ["UICalendarInput"] },
-      { id: "calendar-year", section: "examples-2", title: "월을 찾는 연도 뷰", description: "이전·다음 연도로 이동하고 월을 선택합니다.", parts: ["UICalendarMonthCell", "UICalendarNextYear", "UICalendarPreviousYear"] },
+      { id: "calendar-year", section: "usage-options", title: "월을 찾는 연도 뷰", description: "이전·다음 연도로 이동하고 월을 선택합니다.", parts: ["UICalendarMonthCell", "UICalendarNextYear", "UICalendarPreviousYear"] },
     ],
   },
   "range-calendar": {
     sections: [
       { id: "examples", title: "달력 표시와 선택 제한", section: "usage-options" },
-      { id: "range-calendar-examples-2", title: "입력 연결과 날짜 탐색", section: "examples-2", phase: "examples" },
+      { id: "range-calendar-examples-2", title: "입력 연결", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "range-calendar-with-time", section: "usage-options", framed: true, title: "숙박 날짜와 입·퇴실 시간 고르기", description: "시작과 종료 시간에 각각 모델을 연결합니다. 두 시각은 날짜 범위와 독립적으로 바꿀 수 있습니다." },
       { id: "range-calendar-week", section: "usage-options", title: "주 단위 범위", description: "주 단위로 이동하면서 기간을 고릅니다.", parts: ["UIRangeCalendarNextWeek", "UIRangeCalendarPreviousWeek"] },
       { id: "range-calendar-bounds", section: "usage-options", title: "범위 선택의 최소·최대 날짜", description: "8월 20일과 27일 사이에서만 시작 및 종료 날짜를 고를 수 있습니다." },
       { id: "range-calendar-inputs", section: "examples-2", title: "선택한 기간 제출", description: "범위를 고른 뒤 제출하면 values.start와 values.end에서 시작일과 종료일을 읽습니다.", parts: ["UIRangeCalendarStartInput", "UIRangeCalendarEndInput"] },
-      { id: "range-calendar-year", section: "examples-2", title: "연도를 옮겨 원하는 월 선택", description: "연도 뷰에서 월을 선택하면 해당 달의 날짜로 전환합니다.", parts: ["UIRangeCalendarMonthCell", "UIRangeCalendarNextYear", "UIRangeCalendarPreviousYear", "UIRangeCalendarMonthViewTrigger", "UIRangeCalendarYearViewTrigger"] },
+      { id: "range-calendar-year", section: "usage-options", title: "연도를 옮겨 원하는 월 선택", description: "연도 뷰에서 월을 선택하면 해당 달의 날짜로 전환합니다.", parts: ["UIRangeCalendarMonthCell", "UIRangeCalendarNextYear", "UIRangeCalendarPreviousYear", "UIRangeCalendarMonthViewTrigger", "UIRangeCalendarYearViewTrigger"] },
     ],
     title: "달력에서 시작일과 종료일 고르기",
     description: "시작일을 누른 다음 종료일을 선택하면 두 날짜 사이의 구간이 표시됩니다. 연·월 제목을 눌러 다른 달을 바로 찾을 수 있습니다.",
@@ -1678,14 +1644,13 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
     sections: [
       { id: "examples", title: "입력 형태와 상태", section: "usage-options" },
-      { id: "date-field-examples-2", title: "범위 연결", section: "examples-2", phase: "examples" },
       { id: "form", title: "폼 제출", section: "form", phase: "examples" },
     ],
     examples: [
       { id: "date-field-explicit-format", section: "usage-options", title: "한 날짜 입력의 서식 지정", description: "이 입력에만 일/월/년 순서를 적용합니다. 25/08/2026을 입력하고 Enter로 확정합니다." },
       { id: "date-field-readonly", section: "usage-options", title: "확정된 날짜", description: "확정한 날짜를 읽고 수정은 제한합니다." },
       { id: "date-field-invalid", section: "usage-options", title: "존재하지 않는 날짜 고치기", description: "8월 32일을 입력하고 확정해 보세요. 31일로 고치면 아래 확정값이 바뀝니다." },
-      { id: "date-field-range", section: "examples-2", title: "입력 가능한 날짜 범위 제한", description: "policies에서 2026년 8월의 시작일과 종료일을 지정합니다. 다른 달의 날짜를 입력하고 확정해 보세요." },
+      { id: "date-field-range", section: "usage-options", title: "입력 가능한 날짜 범위 제한", description: "policies에서 2026년 8월의 시작일과 종료일을 지정합니다. 다른 달의 날짜를 입력하고 확정해 보세요." },
       { id: "date-field-submit", title: "날짜 값 제출", description: "UIFormField로 날짜 입력의 폼 키를 지정합니다.", section: "form" },
     ],
   },
@@ -1924,7 +1889,6 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
     examples: [
       { id: "year-picker-bounds", section: "usage-options", title: "선택 가능한 연도", description: "2025년부터 2030년까지의 연도를 입력하거나 목록에서 선택합니다." },
-      { id: "year-picker-controlled", section: "examples-2", title: "외부에서 조사 연도 지정", description: "버튼으로 연도를 2030년으로 바꾸면 선택기의 입력값도 바뀝니다." },
       { id: "year-picker-portal", section: "examples-2", title: "연도 선택 포털", description: "연도 목록을 포털 안에 렌더링합니다.", parts: ["UIYearPickerPortal"] },
     ],
     title: "연도 목록에서 졸업 연도 선택",

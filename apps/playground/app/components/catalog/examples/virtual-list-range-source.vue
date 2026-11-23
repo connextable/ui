@@ -38,7 +38,7 @@ onScopeDispose(() => pending.forEach(timer => clearTimeout(timer)));
       @plan-change="plan => loadRange(plan.placements.filter(item => item.visible).map(item => Number(item.id)))">
       <template #item="{ value }">
         <UIDataLabel v-if="cache.has(value)" :label="`#${value} · ${cache.get(value)}`" />
-        <template v-else><UISpinner size="sm" /> <span>#{{ value }} · 불러오는 중</span></template>
+        <template v-else><UISpinner /> <span>#{{ value }} · 불러오는 중</span></template>
       </template>
     </UIVirtualList>
     <template #footer><output>{{ cache.size }}건을 받아 두었습니다.</output></template>

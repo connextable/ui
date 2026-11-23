@@ -12,7 +12,7 @@ const copied = ref(false);
   <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
     <UIToolbar :items="items" label="문단 도구" @invoke="value => { if (value === 'copy') copied = true }">
       <UIToolbarItem value="bold" as-child>
-        <UIToggleButton v-model:pressed="bold" aria-label="굵게">
+        <UIToggleButton v-model="bold" aria-label="굵게">
           <Bold :size="16" aria-hidden="true" />
         </UIToggleButton>
       </UIToolbarItem>

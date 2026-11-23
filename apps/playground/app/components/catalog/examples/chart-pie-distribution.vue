@@ -29,7 +29,7 @@ const share = new Intl.NumberFormat("ko-KR", { style: "percent", maximumFraction
     <template #default>
       <UIChartLegend :items="rows.map(row => ({ label: row.label, value: share.format(row.count / total) }))" />
       <UIChartRadial>
-        <UIChartPie id="channels" :data="rows" value-field="count" label-field="label" :outer-radius="0.9" />
+        <UIChartPie id="channels" :data="rows" value-field="count" label-field="label" />
       </UIChartRadial>
       <UIChartPlot><UIChartRenderer /></UIChartPlot>
       <UIChartActions>

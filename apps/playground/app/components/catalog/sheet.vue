@@ -22,7 +22,7 @@ function choose(value: string, close: () => void) {
     <template #body="{ close }">
       <div class="sort-options">
         <UIButton
-          v-for="choice in choices" :key="choice" align="start"
+          v-for="choice in choices" :key="choice"
           :variant="choice === chosen ? 'outline' : 'ghost'"
           @click="choose(choice, close)"
         >{{ choice }}</UIButton>
@@ -35,5 +35,9 @@ function choose(value: string, close: () => void) {
 .sort-options {
   display: grid;
   gap: var(--ui-space-xs);
+}
+
+.sort-options > .ui-button {
+  justify-content: start;
 }
 </style>

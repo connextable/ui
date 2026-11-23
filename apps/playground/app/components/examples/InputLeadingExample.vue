@@ -2,17 +2,18 @@
 import { UIInput } from "@connextable/ui";
 import { ref, useId } from "vue";
 
-const domain = ref("");
+const subdomain = ref("");
 const id = useId();
 </script>
 
 <template>
   <div class="ui-field">
-    <label :for="id">웹사이트 주소</label>
-    <UIInput :id="id" v-model="domain" :aria-describedby="`${id}-description`" inputmode="url" placeholder="example.com">
+    <label :for="id">워크스페이스 주소</label>
+    <UIInput :id="id" v-model="subdomain" :aria-describedby="`${id}-description`" inputmode="url" placeholder="my-team">
       <template #leading>https://</template>
+      <template #trailing>.example.com</template>
     </UIInput>
-    <small :id="`${id}-description`">도메인만 입력하세요.</small>
+    <small :id="`${id}-description`">example.com 앞에 붙일 팀 주소를 입력하세요.</small>
   </div>
 </template>
 

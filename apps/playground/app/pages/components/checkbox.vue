@@ -58,6 +58,17 @@ definePageMeta({
           <CheckboxIconExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>
+      <PlaygroundFormSection>
+        <PlaygroundExample
+          id="checkbox-form"
+          title="선택값 제출"
+          description="체크하면 해당 값이 values.notifications로 제출됩니다."
+          :source="formSource"
+          :heading-level="3"
+        >
+          <CheckboxFormExample />
+        </PlaygroundExample>
+      </PlaygroundFormSection>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="practical-examples" title="실전 예제">
       <PlaygroundExampleSection id="examples" title="목록에서 일괄 선택">
@@ -71,17 +82,6 @@ definePageMeta({
           <CheckboxSelectAllExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>
-      <PlaygroundFormSection>
-        <PlaygroundExample
-          id="checkbox-form"
-          title="선택값 제출"
-          description="체크하면 해당 값이 values.notifications로 제출됩니다."
-          :source="formSource"
-          :heading-level="3"
-        >
-          <CheckboxFormExample />
-        </PlaygroundExample>
-      </PlaygroundFormSection>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
       <PlaygroundExample id="UICheckboxIndicator" title="UICheckboxIndicator"
