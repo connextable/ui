@@ -13,7 +13,9 @@ export { default as UITabularColumnAction } from "./UITabularColumnAction.vue";
 export { default as UITabularColumnHeading } from "./UITabularColumnHeading.vue";
 export { default as UITabularFilterPopover } from "./UITabularFilterPopover.vue";
 export { default as UITabularEditTrigger } from "./UITabularEditTrigger.vue";
-export { UIDataTable, UIDataGrid, type UIDataColumn, type UIDataRow } from "./local-data";
+export { default as UIDataTable } from "./UIDataTable.vue";
+export { default as UIDataGrid } from "./UIDataGrid.vue";
+export { createTableData, type TableCell, type TableColumn, type TableData, type TableRow } from "./local-data";
 export { createUITabularSource, type UITabularSourceOptions, type UITabularSourceResult } from "./source";
 export {
   createUIDataTableComponents,

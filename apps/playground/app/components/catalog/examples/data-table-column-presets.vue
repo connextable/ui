@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIDataSurface, UIDataTable, UISelect, type UIDataColumn } from "@connextable/ui";
+import { createTableData, UIDataSurface, UIDataTable, UISelect } from "@connextable/ui";
 import { computed, ref } from "vue";
 
 const column = {
@@ -9,7 +9,7 @@ const column = {
   carrier: { id: "carrier", label: "택배사" },
   tracking: { id: "tracking", label: "운송장 번호" },
   destination: { id: "destination", label: "도착지" },
-} satisfies Record<string, UIDataColumn>;
+} as const;
 
 const packingColumns = [column.order, column.location, column.destination, column.units];
 const trackingColumns = [column.order, column.tracking, column.carrier, column.destination];
@@ -23,7 +23,10 @@ const views = [
   { value: "tracking", label: "배송 추적" },
 ];
 const view = ref("packing");
-const columns = computed(() => view.value === "tracking" ? trackingColumns : packingColumns);
+const data = computed(() => createTableData({
+  columns: view.value === "tracking" ? trackingColumns : packingColumns,
+  rows,
+}));
 </script>
 
 <template>
@@ -33,7 +36,7 @@ const columns = computed(() => view.value === "tracking" ? trackingColumns : pac
       <UISelect v-model="view" :options="views" aria-label="주문 목록 보기" size="sm" />
     </template>
     <div data-ui-tabular-scroll tabindex="0" role="region" aria-label="출고 목록 스크롤 영역">
-      <UIDataTable :columns="columns" :rows="rows" class="outbound-orders" label="출고 목록" />
+      <UIDataTable :data="data" class="outbound-orders" label="출고 목록" />
     </div>
   </UIDataSurface>
 </template>

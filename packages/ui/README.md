@@ -96,7 +96,28 @@ const upload = createUIFileUploadAdapter({ url: "/api/uploads" });
 
 ## 표와 그리드에 데이터 연결하기
 
-로컬 데이터는 `UIDataTable`과 `UIDataGrid`의 `columns`, `rows`에 바로 전달합니다. 서버에서 행을 요청하는 화면은 `createUITabularSource`로 응답을 만들어 `useDataTable`, `useDataGrid`, `useDataTreeGrid`의 `source`에 연결합니다.
+로컬 행과 열을 `createTableData`로 묶어 `UIDataTable`이나 `UIDataGrid`의 `data`로 전달합니다. 열 ID는 행의 `cells` 키에서 추론하며, `#cell` 슬롯에서 `columnID`로 분기하면 해당 열의 값 타입을 사용할 수 있습니다.
+
+```vue
+<script setup lang="ts">
+import { createTableData, UIDataTable } from "@connextable/ui";
+
+const table = createTableData({
+  columns: [{ id: "name", label: "보고서" }, { id: "total", label: "건수" }],
+  rows: [{ id: "1", cells: { name: "월간 주문", total: 120 } }],
+});
+</script>
+
+<template>
+  <UIDataTable :data="table" label="보고서">
+    <template #cell="{ columnID, value }">
+      {{ columnID === "total" ? value.toLocaleString("ko-KR") : value }}
+    </template>
+  </UIDataTable>
+</template>
+```
+
+서버에서 행을 요청하는 화면은 `createUITabularSource`로 응답을 만들어 `useDataTable`, `useDataGrid`, `useDataTreeGrid`의 `source`에 연결합니다. 이 컨트롤러들은 페이지, 정렬, 필터 변경을 소스 요청으로 연결합니다.
 
 ```ts
 import { createUITabularSource, useDataTable } from "@connextable/ui";
