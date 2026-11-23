@@ -3,5 +3,5 @@ import { UIAnchor } from "@connextable/ui";
 </script>
 
 <template>
-  <UIAnchor disabled href="/#design-colors">색상 토큰 보기</UIAnchor>
+  <UIAnchor disabled href="/design-system#design-colors">색상 토큰 보기</UIAnchor>
 </template>

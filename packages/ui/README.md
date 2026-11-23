@@ -1,8 +1,122 @@
 # Connextable UI
 
+Vue 3.5.41 이상에서 사용하는 UI 컴포넌트와 컴포저블입니다. 직접 임포트하거나 Vite 플러그인과 Nuxt 모듈로 자동 임포트할 수 있습니다.
+
+## 설치
+
+```sh
+npm install @connextable/ui
+```
+
+## Vue에서 직접 임포트
+
+앱 진입점인 `src/main.ts`에 스타일시트 임포트를 한 번 추가합니다.
+
+```ts
+import "@connextable/ui/styles.css";
+```
+
+`src/App.vue`에서 `UIButton`을 가져와 사용합니다.
+
+```vue
+<script setup lang="ts">
+import { UIButton } from "@connextable/ui";
+</script>
+
+<template>
+  <UIButton>저장</UIButton>
+</template>
+```
+
+## TypeScript
+
+공개 타입 선언은 TypeScript 5.9.3, 6, 7을 지원합니다.
+
+`vue-tsc`로 Vue 템플릿을 검사할 때는 TypeScript 5.9 또는 6을 사용할 수 있습니다.
+
+## Vite
+
+Vite 7.3.x 또는 8.x를 쓰는 Vue 앱에서 자동 임포트 도구를 개발 의존성으로 설치합니다.
+
+```sh
+npm install -D unplugin-vue-components unimport
+```
+
+`vite.config.ts`에 `@vitejs/plugin-vue`와 `@connextable/ui/vite`를 등록합니다.
+
+```ts
+import connextableUI from "@connextable/ui/vite";
+import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [vue(), connextableUI()],
+});
+```
+
+`src/App.vue`에서 컴포넌트를 바로 사용합니다.
+
+```vue
+<template>
+  <UIButton>저장</UIButton>
+</template>
+```
+
+플러그인은 컴포넌트와 컴포저블을 자동 임포트하고, Vite가 처리하는 HTML에 스타일시트를 등록합니다. HTML 엔트리가 없는 빌드에서는 [Vue 직접 임포트 예제](#vue에서-직접-임포트)처럼 앱 진입점에서 스타일시트를 가져옵니다.
+
+### TypeScript 선언 파일 연결
+
+Vite를 한 번 실행하면 프로젝트 루트에 `connextable-ui.d.ts`가 생성됩니다.
+
+```sh
+npx vite
+```
+
+앱을 검사하는 TypeScript 설정 파일의 기존 `include` 배열에 `connextable-ui.d.ts`를 추가합니다. 아래는 `tsconfig.app.json`의 `include` 예제입니다.
+
+```json
+{
+  "include": ["src/**/*", "src/**/*.vue", "connextable-ui.d.ts"]
+}
+```
+
+CI에서 Vite보다 타입 검사를 먼저 실행한다면 생성한 선언 파일을 커밋합니다.
+
+### 컴포넌트 접두사 바꾸기
+
+`vite.config.ts`의 플러그인 옵션에 `prefix`를 지정합니다.
+
+```ts
+import connextableUI from "@connextable/ui/vite";
+import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [vue(), connextableUI({ prefix: "App" })],
+});
+```
+
+`src/App.vue`에서 `AppButton`을 사용합니다. 컴포저블은 `useScrollArea`처럼 기존 이름으로 호출합니다.
+
+```vue
+<template>
+  <AppButton>저장</AppButton>
+</template>
+```
+
+### Vite 플러그인 옵션
+
+| 옵션 | 기본값 | 동작 |
+| --- | --- | --- |
+| `prefix` | `"UI"` | 자동 임포트하는 컴포넌트의 접두사를 지정합니다. |
+| `components` | `true` | 컴포넌트 자동 임포트를 켭니다. `false`이면 `unplugin-vue-components` 설치를 생략할 수 있습니다. |
+| `composables` | `true` | 컴포저블 자동 임포트를 켭니다. `false`이면 `unimport` 설치를 생략할 수 있습니다. |
+| `css` | `true` | HTML 엔트리에 스타일시트를 등록합니다. |
+| `dts` | `"connextable-ui.d.ts"` | 선언 파일의 경로를 정합니다. `false`로 생성을 끌 수 있습니다. |
+
 ## Nuxt 4.5 이상
 
-`nuxt.config.ts`의 `modules`에 `@connextable/ui/nuxt`를 추가합니다.
+Nuxt 앱의 `nuxt.config.ts`에서 `modules`에 `@connextable/ui/nuxt`를 추가합니다. 모듈은 앱에 설치된 Nuxt의 Kit와 Schema를 사용합니다.
 
 ```ts
 export default defineNuxtConfig({
@@ -10,15 +124,13 @@ export default defineNuxtConfig({
 });
 ```
 
-템플릿에서 `UIButton`, `UILightbox` 등 공개 컴포넌트를 바로 사용할 수 있습니다. `useScrollArea`, `useConfirm` 같은 컴포저블과 스타일시트도 모듈이 등록합니다.
+`app/app.vue`에서 컴포넌트를 바로 사용합니다. 컴포저블과 스타일시트도 모듈이 등록합니다.
 
-| `connextableUI` 설정 | 기본값 | 동작 |
-| --- | --- | --- |
-| `prefix` | `"UI"` | Nuxt가 자동 등록하는 컴포넌트 이름의 접두사를 바꿉니다. |
-| `components` | `true` | 컴포넌트 자동 임포트를 켭니다. |
-| `composables` | `true` | 공개 컴포저블 자동 임포트를 켭니다. |
-| `css` | `true` | `@connextable/ui/styles.css`를 등록합니다. |
-| `nuxtLink` | `true` | 버튼, 앵커, 메뉴의 링크를 NuxtLink에 연결합니다. |
+```vue
+<template>
+  <UIButton>저장</UIButton>
+</template>
+```
 
 ### 컴포넌트 접두사 바꾸기
 
@@ -27,9 +139,13 @@ export default defineNuxtConfig({
 ```ts
 export default defineNuxtConfig({
   modules: ["@connextable/ui/nuxt"],
-  connextableUI: { prefix: "App" },
+  connextableUI: {
+    prefix: "App",
+  },
 });
 ```
+
+`app/app.vue`에서 `AppButton`을 사용합니다. 컴포저블은 `useScrollArea`처럼 기존 이름으로 호출합니다.
 
 ```vue
 <template>
@@ -37,7 +153,15 @@ export default defineNuxtConfig({
 </template>
 ```
 
-이 설정에서 `UIInView`는 `<AppInView>`로 자동 등록됩니다. 컴포저블은 `prefix`와 관계없이 `useScrollArea`, `useConfirm` 같은 이름으로 등록됩니다. 직접 import할 때는 `@connextable/ui`에서 `UIButton`, `useScrollArea`를 가져옵니다.
+### Nuxt 모듈 옵션
+
+| `connextableUI` 설정 | 기본값 | 동작 |
+| --- | --- | --- |
+| `prefix` | `"UI"` | 자동 임포트하는 컴포넌트의 접두사를 지정합니다. |
+| `components` | `true` | 컴포넌트 자동 임포트를 켭니다. |
+| `composables` | `true` | 컴포저블 자동 임포트를 켭니다. |
+| `css` | `true` | `@connextable/ui/styles.css`를 등록합니다. |
+| `nuxtLink` | `true` | 버튼, 앵커, 메뉴의 링크를 NuxtLink에 연결합니다. |
 
 ## 링크로 이동하기
 

@@ -1,33 +1,44 @@
 <script setup lang="ts">
 import { UICopyToClipboard, UIIconButton } from "@connextable/ui";
 import { Check, Copy } from "@lucide/vue";
-import { shallowRef, useTemplateRef, watch } from "vue";
+import { useId, useTemplateRef } from "vue";
+import type { CodeLanguage } from "~/utils/highlight-example-code";
 
-const props = defineProps<{ code?: string }>();
-const highlighted = shallowRef<{ code: string; html: string }>();
+const props = withDefaults(defineProps<{
+  code?: string;
+  language?: CodeLanguage;
+  label?: string;
+  filename?: string;
+}>(), { language: "vue" });
 const content = useTemplateRef<HTMLDivElement>("content");
 const getSource = () => content.value?.querySelector("pre code")?.textContent;
 
-if (import.meta.client) {
-  watch(() => props.code, async (code, _, onCleanup) => {
-    if (code === undefined) return;
-    let current = true;
-    onCleanup(() => { current = false; });
+const { data: highlighted } = useAsyncData(
+  `playground-code:${useId()}`,
+  async () => {
+    const { code, language } = props;
+    if (code === undefined) return { code, language };
     try {
       const { highlightExampleCode } = await import("~/utils/highlight-example-code");
-      const html = await highlightExampleCode(code);
-      if (current) highlighted.value = { code, html };
+      return { code, language, html: await highlightExampleCode(code, language) };
     } catch {
-      // The plain source stays available while highlighting is unavailable.
+      return { code, language };
     }
-  }, { immediate: true });
-}
+  },
+  { immediate: props.code !== undefined, lazy: true, deep: false, watch: [() => props.code, () => props.language] },
+);
 </script>
 
 <template>
   <div class="playground-code-block">
-    <div ref="content" class="playground-code-block__content">
-      <div v-if="highlighted && highlighted.code === code" v-html="highlighted.html" />
+    <div v-if="filename" class="playground-code-block__filename"><code>{{ filename }}</code></div>
+    <div
+      ref="content"
+      class="playground-code-block__content"
+      :role="label || filename ? 'region' : undefined"
+      :aria-label="label ?? filename"
+    >
+      <div v-if="highlighted?.html && highlighted.code === code && highlighted.language === language" v-html="highlighted.html" />
       <pre v-else-if="code !== undefined" tabindex="0"><code>{{ code }}</code></pre>
       <slot v-else />
     </div>
@@ -36,8 +47,8 @@ if (import.meta.client) {
         <span role="status">{{ copied ? "복사됨" : status === "failed" ? "복사 실패" : "" }}</span>
         <UIIconButton
           class="playground-code-block__copy"
-          aria-label="Vue 코드 복사"
-          title="Vue 코드 복사"
+          aria-label="코드 복사"
+          title="코드 복사"
           size="sm"
           variant="ghost"
           :loading="pending"
@@ -54,6 +65,17 @@ if (import.meta.client) {
 <style scoped>
 .playground-code-block {
   position: relative;
+}
+
+.playground-code-block__filename {
+  display: flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+  padding-inline: 1rem 3.25rem;
+  border-block-end: 1px solid var(--ui-color-divider);
+  color: var(--ui-color-text-muted);
+  font: var(--ui-font-size-metadata)/1.65 var(--ui-font-mono);
+  overflow-wrap: anywhere;
 }
 
 .playground-code-block__actions {

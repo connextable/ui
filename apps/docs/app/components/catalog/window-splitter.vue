@@ -38,7 +38,9 @@ const selected = ref<keyof typeof sources>("App.vue");
     </template>
     <template #after>
       <header class="split-example__header"><strong>{{ selected }}</strong><small>읽기 전용</small></header>
-      <pre tabindex="0" :aria-label="`${selected} 소스`"><code>{{ sources[selected] }}</code></pre>
+      <slot name="source" :filename="selected" :code="sources[selected]">
+        <pre tabindex="0" :aria-label="`${selected} 소스`"><code>{{ sources[selected] }}</code></pre>
+      </slot>
     </template>
   </UIWindowSplitter>
 </template>

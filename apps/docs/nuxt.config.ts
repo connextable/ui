@@ -7,6 +7,7 @@ import { publicComponentApi } from "./build/public-component-api";
 export default defineNuxtConfig({
   compatibilityDate: "2026-11-20",
   modules: ["@connextable/ui/nuxt"],
+  runtimeConfig: { public: { siteUrl: "" } },
   watch: [
     // Changes to config-time catalog data need to reload the reference generator.
     ...["catalog", "catalog-guides", "catalog-reference", "catalog-example-sections"].map(file =>

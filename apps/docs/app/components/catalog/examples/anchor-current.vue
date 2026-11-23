@@ -4,8 +4,8 @@ import { UIAnchor } from "@connextable/ui";
 
 <template>
   <nav aria-label="디자인 시스템">
-    <UIAnchor href="/#design-colors" current="location">색상 토큰</UIAnchor>
-    <UIAnchor href="/#design-typography">타이포그래피</UIAnchor>
+    <UIAnchor href="/design-system#design-colors" current="location">색상 토큰</UIAnchor>
+    <UIAnchor href="/design-system#design-typography">타이포그래피</UIAnchor>
   </nav>
 </template>
 

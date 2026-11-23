@@ -17,6 +17,8 @@ import { catalog, catalogBySlug } from "~/data/catalog";
 import { catalogNavigation } from "~/data/catalog-navigation";
 import { referencePartGroups } from "~/data/catalog-reference";
 import { standaloneReference } from "~/data/standalone-references";
+import { guidePages } from "#shared/guide-pages";
+import { sitePageUrl } from "#shared/utils/site-url";
 
 type CatalogItem = {
   path: string;
@@ -28,6 +30,9 @@ type CatalogItem = {
 
 const route = useRoute();
 const router = useRouter();
+const { app: { baseURL }, public: { siteUrl } } = useRuntimeConfig();
+const brandMark = `${baseURL}connextable-ui-icon.svg`;
+const brandWordmark = `${baseURL}connextable-ui-wordmark.png`;
 const documentContent = useTemplateRef<HTMLElement>("documentContent");
 const sidebar = useTemplateRef<InstanceType<typeof UIDashboardSidebar>>("sidebar");
 const navbar = useTemplateRef<InstanceType<typeof UIDashboardNavbar>>("navbar");
@@ -80,7 +85,9 @@ function normalizeSearch(value: string) {
 }
 
 const query = computed(() => normalizeSearch(searchQuery.value));
-const showOverview = computed(() => normalizeSearch("디자인 시스템").includes(query.value));
+const visibleGuides = computed(() =>
+  guidePages.filter(({ title }) => normalizeSearch(title).includes(query.value)),
+);
 const visibleGroups = computed(() => {
   if (!query.value) return groups;
 
@@ -142,8 +149,20 @@ function onSearchEscape(event: KeyboardEvent) {
   clearSearch();
 }
 
+const canonical = computed(() => title.value ? sitePageUrl(siteUrl, route.path) : undefined);
+useSeoMeta({
+  description: () => typeof description.value === "string" ? description.value : undefined,
+  ogSiteName: "Connextable UI",
+  ogDescription: () => typeof description.value === "string" ? description.value : undefined,
+  ogTitle: () => title.value ? `${title.value} | Connextable UI` : "Connextable UI",
+  ogUrl: () => canonical.value,
+});
 useHead(() => ({
-  title: title.value ? `${title.value} · Connextable UI` : "Connextable UI",
+  title: title.value ? `${title.value} | Connextable UI` : "Connextable UI",
+  link: [
+    { rel: "icon", type: "image/svg+xml", sizes: "any", href: brandMark },
+    ...(canonical.value ? [{ rel: "canonical" as const, href: canonical.value }] : []),
+  ],
   htmlAttrs: {
     lang: "ko",
     style: stickySizes.value
@@ -158,24 +177,23 @@ onMounted(() => { mounted.value = true; });
 <template>
   <UIDashboard class="playground-dashboard">
     <template #sidebar>
-      <UIDashboardSidebar ref="sidebar" label="컴포넌트">
+      <UIDashboardSidebar ref="sidebar" label="문서">
         <template #header>
           <a class="playground-skip" href="#playground-content">본문으로 건너뛰기</a>
           <UIAnchor class="playground-brand" to="/">
-            <span class="playground-brand__mark" aria-hidden="true"></span>
-            Connextable UI
+            <img class="playground-brand__wordmark" :src="brandWordmark" alt="Connextable UI" width="960" height="102" />
           </UIAnchor>
         </template>
         <template #navigation-header>
-          <div role="search" aria-label="컴포넌트" @keydown.esc="onSearchEscape">
+          <div role="search" aria-label="문서" @keydown.esc="onSearchEscape">
             <UIInput
               ref="searchInput"
               v-model="searchQuery"
               size="sm"
               variant="soft"
               role="searchbox"
-              aria-label="컴포넌트 검색"
-              placeholder="컴포넌트 검색"
+              aria-label="문서 검색"
+              placeholder="문서 검색"
               autocomplete="off"
               clearable
               clear-label="검색어 지우기"
@@ -184,12 +202,14 @@ onMounted(() => { mounted.value = true; });
             </UIInput>
           </div>
         </template>
-        <p v-if="!showOverview && !visibleGroups.length" class="playground-sidebar-search__empty" role="status">
-          일치하는 컴포넌트가 없습니다.
+        <p v-if="!visibleGuides.length && !visibleGroups.length" class="playground-sidebar-search__empty" role="status">
+          검색 결과가 없습니다.
         </p>
-        <UIDashboardNavGroup v-if="showOverview" label="시작하기">
-          <UIDashboardNavItem>
-            <UIAnchor to="/" :current="route.path === '/' ? 'page' : undefined">디자인 시스템</UIAnchor>
+        <UIDashboardNavGroup v-if="visibleGuides.length" label="시작하기">
+          <UIDashboardNavItem v-for="guide in visibleGuides" :key="guide.path">
+            <UIAnchor :to="guide.path" :current="route.path === guide.path ? 'page' : undefined">
+              {{ guide.title }}
+            </UIAnchor>
           </UIDashboardNavItem>
         </UIDashboardNavGroup>
         <UIDashboardNavGroup
@@ -245,7 +265,7 @@ onMounted(() => { mounted.value = true; });
       <template #header>
         <UIDashboardNavbar ref="navbar">
           <p class="playground-location">
-            플레이그라운드
+            문서
             <template v-if="category">
               <span aria-hidden="true">/</span>
               {{ category }}
@@ -308,30 +328,15 @@ body {
 .playground-brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.625rem;
-  color: inherit;
-  font-size: 1rem;
-  font-weight: 750;
-  text-decoration: none;
+  max-inline-size: 100%;
+  min-block-size: 2rem;
 }
 
-.playground-brand__mark {
-  display: grid;
-  flex: none;
-  place-items: center;
-  inline-size: 2rem;
-  block-size: 2rem;
-  border-radius: 0.625rem;
-  background: var(--ui-color-accent);
-  color: var(--ui-color-on-accent);
-}
-
-.playground-brand__mark::before {
-  inline-size: 0.75rem;
-  block-size: 0.625rem;
-  border-block: 2px solid currentColor;
-  transform: skew(-26deg);
-  content: "";
+.playground-brand__wordmark {
+  display: block;
+  inline-size: 11rem;
+  max-inline-size: 100%;
+  block-size: auto;
 }
 
 .playground-brand:focus-visible,

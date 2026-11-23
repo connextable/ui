@@ -1,196 +1,161 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, shallowRef } from "vue";
-
 definePageMeta({
-  title: "디자인 시스템",
-  description: "공통 토큰이 실제 화면과 컴포넌트에 어떻게 적용되는지 살펴봅니다.",
+  title: "설치와 사용",
+  description: "Connextable UI를 설치하고 Vue, Vite, Nuxt에서 첫 컴포넌트를 사용합니다.",
 });
 
-const colors = [
-  { label: "강조", token: "--ui-color-accent" },
-  { label: "본문", token: "--ui-color-text" },
-  { label: "보조 텍스트", token: "--ui-color-text-muted" },
-  { label: "보조 표면", token: "--ui-color-surface-muted" },
-  { label: "테두리", token: "--ui-color-border" },
-  { label: "오류", token: "--ui-color-danger" },
-];
+const vueExample = `<script setup lang="ts">
+import { UIButton } from "@connextable/ui";
+<\/script>
 
-const typeScale = [
-  { label: "본문", token: "--ui-font-size-body" },
-  { label: "작은 본문", token: "--ui-font-size-body-sm" },
-  { label: "메타데이터", token: "--ui-font-size-metadata" },
-];
+<template>
+  <UIButton>저장</UIButton>
+</template>`;
 
-const tokenValues = shallowRef<Record<string, string>>({});
-let reducedMotion: MediaQueryList | undefined;
+const viteConfig = `import connextableUI from "@connextable/ui/vite";
+import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
 
-function readTokens() {
-  const style = getComputedStyle(document.documentElement);
-  tokenValues.value = Object.fromEntries(
-    Array.from(style)
-      .filter((token) => token.startsWith("--ui-"))
-      .sort()
-      .map((token) => [token, style.getPropertyValue(token).trim()]),
-  );
-}
+export default defineConfig({
+  plugins: [vue(), connextableUI()],
+});`;
 
-onMounted(() => {
-  readTokens();
-  reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  reducedMotion.addEventListener("change", readTokens);
-});
+const viteAppConfig = `import connextableUI from "@connextable/ui/vite";
+import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
 
-onUnmounted(() => reducedMotion?.removeEventListener("change", readTokens));
+export default defineConfig({
+  plugins: [vue(), connextableUI({ prefix: "App" })],
+});`;
+
+const viteTypeScriptConfig = `{
+  "include": ["src/**/*", "src/**/*.vue", "connextable-ui.d.ts"]
+}`;
+
+const nuxtConfig = `export default defineNuxtConfig({
+  modules: ["@connextable/ui/nuxt"],
+});`;
+
+const nuxtAppConfig = `export default defineNuxtConfig({
+  modules: ["@connextable/ui/nuxt"],
+  connextableUI: {
+    prefix: "App",
+  },
+});`;
+
+const autoImportExample = `<template>
+  <UIButton>저장</UIButton>
+</template>`;
+
+const appButtonExample = `<template>
+  <AppButton>저장</AppButton>
+</template>`;
 </script>
 
 <template>
-  <div class="design-overview">
-    <section aria-labelledby="design-colors">
-      <h2 id="design-colors" data-playground-heading tabindex="-1">색상</h2>
-      <ul class="design-palette" role="list">
-        <li v-for="color in colors" :key="color.token" :title="color.token">
-          <span
-            class="design-palette__swatch"
-            :style="{ backgroundColor: `var(${color.token})` }"
-            aria-hidden="true"
-          ></span>
-          <span class="design-palette__label">{{ color.label }}</span>
-          <code class="design-palette__value">{{ tokenValues[color.token] }}</code>
-        </li>
-      </ul>
+  <div class="docs-installation">
+    <section aria-labelledby="install">
+      <h2 id="install" data-playground-heading tabindex="-1">설치</h2>
+      <p>Vue 3.5.41 이상에서 사용할 수 있습니다. 프로젝트에서 패키지를 설치합니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" code="npm install @connextable/ui" language="shellscript" />
     </section>
 
-    <div class="design-overview__comparison">
-      <section aria-labelledby="design-typography">
-        <h2 id="design-typography" data-playground-heading tabindex="-1">타이포그래피</h2>
-        <dl class="design-type-scale">
-          <div v-for="type in typeScale" :key="type.token" class="design-type-scale__row">
-            <dt :title="type.token">{{ type.label }} <code>{{ tokenValues[type.token] }}</code></dt>
-            <dd :style="{ fontSize: `var(${type.token})` }">프로젝트 설정</dd>
-          </div>
-        </dl>
-      </section>
-      <PlaygroundOverviewMotion :token-values="tokenValues" />
-    </div>
-
-    <PlaygroundOverviewGeometry :token-values="tokenValues" />
-    <section aria-labelledby="design-scrollbar">
-      <h2 id="design-scrollbar" data-playground-heading tabindex="-1">스크롤바</h2>
-      <p>스크롤 영역에 <code>ui-scrollbar</code>를 적용합니다. 숫자처럼 가운데 정렬이 필요한 영역에는 <code>data-ui-scrollbar="centered"</code>로 양쪽 여백을 맞춥니다.</p>
-      <p><UIAnchor to="/components/scroll-area">스크롤 영역과 외부 이동 버튼 예제</UIAnchor></p>
-      <div class="design-scrollbar-example ui-scrollbar" tabindex="0" role="region" aria-label="스크롤 예제">
-        <ul role="list">
-          <li v-for="name in ['정산 보고서', '월간 주문 현황', '배송 지연 내역', '상품별 재고', '반품 처리 기록', '결제 승인 내역']" :key="name">{{ name }}</li>
-        </ul>
-      </div>
+    <section aria-labelledby="typescript">
+      <h2 id="typescript" data-playground-heading tabindex="-1">TypeScript</h2>
+      <p>공개 타입 선언은 TypeScript 5.9.3, 6, 7을 지원합니다.</p>
+      <p><code>vue-tsc</code>로 Vue 템플릿을 검사할 때는 TypeScript 5.9 또는 6을 사용할 수 있습니다.</p>
     </section>
-    <PlaygroundOverviewControls />
-    <PlaygroundOverviewStates />
-    <PlaygroundOverviewTokens :token-values="tokenValues" />
+
+    <section aria-labelledby="vue">
+      <h2 id="vue" data-playground-heading tabindex="-1">Vue에서 직접 임포트</h2>
+      <p>앱 진입점에 스타일시트 임포트를 한 번 추가합니다.</p>
+      <PlaygroundCodeBlock
+        class="docs-installation__code"
+        filename="src/main.ts"
+        code='import "@connextable/ui/styles.css";'
+        language="typescript"
+      />
+      <p>사용할 컴포넌트를 가져와 템플릿에 넣습니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" filename="src/App.vue" :code="vueExample" />
+    </section>
+
+    <section aria-labelledby="vite">
+      <h2 id="vite" data-playground-heading tabindex="-1">Vite</h2>
+      <p>Vite 7.3.x 또는 8.x를 쓰는 Vue 앱에서 자동 임포트 도구를 설치합니다.</p>
+      <PlaygroundCodeBlock
+        class="docs-installation__code"
+        code="npm install -D unplugin-vue-components unimport"
+        language="shellscript"
+      />
+      <p>기존 <code>plugins</code> 배열에 <code>connextableUI()</code>를 추가합니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" filename="vite.config.ts" :code="viteConfig" language="typescript" />
+      <p>플러그인은 컴포넌트와 컴포저블을 자동 임포트하고, Vite가 처리하는 HTML에 스타일시트를 등록합니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" filename="src/App.vue" :code="autoImportExample" />
+
+      <h3 id="vite-typescript" data-playground-heading tabindex="-1">TypeScript 선언 파일 연결</h3>
+      <p>Vite를 한 번 실행하면 프로젝트 루트에 <code>connextable-ui.d.ts</code>가 생성됩니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" code="npx vite" language="shellscript" />
+      <p>앱을 검사하는 TypeScript 설정 파일의 기존 <code>include</code> 배열에 <code>connextable-ui.d.ts</code>를 추가합니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" filename="tsconfig.app.json" :code="viteTypeScriptConfig" language="json" />
+
+      <h3 id="vite-prefix" data-playground-heading tabindex="-1">컴포넌트 접두사 바꾸기</h3>
+      <p>플러그인에 <code>prefix</code>를 지정합니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" filename="vite.config.ts" :code="viteAppConfig" language="typescript" />
+      <p>템플릿에서는 <code>AppButton</code>을 사용합니다. 컴포저블은 <code>useScrollArea</code>처럼 기존 이름으로 호출합니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" filename="src/App.vue" :code="appButtonExample" />
+    </section>
+
+    <section aria-labelledby="nuxt">
+      <h2 id="nuxt" data-playground-heading tabindex="-1">Nuxt</h2>
+      <p>Nuxt 4.5 이상에서는 기존 <code>modules</code> 배열에 <code>@connextable/ui/nuxt</code>를 추가합니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" filename="nuxt.config.ts" :code="nuxtConfig" language="typescript" />
+      <p>모듈이 컴포넌트와 컴포저블, 스타일시트를 등록합니다. 템플릿에서 <code>UIButton</code>을 바로 사용합니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" filename="app/app.vue" :code="autoImportExample" />
+
+      <h3 id="nuxt-prefix" data-playground-heading tabindex="-1">컴포넌트 접두사 바꾸기</h3>
+      <p><code>connextableUI.prefix</code>를 지정합니다.</p>
+      <PlaygroundCodeBlock class="docs-installation__code" filename="nuxt.config.ts" :code="nuxtAppConfig" language="typescript" />
+      <PlaygroundCodeBlock class="docs-installation__code" filename="app/app.vue" :code="appButtonExample" />
+    </section>
+
+    <section aria-labelledby="reference">
+      <h2 id="reference" data-playground-heading tabindex="-1">예제와 레퍼런스</h2>
+      <p><UIAnchor to="/components/button">버튼 문서</UIAnchor>에서 예제를 실행하고 속성과 슬롯을 확인할 수 있습니다.</p>
+      <p><UIAnchor to="/design-system">디자인 시스템</UIAnchor>에서 색상, 타이포그래피와 공통 스타일 토큰을 확인할 수 있습니다.</p>
+    </section>
   </div>
 </template>
 
 <style scoped>
-.design-overview {
+.docs-installation {
   display: grid;
-  gap: clamp(calc(var(--ui-space-md) * 6), 10vw, calc(var(--ui-space-md) * 8));
+  gap: 2.5rem;
   padding-block-end: 2rem;
 }
 
-.design-scrollbar-example {
-  max-block-size: 9rem;
-  max-inline-size: 22rem;
-  overflow: auto;
+.docs-installation h2 {
+  margin: 0;
+  font-size: 1.375rem;
+  letter-spacing: -0.025em;
+}
+
+.docs-installation h3 {
+  margin: 1.625rem 0 0;
+  font-size: 1.0625rem;
+}
+
+.docs-installation p {
+  margin: var(--ui-space-sm) 0;
+}
+
+.docs-installation__code {
+  min-inline-size: 0;
   border: 1px solid var(--ui-color-border);
   border-radius: var(--ui-radius-md);
-  background: var(--ui-color-surface);
-
-  > ul { list-style: none; padding: 0 var(--ui-space-md); margin: 0; }
-  li { padding-block: var(--ui-space-sm); }
-  li + li { border-block-start: 1px solid var(--ui-color-divider); }
+  background: var(--ui-color-surface-muted);
 }
 
-.design-overview__comparison {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-  row-gap: inherit;
-  column-gap: 2rem;
-}
-
-.design-overview :deep(h2[data-playground-heading]) {
-  margin: 0 0 1rem;
-  font-size: 1.375rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.25;
-}
-
-.design-palette {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 6rem), 1fr));
-  gap: 1rem var(--ui-space-sm);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.design-palette__swatch {
-  display: block;
-  block-size: clamp(3rem, 7vw, 5rem);
-  border-radius: var(--ui-radius-md);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-text) 8%, transparent);
-}
-
-.design-palette__label,
-.design-palette__value {
-  display: block;
-  overflow-wrap: anywhere;
-}
-
-.design-palette__label {
+.docs-installation__code + .docs-installation__code {
   margin-block-start: var(--ui-space-sm);
-  font-size: var(--ui-font-size-body-sm);
-  font-weight: 650;
-}
-
-.design-palette__value,
-.design-type-scale code {
-  color: var(--ui-color-text-muted);
-  font: var(--ui-font-size-metadata)/var(--ui-line-height-body) var(--ui-font-mono);
-}
-
-.design-palette__value {
-  min-block-size: 1lh;
-  text-transform: uppercase;
-}
-
-.design-type-scale {
-  margin: 0;
-}
-
-.design-type-scale__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: var(--ui-space-md);
-  min-block-size: var(--ui-control-height);
-  border-block-start: 1px solid var(--ui-color-divider);
-}
-
-.design-type-scale__row:last-child {
-  border-block-end: 1px solid var(--ui-color-divider);
-}
-
-.design-type-scale dt {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 var(--ui-space-sm);
-  font-size: var(--ui-font-size-metadata);
-}
-
-.design-type-scale dd {
-  margin: 0;
-  font-weight: 550;
-  overflow-wrap: anywhere;
 }
 </style>

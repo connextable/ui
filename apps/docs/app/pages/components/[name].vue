@@ -72,7 +72,19 @@ for (const name of entry.parts ?? []) {
         }"
         :framed="guide?.framed"
         :preview="Preview"
-      />
+      >
+        <template v-if="entry.slug === 'window-splitter'" #default>
+          <component :is="Preview">
+            <template #source="{ filename, code }">
+              <PlaygroundCodeBlock
+                :code="code"
+                :language="filename === 'App.vue' ? 'vue' : 'typescript'"
+                :label="`${filename} 소스`"
+              />
+            </template>
+          </component>
+        </template>
+      </PlaygroundCatalogExample>
     </PlaygroundExampleSection>
     <PlaygroundCatalogExamples
       v-if="guide?.examples?.length"
