@@ -86,7 +86,7 @@ export const catalog: readonly CatalogEntry[] = [
     title: "UITreeReorder",
     description: "계층의 항목을 이동해 순서나 상위 항목을 바꿉니다.",
     wide: true,
-    parts: ["UITreeReorderItem", "UITreeReorderHandle", "UITreeReorderDropTarget", "UIReorderGroup", "UIReorderFeedback"],
+    parts: ["UITreeReorderItem", "UITreeReorderHandle", "UITreeReorderDropTarget", "UIReorderGridItem", "UIReorderGroup", "UIReorderFeedback"],
   },
   {
     slug: "alert-dialog",
@@ -782,12 +782,7 @@ export const catalog: readonly CatalogEntry[] = [
     wide: true,
     parts: [
       "UISequenceReorderItem",
-      "UITreeReorder",
-      "UITreeReorderItem",
-      "UITreeReorderDropTarget",
       "UISequenceReorderHandle",
-      "UITreeReorderHandle",
-      "UIReorderGridItem",
       "UIReorderGroup",
       "UIReorderFeedback",
     ],

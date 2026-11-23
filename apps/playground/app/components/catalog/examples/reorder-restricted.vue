@@ -28,34 +28,40 @@ const policies = {
     keyboard-mode="preview"
     v-slot="{ getChildren, interaction, getPreviewState }"
   >
-    <div class="reorder-sections">
-      <UITreeReorderDropTarget v-for="column in columns" :key="column" :parentID="column" :label="column">
-        <h4>{{ column }}</h4>
-        <UIReorderGroup :parent-id="column" framed :min-rows="3" :interaction="interaction" :get-preview-state="getPreviewState">
+    <div class="reorder-board">
+      <UITreeReorderDropTarget v-for="column in columns" :key="column" :parentID="column" :label="column" class="reorder-board__lane">
+        <header class="reorder-board__heading">
+          <strong>{{ column }}</strong>
+          <span class="reorder-board__count">{{ getChildren(column).length }}건</span>
+        </header>
+        <UIReorderGroup class="reorder-board__cards" :parent-id="column" framed :interaction="interaction" :get-preview-state="getPreviewState">
           <UITreeReorderItem v-for="id in getChildren(column)" :key="id" :value="id">
-            <component :is="types[id] === '문서' ? FileText : ImageIcon" aria-hidden="true" />
+            <component :is="types[id] === '문서' ? FileText : ImageIcon" class="reorder-file-icon" aria-hidden="true" />
             {{ id }}
           </UITreeReorderItem>
           <template #preview="{ id }">
-            <component :is="types[id] === '문서' ? FileText : ImageIcon" aria-hidden="true" />
+            <component :is="types[id] === '문서' ? FileText : ImageIcon" class="reorder-file-icon" aria-hidden="true" />
             {{ id }}
           </template>
         </UIReorderGroup>
       </UITreeReorderDropTarget>
     </div>
-    <UIReorderFeedback :interaction="interaction" :focus="reorder?.focus" />
+    <UIReorderFeedback :interaction="interaction" :focus="reorder?.focus">
+      <template #lift="{ id }">
+        <component :is="types[id] === '문서' ? FileText : ImageIcon" class="reorder-file-icon" aria-hidden="true" />
+        {{ id }}
+      </template>
+    </UIReorderFeedback>
   </UITreeReorder>
 </template>
 
-<style scoped>
-.reorder-sections {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
-  gap: var(--ui-space-md);
-}
+<style scoped src="./reorder-board.css" />
 
-.reorder-sections h4 {
-  margin: 0 0 var(--ui-space-sm);
-  font-size: var(--ui-font-size-body-sm);
+<style scoped>
+.reorder-file-icon {
+  flex: none;
+  inline-size: 1rem;
+  block-size: 1rem;
+  color: var(--ui-color-text-muted);
 }
 </style>

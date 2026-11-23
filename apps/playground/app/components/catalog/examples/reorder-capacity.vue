@@ -20,13 +20,16 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
     label="정원이 있는 검토 보드" keyboard-mode="preview"
     v-slot="{ getChildren, interaction, getPreviewState }"
   >
-    <div class="reorder-capacity">
-      <UITreeReorderDropTarget v-for="lane in lanes" :key="lane" :parentID="lane" :label="lane">
-        <h4>
-          {{ lane }}
-          <span v-if="lane === '검토 중'" class="reorder-capacity__count">{{ getChildren(lane).length }} / {{ limit }}</span>
-        </h4>
-        <UIReorderGroup :parent-id="lane" :min-rows="3" framed :interaction="interaction" :get-preview-state="getPreviewState">
+    <div class="reorder-board">
+      <UITreeReorderDropTarget v-for="lane in lanes" :key="lane" :parentID="lane" :label="lane" class="reorder-board__lane">
+        <header class="reorder-board__heading">
+          <strong>{{ lane }}</strong>
+          <span v-if="lane === '검토 중'" class="reorder-board__count" :data-full="getChildren(lane).length === limit || undefined">
+            {{ getChildren(lane).length }} / {{ limit }}건
+          </span>
+          <span v-else class="reorder-board__count">{{ getChildren(lane).length }}건</span>
+        </header>
+        <UIReorderGroup class="reorder-board__cards" :parent-id="lane" framed :interaction="interaction" :get-preview-state="getPreviewState">
           <UITreeReorderItem v-for="id in getChildren(lane)" :key="id" :value="id">
             {{ id }}
           </UITreeReorderItem>
@@ -37,22 +40,4 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
   </UITreeReorder>
 </template>
 
-<style scoped>
-.reorder-capacity {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
-  gap: var(--ui-space-md);
-}
-
-.reorder-capacity h4 {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 0 var(--ui-space-sm);
-  font-size: var(--ui-font-size-body-sm);
-}
-
-.reorder-capacity__count {
-  color: var(--ui-color-text-muted);
-  font-variant-numeric: tabular-nums;
-}
-</style>
+<style scoped src="./reorder-board.css" />

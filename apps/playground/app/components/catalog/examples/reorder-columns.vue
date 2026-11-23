@@ -6,18 +6,21 @@ const columns = ["할 일", "진행 중", "완료"];
 const reorder = useTemplateRef("reorder");
 const nodes = ref<readonly { id: string; parentID: string | null }[]>([
   ...columns.map((id) => ({ id, parentID: null })),
-  { id: "키보드 이동 점검", parentID: "할 일" },
-  { id: "다크 모드 확인", parentID: "할 일" },
-  { id: "스위치 상태 검토", parentID: "진행 중" },
+  { id: "배포 공지 작성", parentID: "할 일" },
+  { id: "도움말 업데이트", parentID: "할 일" },
+  { id: "결제 흐름 점검", parentID: "진행 중" },
 ]);
 </script>
 
 <template>
-  <UITreeReorder ref="reorder" v-model:nodes="nodes" layout="columns" label="작업 보드" keyboard-mode="preview" v-slot="{ getChildren, interaction, getPreviewState }">
-    <div class="reorder-columns">
-      <UITreeReorderDropTarget v-for="column in columns" :key="column" :parentID="column" :label="column">
-        <h4>{{ column }}</h4>
-        <UIReorderGroup :parent-id="column" framed :min-rows="3" :interaction="interaction" :get-preview-state="getPreviewState">
+  <UITreeReorder ref="reorder" v-model:nodes="nodes" layout="columns" label="배포 준비 보드" keyboard-mode="preview" v-slot="{ getChildren, interaction, getPreviewState }">
+    <div class="reorder-board">
+      <UITreeReorderDropTarget v-for="column in columns" :key="column" :parentID="column" :label="column" class="reorder-board__lane">
+        <header class="reorder-board__heading">
+          <strong>{{ column }}</strong>
+          <span class="reorder-board__count">{{ getChildren(column).length }}건</span>
+        </header>
+        <UIReorderGroup class="reorder-board__cards" :parent-id="column" framed :interaction="interaction" :get-preview-state="getPreviewState">
           <UITreeReorderItem v-for="id in getChildren(column)" :key="id" :value="id">
             {{ id }}
           </UITreeReorderItem>
@@ -28,15 +31,4 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
   </UITreeReorder>
 </template>
 
-<style scoped>
-.reorder-columns {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
-  gap: var(--ui-space-md);
-}
-
-.reorder-columns h4 {
-  margin: 0 0 var(--ui-space-sm);
-  font-size: var(--ui-font-size-body-sm);
-}
-</style>
+<style scoped src="./reorder-board.css" />

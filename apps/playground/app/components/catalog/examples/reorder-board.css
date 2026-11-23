@@ -1,0 +1,47 @@
+.reorder-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr));
+  align-items: start;
+  gap: var(--ui-space-md);
+}
+
+.reorder-board__lane {
+  min-inline-size: 0;
+}
+
+.reorder-board__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ui-space-xs);
+  padding: 0 var(--ui-space-xs);
+  margin-block-end: var(--ui-space-sm);
+  font-size: var(--ui-font-size-body-sm);
+}
+
+.reorder-board__count {
+  padding: var(--ui-space-xs) var(--ui-space-sm);
+  border-radius: var(--ui-radius-sm);
+  background: var(--ui-color-surface-muted);
+  color: var(--ui-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.reorder-board__count[data-full] {
+  background: var(--ui-color-accent-soft);
+  color: var(--ui-color-accent);
+}
+
+.reorder-board :deep(.reorder-board__cards:empty) {
+  place-content: center;
+  border-style: dashed;
+}
+
+.reorder-board :deep(.reorder-board__cards:empty)::after {
+  padding: var(--ui-space-xs);
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-font-size-body-sm);
+  text-align: center;
+  content: "카드를 여기에 놓으세요";
+}

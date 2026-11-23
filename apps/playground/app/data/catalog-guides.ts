@@ -24,9 +24,9 @@ interface CatalogGuide {
 }
 
 const treeReorderBoardExamples = [
-  { id: "reorder-columns", title: "그룹 간 이동", description: "‘할 일’의 카드를 ‘진행 중’이나 비어 있는 ‘완료’로 옮겨 보세요. 키보드에서는 ←·→로 인접한 그룹을 선택합니다.", parts: ["UITreeReorderDropTarget"] },
-  { id: "reorder-capacity", title: "정원이 찬 그룹", description: "‘검토 중’에는 두 장까지 둘 수 있습니다. 한 장을 ‘대기’로 빼면 다른 카드를 넣을 수 있고, 정원이 찬 상태에서도 열 안의 순서는 바꿀 수 있습니다." },
-  { id: "reorder-restricted", title: "항목 유형에 따른 이동 제한", description: "스타일 가이드는 ‘문서’로, 표지 그림과 미리보기는 ‘이미지’로 옮길 수 있습니다. 다른 유형의 섹션으로 옮기면 금지 표시가 나오고 원래 위치에 남습니다." },
+  { id: "reorder-columns", title: "배포 준비 보드에서 상태 변경", description: "‘결제 흐름 점검’을 비어 있는 ‘완료’ 열에 놓아 보세요. 이동을 확정하면 두 열의 카드 수가 바뀝니다. 키보드에서는 Space로 카드를 들고 ←·→로 열을 바꾼 뒤 Enter로 놓습니다.", parts: ["UITreeReorderDropTarget"] },
+  { id: "reorder-capacity", title: "동시에 검토할 카드 수 제한", description: "‘검토 중’은 두 장까지만 받습니다. ‘공지 초안’을 넣으려면 검토 중인 카드를 먼저 ‘대기’로 옮기세요. 꽉 찬 열에서도 카드 순서는 바꿀 수 있습니다." },
+  { id: "reorder-restricted", title: "유형에 맞는 열로 파일 분류", description: "‘스타일 가이드’를 ‘문서’ 열로, ‘표지 그림’을 ‘이미지’ 열로 옮겨 보세요. 다른 유형의 열에 올리면 금지 표시가 나타나고 놓아도 원래 열에 남습니다." },
 ] satisfies readonly CatalogExample[];
 
 const uploadExample = { id: "basic-example", title: "파일 선택과 교체" };
@@ -274,13 +274,16 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "tree-reorder-handle", section: "usage-options", title: "트리 전용 손잡이", description: "카드 안의 손잡이에서만 포인터 이동을 시작합니다.", parts: ["UITreeReorderHandle"] },
       { id: "tree-reorder-readonly", section: "usage-options", title: "읽기 전용 계층", description: "계층은 표시하고 드래그와 키보드 순서 변경은 잠급니다." },
       ...treeReorderBoardExamples.map(example => ({ ...example, section: "examples-2" })),
+      { id: "reorder-grid", section: "examples-2", framed: true, title: "사진 배치와 앨범 표지 변경", description: "사진을 끌어 첫 번째 칸에 놓으면 앨범 표지가 바뀝니다. 키보드에서는 Space로 사진을 들고 ↑·↓로 읽기 순서에 따라 옮긴 뒤 Enter를 누릅니다.", parts: ["UIReorderGridItem"] },
+      { id: "reorder-actions", section: "examples-3", framed: true, title: "버튼으로 위치 변경", description: "블록을 고르고 ‘위로’ 또는 ‘아래로’를 누르면 같은 그룹 안에서 한 칸씩 이동합니다." },
       { id: "tree-reorder-nested-cancel", section: "examples-3", framed: true, title: "계층 변경 미리보기 취소", description: "색상 항목을 Space로 든 뒤 왼쪽 방향키로 한 단계 옮겨 보세요. Escape로 취소하면 기존 폴더가 유지됩니다." },
     ],
-    title: "트리의 항목 이동",
-    description: "항목을 직접 잡아 옮깁니다. 키보드에서는 항목에 포커스를 두고 스페이스로 들어 올린 뒤, ←·→로 계층을 바꾸고 Enter로 확정합니다. ‘토큰’을 옮기면 하위 항목인 ‘테마’도 함께 움직입니다.",
+    title: "자료실 폴더와 파일 이동",
+    description: "‘이미지’ 폴더를 옮기면 안의 ‘대표 이미지.jpg’도 함께 이동합니다. 키보드에서는 Space로 들고 ↑·↓로 위치, ←·→로 계층을 바꾼 뒤 Enter로 확정합니다.",
     api: {
       "v-model:nodes": "id와 parentID를 가진 노드 배열을 연결합니다. 이동 결과가 배열에 반영됩니다.",
       "handle-only": "포인터 드래그를 UITreeReorderHandle에서만 시작하도록 제한합니다.",
+      "policies": "canMove로 이동할 수 있는 상위 노드를 제한하거나 capacity로 각 그룹의 최대 항목 수를 정합니다.",
     },
   },
   "alert-dialog": {
@@ -1555,8 +1558,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
   },
   reorder: {
-    title: "작업 목록의 순서 변경",
-    description: "카드 전체를 잡아 옮기세요. 놓일 위치에는 반투명 카드가 나타납니다. 키보드에서는 항목에 포커스를 두고 스페이스로 들어 올린 뒤, 방향키로 이동하고 Enter로 확정하거나 Esc로 취소합니다.",
+    title: "행사 프로그램 편성",
+    description: "‘고객 사례 발표’를 ‘신기능 시연’ 앞에 놓아 보세요. 놓일 위치와 발표 순서가 미리 표시됩니다. 키보드에서는 Space로 들고 ↑·↓로 옮긴 뒤 Enter로 확정하거나 Escape로 취소합니다.",
     api: {
       "v-model:items": "표시 순서대로 나열한 항목 id 배열입니다.",
       "handle-only": "포인터 드래그를 UISequenceReorderHandle에서만 시작하도록 제한합니다.",
@@ -1577,11 +1580,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "reorder-handle-button", section: "usage-options", title: "텍스트 버튼 손잡이", description: "as-child로 UIButton에 손잡이 동작을 연결합니다. 각 항목의 ‘이동’ 버튼을 잡아 순서를 바꿔 보세요." },
       { id: "reorder-handle-title", section: "usage-options", title: "제목 영역 손잡이", description: "위젯의 제목 영역을 잡아 옮깁니다. 설명 영역에서는 텍스트를 선택할 수 있습니다." },
       { id: "reorder-horizontal", section: "examples-2", title: "가로 탭 순서", description: "탭을 잡고 좌우로 움직이세요. 키보드에서는 스페이스로 들어 올리고 ←·→로 이동합니다." },
-      { id: "reorder-grid", section: "examples-2", title: "여러 줄 그리드 정렬", description: "카드를 옮길 셀 위에 놓으세요. 키보드에서는 위·아래 방향키로 읽기 순서대로 움직입니다.", parts: ["UIReorderGridItem"] },
-      ...treeReorderBoardExamples.map(example => ({ ...example, section: "examples-2" })),
       { id: "reorder-cancel", section: "examples-3", title: "미리보기 도중 취소", description: "Space와 방향키로 옮긴 뒤 Esc로 기존 순서를 복원합니다." },
       { id: "reorder-nested-action", section: "examples-3", title: "클릭 버튼과 정렬 영역", description: "카드 본문은 끌어 옮기고 내부 버튼은 즐겨찾기 상태를 바꿉니다." },
-      { id: "reorder-actions", section: "examples-3", framed: true, title: "버튼으로 위치 변경", description: "블록을 선택하고 ‘위로’ 또는 ‘아래로’를 누릅니다." },
       { id: "reorder-sorted", section: "examples-3", title: "자동 정렬과 수동 순서", description: "이름순 정렬을 켜면 수동 이동이 잠깁니다. 스위치를 끄면 이전에 배치한 수동 순서를 다시 볼 수 있습니다." },
       { id: "reorder-save", section: "examples-3", framed: true, title: "저장 실패 시 순서 복원", description: "이동하면 새 순서를 바로 보여 줍니다. 첫 저장은 실패를 재현해 이전 순서로 복원합니다. 다시 옮기면 저장에 성공합니다." },
     ],
