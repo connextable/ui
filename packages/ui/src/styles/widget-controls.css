@@ -48,7 +48,10 @@
 
 :where([data-scope="editable"][data-part="input"]) {
   color: inherit;
-  box-shadow: inset 0 -1px var(--ui-color-focus);
+
+  &:focus {
+    box-shadow: inset 0 -1px var(--ui-color-focus);
+  }
 }
 
 :where([data-scope="editable"][data-part="area"]:has(> [data-part="preview"]) > [data-part="input"]) {
