@@ -77,10 +77,24 @@
     --ui-reorder-touch-action: pan-y pinch-zoom;
   }
 
-  :where([data-scope$="-reorder"][data-part="root"]:not([aria-disabled="true"], [data-readonly]))
-    :where([data-scope$="-reorder"][data-part="item"]:not([aria-disabled="true"], :has([data-sectile-reorder-handle]))) {
+  :where([data-scope$="-reorder"][data-part="root"])
+    :where([data-scope$="-reorder"][data-part="item"]:not(
+      :disabled, [disabled], [aria-disabled="true"], [aria-readonly="true"], [data-ui-readonly],
+      [data-readonly] *, [data-scope$="-reorder"][data-part="root"][aria-disabled="true"] *,
+      :has([data-sectile-reorder-handle])
+    )) {
     touch-action: var(--ui-reorder-touch-action);
     cursor: grab;
+
+    &:active {
+      background-image: linear-gradient(var(--ui-color-press-shade), var(--ui-color-press-shade));
+    }
+
+    @media (hover: hover) {
+      &:hover:not(:active) {
+        background-image: linear-gradient(var(--ui-color-hover-shade), var(--ui-color-hover-shade));
+      }
+    }
   }
 
   :where([data-scope$="-reorder"][data-part="handle"]) {

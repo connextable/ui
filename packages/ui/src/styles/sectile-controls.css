@@ -22,7 +22,9 @@
     transition: background-color var(--ui-motion-fast) var(--ui-ease-out);
   }
 
-  :where(button[data-scope][data-part]):where(:hover:not(:disabled, [aria-disabled="true"], [aria-readonly="true"], [data-readonly] *)) {
+  :where(button[data-scope][data-part]):where(:hover:not(
+    :disabled, [aria-disabled="true"], [aria-readonly="true"], [data-readonly] *, [data-scope$="-reorder"][data-part="item"]
+  )) {
     background: var(--ui-color-surface-hover);
   }
 

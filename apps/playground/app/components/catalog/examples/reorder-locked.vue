@@ -18,8 +18,14 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
     keyboard-mode="preview" v-slot="{ getChildren, interaction, getPreviewState }"
   >
     <UIReorderGroup :parent-id="parentID" framed :interaction="interaction" :get-preview-state="getPreviewState">
-      <UITreeReorderItem v-for="id in getChildren(parentID)" :key="id" :value="id"
-        :aria-disabled="id === locked || undefined">
+      <!-- Sectile checks the disabled attribute before starting a pointer or keyboard lift. -->
+      <UITreeReorderItem
+        v-for="id in getChildren(parentID)"
+        :key="id"
+        :value="id"
+        :disabled="id === locked || undefined"
+        :aria-disabled="id === locked || undefined"
+      >
         {{ id }}
         <LockKeyhole v-if="id === locked" aria-hidden="true" />
       </UITreeReorderItem>
