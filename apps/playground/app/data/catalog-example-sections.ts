@@ -31,7 +31,7 @@ export function arrangeCatalogExamples(
     const groups = sections.flatMap(section => {
       const entries = grouped.get(section.section)!;
       return (section.phase ?? "configuration") === phase.phase && entries.length
-        ? [{ ...section, examples: entries }] : [];
+        ? [{ ...section, showHeading: entries.length > 1, examples: entries }] : [];
     });
     return groups.length ? [{ ...phase, groups }] : [];
   });

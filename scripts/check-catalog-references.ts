@@ -89,7 +89,14 @@ async function check(slug: string) {
       for (const phase of arrangeCatalogExamples(guide.examples ?? [], guide.sections)) {
         expected.push({ id: phase.id, level: 2 });
         for (const group of phase.groups) {
-          expected.push({ id: group.id, level: 3 }, ...group.examples.map(example => ({ id: example.id, level: 4 })));
+          const hasGroupHeading = group.examples.length > 1;
+          if (hasGroupHeading) {
+            expected.push({ id: group.id, level: 3 });
+          } else {
+            expectAnchor(group.id, "single-example group");
+            if (headings.some(heading => heading.id === group.id)) failures.push(`${path} shows a group heading for one example #${group.id}`);
+          }
+          expected.push(...group.examples.map(example => ({ id: example.id, level: hasGroupHeading ? 4 : 3 })));
           checkedDetailedExamples += group.examples.length;
         }
       }
