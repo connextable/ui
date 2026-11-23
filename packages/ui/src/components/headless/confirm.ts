@@ -6,6 +6,17 @@ export interface UIConfirmOptions {
   trigger?: HTMLElement | null;
 }
 
+export function createUIConfirmAction<Input>(
+  request: (input: Input) => UIConfirmOptions,
+  execute: (input: Input) => unknown,
+) {
+  return async (confirm: (options: UIConfirmOptions) => Promise<boolean>, input: Input) => {
+    if (!await confirm(request(input))) return false;
+    await execute(input);
+    return true;
+  };
+}
+
 function createConfirmation() {
   const open = ref(false);
   const request = shallowRef<Readonly<UIConfirmOptions>>();

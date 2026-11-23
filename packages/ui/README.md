@@ -60,6 +60,12 @@ Nuxt에서 링크는 앱의 `experimental.defaults.nuxtLink` 프리패치 설정
 
 일반 Vue 앱에서 사용할 때는 `@connextable/ui`에서 컴포넌트를 가져오고 `@connextable/ui/styles.css`를 한 번 불러옵니다.
 
+## 작업 함수 재사용하기
+
+- `createUIAsyncAction`으로 만든 함수는 실행 전후에 취소 여부를 확인합니다. `UIAsyncAction`의 `action`이나 `UIInfiniteScroll`의 `load-more`에 전달할 수 있습니다. 진행 중인 요청도 취소하려면 함수가 받은 `signal`을 `fetch` 등에 전달합니다.
+- `createUICopyAction`에 문자열이나 값을 읽는 함수를 전달하면 버튼 클릭 등에서 호출할 복사 함수를 얻습니다. 복사할 값을 매번 호출 시점에 읽을 수 있습니다.
+- `createUIConfirmAction`으로 확인 문구와 실행할 작업을 묶습니다. 반환된 함수에 `confirm`과 작업 대상을 넘기면 사용자가 확인한 경우에만 실행합니다.
+
 ## 파일 업로드
 
 `createUIFileUploadAdapter`에 업로드 주소를 전달합니다. 기본 요청은 `POST`이며, 선택한 파일은 `file` 필드에 담긴 `multipart/form-data`로 전송됩니다. `UIFileUpload`가 진행률과 취소를 연결합니다.

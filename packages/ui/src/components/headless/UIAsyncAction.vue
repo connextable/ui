@@ -1,8 +1,9 @@
 <script setup lang="ts" generic="Result">
 import { onScopeDispose, ref, shallowRef } from "vue";
+import type { UIAsyncActionHandler } from "./actions";
 
 const props = defineProps<{
-  action: (context: { signal: AbortSignal }) => Result | Promise<Result>;
+  action: UIAsyncActionHandler<Result>;
   disabled?: boolean;
 }>();
 

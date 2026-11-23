@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { onScopeDispose, ref, shallowRef, toValue, watch } from "vue";
+import { createUICopyAction, type UICopySource } from "./actions";
 
 const props = withDefaults(defineProps<{
-  value: string | (() => string | null | undefined);
+  value: UICopySource;
   copiedDuration?: number;
 }>(), { copiedDuration: 1500 });
 
@@ -11,6 +12,7 @@ const status = ref<Status>("idle");
 const error = shallowRef<unknown>();
 let revision = 0;
 let timer: ReturnType<typeof setTimeout> | undefined;
+const write = createUICopyAction(() => toValue(props.value));
 
 defineSlots<{
   default(state: { copy(): Promise<boolean>; status: Status; pending: boolean; copied: boolean; error: unknown }): unknown;
@@ -29,11 +31,7 @@ async function copy() {
   const attempt = revision;
   status.value = "pending";
   try {
-    const value = toValue(props.value);
-    if (value == null) throw new Error("No text is available to copy.");
-    const clipboard = globalThis.navigator?.clipboard;
-    if (!clipboard?.writeText) throw new Error("Clipboard writing is unavailable.");
-    await clipboard.writeText(value);
+    await write();
     if (attempt !== revision) return false;
     status.value = "copied";
     timer = setTimeout(reset, props.copiedDuration);

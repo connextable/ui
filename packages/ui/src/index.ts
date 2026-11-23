@@ -5,8 +5,9 @@ export * from "./components/virtual";
 export { default as UICopyToClipboard } from "./components/headless/UICopyToClipboard.vue";
 export { default as UIInView } from "./components/headless/UIInView.vue";
 export { default as UIConfirmProvider } from "./components/headless/UIConfirmProvider.vue";
-export { useConfirm, type UIConfirmOptions } from "./components/headless/confirm";
+export { createUIConfirmAction, useConfirm, type UIConfirmOptions } from "./components/headless/confirm";
 export { default as UIAsyncAction } from "./components/headless/UIAsyncAction.vue";
+export { createUIAsyncAction, createUICopyAction, type UIAsyncActionContext, type UIAsyncActionHandler, type UICopySource } from "./components/headless/actions";
 export { default as UIFullscreen } from "./components/headless/UIFullscreen.vue";
 export { default as UIMediaGesture } from "./components/headless/UIMediaGesture.vue";
 export { useFullscreen, type UseFullscreenOptions as UIFullscreenOptions,
