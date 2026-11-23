@@ -21,7 +21,11 @@ exec = ["pnpm", "build"]
 exec = ["pnpm", "typecheck"]
 
 [commands."dev:docs"]
-exec = ["pnpm", "dev", "--host", "127.0.0.1", "--port", "${bind.DOCS_PORT}", "--strictPort"]
+exec = [
+  "sh", "-c",
+  'pnpm --filter @connextable/ui build && cd apps/docs && exec ./node_modules/.bin/nuxt dev "$@"',
+  "dev:docs", "--host", "127.0.0.1", "--port", "${bind.DOCS_PORT}", "--strictPort",
+]
 serve = ["docs"]
 
 [commands."dev:docs".bind]

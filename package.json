@@ -9,7 +9,7 @@
   "scripts": {
     "build": "pnpm check:copy && pnpm -r build",
     "check:copy": "node scripts/check-copy.mjs",
-    "dev": "pnpm --filter @connextable/ui build && pnpm --filter @connextable/ui-docs dev",
+    "dev": "dvt run dev:docs",
     "typecheck": "pnpm check:copy && pnpm --filter @connextable/ui build && pnpm --filter @connextable/ui-docs typecheck"
   }
 }
