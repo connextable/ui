@@ -5,7 +5,7 @@ import { useDataTable } from "@sectile/vue/data-table";
 import { computed, defineComponent, h, ref, watch, type Component, type PropType, type VNodeChild } from "vue";
 import UIPagination from "../catalog/UIPagination.vue";
 import { createUIDataGridComponents, createUIDataTableComponents } from "./selection-checkbox";
-import { createUITabularSource } from "./source";
+import { createInitialTabularView, createUITabularSource } from "./source";
 
 export interface TableColumn<ID extends string = string> {
   id: ID;
@@ -84,29 +84,32 @@ export function useLocalDataView<Cells extends WireCells<Cells>, ID extends Colu
   const columnIDs = computed<string[]>(previous => stableIDs(props.data.columns.map(column => column.id), previous));
   const rowsByID = computed(() => new Map(props.data.rows.map(row => [row.id, row])));
   const queried = ref(false);
-  const pageAccess = (): TabularAccessState => ({
+  const pageAccess = () => ({
     kind: "page", page: page.value, itemsPerPage: pageSize.value, visibleRowCount: null, pagination: null,
+  } satisfies TabularAccessState);
+
+  const schema = computed(() => {
+    const columns = columnIDs.value.map(id => ({ id }));
+    return { columns, cells: Object.fromEntries(columns.map(({ id }) => [id, null])) };
   });
+
+  function localPage(access: TabularRequest["access"]) {
+    const ids = rowIDs.value;
+    if (rowsByID.value.size !== ids.length) throw new Error("Tabular source: duplicate row ID");
+    const start = access.kind === "page" ? (access.page - 1) * access.itemsPerPage : access.start;
+    const count = access.kind === "page" ? access.itemsPerPage : access.count;
+    // The local cells read reactive values directly. The controller only needs the page's structure.
+    return {
+      rows: ids.slice(start, start + count).map(id => ({ kind: "leaf" as const, id, cells: schema.value.cells })),
+      matchingLeafCount: ids.length,
+      visibleRowCount: ids.length,
+    };
+  }
 
   function source(request: TabularRequest, context: { signal: AbortSignal }) {
     queried.value = Object.values(request.query).some(descriptors => descriptors.length > 0);
     if (!queried.value) {
-      const ids = rowIDs.value;
-      if (rowsByID.value.size !== ids.length) throw new Error("Tabular source: duplicate row ID");
-      const { access } = request;
-      const start = access.kind === "page" ? (access.page - 1) * access.itemsPerPage : access.start;
-      const count = access.kind === "page" ? access.itemsPerPage : access.count;
-      // The local cells read reactive values directly. The controller only needs the page's structure.
-      const columns = columnIDs.value.map(id => ({ id }));
-      const cells = Object.fromEntries(columns.map(({ id }) => [id, null]));
-      return createUITabularSource({
-        columns,
-        load: () => ({
-          rows: ids.slice(start, start + count).map(id => ({ kind: "leaf" as const, id, cells })),
-          matchingLeafCount: ids.length,
-          visibleRowCount: ids.length,
-        }),
-      })(request, context);
+      return createUITabularSource({ columns: schema.value.columns, load: ({ access }) => localPage(access) })(request, context);
     }
 
     const result = createClientTabularSource({
@@ -118,7 +121,11 @@ export function useLocalDataView<Cells extends WireCells<Cells>, ID extends Colu
     if (!result.ok) throw new Error(`Tabular source: ${result.error.code}`);
     return { ...result.value, viewRevision: request.requestID };
   }
-  const options = { source, defaultAccessState: pageAccess() };
+  const defaultAccessState = pageAccess();
+  const access = { kind: defaultAccessState.kind, page: defaultAccessState.page, itemsPerPage: defaultAccessState.itemsPerPage };
+  const initialView = rowsByID.value.size === rowIDs.value.length
+    ? createInitialTabularView(access, schema.value, localPage(access)) : undefined;
+  const options = { source, defaultAccessState, initialView };
   const view = mode === "table" ? useDataTable(options) : useDataGrid(options);
   const parts = mode === "table"
     ? createUIDataTableComponents(view as ReturnType<typeof useDataTable>)

@@ -24,27 +24,52 @@ function count(value: number | "unknown"): TabularCount {
   return value === "unknown" ? { kind: "unknown" } : { kind: "known", value };
 }
 
-export function createUITabularSource<Row extends TabularRow>({ columns, headers = [], load }: UITabularSourceOptions<Row>) {
-  return (request: TabularRequest, context: { readonly signal: AbortSignal }) => {
-    function respond(result: UITabularSourceResult<Row>): TabularViewResponse<Row> {
-      const { rows, matchingLeafCount, visibleRowCount = rows.length, removedRowIDs = [] } = result;
-      return {
-        protocolVersion: request.protocolVersion,
-        requestID: request.requestID,
-        sourceGeneration: request.sourceGeneration,
-        queryRevision: request.queryRevision,
-        expansionRevision: request.expansionRevision,
-        viewRevision: request.requestID,
-        access: request.access,
-        rows,
-        matchingLeafCount: count(matchingLeafCount ?? rows.filter(row => row.kind === "leaf").length),
-        visibleRowCount: count(visibleRowCount),
-        columnSchema: { revision: request.columnSchemaRevision, columns, headers },
-        removedRowIDs,
-      };
-    }
+type ResponseIdentity = Pick<TabularRequest, "protocolVersion" | "requestID" | "sourceGeneration" | "queryRevision" | "expansionRevision" | "access" | "columnSchemaRevision">;
+type SourceColumns = Pick<UITabularSourceOptions, "columns" | "headers">;
 
+function tabularResponse<Row extends TabularRow>(
+  request: ResponseIdentity,
+  { columns, headers = [] }: SourceColumns,
+  { rows, matchingLeafCount, visibleRowCount = rows.length, removedRowIDs = [] }: UITabularSourceResult<Row>,
+): TabularViewResponse<Row> {
+  return {
+    protocolVersion: request.protocolVersion,
+    requestID: request.requestID,
+    sourceGeneration: request.sourceGeneration,
+    queryRevision: request.queryRevision,
+    expansionRevision: request.expansionRevision,
+    viewRevision: request.requestID,
+    access: request.access,
+    rows,
+    matchingLeafCount: count(matchingLeafCount ?? rows.filter(row => row.kind === "leaf").length),
+    visibleRowCount: count(visibleRowCount),
+    columnSchema: { revision: request.columnSchemaRevision, columns, headers },
+    removedRowIDs,
+  };
+}
+
+/** Build the response to the controller's first request from an already available projection. */
+export function createInitialTabularView<Row extends TabularRow>(
+  access: TabularRequest["access"],
+  schema: SourceColumns,
+  result: UITabularSourceResult<Row>,
+): TabularViewResponse<Row> {
+  return tabularResponse({
+    protocolVersion: 1,
+    requestID: 1,
+    sourceGeneration: 0,
+    queryRevision: 0,
+    expansionRevision: 0,
+    columnSchemaRevision: 0,
+    access,
+  }, schema, result);
+}
+
+export function createUITabularSource<Row extends TabularRow>({ columns, headers = [], load }: UITabularSourceOptions<Row>) {
+  const schema = { columns, headers };
+  return (request: TabularRequest, context: { readonly signal: AbortSignal }) => {
     const result = load(request, context);
-    return "then" in result ? Promise.resolve(result).then(respond) : respond(result);
+    return "then" in result ? Promise.resolve(result).then(result => tabularResponse(request, schema, result))
+      : tabularResponse(request, schema, result);
   };
 }

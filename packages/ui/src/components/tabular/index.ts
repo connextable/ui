@@ -16,7 +16,7 @@ export { default as UITabularEditTrigger } from "./UITabularEditTrigger.vue";
 export { default as UIDataTable } from "./UIDataTable.vue";
 export { default as UIDataGrid } from "./UIDataGrid.vue";
 export { createTableData, type TableCell, type TableColumn, type TableData, type TableRow } from "./local-data";
-export { createUITabularSource, type UITabularSourceOptions, type UITabularSourceResult } from "./source";
+export { createInitialTabularView, createUITabularSource, type UITabularSourceOptions, type UITabularSourceResult } from "./source";
 export {
   createUIDataTableComponents,
   createUIDataGridComponents,

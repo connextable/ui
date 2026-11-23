@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createUITabularSource } from "@connextable/ui";
+import { createSSRApp, h } from "vue";
+import { renderToString } from "vue/server-renderer";
+import { UIDataGrid, UIDataTable, createTableData, createUITabularSource } from "@connextable/ui";
 
 const request = {
   protocolVersion: 1,
@@ -49,4 +51,24 @@ test("an asynchronous source forwards requests and supports counts larger than t
   assert.deepEqual(result.matchingLeafCount, { kind: "unknown" });
   assert.deepEqual(result.visibleRowCount, { kind: "known", value: 16 });
   assert.deepEqual(result.removedRowIDs, ["former"]);
+});
+
+test("local tables and grids render the first page and custom cells on the server", async () => {
+  const data = createTableData({
+    columns: [{ id: "name", label: "Name" }],
+    rows: [
+      { id: "ada", cells: { name: "Ada" } },
+      { id: "grace", cells: { name: "Grace" } },
+    ],
+  });
+  for (const component of [UIDataTable, UIDataGrid]) {
+    const app = createSSRApp({
+      render: () => h(component, { data, label: "People", pageSize: 1 }, {
+        cell: ({ value }) => h("strong", value),
+      }),
+    });
+    const html = await renderToString(app);
+    assert.match(html, /<strong>Ada<\/strong>/);
+    assert.doesNotMatch(html, /Grace/);
+  }
 });
