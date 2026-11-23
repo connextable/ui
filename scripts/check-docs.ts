@@ -1,7 +1,7 @@
-const url = process.env.PLAYGROUND_URL;
+const url = process.env.DOCS_URL;
 
 if (!url) {
-  throw new Error("PLAYGROUND_URL is required");
+  throw new Error("DOCS_URL is required");
 }
 
 try {

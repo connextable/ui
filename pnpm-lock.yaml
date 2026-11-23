@@ -190,7 +190,7 @@ importers:
 
   .: {}
 
-  apps/playground:
+  apps/docs:
     dependencies:
       '@connextable/ui':
         specifier: workspace:*

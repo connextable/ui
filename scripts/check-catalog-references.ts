@@ -1,20 +1,20 @@
 import { readdir, readFile } from "node:fs/promises";
-import { catalog } from "../apps/playground/app/data/catalog.ts";
-import { arrangeCatalogExamples } from "../apps/playground/app/data/catalog-example-sections.ts";
-import { catalogGuides } from "../apps/playground/app/data/catalog-guides.ts";
-import { catalogNavigation } from "../apps/playground/app/data/catalog-navigation.ts";
-import { readPublicComponentApi } from "../apps/playground/build/public-component-api.ts";
+import { catalog } from "../apps/docs/app/data/catalog.ts";
+import { arrangeCatalogExamples } from "../apps/docs/app/data/catalog-example-sections.ts";
+import { catalogGuides } from "../apps/docs/app/data/catalog-guides.ts";
+import { catalogNavigation } from "../apps/docs/app/data/catalog-navigation.ts";
+import { readPublicComponentApi } from "../apps/docs/build/public-component-api.ts";
 
 const origin = new URL(process.argv[2] ?? "http://127.0.0.1:3000");
 const componentPath = "/components/";
 const mainSectionOrder = ["usage", "settings-and-behavior", "practical-examples", "examples", "composition-and-extension", "parts", "api"];
-const routeFiles = await readdir(new URL("../apps/playground/app/pages/components/", import.meta.url));
+const routeFiles = await readdir(new URL("../apps/docs/app/pages/components/", import.meta.url));
 const standalone = routeFiles.filter(file => file.endsWith(".vue") && !file.startsWith("[")).map(file => file.slice(0, -4));
 const routes = new Set([...catalog.map(entry => entry.slug), ...standalone]);
 const slugs = catalogNavigation.flatMap(group => [...group.slugs]);
 const entries = new Map(catalog.map(entry => [entry.slug, entry]));
 const standaloneTitles = new Map(await Promise.all(standalone.map(async slug => {
-  const source = await readFile(new URL(`../apps/playground/app/pages/components/${slug}.vue`, import.meta.url), "utf8");
+  const source = await readFile(new URL(`../apps/docs/app/pages/components/${slug}.vue`, import.meta.url), "utf8");
   const title = /definePageMeta\(\s*\{\s*title:\s*"(UI\w+)"/.exec(source)?.[1];
   if (!title) throw new Error(`Missing component title for ${slug}`);
   return [slug, title] as const;
@@ -26,7 +26,7 @@ if (navigationSlugs.size !== slugs.length) failures.push("Duplicate sidebar comp
 for (const slug of routes) if (!navigationSlugs.has(slug)) failures.push(`Sidebar omits ${slug}`);
 for (const slug of slugs) if (!routes.has(slug)) failures.push(`Sidebar references missing route ${slug}`);
 
-const exampleDirectory = new URL("../apps/playground/app/components/catalog/examples/", import.meta.url);
+const exampleDirectory = new URL("../apps/docs/app/components/catalog/examples/", import.meta.url);
 const exampleFiles = new Set((await readdir(exampleDirectory)).filter(file => file.endsWith(".vue")).map(file => file.slice(0, -4)));
 const exampleIDs = new Set(Object.values(catalogGuides).flatMap(guide => guide.examples?.map(example => example.id) ?? []));
 for (const id of exampleFiles) if (!exampleIDs.has(id)) failures.push(`Unlisted example file ${id}.vue`);
