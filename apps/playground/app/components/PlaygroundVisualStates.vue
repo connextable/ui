@@ -77,6 +77,7 @@ const collectionItem = ':is([role="option"], [role="treeitem"], [role="gridcell"
 const groupedControl = [
   ".ui-number-control", ".ui-quantity-control", ".ui-input--with-slots",
   ".ui-choice", ".ui-checkbox", ".ui-file-input__picker", ".ui-file-row", ".ui-navigation-rail", "[role=tablist]",
+  ".ui-clearable-control--trigger", ".ui-tree-select-field",
   pickerAnchor, calendarContent, '[data-scope="feed"][data-part="item"]',
   "[data-scope][data-part=root]", "[data-ui-tabular-scroll]",
 ].join(",");
@@ -88,6 +89,7 @@ const roomyControl = [
   '[data-scope="multi-thumb-slider"][data-part="root"]',
   ':is([data-scope="checkbox-tree"], [data-scope="cascade-list"], [data-scope="stepper"])[data-part="root"]',
   '[data-part="anchor"]:is([data-scope="date-range"], [data-scope^="date-time"], [data-scope*="-range-picker"])',
+  '[data-scope$="-range-field"][data-part="root"]',
   ':is([data-scope="transfer"], [data-scope="tree-view"], [data-scope="carousel"], [data-scope="navigation-menu"], [data-scope="tree-reorder"], [data-scope="color-picker"])[data-part="root"]',
 ].join(",");
 
@@ -224,6 +226,17 @@ watch(() => source, (element, _, onCleanup) => {
   });
 }, { immediate: true, flush: "post" });
 
+watch([board, specimen], ([container, sample], _, onCleanup) => {
+  if (!container || !sample) return;
+  const updateWidth = () => {
+    container.style.setProperty("--sample-width", `${Math.ceil(sample.root.getBoundingClientRect().width)}px`);
+  };
+  const observer = new ResizeObserver(updateWidth);
+  observer.observe(sample.root);
+  updateWidth();
+  onCleanup(() => observer.disconnect());
+}, { flush: "post" });
+
 watch([board, styles, specimen], ([container, library, sample]) => {
   if (!container || !library || !sample) return;
   const sheets = [library.sheet, ...getExampleStyles(sample.root, library.scopes)];
@@ -269,7 +282,6 @@ watch([board, styles, specimen], ([container, library, sample]) => {
 
 <style scoped>
 .playground-visual-states {
-  container-type: inline-size;
   min-inline-size: 0;
 }
 
@@ -281,39 +293,17 @@ watch([board, styles, specimen], ([container, library, sample]) => {
 }
 
 .playground-visual-states__grid {
-  --columns: 4;
+  --sample-padding: var(--ui-space-md);
+  --card-width: calc(var(--sample-width, 0px) + 2 * (var(--sample-padding) + var(--ui-frame-border-width)));
+
   display: grid;
-  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(17rem, 40%, var(--card-width))), 1fr));
   grid-auto-rows: 1fr;
   gap: var(--ui-space-sm);
 }
 
-.playground-visual-states__grid:where([data-count="3"]) {
-  --columns: 3;
-}
-
-.playground-visual-states__grid:where([data-roomy], [data-count="2"]) {
-  --columns: 2;
-}
-
-.playground-visual-states__grid:where([data-count="1"]) {
-  --columns: 1;
-}
-
-@container (width < 42rem) {
-  .playground-visual-states__grid:where([data-count="3"], [data-count="4"]) {
-    --columns: 2;
-  }
-
-  .playground-visual-states__grid:where([data-roomy], [data-count="2"]) {
-    --columns: 1;
-  }
-}
-
-@container (width < 19rem) {
-  .playground-visual-states__grid {
-    --columns: 1;
-  }
+.playground-visual-states__grid:where([data-roomy], [data-count="1"]) {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .playground-visual-states__card {
@@ -331,7 +321,7 @@ watch([board, styles, specimen], ([container, library, sample]) => {
   place-items: center;
   box-sizing: border-box;
   min-block-size: 5.5rem;
-  padding: var(--ui-space-md);
+  padding: var(--sample-padding);
   overflow: hidden;
 }
 
