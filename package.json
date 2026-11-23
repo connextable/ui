@@ -7,8 +7,9 @@
     "node": "26.x"
   },
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "pnpm check:copy && pnpm -r build",
+    "check:copy": "node scripts/check-copy.mjs",
     "dev": "pnpm --filter @connextable/ui build && pnpm --filter @connextable/ui-docs dev",
-    "typecheck": "pnpm --filter @connextable/ui build && pnpm --filter @connextable/ui-docs typecheck"
+    "typecheck": "pnpm check:copy && pnpm --filter @connextable/ui build && pnpm --filter @connextable/ui-docs typecheck"
   }
 }
