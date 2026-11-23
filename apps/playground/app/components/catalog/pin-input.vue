@@ -41,10 +41,10 @@ const source = computed(() => vueExampleCode("UIPinInput", {
       <PlaygroundExampleControl v-slot="{ labelId }" label="length">
         <UISelect v-model="selectedLength" :options="lengths" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <UISwitch v-model="mask" size="sm" label="mask" />
-      <UISwitch v-model="clearable" size="sm" label="clearable" />
-      <UISwitch v-model="readonly" size="sm" label="readonly" />
-      <UISwitch v-model="disabled" size="sm" label="disabled" />
+      <UISwitch variant="outline" v-model="mask" size="sm" label="mask" />
+      <UISwitch variant="outline" v-model="clearable" size="sm" label="clearable" />
+      <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
+      <UISwitch variant="outline" v-model="disabled" size="sm" label="disabled" />
     </template>
     <UIPinInput v-model="code" v-bind="attributes" />
     <template #footer><output>{{ code.length }} / {{ length }}자리 입력</output></template>

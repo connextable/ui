@@ -132,6 +132,7 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     readonly: note("현재 상태를 읽을 수 있고 클릭과 Space로 전환되지 않습니다.", example("switch-readonly", "읽기 전용"), "boolean", "false"),
     disabled: note("조작과 Tab 포커스를 비활성화합니다.", example("switch-disabled", "비활성"), "boolean", "false"),
     size: note("트랙과 손잡이 크기를 함께 변경합니다.", example("switch-size", "스위치 크기"), "'sm' | 'md' | 'lg'", "md"),
+    variant: note("outline은 테두리와 손잡이 색으로 상태를 구분합니다. card는 라벨과 설명까지 하나의 카드로 묶습니다.", switchExample, "'plain' | 'outline' | 'card'", "plain"),
     icon: note("스위치 라벨 앞에 아이콘을 표시합니다.", example("switch-icon", "스위치 라벨 아이콘"), "Component"),
   },
 };

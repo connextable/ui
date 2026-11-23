@@ -43,10 +43,10 @@ const code = computed(() => vueExampleCode("UIRadioGroup", {
     wide
   >
     <template #header>
-      <UISwitch v-model="horizontal" size="sm" label="가로 배치" />
-      <UISwitch v-model="clearable" size="sm" label="clearable" />
-      <UISwitch v-model="readonly" size="sm" label="readonly" />
-      <UISwitch v-model="disabled" size="sm" label="disabled" />
+      <UISwitch variant="outline" v-model="horizontal" size="sm" label="가로 배치" />
+      <UISwitch variant="outline" v-model="clearable" size="sm" label="clearable" />
+      <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
+      <UISwitch variant="outline" v-model="disabled" size="sm" label="disabled" />
     </template>
     <UIRadioGroup v-model="density" :options="options" v-bind="attributes" />
     <template #footer><output>{{ options.find(option => option.value === density)?.label ?? "선택 없음" }}</output></template>

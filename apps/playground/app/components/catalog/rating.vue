@@ -27,8 +27,8 @@ const code = computed(() => vueExampleCode("UIRating", {
 <template>
   <PlaygroundExample v-bind="$attrs as { id: string; title: string }" :code="code">
     <template #header>
-      <UISwitch v-model="clearable" size="sm" label="clearable" />
-      <UISwitch v-model="readonly" size="sm" label="readonly" />
+      <UISwitch variant="outline" v-model="clearable" size="sm" label="clearable" />
+      <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
     </template>
     <UIRating v-model="rating" :items="items" v-bind="attributes" />
     <template #footer><output>{{ rating ? `${rating}점` : "미평가" }}</output></template>

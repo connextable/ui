@@ -81,7 +81,7 @@ definePageMeta({
     <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
       <PlaygroundExampleSection id="examples" title="스위치 손잡이">
         <PlaygroundExample id="UISwitchThumb" title="UISwitchThumb"
-          description="thumb 슬롯으로 켜짐 상태의 표시를 조합합니다." :source="thumbSource" :heading-level="3">
+          description="thumb 슬롯에서 checked를 읽어 스위치가 켜져 있을 때 손잡이 가운데에 체크 아이콘을 표시합니다." :source="thumbSource" :heading-level="3">
           <SwitchThumbExample />
         </PlaygroundExample>
       </PlaygroundExampleSection>

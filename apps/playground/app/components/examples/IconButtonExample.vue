@@ -48,7 +48,7 @@ const code = computed(() => buttonExampleCode(
       <PlaygroundExampleControl v-slot="{ labelId }" label="size">
         <UISelect v-model="sizeValue" :options="sizeOptions" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <UISwitch v-model="loading" label="loading" size="sm" />
+      <UISwitch variant="outline" v-model="loading" label="loading" size="sm" />
       <PlaygroundExampleControl v-slot="{ labelId }" label="진행 표시">
         <UISelect v-model="spinnerValue" :options="spinners" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>

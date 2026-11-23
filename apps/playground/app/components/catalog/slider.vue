@@ -33,7 +33,7 @@ const code = computed(() => vueExampleCode("UISlider", {
       <PlaygroundExampleControl v-slot="{ labelId }" label="orientation">
         <UISelect v-model="orientation" :options="options" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <UISwitch v-model="readonly" size="sm" label="readonly" />
+      <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
     </template>
     <UISlider v-model="value" v-bind="attributes" />
     <template #footer><output>밝기 · {{ value }}%</output></template>

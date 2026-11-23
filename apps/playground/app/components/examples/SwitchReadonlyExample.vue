@@ -6,5 +6,5 @@ const enabled = ref(true);
 </script>
 
 <template>
-  <UISwitch label="제목 표시" v-model="enabled" readonly />
+  <UISwitch variant="outline" label="제목 표시" v-model="enabled" readonly />
 </template>

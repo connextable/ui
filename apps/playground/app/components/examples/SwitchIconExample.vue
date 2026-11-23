@@ -7,5 +7,5 @@ const alerts = ref(true);
 </script>
 
 <template>
-  <UISwitch v-model="alerts" :icon="Bell" label="배포 알림" />
+  <UISwitch variant="outline" v-model="alerts" :icon="Bell" label="배포 알림" />
 </template>

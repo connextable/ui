@@ -50,7 +50,7 @@ const { loading, failure, canLoadMore, loadMore } = useUIInfiniteScroll(scroll, 
 <template>
   <div class="activity-scroll">
     <div class="activity-scroll__tools">
-      <UISwitch v-model="auto" size="sm" label="자동으로 더 불러오기" />
+      <UISwitch variant="outline" v-model="auto" size="sm" label="자동으로 더 불러오기" />
       <UIButton size="sm" variant="ghost" :disabled="!hasMore || loading || failNext" @click="failNext = true">
         다음 요청 실패시키기
       </UIButton>

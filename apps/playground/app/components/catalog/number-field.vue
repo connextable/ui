@@ -32,8 +32,8 @@ const code = computed(() => vueExampleCode("UINumberField", {
       <PlaygroundExampleControl v-slot="{ labelId }" label="unit">
         <UISelect v-model="unit" :options="units" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <UISwitch v-model="clearable" size="sm" label="clearable" />
-      <UISwitch v-model="readonly" size="sm" label="readonly" />
+      <UISwitch variant="outline" v-model="clearable" size="sm" label="clearable" />
+      <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
     </template>
     <UINumberField v-model="length" v-bind="attributes" />
     <template #footer><output>확정한 숫자 · {{ length ?? "없음" }}</output></template>

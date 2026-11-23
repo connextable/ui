@@ -62,9 +62,9 @@ const code = computed(() => buttonExampleCode(attributes.value, { label: label.v
       <PlaygroundExampleControl v-if="isRoute" v-slot="{ labelId }" label="프리패치">
         <UISelect v-model="prefetch" :options="prefetchOptions" :aria-labelledby="labelId" size="sm" />
       </PlaygroundExampleControl>
-      <UISwitch v-if="!isDownload" v-model="newTab" label="새 탭" size="sm" />
-      <UISwitch v-model="disabled" label="disabled" size="sm" />
-      <UISwitch v-model="block" label="block" size="sm" />
+      <UISwitch variant="outline" v-if="!isDownload" v-model="newTab" label="새 탭" size="sm" />
+      <UISwitch variant="outline" v-model="disabled" label="disabled" size="sm" />
+      <UISwitch variant="outline" v-model="block" label="block" size="sm" />
     </template>
     <UIButton v-bind="attributes">{{ label }}</UIButton>
   </PlaygroundExample>

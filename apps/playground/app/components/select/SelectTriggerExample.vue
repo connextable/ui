@@ -16,7 +16,7 @@ const soft = ref(false);
       <UISelectTrigger :variant="soft ? 'soft' : 'outline'" />
       <UISelectContent />
     </UISelect>
-    <UISwitch v-model="soft" label="Soft 스타일" />
+    <UISwitch variant="outline" v-model="soft" label="Soft 스타일" />
   </div>
 </template>
 

@@ -11,6 +11,7 @@ const readonly = ref(false);
 const disabled = ref(false);
 const attributes = computed(() => ({
   label: "댓글 알림",
+  variant: "outline" as const,
   size: sizes.find(value => value === size.value),
   readonly: readonly.value || undefined,
   disabled: disabled.value || undefined,
@@ -38,8 +39,8 @@ const code = computed(() => vueExampleCode("UISwitch", {
       <PlaygroundExampleControl v-slot="{ labelId }" label="size">
         <UISelect v-model="size" :options="options" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <UISwitch v-model="readonly" size="sm" label="readonly" />
-      <UISwitch v-model="disabled" size="sm" label="disabled" />
+      <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
+      <UISwitch variant="outline" v-model="disabled" size="sm" label="disabled" />
     </template>
     <UISwitch v-model="receiveCommentNotifications" v-bind="attributes" />
     <template #footer>

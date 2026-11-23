@@ -32,8 +32,8 @@ const code = computed(() => vueExampleCode("UIFileInput", {
       <PlaygroundExampleControl v-slot="{ labelId }" label="variant">
         <UISelect v-model="variant" :options="options" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <UISwitch v-model="preview" size="sm" label="preview" />
-      <UISwitch v-model="clearable" size="sm" label="clearable" />
+      <UISwitch variant="outline" v-model="preview" size="sm" label="preview" />
+      <UISwitch variant="outline" v-model="clearable" size="sm" label="clearable" />
     </template>
     <UIFileInput v-model="files" v-bind="attributes" />
     <template #footer><output>{{ files.length ? files.map(file => file.name).join(", ") : "선택한 파일 없음" }}</output></template>

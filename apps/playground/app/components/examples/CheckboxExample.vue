@@ -33,9 +33,9 @@ const code = computed(() => vueExampleCode("UICheckbox", {
     :heading-level="3"
   >
     <template #header>
-      <UISwitch v-model="card" size="sm" label="카드 모양" />
-      <UISwitch v-model="disabled" size="sm" label="disabled" />
-      <UISwitch v-model="readonly" size="sm" label="readonly" />
+      <UISwitch variant="outline" v-model="card" size="sm" label="카드 모양" />
+      <UISwitch variant="outline" v-model="disabled" size="sm" label="disabled" />
+      <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
     </template>
     <UICheckbox v-model="checked" v-bind="attributes" />
     <template #footer><output>{{ checked ? "알림 켜짐" : "알림 꺼짐" }}</output></template>

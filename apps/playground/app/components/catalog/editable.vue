@@ -27,8 +27,8 @@ const code = computed(() => vueExampleCode("UIEditable", {
 <template>
   <PlaygroundExample v-bind="$attrs as { id: string; title: string }" :code="code">
     <template #header>
-      <UISwitch v-model="submitOnBlur" size="sm" label="submit-on-blur" />
-      <UISwitch v-model="readonly" size="sm" label="readonly" />
+      <UISwitch variant="outline" v-model="submitOnBlur" size="sm" label="submit-on-blur" />
+      <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
     </template>
     <UIEditable v-model="text" v-bind="attributes" />
     <template #footer><output>확정한 이름 · {{ text || "없음" }}</output></template>

@@ -29,9 +29,9 @@ const code = computed(() => vueExampleCode("UITagsInput", {
 <template>
   <PlaygroundExample v-bind="$attrs as { id: string; title: string }" :code="code">
     <template #header>
-      <UISwitch v-model="clearable" size="sm" label="clearable" />
-      <UISwitch v-model="splitPaste" size="sm" label="split-paste" />
-      <UISwitch v-model="reorderable" size="sm" label="reorderable" />
+      <UISwitch variant="outline" v-model="clearable" size="sm" label="clearable" />
+      <UISwitch variant="outline" v-model="splitPaste" size="sm" label="split-paste" />
+      <UISwitch variant="outline" v-model="reorderable" size="sm" label="reorderable" />
     </template>
     <UITagsInput v-model="tags" v-bind="attributes" />
     <template #footer><output>{{ tags.length }}개 · {{ tags.join(", ") || "등록한 태그 없음" }}</output></template>

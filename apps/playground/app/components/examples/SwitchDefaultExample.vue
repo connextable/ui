@@ -6,5 +6,5 @@ const enabled = ref(true);
 </script>
 
 <template>
-  <UISwitch label="자동 저장" v-model="enabled" />
+  <UISwitch variant="outline" label="자동 저장" v-model="enabled" />
 </template>

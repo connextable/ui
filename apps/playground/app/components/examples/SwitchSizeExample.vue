@@ -4,9 +4,9 @@ import { UISwitch } from "@connextable/ui";
 
 <template>
   <div class="switch-size-example">
-    <UISwitch label="작게" size="sm" />
-    <UISwitch label="보통" size="md" />
-    <UISwitch label="크게" size="lg" />
+    <UISwitch variant="outline" label="작게" size="sm" />
+    <UISwitch variant="outline" label="보통" size="md" />
+    <UISwitch variant="outline" label="크게" size="lg" />
   </div>
 </template>
 

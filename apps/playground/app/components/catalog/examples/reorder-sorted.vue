@@ -10,7 +10,7 @@ const visibleOrder = computed(() => byName.value ? [...manualOrder.value].sort(c
 
 <template>
   <div class="reorder-sorted">
-    <UISwitch v-model="byName" size="sm" label="이름순 정렬" />
+    <UISwitch variant="outline" v-model="byName" size="sm" label="이름순 정렬" />
     <UISequenceReorder
       :items="visibleOrder" controlled label="팀 표시 순서" :disabled="byName" keyboard-mode="preview"
       @update:items="manualOrder = $event" v-slot="{ interaction, getPreviewState }"

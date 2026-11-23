@@ -23,8 +23,8 @@ const source = computed(() => vueExampleCode("UIToggleButton", {
     :heading-level="3"
   >
     <template #header>
-      <UISwitch v-model="readonly" size="sm" label="readonly" />
-      <UISwitch v-model="disabled" size="sm" label="disabled" />
+      <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
+      <UISwitch variant="outline" v-model="disabled" size="sm" label="disabled" />
     </template>
     <UIToggleButton v-model="pinned" v-bind="attributes">상단에 고정</UIToggleButton>
   </PlaygroundExample>

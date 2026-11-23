@@ -12,7 +12,7 @@ function submit(formData: FormData) {
 <template>
   <UIForm @submit="({ formData }) => submit(formData)">
     <UIFormField name="description">
-      <UISwitch label="설명 표시" />
+      <UISwitch variant="outline" label="설명 표시" />
     </UIFormField>
     <UIFormActions>
       <UIButton type="submit" size="sm">제출</UIButton>

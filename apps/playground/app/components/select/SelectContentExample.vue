@@ -17,7 +17,7 @@ const matchTrigger = ref(false);
       <UISelectTrigger />
       <UISelectContent :width="matchTrigger ? 'trigger' : 'fit'" />
     </UISelect>
-    <UISwitch v-model="matchTrigger" label="트리거와 같은 폭" />
+    <UISwitch variant="outline" v-model="matchTrigger" label="트리거와 같은 폭" />
   </div>
 </template>
 

@@ -39,8 +39,8 @@ const code = computed(() => vueExampleCode("UISelect", {
     :heading-level="3"
   >
     <template #header>
-      <UISwitch v-model="clearable" size="sm" label="clearable" />
-      <UISwitch v-model="readonly" size="sm" label="readonly" />
+      <UISwitch variant="outline" v-model="clearable" size="sm" label="clearable" />
+      <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
     </template>
     <UISelect v-model="density" :options="options" v-bind="attributes" />
     <template #footer><output>{{ options.find(option => option.value === density)?.label ?? "선택 없음" }}</output></template>

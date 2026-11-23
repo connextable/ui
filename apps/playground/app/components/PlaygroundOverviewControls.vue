@@ -61,7 +61,7 @@ onMounted(() => {
             :aria-label="`${size} 이름 입력`"
             placeholder="이름"
           />
-          <UISwitch v-model="controls[size].enabled" :size="size" label="사용" />
+          <UISwitch variant="outline" v-model="controls[size].enabled" :size="size" label="사용" />
           <UIButton :size="size" variant="outline" :aria-label="`${size} 초기화`" @click="reset(size)">초기화</UIButton>
         </div>
       </div>

@@ -133,8 +133,8 @@ const code = computed(() => buttonExampleCode(attributes.value, {
       <PlaygroundExampleControl v-if="props.topic === 'icons'" v-slot="{ labelId }" label="trailing-icon">
         <UISelect v-model="trailing" :options="iconOptions" size="sm" :aria-labelledby="labelId" />
       </PlaygroundExampleControl>
-      <UISwitch v-if="props.topic === 'loading'" v-model="loading" label="loading" size="sm" />
-      <UISwitch v-if="props.topic === 'disabled'" v-model="disabled" label="disabled" size="sm" />
+      <UISwitch variant="outline" v-if="props.topic === 'loading'" v-model="loading" label="loading" size="sm" />
+      <UISwitch variant="outline" v-if="props.topic === 'disabled'" v-model="disabled" label="disabled" size="sm" />
     </template>
     <UIButton
       v-bind="attributes"

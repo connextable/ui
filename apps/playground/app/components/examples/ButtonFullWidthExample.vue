@@ -17,7 +17,7 @@ const code = computed(() => buttonExampleCode({ block: block.value }, { label })
     :heading-level="3"
   >
     <template #header>
-      <UISwitch v-model="block" label="block" size="sm" />
+      <UISwitch variant="outline" v-model="block" label="block" size="sm" />
     </template>
     <UIButton :block="block">{{ label }}</UIButton>
   </PlaygroundExample>
