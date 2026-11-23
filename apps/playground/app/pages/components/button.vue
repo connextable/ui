@@ -25,38 +25,28 @@ definePageMeta({
       <ButtonExample />
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
-      <div id="button-content" data-playground-anchor tabindex="-1">
-        <ButtonUsageExample topic="label" />
-        <ButtonUsageExample topic="icons" />
-      </div>
-      <div id="button-appearance" data-playground-anchor tabindex="-1">
-        <ButtonUsageExample topic="appearance" />
-        <ButtonUsageExample topic="size" />
-        <ButtonFullWidthExample />
-      </div>
-      <div id="button-states" data-playground-anchor tabindex="-1">
-        <ButtonUsageExample topic="disabled" />
-        <ButtonUsageExample topic="loading" />
-      </div>
-      <div id="button-types" data-playground-anchor tabindex="-1">
-        <IconButtonExample />
-        <ButtonToggleExample />
-        <PlaygroundExample
-          id="button-toggle-icon"
-          title="토글 버튼에 아이콘 표시"
-          description="icon으로 고정 동작의 아이콘을 지정하고 v-model로 눌림 상태를 연결합니다."
-          :source="iconSource"
-        >
-          <ButtonToggleIconExample />
-        </PlaygroundExample>
-      </div>
-      <div id="link" data-playground-anchor tabindex="-1">
-        <p class="button-page__intro">
-          이동에 버튼 스타일이 필요하면 UIButton에 주소를 전달합니다.
-          본문에 넣는 텍스트 링크는 <UIAnchor to="/components/anchor">UIAnchor</UIAnchor>로 표시합니다.
-        </p>
-        <ButtonLinkExample />
-      </div>
+      <ButtonUsageExample topic="label" />
+      <ButtonUsageExample topic="icons" />
+      <ButtonUsageExample topic="appearance" />
+      <ButtonUsageExample topic="size" />
+      <ButtonFullWidthExample />
+      <ButtonUsageExample topic="disabled" />
+      <ButtonUsageExample topic="loading" />
+      <IconButtonExample />
+      <ButtonToggleExample />
+      <PlaygroundExample
+        id="button-toggle-icon"
+        title="토글 버튼에 아이콘 표시"
+        description="icon으로 고정 동작의 아이콘을 지정하고 v-model로 눌림 상태를 연결합니다."
+        :source="iconSource"
+      >
+        <ButtonToggleIconExample />
+      </PlaygroundExample>
+      <p class="button-page__intro">
+        이동에 버튼 스타일이 필요하면 UIButton에 주소를 전달합니다.
+        본문에 넣는 텍스트 링크는 <UIAnchor to="/components/anchor">UIAnchor</UIAnchor>로 표시합니다.
+      </p>
+      <ButtonLinkExample />
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="examples" title="실전 예제">
       <ButtonPendingExample />

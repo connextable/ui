@@ -3,7 +3,6 @@ import { catalog } from "../apps/playground/app/data/catalog.ts";
 import { arrangeCatalogExamples } from "../apps/playground/app/data/catalog-example-sections.ts";
 import { catalogGuides } from "../apps/playground/app/data/catalog-guides.ts";
 import { catalogNavigation } from "../apps/playground/app/data/catalog-navigation.ts";
-import { legacyStructureAnchorSlugs } from "../apps/playground/app/data/catalog-reference.ts";
 import { readPublicComponentApi } from "../apps/playground/build/public-component-api.ts";
 
 const origin = new URL(process.argv[2] ?? "http://127.0.0.1:3000");
@@ -63,7 +62,6 @@ async function check(slug: string) {
     }
 
     expectAnchor("api", "API section");
-    if (legacyStructureAnchorSlugs.has(slug)) expectAnchor("parts-structure", "legacy reference");
     for (const [id, count] of ids) {
       if (count > 1) failures.push(`${path} duplicate document id #${id} (${count} targets)`);
     }
@@ -86,12 +84,8 @@ async function check(slug: string) {
       const expected = [{ id: "usage", level: 2 }, { id: "basic-example", level: 3 }];
       for (const phase of arrangeCatalogExamples(guide.examples ?? [], guide.sections)) {
         expected.push({ id: phase.id, level: 2 });
-        for (const group of phase.groups) {
-          expectAnchor(group.id, "example group link");
-          if (headings.some(heading => heading.id === group.id)) failures.push(`${path} shows an intermediate group heading #${group.id}`);
-          expected.push(...group.examples.map(example => ({ id: example.id, level: 3 })));
-          checkedDetailedExamples += group.examples.length;
-        }
+        expected.push(...phase.examples.map(example => ({ id: example.id, level: 3 })));
+        checkedDetailedExamples += phase.examples.length;
       }
       expected.push({ id: "api", level: 2 });
       let previousIndex = -1;

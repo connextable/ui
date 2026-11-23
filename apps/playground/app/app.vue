@@ -482,8 +482,7 @@ body {
   overflow-wrap: anywhere;
 }
 
-[data-playground-heading],
-[data-playground-anchor] {
+[data-playground-heading] {
   scroll-margin-block-start: 2rem;
 }
 

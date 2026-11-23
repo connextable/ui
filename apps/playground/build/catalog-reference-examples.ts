@@ -72,7 +72,7 @@ export function catalogReferenceExamples() {
         const sections = [
           { id: "basic-example", title: guide.title, file: `${entry.slug}.vue`, parts: undefined },
           ...arrangeCatalogExamples(guide.examples ?? [], guide.sections)
-            .flatMap(phase => phase.groups.flatMap(group => group.examples))
+            .flatMap(phase => phase.examples)
             .map(example => ({ ...example, file: `examples/${example.id}.vue` })),
         ];
         const notes = Object.keys({ ...stateApiNotes(entry.slug), ...guide.api });

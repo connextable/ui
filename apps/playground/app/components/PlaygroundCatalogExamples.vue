@@ -15,19 +15,16 @@ const sources = import.meta.glob<string>("./catalog/examples/*.vue", { import: "
 
 const phases = arrangeCatalogExamples(examples, groups).map(phase => ({
   ...phase,
-  groups: phase.groups.map(group => ({
-    ...group,
-    examples: group.examples.map(example => {
-      const path = `./catalog/examples/${example.id}.vue`;
-      const loadPreview = previews[path]!;
-      return { ...example, loadPreview, source: sources[path]! };
-    }),
-  })),
+  examples: phase.examples.map(example => {
+    const path = `./catalog/examples/${example.id}.vue`;
+    const loadPreview = previews[path]!;
+    return { ...example, loadPreview, source: sources[path]! };
+  }),
 }));
 
 // Resolve preview modules before rendering so their teleports hydrate in document order.
 const loadedPreviews = new Map(await Promise.all(
-  phases.flatMap(phase => phase.groups.flatMap(group => group.examples))
+  phases.flatMap(phase => phase.examples)
     .filter((example) => !deferPreviews || example.framed)
     .map(async ({ id, loadPreview }) => [id, await loadPreview()] as const),
 ));
@@ -35,15 +32,13 @@ const loadedPreviews = new Map(await Promise.all(
 
 <template>
   <PlaygroundExampleSection v-for="phase in phases" :id="phase.id" :key="phase.id" :title="phase.title">
-    <div v-for="group in phase.groups" :id="group.id" :key="group.id" data-playground-anchor tabindex="-1">
-      <PlaygroundCatalogExample
-        v-for="example in group.examples"
-        :key="example.id"
-        :example="{ id: example.id, title: example.title, description: example.description, source: example.source, wide }"
-        :framed="example.framed"
-        :load-preview="deferPreviews && !example.framed ? example.loadPreview : undefined"
-        :preview="loadedPreviews.get(example.id)"
-      />
-    </div>
+    <PlaygroundCatalogExample
+      v-for="example in phase.examples"
+      :key="example.id"
+      :example="{ id: example.id, title: example.title, description: example.description, source: example.source, wide }"
+      :framed="example.framed"
+      :load-preview="deferPreviews && !example.framed ? example.loadPreview : undefined"
+      :preview="loadedPreviews.get(example.id)"
+    />
   </PlaygroundExampleSection>
 </template>

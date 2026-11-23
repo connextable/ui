@@ -43,12 +43,6 @@ const sectionIDs: Readonly<Record<string, string>> = {
   "팩토리와 유틸리티": "factories", "스타일": "styles",
 };
 
-// These pages previously had a structure group. Keep its published fragment on the first group.
-export const legacyStructureAnchorSlugs: ReadonlySet<string> = new Set([
-  "checkbox-group", "radio-group", "toggle-group", "select", "dialog",
-  "alert-dialog", "drawer", "sheet", "popover", "tooltip",
-]);
-
 export function helperGroup(name: string) {
   if (/^use[A-Z]/.test(name)) return "컴포저블";
   if (/^(?:create|track)[A-Z]/.test(name)) return "팩토리와 유틸리티";

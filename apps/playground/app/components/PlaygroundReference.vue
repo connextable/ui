@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import { ArrowRight } from "@lucide/vue";
 import { computed } from "vue";
-import { legacyStructureAnchorSlugs, referenceBlocks, type ReferenceRow } from "~/data/catalog-reference";
+import { referenceBlocks, type ReferenceRow } from "~/data/catalog-reference";
 import publicApi from "virtual:public-component-api";
 
 const props = defineProps<{
   component: string;
   parts: readonly ReferenceRow[];
   api: readonly ReferenceRow[];
-  headingAnchors?: Record<string, string>;
   declaredParts?: readonly string[];
 }>();
-const route = useRoute();
-const legacyStructureAnchor = computed(() => legacyStructureAnchorSlugs.has(route.path.split("/").filter(Boolean).at(-1) ?? ""));
 const declarations = computed(() => [...new Set([props.component, ...(props.declaredParts ?? []), ...props.parts.map(part => part.name)])]
   .flatMap(name => publicApi[name]?.length ? [{ name, members: publicApi[name] }] : []));
 const documentedApi = computed(() => props.api.map(entry => {
@@ -29,9 +26,6 @@ const sections = computed(() => [
   blocks: referenceBlocks(section.entries, section.id, props.component),
 })));
 
-function groupAnchor(section: string, group: string) {
-  return props.headingAnchors?.[group] ?? `${section}-${group}`;
-}
 </script>
 
 <template>
@@ -39,21 +33,17 @@ function groupAnchor(section: string, group: string) {
     <PlaygroundExampleSection v-for="section in sections" :id="section.id" :key="section.id" :title="section.title">
       <div
         v-for="block in section.blocks"
-        :id="block.owner ? `${section.id}-owner-${block.id}` : undefined"
         :key="block.id"
-        :data-playground-anchor="block.owner ? '' : undefined"
-        :tabindex="block.owner ? -1 : undefined"
         class="playground-reference__block"
       >
         <section
-          v-for="(group, index) in block.groups"
-          :id="section.id === 'parts' && index === 0 && legacyStructureAnchor ? 'parts-structure' : undefined"
+          v-for="group in block.groups"
           :key="group.id"
           class="playground-reference__group"
-          :aria-labelledby="groupAnchor(section.id, group.id)"
+          :aria-labelledby="`${section.id}-${group.id}`"
         >
           <h3
-            :id="groupAnchor(section.id, group.id)"
+            :id="`${section.id}-${group.id}`"
             class="playground-reference__group-heading"
             data-playground-heading
             tabindex="-1"

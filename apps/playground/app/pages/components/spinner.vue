@@ -29,24 +29,22 @@ definePageMeta({
       </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
-      <div id="appearance" data-playground-anchor tabindex="-1">
-        <PlaygroundExample
-          id="spinner-wave"
-          title="웨이브"
-          description="variant를 wave로 지정하면 버튼에 쓰이는 막대형 로딩 표시를 사용할 수 있습니다."
-          :source="waveSource"
-        >
-          <SpinnerWaveExample />
-        </PlaygroundExample>
-        <PlaygroundExample
-          id="spinner-arc"
-          title="원호형"
-          description="목록이나 표를 그대로 보여주면서 데이터를 다시 불러올 때 사용할 수 있습니다."
-          :source="arcSource"
-        >
-          <SpinnerArcExample />
-        </PlaygroundExample>
-      </div>
+      <PlaygroundExample
+        id="spinner-wave"
+        title="웨이브"
+        description="variant를 wave로 지정하면 버튼에 쓰이는 막대형 로딩 표시를 사용할 수 있습니다."
+        :source="waveSource"
+      >
+        <SpinnerWaveExample />
+      </PlaygroundExample>
+      <PlaygroundExample
+        id="spinner-arc"
+        title="원호형"
+        description="목록이나 표를 그대로 보여주면서 데이터를 다시 불러올 때 사용할 수 있습니다."
+        :source="arcSource"
+      >
+        <SpinnerArcExample />
+      </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="examples" title="실전 예제">
       <PlaygroundExample

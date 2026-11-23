@@ -24,51 +24,43 @@ definePageMeta({
       <InputExample />
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
-      <div id="input-layouts" data-playground-anchor tabindex="-1">
-        <InputExample multiline />
-        <PlaygroundExample
-          id="input-leading"
-          title="주소의 고정 접두사와 접미사"
-          description="leading과 trailing으로 주소의 고정 부분을 배치합니다. 입력 모델에는 사용자가 입력한 팀 주소만 들어갑니다."
-          :source="inputLeadingSource"
-        >
-          <InputLeadingExample />
-        </PlaygroundExample>
-      </div>
-      <div id="input-states-section" data-playground-anchor tabindex="-1">
-        <PlaygroundExample
-          id="input-readonly"
-          title="읽기 전용"
-          description="readonly를 지정하면 값을 읽고 복사할 수 있지만 수정할 수 없습니다."
-          :source="inputReadonlyExampleSource"
-        >
-          <InputReadonlyExample />
-        </PlaygroundExample>
-        <PlaygroundExample
-          id="input-states"
-          title="오류 상태"
-          description="이메일 형식에 맞게 입력해 aria-invalid에 따른 오류 표시를 확인합니다."
-          :source="inputStatesExampleSource"
-        >
-          <InputStatesExample />
-        </PlaygroundExample>
-      </div>
-      <div id="examples" data-playground-anchor tabindex="-1">
-        <PlaygroundExample id="input-long" title="좁은 검색창에서 아이콘 표시"
-          description="icon으로 검색 아이콘을 지정합니다. 긴 검색어의 끝으로 이동해도 아이콘과 지우기 버튼은 제자리를 유지합니다." :source="InputLongValueExampleSource">
-          <InputLongValueExample />
-        </PlaygroundExample>
-      </div>
-      <div id="form" data-playground-anchor tabindex="-1">
-        <PlaygroundExample
-          id="input-form"
-          title="입력값 제출"
-          description="UIFormField에 name을 지정하고 제출 핸들러에서 values.name으로 입력값을 읽습니다."
-          :source="formSource"
-        >
-          <InputFormExample />
-        </PlaygroundExample>
-      </div>
+      <InputExample multiline />
+      <PlaygroundExample
+        id="input-leading"
+        title="주소의 고정 접두사와 접미사"
+        description="leading과 trailing으로 주소의 고정 부분을 배치합니다. 입력 모델에는 사용자가 입력한 팀 주소만 들어갑니다."
+        :source="inputLeadingSource"
+      >
+        <InputLeadingExample />
+      </PlaygroundExample>
+      <PlaygroundExample
+        id="input-readonly"
+        title="읽기 전용"
+        description="readonly를 지정하면 값을 읽고 복사할 수 있지만 수정할 수 없습니다."
+        :source="inputReadonlyExampleSource"
+      >
+        <InputReadonlyExample />
+      </PlaygroundExample>
+      <PlaygroundExample
+        id="input-states"
+        title="오류 상태"
+        description="이메일 형식에 맞게 입력해 aria-invalid에 따른 오류 표시를 확인합니다."
+        :source="inputStatesExampleSource"
+      >
+        <InputStatesExample />
+      </PlaygroundExample>
+      <PlaygroundExample id="input-long" title="좁은 검색창에서 아이콘 표시"
+        description="icon으로 검색 아이콘을 지정합니다. 긴 검색어의 끝으로 이동해도 아이콘과 지우기 버튼은 제자리를 유지합니다." :source="InputLongValueExampleSource">
+        <InputLongValueExample />
+      </PlaygroundExample>
+      <PlaygroundExample
+        id="input-form"
+        title="입력값 제출"
+        description="UIFormField에 name을 지정하고 제출 핸들러에서 values.name으로 입력값을 읽습니다."
+        :source="formSource"
+      >
+        <InputFormExample />
+      </PlaygroundExample>
     </PlaygroundExampleSection>
   </div>
 </template>

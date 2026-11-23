@@ -28,58 +28,52 @@ definePageMeta({
       <CheckboxExample />
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
-      <div id="checkbox-states" data-playground-anchor tabindex="-1">
-        <PlaygroundExample
-          id="checkbox-indeterminate"
-          title="혼합 상태"
-          description="indeterminate를 전달하면 체크 대신 가로선이 표시됩니다."
-          :source="indeterminateSource"
-        >
-          <CheckboxIndeterminateExample />
-        </PlaygroundExample>
-        <PlaygroundExample
-          id="checkbox-disabled"
-          title="비활성"
-          description="disabled를 지정하면 사용자가 체크 상태를 바꿀 수 없습니다."
-          :source="disabledSource"
-        >
-          <CheckboxDisabledExample />
-        </PlaygroundExample>
-        <PlaygroundExample id="checkbox-readonly" title="읽기 전용"
-          description="켜진 상태를 표시합니다. 사용자 입력으로는 상태가 바뀌지 않습니다." :source="CheckboxReadonlyExampleSource">
-          <CheckboxReadonlyExample />
-        </PlaygroundExample>
-        <PlaygroundExample
-          id="checkbox-icon"
-          title="체크박스 라벨 아이콘"
-          description="icon을 지정하면 체크 표시와 라벨 사이에 아이콘이 나타납니다."
-          :source="iconSource"
-        >
-          <CheckboxIconExample />
-        </PlaygroundExample>
-      </div>
-      <div id="form" data-playground-anchor tabindex="-1">
-        <PlaygroundExample
-          id="checkbox-form"
-          title="선택값 제출"
-          description="체크하면 해당 값이 values.notifications로 제출됩니다."
-          :source="formSource"
-        >
-          <CheckboxFormExample />
-        </PlaygroundExample>
-      </div>
+      <PlaygroundExample
+        id="checkbox-indeterminate"
+        title="혼합 상태"
+        description="indeterminate를 전달하면 체크 대신 가로선이 표시됩니다."
+        :source="indeterminateSource"
+      >
+        <CheckboxIndeterminateExample />
+      </PlaygroundExample>
+      <PlaygroundExample
+        id="checkbox-disabled"
+        title="비활성"
+        description="disabled를 지정하면 사용자가 체크 상태를 바꿀 수 없습니다."
+        :source="disabledSource"
+      >
+        <CheckboxDisabledExample />
+      </PlaygroundExample>
+      <PlaygroundExample id="checkbox-readonly" title="읽기 전용"
+        description="켜진 상태를 표시합니다. 사용자 입력으로는 상태가 바뀌지 않습니다." :source="CheckboxReadonlyExampleSource">
+        <CheckboxReadonlyExample />
+      </PlaygroundExample>
+      <PlaygroundExample
+        id="checkbox-icon"
+        title="체크박스 라벨 아이콘"
+        description="icon을 지정하면 체크 표시와 라벨 사이에 아이콘이 나타납니다."
+        :source="iconSource"
+      >
+        <CheckboxIconExample />
+      </PlaygroundExample>
+      <PlaygroundExample
+        id="checkbox-form"
+        title="선택값 제출"
+        description="체크하면 해당 값이 values.notifications로 제출됩니다."
+        :source="formSource"
+      >
+        <CheckboxFormExample />
+      </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="practical-examples" title="실전 예제">
-      <div id="examples" data-playground-anchor tabindex="-1">
-        <PlaygroundExample
-          id="checkbox-select-all"
-          title="전체 선택"
-          description="모두 선택을 누르면 두 검사 항목의 선택이 함께 바뀝니다."
-          :source="selectAllSource"
-        >
-          <CheckboxSelectAllExample />
-        </PlaygroundExample>
-      </div>
+      <PlaygroundExample
+        id="checkbox-select-all"
+        title="전체 선택"
+        description="모두 선택을 누르면 두 검사 항목의 선택이 함께 바뀝니다."
+        :source="selectAllSource"
+      >
+        <CheckboxSelectAllExample />
+      </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
       <PlaygroundExample id="UICheckboxIndicator" title="UICheckboxIndicator"

@@ -191,8 +191,5 @@ export function standaloneReference(slug: string, names: readonly string[]) {
       const stateNote = stateNotes[name];
       return { name, ...(typeof stateNote === "object" ? stateNote : {}), ...(typeof value === "string" ? { description: value } : value) };
     });
-  const headingAnchors: Record<string, string> | undefined = slug === "button"
-    ? { props: "button-props", links: "button-link-props", slots: "button-slots-events" }
-    : slug === "form" ? { display: "form-field-parts" } : undefined;
-  return { parts, api, headingAnchors };
+  return { parts, api };
 }

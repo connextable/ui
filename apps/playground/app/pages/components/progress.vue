@@ -20,20 +20,18 @@ definePageMeta({
       <ProgressExample />
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
-      <div id="examples" data-playground-anchor tabindex="-1">
-        <PlaygroundExample
-          id="progress-indeterminate"
-          title="진행률을 알 수 없는 상태"
-          description="value가 null이면 완료 비율이 정해지지 않은 작업으로 표시합니다."
-          :source="indeterminateSource"
-        >
-          <ProgressIndeterminateExample />
-        </PlaygroundExample>
-        <PlaygroundExample id="progress-max" title="전체 항목 수 지정"
-          description="전체 항목 수를 max로 넘기면 완료 수에 맞춰 채움이 바뀝니다." :source="ProgressCountExampleSource">
-          <ProgressCountExample />
-        </PlaygroundExample>
-      </div>
+      <PlaygroundExample
+        id="progress-indeterminate"
+        title="진행률을 알 수 없는 상태"
+        description="value가 null이면 완료 비율이 정해지지 않은 작업으로 표시합니다."
+        :source="indeterminateSource"
+      >
+        <ProgressIndeterminateExample />
+      </PlaygroundExample>
+      <PlaygroundExample id="progress-max" title="전체 항목 수 지정"
+        description="전체 항목 수를 max로 넘기면 완료 수에 맞춰 채움이 바뀝니다." :source="ProgressCountExampleSource">
+        <ProgressCountExample />
+      </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
       <PlaygroundExample id="progress-value" title="값 텍스트 표시"

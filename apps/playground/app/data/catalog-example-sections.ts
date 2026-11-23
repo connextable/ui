@@ -7,9 +7,9 @@ const phases = [
 ] as const;
 
 const defaultSections: readonly CatalogExampleSection[] = [
-  { id: "examples", phase: "examples" },
-  { id: "appearance", section: "appearance" },
-  { id: "form", section: "form", phase: "examples" },
+  { phase: "examples" },
+  { section: "appearance" },
+  { section: "form", phase: "examples" },
 ];
 
 export function arrangeCatalogExamples(
@@ -18,7 +18,7 @@ export function arrangeCatalogExamples(
 ) {
   const grouped = new Map<string | undefined, CatalogExample[]>();
   for (const section of sections) {
-    if (grouped.has(section.section)) throw new Error(`Duplicate example group ${section.id}`);
+    if (grouped.has(section.section)) throw new Error(`Duplicate example group ${section.section ?? "(default)"}`);
     grouped.set(section.section, []);
   }
   for (const example of examples) {
@@ -28,11 +28,9 @@ export function arrangeCatalogExamples(
   }
 
   return phases.flatMap(phase => {
-    const groups = sections.flatMap(section => {
-      const entries = grouped.get(section.section)!;
-      return (section.phase ?? "configuration") === phase.phase && entries.length
-        ? [{ id: section.id, examples: entries }] : [];
-    });
-    return groups.length ? [{ ...phase, groups }] : [];
+    const entries = sections
+      .filter(section => (section.phase ?? "configuration") === phase.phase)
+      .flatMap(section => grouped.get(section.section)!);
+    return entries.length ? [{ ...phase, examples: entries }] : [];
   });
 }
