@@ -211,9 +211,4 @@ watch(codeOpen, revealSource, { immediate: true });
   border-end-end-radius: calc(var(--ui-expandable-radius) - var(--ui-frame-border-width));
 }
 
-.playground-example__toggle :deep(.ui-button__content) {
-  inline-size: 100%;
-  justify-content: space-between;
-}
-
 </style>
