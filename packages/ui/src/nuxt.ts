@@ -1,9 +1,7 @@
-import { addComponent, addImports, addPluginTemplate, defineNuxtModule } from "@nuxt/kit";
-import type { NuxtModule } from "@nuxt/schema";
+import { addComponent, addImports, addPluginTemplate, defineNuxtModule } from "nuxt/kit";
+import type { NuxtModule } from "nuxt/schema";
 import { linkComponentKey } from "./components/link-component";
-
-const packageName = "@connextable/ui";
-const stylesheet = `${packageName}/styles.css`;
+import { packageName, readAutoImports, stylesheet } from "./integration";
 
 export interface ConnextableUIOptions {
   prefix?: string;
@@ -43,14 +41,14 @@ export default defineNuxtPlugin(nuxtApp => {
     }
 
     if (options.components || options.composables) {
-      const names = Object.keys(await import("./index"));
+      const names = await readAutoImports();
       if (options.components) {
-        for (const name of names.filter(name => /^UI[A-Z]/.test(name))) {
+        for (const name of names.components) {
           addComponent({ name: `${options.prefix}${name.slice(2)}`, filePath: packageName, export: name });
         }
       }
       if (options.composables) {
-        addImports(names.filter(name => /^use[A-Z]/.test(name)).map(name => ({ name, from: packageName })));
+        addImports(names.composables.map(name => ({ name, from: packageName })));
       }
     }
   },

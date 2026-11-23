@@ -3,5 +3,5 @@
   "compilerOptions": {
     "skipLibCheck": true
   },
-  "files": ["src/nuxt.ts"]
+  "files": ["src/nuxt.ts", "src/vite.ts"]
 }

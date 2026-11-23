@@ -13,6 +13,10 @@
       "types": "./dist/nuxt.d.ts",
       "import": "./dist/nuxt.js"
     },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js"
+    },
     "./styles.css": "./dist/styles.css"
   },
   "publishConfig": {
@@ -20,12 +24,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "vite build && vue-tsc -p tsconfig.build.json && vue-tsc -p tsconfig.nuxt.json"
+    "build": "vite build && vue-tsc -p tsconfig.build.json && vue-tsc -p tsconfig.integrations.json"
   },
   "dependencies": {
     "@lucide/vue": "catalog:",
-    "@nuxt/kit": "4.6.4",
-    "@nuxt/schema": "4.6.4",
     "@sectile/chart": "0.16.1",
     "@sectile/core": "0.16.1",
     "@sectile/form": "0.15.2",
@@ -36,11 +38,24 @@
     "vue-router": "^5.5.1"
   },
   "peerDependencies": {
+    "nuxt": "^4.5.0",
+    "unimport": "^7.0.3",
+    "unplugin-vue-components": "^32.1.0",
+    "vite": "^7.3.0 || ^8.0.0",
     "vue": "^3.5.41"
+  },
+  "peerDependenciesMeta": {
+    "nuxt": { "optional": true },
+    "unimport": { "optional": true },
+    "unplugin-vue-components": { "optional": true },
+    "vite": { "optional": true }
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "6.0.11",
+    "nuxt": "4.6.4",
     "typescript": "catalog:",
+    "unimport": "7.0.3",
+    "unplugin-vue-components": "32.1.0",
     "vite": "8.3.8",
     "vue": "catalog:",
     "vue-tsc": "catalog:"
