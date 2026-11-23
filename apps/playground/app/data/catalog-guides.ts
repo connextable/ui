@@ -24,7 +24,7 @@ interface CatalogGuide {
 }
 
 const treeReorderBoardExamples = [
-  { id: "reorder-columns", title: "배포 준비 보드에서 상태 변경", description: "‘결제 흐름 점검’을 비어 있는 ‘완료’ 열에 놓아 보세요. 이동을 확정하면 두 열의 카드 수가 바뀝니다. 키보드에서는 Space로 카드를 들고 ←·→로 열을 바꾼 뒤 Enter로 놓습니다.", parts: ["UITreeReorderDropTarget"] },
+  { id: "reorder-columns", title: "배포 보드에서 카드 묶음 이동", description: "‘할 일’에서 카드 두 장을 선택한 뒤 손잡이 하나를 잡고 ‘진행 중’으로 옮겨 보세요. 키보드에서는 손잡이에서 Space로 들고 ←·→로 열을 바꾼 뒤 Enter로 확정합니다.", parts: ["UITreeReorderDropTarget"] },
   { id: "reorder-capacity", title: "동시에 검토할 카드 수 제한", description: "‘검토 중’은 두 장까지만 받습니다. ‘공지 초안’을 넣으려면 검토 중인 카드를 먼저 ‘대기’로 옮기세요. 꽉 찬 열에서도 카드 순서는 바꿀 수 있습니다." },
   { id: "reorder-restricted", title: "유형에 맞는 열로 파일 분류", description: "‘스타일 가이드’를 ‘문서’ 열로, ‘표지 그림’을 ‘이미지’ 열로 옮겨 보세요. 다른 유형의 열에 올리면 금지 표시가 나타나고 놓아도 원래 열에 남습니다." },
 ] satisfies readonly CatalogExample[];
@@ -282,6 +282,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "‘이미지’ 폴더를 옮기면 안의 ‘대표 이미지.jpg’도 함께 이동합니다. 키보드에서는 Space로 들고 ↑·↓로 위치, ←·→로 계층을 바꾼 뒤 Enter로 확정합니다.",
     api: {
       "v-model:nodes": "id와 parentID를 가진 노드 배열을 연결합니다. 이동 결과가 배열에 반영됩니다.",
+      multiple: "선택한 항목을 한 묶음으로 이동합니다. 부모와 자식을 함께 선택하면 부모의 하위 트리로 이동합니다. 이동 규칙과 정원은 묶음 전체에 적용합니다.",
+      "v-model:selected": "이동할 항목의 ID를 배열로 관리합니다. 선택한 항목을 들면 묶음이 이동하고, 선택하지 않은 항목을 들면 그 항목만 이동합니다.",
       "handle-only": "포인터 드래그를 UITreeReorderHandle에서만 시작하도록 제한합니다.",
       "policies": "canMove로 이동할 수 있는 상위 노드를 제한하거나 capacity로 각 그룹의 최대 항목 수를 정합니다.",
     },
@@ -1562,6 +1564,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     description: "‘고객 사례 발표’를 ‘신기능 시연’ 앞에 놓아 보세요. 놓일 위치와 발표 순서가 미리 표시됩니다. 키보드에서는 Space로 들고 ↑·↓로 옮긴 뒤 Enter로 확정하거나 Escape로 취소합니다.",
     api: {
       "v-model:items": "표시 순서대로 나열한 항목 id 배열입니다.",
+      multiple: "선택한 항목을 현재 목록의 상대 순서대로 함께 이동합니다. Shift+Space 또는 Ctrl·Command를 누른 채 클릭해 항목의 선택을 바꿀 수 있습니다.",
+      "v-model:selected": "이동할 항목의 ID를 배열로 관리합니다. 항목 슬롯의 selected와 toggleSelected를 체크박스에 연결할 수 있습니다.",
       "handle-only": "포인터 드래그를 UISequenceReorderHandle에서만 시작하도록 제한합니다.",
       "keyboard-mode": "preview 모드에서 이동 후보를 확인하고 확정하거나 취소할 수 있습니다.",
       "UIReorderGroup": "예상 배치를 TransitionGroup으로 그립니다. layout으로 목록, 가로 목록, 그리드를 선택하고 min-rows로 프레임의 최소 높이를 지정합니다.",
@@ -1580,6 +1584,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "reorder-handle-button", section: "usage-options", title: "텍스트 버튼 손잡이", description: "as-child로 UIButton에 손잡이 동작을 연결합니다. 각 항목의 ‘이동’ 버튼을 잡아 순서를 바꿔 보세요." },
       { id: "reorder-handle-title", section: "usage-options", title: "제목 영역 손잡이", description: "위젯의 제목 영역을 잡아 옮깁니다. 설명 영역에서는 텍스트를 선택할 수 있습니다." },
       { id: "reorder-horizontal", section: "examples-2", title: "가로 탭 순서", description: "탭을 잡고 좌우로 움직이세요. 키보드에서는 스페이스로 들어 올리고 ←·→로 이동합니다." },
+      { id: "reorder-multiple", section: "examples-2", framed: true, title: "섹션 여러 개 함께 이동", description: "‘배송 안내’와 ‘반품 안내’를 선택한 뒤 손잡이 하나를 잡고 두 섹션을 위로 옮겨 보세요. 떨어져 있던 항목도 기존 순서를 유지한 채 나란히 놓입니다.", parts: ["UISequenceReorderItem"] },
       { id: "reorder-cancel", section: "examples-3", title: "미리보기 도중 취소", description: "Space와 방향키로 옮긴 뒤 Esc로 기존 순서를 복원합니다." },
       { id: "reorder-nested-action", section: "examples-3", title: "클릭 버튼과 정렬 영역", description: "카드 본문은 끌어 옮기고 내부 버튼은 즐겨찾기 상태를 바꿉니다." },
       { id: "reorder-sorted", section: "examples-3", title: "자동 정렬과 수동 순서", description: "이름순 정렬을 켜면 수동 이동이 잠깁니다. 스위치를 끄면 이전에 배치한 수동 순서를 다시 볼 수 있습니다." },

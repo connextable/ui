@@ -135,6 +135,10 @@
     border-color: var(--ui-color-accent);
     box-shadow: var(--ui-shadow-elevated);
   }
+
+  :where([data-scope$="-reorder"][data-part="item"][data-ui-reorder-selected]) {
+    border-color: var(--ui-color-accent);
+  }
 }
 
 .ui-button[data-scope$="-reorder"][data-part="handle"],
@@ -218,6 +222,16 @@
   min-inline-size: var(--ui-control-height-small);
   min-block-size: var(--ui-control-height-small);
   color: var(--ui-color-text-muted);
+}
+
+.ui-reorder-lift-count {
+  flex: none;
+  margin-inline-start: auto;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--ui-radius-sm);
+  background: var(--ui-color-accent-soft);
+  color: var(--ui-color-accent);
+  font-variant-numeric: tabular-nums;
 }
 
 .ui-reorder-projected-item[data-ui-reorder-ghost] {

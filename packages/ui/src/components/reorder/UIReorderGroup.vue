@@ -1,7 +1,8 @@
 <script setup lang="ts" generic="ID extends string">
 import { getTreeReorderHierarchy, type TreeReorderState } from "@sectile/core/reorder";
-import type { ReorderInteractionSnapshot, ReorderRootSlotProps, TreeReorderRootSlotProps } from "@sectile/vue/reorder";
+import type { ReorderRootSlotProps, TreeReorderRootSlotProps } from "@sectile/vue/reorder";
 import { computed, nextTick, normalizeClass, normalizeStyle, ref, useAttrs, useTemplateRef, watch } from "vue";
+import type { UIReorderInteraction } from "./reorder-selection";
 
 defineOptions({ inheritAttrs: false });
 
@@ -15,7 +16,7 @@ const props = withDefaults(defineProps<{
   treeNodes?: TreeReorderState<ID>["nodes"];
   framed?: boolean;
   minRows?: number;
-  interaction?: ReorderInteractionSnapshot<ID>;
+  interaction?: UIReorderInteraction<ID>;
   getPreviewState?: ReorderRootSlotProps<NoInfer<ID>>["getPreviewState"] | TreeReorderRootSlotProps<NoInfer<ID>>["getPreviewState"];
 }>(), { as: "div", layout: "list", minRows: 2 });
 
@@ -29,7 +30,12 @@ const attrs = useAttrs();
 const projection = useTemplateRef<{ $el: HTMLElement }>("projection");
 const showPreview = ref(false);
 const sourceId = computed(() => props.interaction?.sourceID ?? null);
-const ghostId = computed<ID | null>((previous) => sourceId.value ?? (showPreview.value ? previous ?? null : null));
+const ghostIds = computed<ReadonlySet<ID>>((previous) => {
+  const source = sourceId.value;
+  if (source === null) return showPreview.value && previous ? previous : new Set();
+  const ids = props.interaction?.sourceIDs ?? [source];
+  return previous?.size === ids.length && ids.every(id => previous.has(id)) ? previous : new Set(ids);
+});
 const projectionClass = computed(() => normalizeClass(attrs.class));
 const projectionStyle = computed<Record<string, string | number>>((previous) => {
   const style = normalizeStyle([attrs.style, { "--ui-reorder-min-rows": props.minRows }]) as Record<string, string | number>;
@@ -124,7 +130,7 @@ const previewItems = computed<PreviewItem[]>((previous) => {
     <!-- Updating forwarded slots for pointer-only changes would restart Vue's active move transitions. -->
     <TransitionGroup
       v-if="showPreview"
-      v-memo="[previewItems, ghostId, as, layout, framed, !!treeNodes, previewItemClass, projectionClass, projectionStyle, !!$slots.preview, !!$slots['preview-handle']]"
+      v-memo="[previewItems, ghostIds, as, layout, framed, !!treeNodes, previewItemClass, projectionClass, projectionStyle, !!$slots.preview, !!$slots['preview-handle']]"
       ref="projection"
       :tag="as"
       name="ui-reorder"
@@ -143,7 +149,7 @@ const previewItems = computed<PreviewItem[]>((previous) => {
         :key="item.id"
         class="ui-reorder-projected-item"
         :class="previewItemClass"
-        :data-ui-reorder-ghost="item.id === ghostId || undefined"
+        :data-ui-reorder-ghost="ghostIds.has(item.id) || undefined"
         :data-ui-reorder-level="treeNodes ? item.level : undefined"
       >
         <span v-if="$slots['preview-handle']" class="ui-reorder-handle-visual">

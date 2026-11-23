@@ -1,15 +1,15 @@
 <script setup lang="ts" generic="ID extends string">
 import { Ban } from "@lucide/vue";
-import type { ReorderInteractionSnapshot } from "@sectile/vue/reorder";
 import { onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch, type CSSProperties } from "vue";
+import type { UIReorderInteraction } from "./reorder-selection";
 
 const props = defineProps<{
-  interaction: ReorderInteractionSnapshot<ID>;
+  interaction: UIReorderInteraction<ID>;
   focus?: (id: ID) => void;
   liftClass?: string;
 }>();
 
-type LiftItem = { id: ID; label: string };
+type LiftItem = { id: ID; label: string; count: number };
 
 defineSlots<{
   lift?(props: LiftItem): unknown;
@@ -21,6 +21,7 @@ const itemSelector = '[data-scope$="-reorder"][data-part="item"]';
 const marker = useTemplateRef<HTMLElement>("marker");
 const lift = shallowRef<LiftItem & { style: CSSProperties }>();
 const blocked = shallowRef<CSSProperties>();
+let marked = new Set<HTMLElement>();
 let source: HTMLElement | undefined;
 let sourceId: ID | undefined;
 let grab: { x: number; y: number } | undefined;
@@ -36,7 +37,7 @@ function bounds(rect: DOMRect, x = rect.left, y = rect.top): CSSProperties {
 }
 
 function syncFeedback() {
-  const { sourceID, input, target, allowed, clientPoint } = props.interaction;
+  const { sourceID, sourceIDs, input, target, allowed, clientPoint } = props.interaction;
   const root = marker.value?.closest<HTMLElement>(rootSelector);
   if (!root || sourceID === null || input === null) return clear();
 
@@ -48,12 +49,15 @@ function syncFeedback() {
   if (!active) return clear();
 
   if (source !== active) {
-    source?.removeAttribute("data-ui-reorder-source");
     source = active;
     sourceId = sourceID;
     grab = undefined;
   }
-  active.dataset.uiReorderSource = input;
+  const moving = new Set(sourceIDs ?? [sourceID]);
+  const nextMarked = new Set(items.filter(item => moving.has(item.dataset.value as ID)));
+  for (const item of marked) if (!nextMarked.has(item)) item.removeAttribute("data-ui-reorder-source");
+  for (const item of nextMarked) item.dataset.uiReorderSource = input;
+  marked = nextMarked;
 
   if (clientPoint) {
     const rect = active.getBoundingClientRect();
@@ -61,6 +65,7 @@ function syncFeedback() {
     grab ??= { x: clientPoint.x - rect.left, y: clientPoint.y - rect.top };
     lift.value = {
       id: sourceID,
+      count: moving.size,
       label: lift.value?.id === sourceID ? lift.value.label : (active.getAttribute("aria-label") ?? active.innerText.trim()),
       style: {
         ...bounds(rect, clientPoint.x - grab.x, clientPoint.y - grab.y),
@@ -99,7 +104,8 @@ function schedule() {
 function clear() {
   if (frame !== undefined) cancelAnimationFrame(frame);
   frame = undefined;
-  source?.removeAttribute("data-ui-reorder-source");
+  for (const item of marked) item.removeAttribute("data-ui-reorder-source");
+  marked.clear();
   source = undefined;
   sourceId = undefined;
   grab = undefined;
@@ -148,9 +154,10 @@ onBeforeUnmount(() => {
     <Transition name="ui-reorder-feedback">
       <div v-if="lift" class="ui-reorder-lift" :class="liftClass" :style="lift.style" aria-hidden="true" inert>
         <span v-if="$slots['lift-handle']" class="ui-reorder-handle-visual">
-          <slot name="lift-handle" :id="lift.id" :label="lift.label" />
+          <slot name="lift-handle" :id="lift.id" :label="lift.label" :count="lift.count" />
         </span>
-        <slot name="lift" :id="lift.id" :label="lift.label"><span>{{ lift.label }}</span></slot>
+        <slot name="lift" :id="lift.id" :label="lift.label" :count="lift.count"><span>{{ lift.label }}</span></slot>
+        <span v-if="lift.count > 1" class="ui-reorder-lift-count">{{ lift.count }}</span>
       </div>
     </Transition>
   </Teleport>
