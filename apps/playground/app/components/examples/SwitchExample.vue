@@ -33,7 +33,6 @@ const code = computed(() => vueExampleCode("UISwitch", {
     title="댓글 알림 설정"
     description="v-model에 불리언을 연결합니다. 크기와 수정 가능 여부를 바꿔 볼 수 있습니다."
     :code="code"
-    :heading-level="3"
   >
     <template #header>
       <PlaygroundExampleControl v-slot="{ labelId }" label="size">

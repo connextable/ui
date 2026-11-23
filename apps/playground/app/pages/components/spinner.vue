@@ -19,7 +19,7 @@ definePageMeta({
 <template>
   <div>
     <PlaygroundExampleSection id="usage" title="기본 사용법">
-      <PlaygroundExample :heading-level="3"
+      <PlaygroundExample
         id="spinner-example"
         title="단독 표시"
         description="스피너를 단독으로 쓸 때는 label로 진행 상태의 이름을 지정합니다."
@@ -29,8 +29,8 @@ definePageMeta({
       </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
-      <PlaygroundExampleSection id="appearance" title="모양">
-        <PlaygroundExample :heading-level="3"
+      <div id="appearance" data-playground-anchor tabindex="-1">
+        <PlaygroundExample
           id="spinner-wave"
           title="웨이브"
           description="variant를 wave로 지정하면 버튼에 쓰이는 막대형 로딩 표시를 사용할 수 있습니다."
@@ -38,7 +38,7 @@ definePageMeta({
         >
           <SpinnerWaveExample />
         </PlaygroundExample>
-        <PlaygroundExample :heading-level="3"
+        <PlaygroundExample
           id="spinner-arc"
           title="원호형"
           description="목록이나 표를 그대로 보여주면서 데이터를 다시 불러올 때 사용할 수 있습니다."
@@ -46,10 +46,10 @@ definePageMeta({
         >
           <SpinnerArcExample />
         </PlaygroundExample>
-      </PlaygroundExampleSection>
+      </div>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="examples" title="실전 예제">
-      <PlaygroundExample :heading-level="3"
+      <PlaygroundExample
         id="spinner-status"
         title="상태 메시지와 함께 표시"
         description="텍스트가 상태를 알릴 때는 메시지에 status 역할을 지정합니다."
@@ -58,7 +58,7 @@ definePageMeta({
         <SpinnerStatusExample />
       </PlaygroundExample>
       <PlaygroundExample id="spinner-async" title="영역의 로딩 상태"
-        description="새로 고침을 누르면 작업 중에만 스피너가 표시되고 완료 메시지가 나타납니다." :source="SpinnerAsyncExampleSource" :heading-level="3">
+        description="새로 고침을 누르면 작업 중에만 스피너가 표시되고 완료 메시지가 나타납니다." :source="SpinnerAsyncExampleSource">
         <SpinnerAsyncExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>

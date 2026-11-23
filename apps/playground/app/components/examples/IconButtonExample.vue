@@ -39,7 +39,6 @@ const code = computed(() => buttonExampleCode(
     title="UIIconButton"
     description="icon으로 아이콘을 지정하고 aria-label에 동작 이름을 붙입니다. loading을 켜면 기본 UISpinner가 표시되며, loading 슬롯으로 바꿀 수 있습니다."
     :code="code"
-    :heading-level="3"
   >
     <template #header>
       <PlaygroundExampleControl v-slot="{ labelId }" label="아이콘">

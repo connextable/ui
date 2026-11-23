@@ -12,7 +12,6 @@ const count = ref(0);
     title="기본 동작"
     description="click 이벤트로 버튼 동작을 연결합니다."
     :source="source"
-    :heading-level="3"
   >
     <UIButton @click="count++">실행</UIButton>
     <template #footer>

@@ -24,7 +24,6 @@ function reset() {
     title="입력 폼 밖에서 제출하고 초기화하기"
     description="폼과 버튼이 떨어져 있을 때 form에 폼의 id를 전달합니다. type은 저장 버튼에 submit, 초기화 버튼에 reset을 지정합니다."
     :source="source"
-    :heading-level="3"
   >
     <UIForm :id="formId" @submit="submit" @reset="reset">
       <UIFormField label="표시 이름">

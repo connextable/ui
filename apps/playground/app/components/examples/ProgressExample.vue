@@ -16,7 +16,6 @@ const code = computed(() => vueExampleCode("UIProgress", {
     title="검사 진행률"
     description="value에 현재 진행률을 전달합니다. 단계를 완료할 때마다 진행 바가 채워집니다."
     :code="code"
-    :heading-level="3"
     wide
   >
     <template #header>

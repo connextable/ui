@@ -7,9 +7,9 @@ const phases = [
 ] as const;
 
 const defaultSections: readonly CatalogExampleSection[] = [
-  { id: "examples", title: "사용 상황별 예제", phase: "examples" },
-  { id: "appearance", title: "모양", section: "appearance" },
-  { id: "form", title: "폼 제출", section: "form", phase: "examples" },
+  { id: "examples", phase: "examples" },
+  { id: "appearance", section: "appearance" },
+  { id: "form", section: "form", phase: "examples" },
 ];
 
 export function arrangeCatalogExamples(
@@ -31,7 +31,7 @@ export function arrangeCatalogExamples(
     const groups = sections.flatMap(section => {
       const entries = grouped.get(section.section)!;
       return (section.phase ?? "configuration") === phase.phase && entries.length
-        ? [{ ...section, showHeading: entries.length > 1, examples: entries }] : [];
+        ? [{ id: section.id, examples: entries }] : [];
     });
     return groups.length ? [{ ...phase, groups }] : [];
   });

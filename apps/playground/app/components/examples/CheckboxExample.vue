@@ -30,7 +30,6 @@ const code = computed(() => vueExampleCode("UICheckbox", {
     title="기본 선택"
     description="v-model로 선택 상태를 연결하고, 모양이나 수정 가능 여부를 바꿀 수 있습니다."
     :code="code"
-    :heading-level="3"
   >
     <template #header>
       <UISwitch variant="outline" v-model="card" size="sm" label="카드 모양" />

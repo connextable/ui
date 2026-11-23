@@ -28,8 +28,8 @@ definePageMeta({
       <CheckboxExample />
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
-      <PlaygroundExampleSection id="checkbox-states" title="선택 상태">
-        <PlaygroundExample :heading-level="3"
+      <div id="checkbox-states" data-playground-anchor tabindex="-1">
+        <PlaygroundExample
           id="checkbox-indeterminate"
           title="혼합 상태"
           description="indeterminate를 전달하면 체크 대신 가로선이 표시됩니다."
@@ -37,7 +37,7 @@ definePageMeta({
         >
           <CheckboxIndeterminateExample />
         </PlaygroundExample>
-        <PlaygroundExample :heading-level="3"
+        <PlaygroundExample
           id="checkbox-disabled"
           title="비활성"
           description="disabled를 지정하면 사용자가 체크 상태를 바꿀 수 없습니다."
@@ -46,7 +46,7 @@ definePageMeta({
           <CheckboxDisabledExample />
         </PlaygroundExample>
         <PlaygroundExample id="checkbox-readonly" title="읽기 전용"
-          description="켜진 상태를 표시합니다. 사용자 입력으로는 상태가 바뀌지 않습니다." :source="CheckboxReadonlyExampleSource" :heading-level="3">
+          description="켜진 상태를 표시합니다. 사용자 입력으로는 상태가 바뀌지 않습니다." :source="CheckboxReadonlyExampleSource">
           <CheckboxReadonlyExample />
         </PlaygroundExample>
         <PlaygroundExample
@@ -57,35 +57,33 @@ definePageMeta({
         >
           <CheckboxIconExample />
         </PlaygroundExample>
-      </PlaygroundExampleSection>
-      <PlaygroundFormSection>
+      </div>
+      <div id="form" data-playground-anchor tabindex="-1">
         <PlaygroundExample
           id="checkbox-form"
           title="선택값 제출"
           description="체크하면 해당 값이 values.notifications로 제출됩니다."
           :source="formSource"
-          :heading-level="3"
         >
           <CheckboxFormExample />
         </PlaygroundExample>
-      </PlaygroundFormSection>
+      </div>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="practical-examples" title="실전 예제">
-      <PlaygroundExampleSection id="examples" title="목록에서 일괄 선택">
+      <div id="examples" data-playground-anchor tabindex="-1">
         <PlaygroundExample
           id="checkbox-select-all"
           title="전체 선택"
           description="모두 선택을 누르면 두 검사 항목의 선택이 함께 바뀝니다."
           :source="selectAllSource"
-          :heading-level="3"
         >
           <CheckboxSelectAllExample />
         </PlaygroundExample>
-      </PlaygroundExampleSection>
+      </div>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
       <PlaygroundExample id="UICheckboxIndicator" title="UICheckboxIndicator"
-        description="indicator 슬롯에서 선택된 체크박스의 기호를 바꿉니다." :source="CheckboxIndicatorExampleSource" :heading-level="3">
+        description="indicator 슬롯에서 선택된 체크박스의 기호를 바꿉니다." :source="CheckboxIndicatorExampleSource">
         <CheckboxIndicatorExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>

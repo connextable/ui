@@ -11,7 +11,6 @@ export interface CatalogExample {
 
 export interface CatalogExampleSection {
   id: string;
-  title: string;
   section?: string;
   phase?: "configuration" | "examples" | "composition";
 }
@@ -40,8 +39,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "사진과 영상이 있는 관찰 기록 열기",
     description: "썸네일을 눌러 해당 자료부터 엽니다. 화살표, 방향키, 좌우 스와이프로 탐색하며 마지막 자료에서 다음으로 가면 첫 자료가 나옵니다. 작은 화면에서는 전체 화면으로 열리고 하단 썸네일을 숨깁니다.",
     sections: [
-      { id: "examples", title: "미디어 구성", section: "media" },
-      { id: "lightbox-behavior", title: "탐색과 전환", section: "behavior", phase: "examples" },
+      { id: "examples", section: "media" },
+      { id: "lightbox-behavior", section: "behavior", phase: "examples" },
     ],
     examples: [
       { id: "lightbox-single", section: "media", title: "세로 사진 한 장 열기", description: "한 장일 때는 사진과 설명에 집중할 수 있도록 이동 버튼과 썸네일을 숨깁니다." },
@@ -65,8 +64,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "navigation-menu": {
     sections: [
-      { id: "examples", title: "메뉴 구성", section: "structure" },
-      { id: "navigation-menu-behavior", title: "탐색 동작", section: "behavior" },
+      { id: "examples", section: "structure" },
+      { id: "navigation-menu-behavior", section: "behavior" },
     ],
     examples: [
       { id: "navigation-menu-links", section: "structure", title: "직접 이동과 현재 페이지", description: "current에 현재 링크의 id를 지정하면 해당 링크에 aria-current가 적용됩니다.", parts: ["UINavigationMenuPopover"] },
@@ -88,8 +87,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   virtualizer: {
     sections: [
-      { id: "examples", title: "레이아웃 구성", section: "layout" },
-      { id: "virtualizer-navigation", title: "뷰포트와 탐색", section: "navigation", phase: "examples" },
+      { id: "examples", section: "layout" },
+      { id: "virtualizer-navigation", section: "navigation", phase: "examples" },
     ],
     examples: [
       { id: "virtualizer-frames", section: "layout", title: "헤더와 푸터", description: "배치 영역 양쪽에 Header와 Footer를 연결합니다.", parts: ["UIVirtualizerHeader", "UIVirtualizerFooter"] },
@@ -104,8 +103,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "temporal-provider": {
     sections: [
-      { id: "examples", title: "표시와 편집 서식", section: "usage-options" },
-      { id: "temporal-provider-examples-2", title: "중첩 설정", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "temporal-provider-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "temporal-provider-format", section: "usage-options", title: "같은 시각의 지역별 기준일", description: "같은 기준 시각이 서울과 뉴욕에서 각각 어떤 날짜인지 표시합니다.", parts: ["useUITemporalDisplay", "useUITemporalReferenceDate"] },
@@ -125,8 +124,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "host-provider": {
     sections: [
-      { id: "examples", title: "하위 컴포넌트에 전달하는 설정", section: "usage-options" },
-      { id: "host-provider-examples-2", title: "중첩 포털", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "host-provider-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "host-provider-direction", section: "usage-options", title: "오른쪽에서 왼쪽으로 읽기", description: "Provider 방향을 하위 탭에 전달해 화살표 방향 탐색을 확인합니다." },
@@ -138,8 +137,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   primitive: {
     sections: [
-      { id: "examples", title: "렌더링 방식", section: "usage-options" },
-      { id: "primitive-examples-2", title: "DOM 연결", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "primitive-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "primitive-as-child", section: "usage-options", title: "자식의 의미 살리기", description: "속성을 자식 요소에 전달해 제목이나 버튼의 의미를 유지합니다." },
@@ -151,8 +150,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   anchor: {
     sections: [
-      { id: "examples", title: "링크 상태", section: "usage-options" },
-      { id: "anchor-examples-2", title: "라우팅 연결", section: "examples-2", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "anchor-examples-2", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "anchor-icon", section: "usage-options", title: "링크에 아이콘 표시", description: "icon에 Vue 컴포넌트를 전달해 링크 텍스트 앞에 표시합니다." },
@@ -173,9 +172,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "tree-reorder": {
     sections: [
-      { id: "examples", title: "핸들과 잠금", section: "usage-options" },
-      { id: "tree-reorder-examples-2", title: "그룹 간 이동 규칙", section: "examples-2", phase: "examples" },
-      { id: "tree-reorder-examples-3", title: "중첩 동작", section: "examples-3", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "tree-reorder-examples-2", section: "examples-2", phase: "examples" },
+      { id: "tree-reorder-examples-3", section: "examples-3", phase: "composition" },
     ],
     examples: [
       { id: "tree-reorder-handle", section: "usage-options", title: "트리 전용 손잡이", description: "카드 안의 손잡이에서만 포인터 이동을 시작합니다.", parts: ["UITreeReorderHandle"] },
@@ -192,8 +191,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "alert-dialog": {
     sections: [
-      { id: "examples", title: "확인과 실행 상태", section: "usage-options" },
-      { id: "alert-dialog-examples-2", title: "포털 연결", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "alert-dialog-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "alert-dialog-trigger-icon", section: "usage-options", title: "확인 창 열기 버튼의 아이콘", description: "trigger-icon에 Vue 컴포넌트를 전달해 기본 열기 버튼의 라벨 앞에 표시합니다." },
@@ -216,8 +215,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "배포 요약 열기",
     description: "배포 내용을 읽은 뒤 오른쪽 위의 닫기 버튼이나 Escape를 누르면 처음 버튼으로 돌아옵니다.",
     sections: [
-      { id: "examples", title: "입력과 확인", section: "workflows", phase: "examples" },
-      { id: "dialog-behavior", title: "열기와 탐색", section: "behavior" },
+      { id: "examples", section: "workflows", phase: "examples" },
+      { id: "dialog-behavior", section: "behavior" },
     ],
     api: {
       "v-model:open": "부모에서 대화상자의 열린 상태를 관리합니다.",
@@ -245,8 +244,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   drawer: {
     sections: [
-      { id: "examples", title: "열리는 방향과 닫힘 조건", section: "usage-options" },
-      { id: "drawer-examples-2", title: "긴 내용과 포털", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "drawer-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "drawer-trigger-icon", section: "usage-options", title: "드로어 열기 버튼의 아이콘", description: "trigger-icon에 Vue 컴포넌트를 전달해 기본 열기 버튼의 라벨 앞에 표시합니다." },
@@ -270,8 +269,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "아래에서 열리는 정렬 시트",
     description: "정렬 기준을 선택하면 버튼에 반영됩니다. 시트 상단의 손잡이를 아래로 끌어 닫을 수도 있습니다.",
     sections: [
-      { id: "examples", title: "작업과 선택", section: "workflows", phase: "examples" },
-      { id: "sheet-presentation", title: "너비와 배치", section: "presentation" },
+      { id: "examples", section: "workflows", phase: "examples" },
+      { id: "sheet-presentation", section: "presentation" },
     ],
     examples: [
       { id: "sheet-trigger-icon", section: "presentation", title: "시트 열기 버튼의 아이콘", description: "trigger-icon에 Vue 컴포넌트를 전달해 기본 열기 버튼의 라벨 앞에 표시합니다." },
@@ -306,9 +305,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "close-on-interact-outside": "기본값은 true입니다. 바깥을 눌렀을 때 열린 상태를 유지하려면 false를 지정합니다.",
     },
     sections: [
-      { id: "examples", title: "배치와 닫힘 조건", section: "usage-options" },
-      { id: "popover-examples-2", title: "긴 내용과 포털", section: "examples-2", phase: "composition" },
-      { id: "popover-examples-3", title: "별도 기준 요소", section: "examples-3", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "popover-examples-2", section: "examples-2", phase: "composition" },
+      { id: "popover-examples-3", section: "examples-3", phase: "composition" },
     ],
     examples: [
       { id: "popover-trigger-icon", section: "usage-options", title: "팝오버 열기 버튼의 아이콘", description: "trigger-icon에 Vue 컴포넌트를 전달해 기본 열기 버튼의 라벨 앞에 표시합니다." },
@@ -322,9 +321,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   toast: {
     sections: [
-      { id: "examples", title: "위치와 표시", section: "placement" },
-      { id: "toast-content-examples", title: "내용과 액션", section: "content" },
-      { id: "toast-dismissal", title: "시간과 닫기", section: "dismissal" },
+      { id: "examples", section: "placement" },
+      { id: "toast-content-examples", section: "content" },
+      { id: "toast-dismissal", section: "dismissal" },
     ],
     examples: [
       { id: "toast-icon", section: "content", title: "알림 제목 앞 아이콘", description: "UIToast의 icon으로 내보내기 알림에 다운로드 아이콘을 표시합니다." },
@@ -371,8 +370,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "default-open": "초기 표시 상태를 지정합니다.",
     },
     sections: [
-      { id: "examples", title: "배치와 표시 지연", section: "usage-options" },
-      { id: "tooltip-examples-2", title: "포털 연결", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "tooltip-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "tooltip-position", section: "usage-options", title: "옆으로 배치", description: "트리거의 오른쪽에 화살표가 있는 도움말을 표시합니다." },
@@ -382,7 +381,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "cascade-list": {
     sections: [
-      { id: "examples", title: "경로 탐색과 표시", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "cascade-list-icons", section: "usage-options", title: "계층별 항목 아이콘", description: "노드의 icon으로 권역, 국가, 도시를 구분합니다." },
@@ -402,7 +401,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "cascade-select": {
     sections: [
-      { id: "examples", title: "선택 상태와 표시", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "cascade-select-icons", section: "usage-options", title: "선택 목록의 계층 아이콘", description: "노드의 icon을 지정하고 목록을 열어 각 열에서 아이콘을 확인합니다." },
@@ -423,8 +422,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "color-picker": {
     sections: [
-      { id: "examples", title: "색상 입력과 표시 형식", section: "usage-options" },
-      { id: "color-picker-examples-2", title: "대체 입력 방식", section: "examples-2" },
+      { id: "examples", section: "usage-options" },
+      { id: "color-picker-examples-2", section: "examples-2" },
     ],
     examples: [
       { id: "color-picker-text", section: "usage-options", title: "텍스트로 색상 입력", description: "HEX 값을 입력해 선택색을 바꿉니다.", parts: ["UIColorPickerTextInput"] },
@@ -456,9 +455,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "stepBy(delta)": "인스턴스에서 현재 값에 지정한 증감량을 적용합니다.",
     },
     sections: [
-      { id: "number-field-states-section", title: "입력 상태", section: "states" },
-      { id: "examples", title: "숫자 편집과 확정", section: "editing" },
-      { id: "form", title: "폼", section: "form", phase: "examples" },
+      { id: "number-field-states-section", section: "states" },
+      { id: "examples", section: "editing" },
+      { id: "form", section: "form", phase: "examples" },
     ],
     examples: [
       { id: "number-field-states", section: "states", title: "기본·읽기 전용·비활성·오류", description: "기본 필드를 클릭하거나 Tab 키로 이동해 포커스 표시를 비교해 보세요." },
@@ -472,7 +471,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "toggle-group": {
     framed: true,
     sections: [
-      { id: "examples", title: "선택 방식과 배치", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "toggle-group-icons", section: "usage-options", title: "정렬 옵션 앞 아이콘", description: "옵션의 icon으로 왼쪽, 가운데, 오른쪽 정렬을 구분합니다." },
@@ -493,8 +492,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   editable: {
     framed: true,
     sections: [
-      { id: "editable-validation-settings", title: "편집 내용 검증", section: "validation" },
-      { id: "examples", title: "문서 안에서 이름 수정", section: "inline", phase: "examples" },
+      { id: "editable-validation-settings", section: "validation" },
+      { id: "examples", section: "inline", phase: "examples" },
     ],
     examples: [
       { id: "editable-display-name", section: "inline", title: "배포 경로에서 이름 바꾸기", description: "경로의 마지막 이름을 눌러 같은 자리에서 수정합니다." },
@@ -522,8 +521,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "Item value": "목록 항목을 items의 값에 연결합니다.",
     },
     sections: [
-      { id: "examples", title: "선택과 탐색", section: "usage-options" },
-      { id: "listbox-examples-2", title: "선택 표시 꾸미기", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "listbox-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "listbox-icons", section: "usage-options", title: "목록 항목에 아이콘 표시", description: "옵션의 icon에 Vue 컴포넌트를 전달해 실행 환경을 구분합니다." },
@@ -536,8 +535,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   rating: {
     framed: true,
     sections: [
-      { id: "examples", title: "값 초기화와 편집 제한", section: "usage-options" },
-      { id: "rating-examples-2", title: "아이콘 바꾸기", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "rating-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "rating-clear", section: "usage-options", title: "평가 지우기", description: "선택한 별점을 미평가 상태로 되돌립니다." },
@@ -567,8 +566,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "format-value": "스크린 리더가 현재 값을 읽을 때 사용할 문구를 지정합니다.",
     },
     sections: [
-      { id: "slider-settings", title: "방향·간격·읽기 전용", section: "settings" },
-      { id: "examples", title: "값 서식", section: "format" },
+      { id: "slider-settings", section: "settings" },
+      { id: "examples", section: "format" },
     ],
     examples: [
       { id: "slider-vertical", section: "settings", title: "세로 방향", description: "손잡이를 위아래로 움직여 값을 바꿉니다." },
@@ -580,8 +579,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "spin-button": {
     framed: true,
     sections: [
-      { id: "spin-button-settings", title: "증감 간격과 범위", section: "settings" },
-      { id: "examples", title: "수량과 시간 조절", section: "editing" },
+      { id: "spin-button-settings", section: "settings" },
+      { id: "examples", section: "editing" },
     ],
     examples: [
       { id: "spin-button-page-step", section: "settings", title: "큰 단위 증감", description: "Page Up과 Page Down으로 한 번에 다섯 단위를 움직입니다." },
@@ -603,7 +602,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   stepper: {
     sections: [
-      { id: "examples", title: "단계 표시와 배치", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "stepper-icons", section: "usage-options", title: "단계 이름 옆 아이콘", description: "items의 icon을 지정해 배송과 결제 단계를 구분합니다." },
@@ -638,8 +637,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "empty-label": "검색에 일치하는 항목이 없을 때 표시할 문구입니다.",
     },
     sections: [
-      { id: "examples", title: "검색과 입력 상태", section: "usage-options" },
-      { id: "combobox-examples-2", title: "검색 결과와 입력 구성", section: "examples-2", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "combobox-examples-2", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "combobox-icons", section: "usage-options", title: "검색 결과의 항목 아이콘", description: "items의 icon은 검색 결과에 표시됩니다. 아래 방향키로 목록을 열고 항목을 선택합니다." },
@@ -665,9 +664,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "#default": "파일 목록과 거절 상태를 받아 선택 영역과 목록을 직접 구성합니다.",
     },
     sections: [
-      { id: "examples", title: "선택과 첨부 관리", section: "picking" },
-      { id: "file-input-policies", title: "파일 제한", section: "policies" },
-      { id: "file-input-form", title: "폼", section: "form", phase: "examples" },
+      { id: "examples", section: "picking" },
+      { id: "file-input-policies", section: "policies" },
+      { id: "file-input-form", section: "form", phase: "examples" },
     ],
     examples: [
       { id: "file-input-dropzone", title: "파일 선택·드롭·붙여넣기", description: "카드를 누르거나 파일을 끌어 놓으세요. 카드에 포커스한 뒤 파일이나 이미지를 붙여넣을 수도 있습니다.", section: "picking", parts: ["UIFileInputDropzone"] },
@@ -684,7 +683,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "file-upload": {
     sections: [
-      { id: "examples", title: "파일 전송과 복구", section: "usage-options", phase: "examples" },
+      { id: "examples", section: "usage-options", phase: "examples" },
     ],
     examples: [
       { id: "file-upload-group", section: "usage-options", title: "여러 파일의 전송 대기열", description: "UIFileUploadQueue에 파일 목록과 어댑터를 전달합니다. 전송을 시작한 뒤 파일별로 취소하거나 다시 시도할 수 있습니다.", parts: ["UIFileUploadQueue"] },
@@ -720,7 +719,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "checkbox-tree": {
     sections: [
-      { id: "examples", title: "부모와 자식의 선택 상태", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "checkbox-tree-icons", section: "usage-options", title: "체크박스 트리의 항목 아이콘", description: "노드의 icon을 지정하면 체크 표시와 이름 사이에 표시됩니다." },
@@ -741,8 +740,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   transfer: {
     sections: [
-      { id: "examples", title: "선택과 탐색", section: "usage-options" },
-      { id: "transfer-examples-2", title: "이동 승인과 제한", section: "examples-2", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "transfer-examples-2", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "transfer-icons", section: "usage-options", title: "목록을 옮겨도 유지되는 아이콘", description: "항목 id로 아이콘을 찾습니다. 이메일을 옮긴 뒤에도 같은 아이콘을 확인할 수 있습니다." },
@@ -765,8 +764,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "tree-select": {
     sections: [
-      { id: "examples", title: "계층 탐색과 선택", section: "usage-options" },
-      { id: "tree-select-examples-2", title: "검색 결과", section: "examples-2" },
+      { id: "examples", section: "usage-options" },
+      { id: "tree-select-examples-2", section: "examples-2" },
     ],
     examples: [
       { id: "tree-select-icons", section: "usage-options", title: "트리 선택 항목의 아이콘", description: "노드의 icon을 지정하고 선택 목록을 열어 폴더와 팀 아이콘을 확인합니다." },
@@ -790,7 +789,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "tree-view": {
     sections: [
-      { id: "examples", title: "노드 상태", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "tree-view-icons", section: "usage-options", title: "폴더와 파일 아이콘", description: "노드의 icon에 Vue 컴포넌트를 전달해 폴더와 파일을 구분합니다." },
@@ -816,8 +815,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "Item disabled": "이 항목의 선택을 막습니다.",
     },
     sections: [
-      { id: "examples", title: "선택 상태", section: "usage-options" },
-      { id: "form", title: "폼", section: "form", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "form", section: "form", phase: "examples" },
     ],
     examples: [
       { id: "checkbox-group-icons", section: "usage-options", title: "체크박스 옵션의 아이콘", description: "옵션의 icon으로 이메일과 앱 푸시를 구분합니다." },
@@ -831,8 +830,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "multi-thumb-slider": {
     framed: true,
     sections: [
-      { id: "multi-thumb-slider-settings", title: "방향과 간격", section: "settings" },
-      { id: "examples", title: "상품 가격 범위", section: "pricing", phase: "examples" },
+      { id: "multi-thumb-slider-settings", section: "settings" },
+      { id: "examples", section: "pricing", phase: "examples" },
     ],
     examples: [
       { id: "multi-thumb-slider-gap", section: "settings", title: "손잡이 최소 간격", description: "두 경계 사이에 최소 세 스텝을 유지합니다." },
@@ -870,8 +869,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "quantity-field": {
     framed: true,
     sections: [
-      { id: "quantity-field-settings", title: "확정값과 읽기 전용", section: "states" },
-      { id: "examples", title: "표시 단위 환산", section: "conversion", phase: "examples" },
+      { id: "quantity-field-settings", section: "states" },
+      { id: "examples", section: "conversion", phase: "examples" },
     ],
     examples: [
       { id: "quantity-field-unit-commit", section: "states", framed: true, title: "단위와 값을 함께 확정", description: "새 수량을 입력하고 Enter를 눌러 확정값을 확인합니다. 지우면 미입력 상태로 돌아갑니다." },
@@ -906,10 +905,10 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "policies.maxTags": "한 번에 등록할 수 있는 태그 수를 제한합니다.",
     },
     sections: [
-      { id: "examples", title: "태그 편집", section: "editing" },
-      { id: "tags-input-policies", title: "입력 정책", section: "policies" },
-      { id: "tags-input-styles", title: "구성", section: "composition", phase: "composition" },
-      { id: "tags-input-forms", title: "폼", section: "form", phase: "examples" },
+      { id: "examples", section: "editing" },
+      { id: "tags-input-policies", section: "policies" },
+      { id: "tags-input-styles", section: "composition", phase: "composition" },
+      { id: "tags-input-forms", section: "form", phase: "examples" },
     ],
     examples: [
       { id: "tags-input-paste", framed: true, title: "여러 태그 붙여넣기", description: "예제 문자열을 복사해 붙여넣으세요. 새 태그는 추가되고, 이미 있는 ‘디자인’은 제외됩니다.", section: "editing" },
@@ -932,7 +931,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "activation-mode": "포커스만으로 탭을 활성화할지, 키로 확정할지 지정합니다.",
     },
     sections: [
-      { id: "examples", title: "배치와 활성화 방식", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "tabs-icons", section: "usage-options", title: "탭 이름 앞 아이콘", description: "items의 icon을 지정해 개요와 설정 탭을 구분합니다." },
@@ -944,7 +943,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   menu: {
     framed: true,
     sections: [
-      { id: "examples", title: "메뉴 구성과 비활성 항목", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "menu-icons", section: "usage-options", title: "메뉴 명령 앞 아이콘", description: "items의 각 명령에 icon을 지정하면 명령 이름 앞에 표시됩니다." },
@@ -962,8 +961,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "context-menu": {
     sections: [
-      { id: "examples", title: "사용 사례", section: "scenarios", phase: "examples" },
-      { id: "context-menu-behavior", title: "접근과 상태", section: "behavior" },
+      { id: "examples", section: "scenarios", phase: "examples" },
+      { id: "context-menu-behavior", section: "behavior" },
     ],
     examples: [
       { id: "context-menu-icons", section: "behavior", title: "명령 앞에 아이콘 표시", description: "회의 기록에서 우클릭하거나 Shift+F10을 눌러 각 명령의 아이콘을 봅니다." },
@@ -989,7 +988,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   "menu-button": {
     framed: true,
     sections: [
-      { id: "examples", title: "메뉴 항목과 포커스", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "menu-button-icons", section: "usage-options", title: "열기 버튼과 명령의 아이콘", description: "trigger-icon은 열기 버튼에, items의 icon은 목록의 각 명령에 표시됩니다." },
@@ -1010,7 +1009,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   menubar: {
     framed: true,
     sections: [
-      { id: "examples", title: "항목 상태와 키보드 탐색", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "menubar-icons", section: "usage-options", title: "하위 명령에 아이콘 표시", description: "파일 메뉴를 열어 하위 명령에 지정한 아이콘을 확인합니다." },
@@ -1037,7 +1036,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "Item value": "이 섹션에 연결할 items의 식별자입니다.",
     },
     sections: [
-      { id: "examples", title: "펼침 방식과 항목 상태", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "accordion-icons", section: "usage-options", title: "섹션 이름 앞 아이콘", description: "items의 icon에 Vue 컴포넌트를 전달해 섹션을 구분합니다." },
@@ -1058,7 +1057,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "Slide / Indicator value": "슬라이드와 이동 표시를 같은 항목에 연결합니다.",
     },
     sections: [
-      { id: "examples", title: "캐러셀 조작과 표시", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "carousel-indicators", section: "usage-options", title: "인디케이터로 바로 이동", description: "점 버튼을 눌러 해당 슬라이드로 이동합니다. 채워진 점이 현재 슬라이드를 나타냅니다." },
@@ -1068,7 +1067,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   feed: {
     sections: [
-      { id: "examples", title: "항목 탐색과 포커스", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "feed-icons", section: "usage-options", title: "활동 제목 앞 아이콘", description: "활동의 icon을 지정해 운영 배포와 검사 결과를 구분합니다." },
@@ -1089,9 +1088,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   image: {
     sections: [
-      { id: "examples", title: "이미지 크기와 대체 표시", section: "usage-options" },
-      { id: "image-examples-2", title: "사용자 정의 대체 표시", section: "examples-2", phase: "composition" },
-      { id: "appearance", title: "모양", section: "appearance" },
+      { id: "examples", section: "usage-options" },
+      { id: "image-examples-2", section: "examples-2", phase: "composition" },
+      { id: "appearance", section: "appearance" },
     ],
     examples: [
       { id: "image-responsive", section: "usage-options", title: "화면에 맞는 이미지 해상도 선택", description: "srcset에 두 해상도를 제공하고 sizes에 이미지가 표시되는 예상 폭을 지정합니다." },
@@ -1105,7 +1104,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   meter: {
     sections: [
-      { id: "examples", title: "값과 구간 표시", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "meter-threshold", section: "usage-options", title: "임계 구간", description: "같은 센서 범위에서 경계가 표현되는 상태를 확인합니다." },
@@ -1122,7 +1121,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "meter-group": {
     sections: [
-      { id: "examples", title: "값과 범례 표시", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "meter-group-format", section: "usage-options", title: "항목과 합계의 단위", description: "각 값과 합계를 GB로 표시합니다." },
@@ -1148,8 +1147,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "#default": "페이지 버튼과 생략 구분을 포함한 items를 제공합니다.",
     },
     sections: [
-      { id: "examples", title: "페이지 표시와 이동", section: "usage-options" },
-      { id: "pagination-examples-2", title: "페이지 크기", section: "examples-2" },
+      { id: "examples", section: "usage-options" },
+      { id: "pagination-examples-2", section: "examples-2" },
     ],
     examples: [
       { id: "pagination-siblings", section: "usage-options", title: "인접 페이지 수 조절", description: "현재 페이지 양쪽에 한 페이지씩 표시하고 떨어진 범위는 생략합니다." },
@@ -1160,7 +1159,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   timer: {
     sections: [
-      { id: "examples", title: "카운트다운과 자동 실행", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "timer-countdown", section: "usage-options", title: "카운트다운", description: "시간을 줄여 0에 도달하는 동작을 확인합니다.", parts: ["UITimerControl"] },
@@ -1176,8 +1175,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   toolbar: {
     framed: true,
     sections: [
-      { id: "toolbar-layout", title: "방향과 비활성 상태", section: "layout" },
-      { id: "examples", title: "툴바 동작 조합", section: "composition", phase: "examples" },
+      { id: "toolbar-layout", section: "layout" },
+      { id: "examples", section: "composition", phase: "examples" },
     ],
     examples: [
       { id: "toolbar-icons", section: "layout", title: "아이콘으로 표시하는 서식 도구", description: "기본 슬롯에 아이콘을 넣고 aria-label로 도구 이름을 지정합니다." },
@@ -1198,8 +1197,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "window-splitter": {
     sections: [
-      { id: "examples", title: "배치와 조작", section: "usage-options" },
-      { id: "window-splitter-examples-2", title: "그립과 크기 읽기", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "window-splitter-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "window-splitter-vertical", section: "usage-options", title: "위아래 패널에 기본 그립 표시", description: "thumb을 지정해 기본 그립을 표시합니다. 구분선을 끌거나 위·아래 방향키를 눌러 높이를 조정합니다.", parts: ["UIWindowSplitterHandle"] },
@@ -1222,8 +1221,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     title: "변경 기록과 처음·끝 이동",
     description: "변경 기록에 포커스하면 방향키나 Page Down으로 이동할 수 있습니다. 바깥 버튼으로 처음과 끝으로 이동합니다.",
     sections: [
-      { id: "examples", title: "스크롤 방향과 고정 영역", section: "usage-options" },
-      { id: "scroll-area-examples-2", title: "스크롤 위치와 추가 로드", section: "examples-2", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "scroll-area-examples-2", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "scroll-area-horizontal", section: "usage-options", title: "가로 일정과 가장자리 페이드", description: "스크롤바를 숨긴 예약 목록입니다. fade에 left와 right를 전달해 더 볼 일정이 있는 쪽을 투명하게 표시합니다. 앞·뒤 일정 버튼이나 방향키로 이동할 수 있습니다." },
@@ -1248,8 +1247,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   grid: {
     sections: [
-      { id: "examples", title: "선택과 편집 상태", section: "usage-options" },
-      { id: "grid-examples-2", title: "예약표 구성", section: "examples-2", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "grid-examples-2", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "grid-disabled", section: "usage-options", title: "특정 셀 건너뛰기", description: "방향키로 상태 열을 지나갈 때 준비됨 셀은 비활성입니다." },
@@ -1270,10 +1269,10 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "data-table": {
     sections: [
-      { id: "examples", title: "열과 행 탐색", section: "structure" },
-      { id: "table-selection", title: "행 선택", section: "selection" },
-      { id: "table-source", title: "데이터 요청", section: "source", phase: "examples" },
-      { id: "table-presentation", title: "정보 밀도와 상세 조회", section: "presentation", phase: "examples" },
+      { id: "examples", section: "structure" },
+      { id: "table-selection", section: "selection" },
+      { id: "table-source", section: "source", phase: "examples" },
+      { id: "table-presentation", section: "presentation", phase: "examples" },
     ],
     examples: [
       { id: "data-table-sort", section: "structure", title: "열 기준 정렬", description: "이름 옆 정렬 아이콘을 누를 때마다 오름차순, 내림차순, 정렬 해제 순으로 바뀝니다.", parts: ["DataTable.SortTrigger", "DataTable.Row", "UITabularRows"] },
@@ -1313,9 +1312,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "data-grid": {
     sections: [
-      { id: "examples", title: "셀 탐색과 행 선택", section: "navigation" },
-      { id: "grid-editing", title: "셀 편집과 검증", section: "editing", phase: "examples" },
-      { id: "grid-query", title: "정렬과 필터", section: "query" },
+      { id: "examples", section: "navigation" },
+      { id: "grid-editing", section: "editing", phase: "examples" },
+      { id: "grid-query", section: "query" },
     ],
     examples: [
       { id: "data-grid-cursor", section: "navigation", title: "현재 포커스된 셀 읽기", description: "셀을 클릭하고 방향키로 이동하면 그리드 밖의 요약도 갱신됩니다.", parts: ["useUIDataGridContext"] },
@@ -1340,9 +1339,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "data-tree-grid": {
     sections: [
-      { id: "examples", title: "계층과 요약", section: "structure" },
-      { id: "tree-grid-source", title: "하위 행 요청", section: "source", phase: "examples" },
-      { id: "tree-grid-actions", title: "선택과 편집", section: "actions", phase: "examples" },
+      { id: "examples", section: "structure" },
+      { id: "tree-grid-source", section: "source", phase: "examples" },
+      { id: "tree-grid-actions", section: "actions", phase: "examples" },
     ],
     examples: [
       { id: "data-tree-grid-summary", section: "structure", title: "그룹의 합계와 하위 지점 비교", description: "각 지역에서 미처리 경보의 합계를 확인하고 펼쳐 어느 지점에 경보가 있는지 찾습니다." },
@@ -1371,8 +1370,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "tree-grid": {
     sections: [
-      { id: "examples", title: "헤더와 계층 탐색", section: "usage-options" },
-      { id: "tree-grid-examples-2", title: "문서 목록과 편집", section: "examples-2", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "tree-grid-examples-2", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "tree-grid-headers", section: "usage-options", title: "열 제목 파트", description: "그리드의 열 제목을 Header와 HeaderCell로 구성합니다.", parts: ["UITreeGridHeader", "UITreeGridHeaderCell"] },
@@ -1407,14 +1406,14 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "UIChartLegend items": "표시할 계열이나 구간의 이름과 값을 전달합니다. 색은 계열 순서를 따르며 colorIndex 또는 color로 지정할 수 있습니다.",
     },
     sections: [
-      { id: "chart-types", title: "추이와 변화", section: "trends", phase: "examples" },
-      { id: "chart-comparison", title: "크기 비교", section: "comparison", phase: "examples" },
-      { id: "chart-distribution", title: "분포와 밀도", section: "distribution", phase: "examples" },
-      { id: "chart-composition", title: "구성 비율", section: "composition", phase: "examples" },
-      { id: "examples", title: "데이터 변경과 실시간 갱신", section: "updates", phase: "examples" },
-      { id: "chart-navigation", title: "범위 탐색과 대용량 시계열", section: "navigation", phase: "examples" },
-      { id: "chart-interaction", title: "툴팁과 선택", section: "interaction" },
-      { id: "chart-rendering", title: "축과 렌더링", section: "rendering", phase: "composition" },
+      { id: "chart-types", section: "trends", phase: "examples" },
+      { id: "chart-comparison", section: "comparison", phase: "examples" },
+      { id: "chart-distribution", section: "distribution", phase: "examples" },
+      { id: "chart-composition", section: "composition", phase: "examples" },
+      { id: "examples", section: "updates", phase: "examples" },
+      { id: "chart-navigation", section: "navigation", phase: "examples" },
+      { id: "chart-interaction", section: "interaction" },
+      { id: "chart-rendering", section: "rendering", phase: "composition" },
     ],
     examples: [
       { id: "chart-multiple-lines", section: "trends", title: "다중 선 차트", description: "데스크톱과 모바일 방문 추이를 같은 축에서 비교합니다.", parts: ["UIChartLine"] },
@@ -1471,9 +1470,9 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "#preview-handle / #lift-handle": "손잡이가 있는 구성에서 놓일 위치와 떠 있는 카드에도 손잡이 모양을 표시합니다.",
     },
     sections: [
-      { id: "examples", title: "핸들과 항목 상태", section: "usage-options" },
-      { id: "reorder-examples-2", title: "배치와 이동 제한", section: "examples-2", phase: "examples" },
-      { id: "reorder-examples-3", title: "다른 동작과 함께 쓰기", section: "examples-3", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "reorder-examples-2", section: "examples-2", phase: "examples" },
+      { id: "reorder-examples-3", section: "examples-3", phase: "composition" },
     ],
     examples: [
       { id: "reorder-disabled", section: "usage-options", title: "목록 전체 이동 잠금", description: "잠금이 켜져 있으면 어떤 카드도 들어 올릴 수 없습니다. 잠금을 해제하면 같은 목록을 정렬할 수 있습니다." },
@@ -1493,8 +1492,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "virtual-list": {
     sections: [
-      { id: "examples", title: "스크롤과 크기 측정", section: "layout" },
-      { id: "virtual-list-data", title: "검색과 데이터 추가", section: "data", phase: "examples" },
+      { id: "examples", section: "layout" },
+      { id: "virtual-list-data", section: "data", phase: "examples" },
     ],
     examples: [
       { id: "virtual-list-horizontal", section: "layout", title: "가로 목록 스크롤", description: "가로로 스크롤하며 현재 범위에 있는 항목을 표시합니다." },
@@ -1519,8 +1518,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "virtual-grid": {
     sections: [
-      { id: "examples", title: "열 배치와 크기 측정", section: "layout" },
-      { id: "virtual-grid-navigation", title: "탐색과 선택 복원", section: "navigation", phase: "examples" },
+      { id: "examples", section: "layout" },
+      { id: "virtual-grid-navigation", section: "navigation", phase: "examples" },
     ],
     examples: [
       { id: "virtual-grid-fixed-lanes", section: "layout", title: "고정된 두 열", description: "너비에 관계없이 두 개의 열을 유지합니다." },
@@ -1544,8 +1543,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "virtual-masonry": {
     sections: [
-      { id: "examples", title: "열과 항목 크기", section: "usage-options" },
-      { id: "virtual-masonry-examples-2", title: "목록이 바뀌는 경우", section: "examples-2", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "virtual-masonry-examples-2", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "virtual-masonry-measured", section: "usage-options", title: "실측하는 카드 높이", description: "카드의 본문 길이로 실제 높이를 측정합니다." },
@@ -1566,8 +1565,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "virtual-spatial": {
     sections: [
-      { id: "examples", title: "좌표와 스크롤 영역", section: "usage-options" },
-      { id: "virtual-spatial-examples-2", title: "특정 위치 이동과 일정", section: "examples-2", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "virtual-spatial-examples-2", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "virtual-spatial-overlap", section: "usage-options", title: "겹치는 지점 순서", description: "겹친 두 지점에서 get-z-index가 더 큰 지점이 위에 놓입니다." },
@@ -1599,8 +1598,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "#default": "현재 보기의 dates와 view를 읽습니다.",
     },
     sections: [
-      { id: "examples", title: "표시와 날짜 선택 조건", section: "usage-options" },
-      { id: "calendar-examples-2", title: "입력 연결", section: "examples-2", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "calendar-examples-2", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "calendar-with-time", section: "usage-options", framed: true, title: "날짜와 방문 시간 고르기", description: "v-model:time을 연결해 달력에서 날짜를 고르고 아래 목록에서 시와 분을 선택합니다." },
@@ -1612,8 +1611,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "range-calendar": {
     sections: [
-      { id: "examples", title: "달력 표시와 선택 제한", section: "usage-options" },
-      { id: "range-calendar-examples-2", title: "입력 연결", section: "examples-2", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "range-calendar-examples-2", section: "examples-2", phase: "examples" },
     ],
     examples: [
       { id: "range-calendar-with-time", section: "usage-options", framed: true, title: "숙박 날짜와 입·퇴실 시간 고르기", description: "시작과 종료 시간에 각각 모델을 연결합니다. 두 시각은 날짜 범위와 독립적으로 바꿀 수 있습니다." },
@@ -1643,8 +1642,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       createUIDateFieldFormat: "날짜 순서와 구분 문자를 받아 format으로 전달할 서식을 만듭니다.",
     },
     sections: [
-      { id: "examples", title: "입력 형태와 상태", section: "usage-options" },
-      { id: "form", title: "폼 제출", section: "form", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "form", section: "form", phase: "examples" },
     ],
     examples: [
       { id: "date-field-explicit-format", section: "usage-options", title: "한 날짜 입력의 서식 지정", description: "이 입력에만 일/월/년 순서를 적용합니다. 25/08/2026을 입력하고 Enter로 확정합니다." },
@@ -1656,8 +1655,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "date-range-field": {
     sections: [
-      { id: "examples", title: "범위 제한과 초기화", section: "usage-options" },
-      { id: "form", title: "폼", section: "form", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "form", section: "form", phase: "examples" },
     ],
     examples: [
       { id: "date-range-field-bounds", section: "usage-options", title: "입력할 수 있는 기간 경계", description: "시작일을 8월 20일 이전이나 종료일을 30일 이후로 확정할 수 없습니다." },
@@ -1675,8 +1674,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "date-picker": {
     sections: [
-      { id: "examples", title: "날짜 제한과 달력 탐색", section: "usage-options" },
-      { id: "date-picker-examples-2", title: "포털 연결", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "date-picker-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "date-picker-unavailable", section: "usage-options", title: "선택할 수 없는 날짜", description: "8월 24일을 비활성화해 날짜 선택을 제한합니다." },
@@ -1694,8 +1693,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "date-range-picker": {
     sections: [
-      { id: "examples", title: "날짜 제한과 표시 서식", section: "usage-options" },
-      { id: "date-range-picker-examples-2", title: "범위 확정과 포털", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "date-range-picker-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "date-range-picker-unavailable", section: "usage-options", title: "범위 끝점으로 선택할 수 없는 날짜", description: "8월 27일과 29일은 시작일이나 종료일로 선택할 수 없습니다. 두 끝점 사이에는 포함될 수 있습니다." },
@@ -1714,8 +1713,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "date-time-field": {
     sections: [
-      { id: "examples", title: "정밀도와 입력 제한", section: "usage-options" },
-      { id: "form", title: "폼", section: "form", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "form", section: "form", phase: "examples" },
     ],
     examples: [
       { id: "date-time-field-seconds", section: "usage-options", title: "끝자리까지 일시 입력", description: "초 자리까지 편집할 수 있게 정밀도를 지정합니다." },
@@ -1729,8 +1728,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "date-time-range-field": {
     sections: [
-      { id: "examples", title: "정밀도와 범위 편집", section: "usage-options" },
-      { id: "form", title: "폼", section: "form", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "form", section: "form", phase: "examples" },
     ],
     examples: [
       { id: "date-time-range-field-seconds", section: "usage-options", title: "기간 경계에 초 사용", description: "시작과 종료 일시에 초 단위를 표시합니다." },
@@ -1749,8 +1748,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "date-time-picker": {
     sections: [
-      { id: "examples", title: "입력 구성과 선택 제한", section: "usage-options" },
-      { id: "date-time-picker-examples-2", title: "외부 제어와 포털", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "date-time-picker-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "date-time-picker-combined", section: "usage-options", title: "날짜와 시간을 한 번에 편집", description: "input-layout을 combined로 지정해 일시를 한 입력창에서 편집합니다. 팝업에서도 날짜와 시간을 고를 수 있습니다.", parts: ["UIDateTimePickerDateTimeInput"] },
@@ -1771,8 +1770,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "date-time-range-picker": {
     sections: [
-      { id: "examples", title: "입력 구성과 날짜 경계", section: "usage-options" },
-      { id: "date-time-range-picker-examples-2", title: "포털 연결", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "date-time-range-picker-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "date-time-range-picker-time-first", section: "usage-options", title: "날짜보다 먼저 시간 선택", description: "팝업에서 시작·종료 시간을 먼저 선택하고 날짜 범위를 고릅니다. 날짜 범위가 확정되면 앞서 고른 시각도 반영됩니다.", parts: ["UIDateTimeRangePickerGrid", "UIDateTimeRangePickerCell", "UIDateTimeRangePickerTimeChoices"] },
@@ -1794,7 +1793,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "time-field": {
     sections: [
-      { id: "examples", title: "표시 정밀도와 입력 상태", section: "usage-options" },
+      { id: "examples", section: "usage-options" },
     ],
     examples: [
       { id: "time-field-seconds", section: "usage-options", title: "시·분·초 편집", description: "시간을 초 단위까지 편집할 수 있습니다." },
@@ -1808,8 +1807,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "time-picker": {
     sections: [
-      { id: "examples", title: "시각의 정밀도와 선택 제한", section: "usage-options" },
-      { id: "time-picker-examples-2", title: "포털 연결", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "time-picker-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "time-picker-inline", section: "usage-options", title: "시·분 목록을 폼에 바로 배치", description: "inline으로 시·분 목록을 항상 표시합니다. 시각을 고르고 확정해 제출값을 확인할 수 있습니다." },
@@ -1828,8 +1827,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "time-range-field": {
     sections: [
-      { id: "examples", title: "정밀도와 범위 편집", section: "usage-options" },
-      { id: "form", title: "폼", section: "form", phase: "examples" },
+      { id: "examples", section: "usage-options" },
+      { id: "form", section: "form", phase: "examples" },
     ],
     examples: [
       { id: "time-range-field-seconds", section: "usage-options", title: "시간 범위와 초 단위", description: "시작과 종료를 초 단위로 편집합니다." },
@@ -1848,8 +1847,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "month-picker": {
     sections: [
-      { id: "examples", title: "선택할 수 있는 달", section: "usage-options" },
-      { id: "month-picker-examples-2", title: "포털 연결", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "month-picker-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "month-picker-bounds", section: "usage-options", title: "선택 가능한 월", description: "2026년에 속하는 월만 고를 수 있습니다. 2026-09를 입력해 확정하거나 달력으로 선택합니다." },
@@ -1865,8 +1864,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "month-range-picker": {
     sections: [
-      { id: "examples", title: "같은 달과 연도 경계", section: "usage-options" },
-      { id: "month-range-picker-examples-2", title: "포털 연결", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "month-range-picker-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "month-range-picker-same-month", section: "usage-options", title: "한 달만 포함하는 범위", description: "시작과 종료에 같은 달을 지정합니다." },
@@ -1884,8 +1883,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "year-picker": {
     sections: [
-      { id: "examples", title: "선택할 수 있는 연도", section: "usage-options" },
-      { id: "year-picker-examples-2", title: "외부 제어와 포털", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "year-picker-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "year-picker-bounds", section: "usage-options", title: "선택 가능한 연도", description: "2025년부터 2030년까지의 연도를 입력하거나 목록에서 선택합니다." },
@@ -1901,8 +1900,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
   },
   "year-range-picker": {
     sections: [
-      { id: "examples", title: "연도 탐색과 선택 제한", section: "usage-options" },
-      { id: "year-range-picker-examples-2", title: "범위 확정과 포털", section: "examples-2", phase: "composition" },
+      { id: "examples", section: "usage-options" },
+      { id: "year-range-picker-examples-2", section: "examples-2", phase: "composition" },
     ],
     examples: [
       { id: "year-range-picker-pages", section: "usage-options", title: "연도 페이지를 건너가는 범위", description: "연도 페이지를 넘겨 현재 화면 밖에 있는 종료 연도를 선택합니다." },

@@ -37,20 +37,20 @@ onScopeDispose(removeRouteHook);
     <PlaygroundExampleSection id="usage" title="기본 사용법">
       <PlaygroundExample id="dashboard-example" title="사이드바와 본문"
         description="사이드바에서 메뉴를 선택하면 본문의 해당 위치로 이동합니다."
-        :source="source" :heading-level="3" wide>
+        :source="source" wide>
         <DashboardExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="examples" title="실전 예제">
       <PlaygroundExample id="dashboard-aside" title="목록과 상세 패널"
-        description="선택한 문서의 내용이 aside 슬롯에 표시됩니다." :source="asideSource" :heading-level="3" wide>
+        description="선택한 문서의 내용이 aside 슬롯에 표시됩니다." :source="asideSource" wide>
         <DashboardAsideExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
       <PlaygroundExample id="dashboard-panel-slots" title="패널의 헤더와 툴바"
         description="필터는 toolbar에, 페이지 제목과 초기화는 header에 배치합니다."
-        :source="panelSource" :heading-level="3" wide>
+        :source="panelSource" wide>
         <DashboardPanelSlotsExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>

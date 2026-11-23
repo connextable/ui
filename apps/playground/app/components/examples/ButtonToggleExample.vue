@@ -20,7 +20,6 @@ const source = computed(() => vueExampleCode("UIToggleButton", {
     title="UIToggleButton"
     description="v-model로 켜짐 상태를 연결하면 aria-pressed가 함께 바뀝니다."
     :code="source"
-    :heading-level="3"
   >
     <template #header>
       <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />

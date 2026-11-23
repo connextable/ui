@@ -11,7 +11,6 @@ const list = useTemplateRef<HTMLUListElement>("list");
 const narrow = ref(false);
 const expanded = ref(false);
 const route = useRoute();
-const baseLevel = computed(() => Math.min(...headings.value.map(heading => heading.level)));
 const rail = shallowRef<{ path: string; length: number; segments: Map<string, { start: number; length: number }> }>();
 const indicator = computed(() => rail.value?.segments.get(activeId.value));
 
@@ -87,14 +86,12 @@ watch(() => props.content, (content, _previous, onCleanup) => {
     return;
   }
   const collectHeadings = () => {
-    const all = Array.from(content.querySelectorAll<HTMLElement>(headingSelector), element => ({
+    headings.value = Array.from(content.querySelectorAll<HTMLElement>(headingSelector), element => ({
       element,
       id: element.id,
       text: element.textContent?.trim() ?? "",
       level: Number(element.tagName.slice(1)),
     }));
-    const firstLevel = Math.min(...all.map(heading => heading.level));
-    headings.value = all.filter(heading => heading.level <= firstLevel + 1);
     onScroll();
   };
   collectHeadings();
@@ -224,7 +221,7 @@ onUnmounted(() => {
               <li
                 v-for="heading in headings"
                 :key="heading.id"
-                :style="{ '--outline-depth': heading.level - baseLevel }"
+                :style="{ '--outline-depth': heading.level - 2 }"
               >
                 <a
                   :href="`#${heading.id}`"

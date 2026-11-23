@@ -2,7 +2,6 @@
 import type { Component } from "vue";
 import { arrangeCatalogExamples } from "~/data/catalog-example-sections";
 import type { CatalogExample, CatalogExampleSection } from "~/data/catalog-guides";
-import PlaygroundExampleSection from "./PlaygroundExampleSection.vue";
 
 const { examples, groups, wide, deferPreviews } = defineProps<{
   examples: readonly CatalogExample[];
@@ -36,13 +35,7 @@ const loadedPreviews = new Map(await Promise.all(
 
 <template>
   <PlaygroundExampleSection v-for="phase in phases" :id="phase.id" :key="phase.id" :title="phase.title">
-    <component
-      :is="group.showHeading ? PlaygroundExampleSection : 'div'"
-      v-for="group in phase.groups"
-      :id="group.id"
-      :key="group.id"
-      v-bind="group.showHeading ? { title: group.title, headingLevel: 3 } : { class: 'playground-catalog-group-anchor' }"
-    >
+    <div v-for="group in phase.groups" :id="group.id" :key="group.id" data-playground-anchor tabindex="-1">
       <PlaygroundCatalogExample
         v-for="example in group.examples"
         :key="example.id"
@@ -50,14 +43,7 @@ const loadedPreviews = new Map(await Promise.all(
         :framed="example.framed"
         :load-preview="deferPreviews && !example.framed ? example.loadPreview : undefined"
         :preview="loadedPreviews.get(example.id)"
-        :heading-level="group.showHeading ? 4 : 3"
       />
-    </component>
+    </div>
   </PlaygroundExampleSection>
 </template>
-
-<style scoped>
-.playground-catalog-group-anchor {
-  scroll-margin-block-start: 2rem;
-}
-</style>

@@ -24,18 +24,18 @@ const parts = {
 <template>
   <div>
     <PlaygroundExampleSection id="usage" title="기본 사용법">
-      <PlaygroundExample :heading-level="3" id="disclosure-example" title="펼치기와 접기" :source="source">
+      <PlaygroundExample id="disclosure-example" title="펼치기와 접기" :source="source">
         <DisclosureExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
       <PlaygroundExample id="disclosure-disabled" title="비활성 트리거"
-        description="비활성 상태에서는 버튼을 눌러도 콘텐츠가 펼쳐지지 않습니다." :source="DisclosureDisabledExampleSource" :heading-level="3">
+        description="비활성 상태에서는 버튼을 눌러도 콘텐츠가 펼쳐지지 않습니다." :source="DisclosureDisabledExampleSource">
         <DisclosureDisabledExample />
       </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
-      <PlaygroundExample :heading-level="3"
+      <PlaygroundExample
         v-for="(part, name) in parts"
         :id="name"
         :key="name"

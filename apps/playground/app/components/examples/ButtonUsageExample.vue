@@ -111,7 +111,7 @@ const code = computed(() => buttonExampleCode(attributes.value, {
 </script>
 
 <template>
-  <PlaygroundExample :id="topic.id" :title="topic.title" :description="topic.description" :code="code" :heading-level="3">
+  <PlaygroundExample :id="topic.id" :title="topic.title" :description="topic.description" :code="code">
     <template #header>
       <PlaygroundExampleControl v-if="props.topic === 'label'" v-slot="{ labelId }" label="라벨">
         <UIInput v-model="label" size="sm" placeholder="문서 저장" :aria-labelledby="labelId" />

@@ -24,7 +24,6 @@ onScopeDispose(() => clearTimeout(timer));
     title="요청 중 중복 실행 방지"
     description="저장을 연속으로 눌러 요청이 한 번만 처리되는지 확인하세요."
     :source="source"
-    :heading-level="3"
   >
     <UIButton :loading="pending" @click="save">저장</UIButton>
     <template #footer>

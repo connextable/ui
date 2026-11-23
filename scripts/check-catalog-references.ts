@@ -68,12 +68,10 @@ async function check(slug: string) {
       if (count > 1) failures.push(`${path} duplicate document id #${id} (${count} targets)`);
     }
 
-    const headings = [...html.matchAll(/<h([234])\b(?=[^>]*\bdata-playground-heading\b)[^>]*\sid="([^"]+)"/g)]
+    const headings = [...html.matchAll(/<h([1-6])\b(?=[^>]*\bdata-playground-heading\b)[^>]*\sid="([^"]+)"/g)]
       .map(([, level, id]) => ({ id: id!, level: Number(level) }));
-    let previousLevel = 1;
     for (const { id, level } of headings) {
-      if (level > previousLevel + 1) failures.push(`${path} skips a heading level before #${id}`);
-      previousLevel = level;
+      if (level !== 2 && level !== 3) failures.push(`${path} document heading #${id} uses h${level} instead of h2 or h3`);
     }
 
     const sections = headings.filter(heading => heading.level === 2).map(heading => heading.id);
@@ -89,14 +87,9 @@ async function check(slug: string) {
       for (const phase of arrangeCatalogExamples(guide.examples ?? [], guide.sections)) {
         expected.push({ id: phase.id, level: 2 });
         for (const group of phase.groups) {
-          const hasGroupHeading = group.examples.length > 1;
-          if (hasGroupHeading) {
-            expected.push({ id: group.id, level: 3 });
-          } else {
-            expectAnchor(group.id, "single-example group");
-            if (headings.some(heading => heading.id === group.id)) failures.push(`${path} shows a group heading for one example #${group.id}`);
-          }
-          expected.push(...group.examples.map(example => ({ id: example.id, level: hasGroupHeading ? 4 : 3 })));
+          expectAnchor(group.id, "example group link");
+          if (headings.some(heading => heading.id === group.id)) failures.push(`${path} shows an intermediate group heading #${group.id}`);
+          expected.push(...group.examples.map(example => ({ id: example.id, level: 3 })));
           checkedDetailedExamples += group.examples.length;
         }
       }

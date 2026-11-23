@@ -25,20 +25,20 @@ definePageMeta({
       <ButtonExample />
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="settings-and-behavior" title="설정과 동작">
-      <PlaygroundExampleSection id="button-content" title="라벨과 아이콘">
+      <div id="button-content" data-playground-anchor tabindex="-1">
         <ButtonUsageExample topic="label" />
         <ButtonUsageExample topic="icons" />
-      </PlaygroundExampleSection>
-      <PlaygroundExampleSection id="button-appearance" title="모양과 크기">
+      </div>
+      <div id="button-appearance" data-playground-anchor tabindex="-1">
         <ButtonUsageExample topic="appearance" />
         <ButtonUsageExample topic="size" />
         <ButtonFullWidthExample />
-      </PlaygroundExampleSection>
-      <PlaygroundExampleSection id="button-states" title="비활성과 로딩">
+      </div>
+      <div id="button-states" data-playground-anchor tabindex="-1">
         <ButtonUsageExample topic="disabled" />
         <ButtonUsageExample topic="loading" />
-      </PlaygroundExampleSection>
-      <PlaygroundExampleSection id="button-types" title="버튼 종류">
+      </div>
+      <div id="button-types" data-playground-anchor tabindex="-1">
         <IconButtonExample />
         <ButtonToggleExample />
         <PlaygroundExample
@@ -49,14 +49,14 @@ definePageMeta({
         >
           <ButtonToggleIconExample />
         </PlaygroundExample>
-      </PlaygroundExampleSection>
-      <PlaygroundExampleSection id="link" title="링크">
+      </div>
+      <div id="link" data-playground-anchor tabindex="-1">
         <p class="button-page__intro">
           이동에 버튼 스타일이 필요하면 UIButton에 주소를 전달합니다.
           본문에 넣는 텍스트 링크는 <UIAnchor to="/components/anchor">UIAnchor</UIAnchor>로 표시합니다.
         </p>
         <ButtonLinkExample />
-      </PlaygroundExampleSection>
+      </div>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="examples" title="실전 예제">
       <ButtonPendingExample />

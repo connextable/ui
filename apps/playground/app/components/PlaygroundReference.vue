@@ -37,10 +37,14 @@ function groupAnchor(section: string, group: string) {
 <template>
   <div v-if="sections.length" class="playground-reference">
     <PlaygroundExampleSection v-for="section in sections" :id="section.id" :key="section.id" :title="section.title">
-      <div v-for="block in section.blocks" :key="block.id" class="playground-reference__block">
-        <h3 v-if="block.owner" :id="`${section.id}-owner-${block.id}`" class="playground-reference__owner" data-playground-heading tabindex="-1">
-          {{ block.owner }}
-        </h3>
+      <div
+        v-for="block in section.blocks"
+        :id="block.owner ? `${section.id}-owner-${block.id}` : undefined"
+        :key="block.id"
+        :data-playground-anchor="block.owner ? '' : undefined"
+        :tabindex="block.owner ? -1 : undefined"
+        class="playground-reference__block"
+      >
         <section
           v-for="(group, index) in block.groups"
           :id="section.id === 'parts' && index === 0 && legacyStructureAnchor ? 'parts-structure' : undefined"
@@ -48,13 +52,12 @@ function groupAnchor(section: string, group: string) {
           class="playground-reference__group"
           :aria-labelledby="groupAnchor(section.id, group.id)"
         >
-          <component
-            :is="block.owner ? 'h4' : 'h3'"
+          <h3
             :id="groupAnchor(section.id, group.id)"
             class="playground-reference__group-heading"
             data-playground-heading
             tabindex="-1"
-          >{{ group.title }}</component>
+          >{{ block.owner ? `${block.owner} · ${group.title}` : group.title }}</h3>
           <dl class="playground-reference__entries">
             <div v-for="entry in group.entries" :id="entry.anchor" :key="entry.name" :tabindex="entry.anchor ? -1 : undefined">
               <dt>
@@ -124,13 +127,6 @@ function groupAnchor(section: string, group: string) {
   margin-block-start: 2.5rem;
 }
 
-.playground-reference__owner {
-  margin: 0 0 var(--ui-space-md);
-  color: var(--ui-color-text);
-  font-size: 1.125rem;
-  font-weight: 700;
-}
-
 .playground-reference__group {
   border: 1px solid var(--ui-color-border);
   border-radius: var(--ui-radius-md);
@@ -150,6 +146,7 @@ function groupAnchor(section: string, group: string) {
   color: var(--ui-color-text);
   font-size: 0.9375rem;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .playground-reference__entries {

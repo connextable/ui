@@ -17,7 +17,6 @@ function submit({ values }: UIFormSubmitEvent) {
     title="기본 제출"
     description="UIFormField에 지정한 name이 제출 객체의 키가 됩니다. 제출 핸들러에서 values.name으로 이름을 읽습니다."
     :source="source"
-    :heading-level="3"
   >
     <UIForm @submit="submit" @reset="name = ''; submitted = ''">
       <UIFormField name="name" label="이름" required>

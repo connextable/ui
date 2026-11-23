@@ -53,7 +53,6 @@ const code = computed(() => buttonExampleCode(attributes.value, { label: label.v
     title="내부 경로, 외부 URL, 파일 다운로드"
     description="Nuxt 내부 이동에는 to, 직접 연결하는 주소에는 href를 사용합니다. download를 지정하면 브라우저의 다운로드 링크로 동작합니다."
     :code="code"
-    :heading-level="3"
   >
     <template #header>
       <PlaygroundExampleControl v-slot="{ labelId }" label="목적지">

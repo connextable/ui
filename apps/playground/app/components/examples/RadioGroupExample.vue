@@ -39,7 +39,6 @@ const code = computed(() => vueExampleCode("UIRadioGroup", {
     title="한 항목 선택"
     description="options로 선택지를 전달합니다. 읽기 전용과 전체 그룹 비활성을 설정해 선택 동작을 비교할 수 있습니다."
     :code="code"
-    :heading-level="3"
     wide
   >
     <template #header>

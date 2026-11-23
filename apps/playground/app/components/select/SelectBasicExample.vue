@@ -36,7 +36,6 @@ const code = computed(() => vueExampleCode("UISelect", {
     title="항목 선택과 해제"
     description="options로 선택지를 전달합니다. clearable을 켜면 선택을 지워 미선택 상태로 돌아갈 수 있습니다."
     :code="code"
-    :heading-level="3"
   >
     <template #header>
       <UISwitch variant="outline" v-model="clearable" size="sm" label="clearable" />
