@@ -10,7 +10,7 @@ import {
   UIChartRenderer,
   UIChartXAxis,
   UIChartYAxis,
-  useUIChartLayerSelector,
+  useChartLayerSelector,
 } from "@connextable/ui";
 import { computed, defineComponent, h, ref } from "vue";
 
@@ -29,7 +29,7 @@ const reference = computed(() => compareEarlier.value ? referenceWeeks.earlier :
 
 const ComparisonLegend = defineComponent({
   setup() {
-    const label = useUIChartLayerSelector("reference", layer => layer?.label);
+    const label = useChartLayerSelector("reference", layer => layer?.label);
     return () => h("div", { "aria-live": "polite" }, [
       h(UIChartLegend, { items: [{ label: "이번 주" }, ...(label.value ? [{ label: label.value }] : [])] }),
     ]);

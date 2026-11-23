@@ -11,14 +11,14 @@ import {
   UIMonthPickerNextYear,
   UIMonthPickerPreviousYear,
   UIMonthPickerTrigger,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
 import { ref } from "vue";
 const billingMonth = ref({ year: 2026, month: 8, day: 1 })
 
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { UITimeField, useUITemporalDisplay } from "@connextable/ui";
+import { UITimeField, useTemporalDisplay } from "@connextable/ui";
 import { ref } from "vue";
 
 type TimeValue = InstanceType<typeof UITimeField>["$props"]["modelValue"];
 const value = ref<TimeValue>({ hour: 14, minute: 30, second: 0, millisecond: 0 });
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

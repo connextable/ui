@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { createUIDataTreeGridComponents, useUIDataTreeGrid, useUIDataTreeGridContext } from "@connextable/ui";
+import { createUIDataTreeGridComponents, useDataTreeGrid, useDataTreeGridContext } from "@connextable/ui";
 import { ChevronRight } from "@lucide/vue";
 import { defineComponent, h } from "vue";
 
 const storefront = { kind: "leaf", id: "storefront", cells: { service: "쇼핑몰", team: "서비스 팀" } } as const;
 const backend = { kind: "leaf", id: "orders", cells: { service: "주문 API", team: "서버 팀" } } as const;
 
-const tree = useUIDataTreeGrid({
+const tree = useDataTreeGrid({
   source: (request) => {
     const rootOpen = request.expansion.includes("platform");
     const apiOpen = request.expansion.includes("apis");
@@ -34,7 +34,7 @@ const DataTreeGrid = createUIDataTreeGridComponents(tree);
 
 const ExpansionSummary = defineComponent({
   setup() {
-    const { snapshot } = useUIDataTreeGridContext();
+    const { snapshot } = useDataTreeGridContext();
     return () => h("p", { "aria-live": "polite" }, `펼친 그룹 ${snapshot.value.tabular.state.expansion.length}개`);
   },
 });

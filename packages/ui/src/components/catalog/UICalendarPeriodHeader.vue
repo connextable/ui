@@ -13,7 +13,7 @@ import {
 import type { DateValue } from "@sectile/temporal/date-field";
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 import UIOpeningIcon from "../UIOpeningIcon.vue";
-import { useUITemporalDisplay } from "./temporal-display";
+import { useTemporalDisplay } from "./temporal-display";
 
 const { view, choosingMonth = false, yearFirst = false, min, max, labels } = defineProps<{
   view: { year: number; month: number };
@@ -27,7 +27,7 @@ const { view, choosingMonth = false, yearFirst = false, min, max, labels } = def
 
 const emit = defineEmits<{ "select-year": [year: number] }>();
 provideFormBoundary();
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 const selectYearLabel = computed(() => labels?.selectYear ?? (display.locale.value.startsWith("ko") ? "연도 선택" : "Select year"));
 const previousYearsLabel = computed(() => labels?.previousYears ?? (display.locale.value.startsWith("ko") ? "이전 연도 목록" : "Previous years"));
 const nextYearsLabel = computed(() => labels?.nextYears ?? (display.locale.value.startsWith("ko") ? "다음 연도 목록" : "Next years"));

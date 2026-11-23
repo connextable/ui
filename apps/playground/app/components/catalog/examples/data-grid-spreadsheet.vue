@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onScopeDispose, ref } from "vue";
-import { UIDataSurface, UITabularEditTrigger, createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
+import { UIDataSurface, UITabularEditTrigger, createUIDataGridComponents, useDataGrid } from "@connextable/ui";
 
 const total = ref(1200);
 let rows = [["교육", 320], ["장비", 640], ["도서", 240]].map(([subject, budget], index) => ({
   id: String(index), kind: "leaf" as const, cells: { subject: String(subject), budget: Number(budget) },
 }));
-const grid = useUIDataGrid({
+const grid = useDataGrid({
   source: request => ({
     ...request, rows, viewRevision: request.requestID,
     matchingLeafCount: { kind: "known", value: rows.length },

@@ -6,8 +6,8 @@ export {
 export { UIFileInputClear } from "../clear/selection-clear-parts";
 export { default as UIFileInput } from "./UIFileInput.vue";
 export {
-  useFileUpload as useUIFileUpload,
-  useFileUploadGroup as useUIFileUploadGroup,
+  useFileUpload,
+  useFileUploadGroup,
   type FileUploadAdapter as UIFileUploadAdapter,
   type FileUploadRequest as UIFileUploadRequest,
 } from "@sectile/vue/form/file-upload";

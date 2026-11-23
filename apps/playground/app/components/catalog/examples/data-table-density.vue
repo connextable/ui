@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { UIButton, UIDataSurface, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataSurface, createUIDataTableComponents, useDataTable } from "@connextable/ui";
 import { ref } from "vue";
 
 const compact = ref(false);
 const rows = [18, 54, 32, 9, 68, 41].map((count, index) => ({
   id: String(index), kind: "leaf" as const, cells: { hour: `${9 + index}:00`, count },
 }));
-const table = useUIDataTable({
+const table = useDataTable({
   source: request => ({
     ...request, rows, viewRevision: request.requestID,
     matchingLeafCount: { kind: "known", value: rows.length },

@@ -11,7 +11,7 @@ import {
   UIYearRangePickerPreviousPage,
   UIYearRangePickerStartInput,
   UIYearRangePickerTrigger,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
@@ -21,7 +21,7 @@ const roadmap = ref({
   end: { year: 2045, month: 1, day: 1 },
 })
 
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

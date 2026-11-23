@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UIDataActions, createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
+import { UIButton, UIDataActions, createUIDataGridComponents, useDataGrid } from "@connextable/ui";
 import { ArrowLeft, ArrowRight } from "@lucide/vue";
 import { computed } from "vue";
 
@@ -10,7 +10,7 @@ const rows = [
   { kind: "leaf", id: "noon", cells: { web: 39, app: 28, partner: 12 } },
   { kind: "leaf", id: "evening", cells: { web: 30, app: 32, partner: 8 } },
 ] as const;
-const grid = useUIDataGrid({
+const grid = useDataGrid({
   defaultCursor: { current: { rowID: "morning", columnID: "web" } },
   source: request => ({
     ...request, rows, viewRevision: request.requestID,

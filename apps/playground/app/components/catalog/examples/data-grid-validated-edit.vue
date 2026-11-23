@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onScopeDispose, ref } from "vue";
-import { UIDataActions, UITabularEditTrigger, createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
+import { UIDataActions, UITabularEditTrigger, createUIDataGridComponents, useDataGrid } from "@connextable/ui";
 
 const message = ref("수량 옆 편집 버튼을 누르세요.");
 let rows = [
@@ -8,7 +8,7 @@ let rows = [
   { kind: "leaf" as const, id: "adapter", cells: { name: "전원 어댑터", quantity: 24 } },
   { kind: "leaf" as const, id: "holder", cells: { name: "기기 거치대", quantity: 8 } },
 ];
-const grid = useUIDataGrid({
+const grid = useDataGrid({
   source: request => ({
     ...request, rows, viewRevision: request.requestID,
     matchingLeafCount: { kind: "known", value: rows.length },

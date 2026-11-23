@@ -10,13 +10,13 @@ export default defineNuxtConfig({
 });
 ```
 
-템플릿에서 `UIButton`, `UILightbox` 등 공개 컴포넌트를 바로 사용할 수 있습니다. `useUIScrollArea`와 같은 공개 `useUI…` 컴포저블과 스타일시트도 모듈이 등록합니다.
+템플릿에서 `UIButton`, `UILightbox` 등 공개 컴포넌트를 바로 사용할 수 있습니다. `useScrollArea`, `useConfirm` 같은 컴포저블과 스타일시트도 모듈이 등록합니다.
 
 | `connextableUI` 설정 | 기본값 | 동작 |
 | --- | --- | --- |
 | `prefix` | `"UI"` | Nuxt가 자동 등록하는 컴포넌트 이름의 접두사를 바꿉니다. |
 | `components` | `true` | 컴포넌트 자동 임포트를 켭니다. |
-| `composables` | `true` | `useUI…` 컴포저블 자동 임포트를 켭니다. |
+| `composables` | `true` | 공개 컴포저블 자동 임포트를 켭니다. |
 | `css` | `true` | `@connextable/ui/styles.css`를 등록합니다. |
 | `nuxtLink` | `true` | 버튼, 앵커, 메뉴의 링크를 NuxtLink에 연결합니다. |
 
@@ -37,7 +37,9 @@ export default defineNuxtConfig({
 </template>
 ```
 
-이 설정에서 `UIInView`는 `<AppInView>`로 자동 등록됩니다. 직접 import할 때는 `@connextable/ui`의 `UIButton`처럼 원래 export 이름을 사용합니다. 컴포저블도 `useUIScrollArea`처럼 원래 이름으로 자동 등록됩니다.
+이 설정에서 `UIInView`는 `<AppInView>`로 자동 등록됩니다. 컴포저블은 `prefix`와 관계없이 `useScrollArea`, `useConfirm` 같은 이름으로 등록됩니다. 직접 import할 때는 `@connextable/ui`에서 `UIButton`, `useScrollArea`를 가져옵니다.
+
+기존 `useUI…` 이름은 직접 import하는 코드의 호환용 별칭입니다. Nuxt 자동 임포트를 사용하던 코드는 `useUIScrollArea`를 `useScrollArea`로 바꿉니다.
 
 ## 링크로 이동하기
 
@@ -90,12 +92,12 @@ const upload = createUIFileUploadAdapter({ url: "/api/uploads" });
 
 ## 표와 그리드에 데이터 연결하기
 
-로컬 데이터는 `UIDataTable`과 `UIDataGrid`의 `columns`, `rows`에 바로 전달합니다. 서버에서 행을 요청하는 화면은 `createUITabularSource`로 응답을 만들어 `useUIDataTable`, `useUIDataGrid`, `useUIDataTreeGrid`의 `source`에 연결합니다.
+로컬 데이터는 `UIDataTable`과 `UIDataGrid`의 `columns`, `rows`에 바로 전달합니다. 서버에서 행을 요청하는 화면은 `createUITabularSource`로 응답을 만들어 `useDataTable`, `useDataGrid`, `useDataTreeGrid`의 `source`에 연결합니다.
 
 ```ts
-import { createUITabularSource, useUIDataTable } from "@connextable/ui";
+import { createUITabularSource, useDataTable } from "@connextable/ui";
 
-const table = useUIDataTable({
+const table = useDataTable({
   source: createUITabularSource({
     columns: [{ id: "name" }],
     async load({ access }, { signal }) {

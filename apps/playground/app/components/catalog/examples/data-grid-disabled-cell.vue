@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { createUIDataGridComponents, useUIDataGrid } from "@connextable/ui";
+import { createUIDataGridComponents, useDataGrid } from "@connextable/ui";
 
 const tasks = [
   { kind: "leaf", id: "1", cells: { task: "시안 검토", status: "완료" } },
   { kind: "leaf", id: "2", cells: { task: "접근성 검사", status: "대기" } },
 ] as const;
 
-const grid = useUIDataGrid({
+const grid = useDataGrid({
   isCellDisabled: (address) => address.rowID === '1' && address.columnID === 'status',
   source: (request) => ({
     ...request,

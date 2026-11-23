@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { UIButton, UIDataActions, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataActions, createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const users = [
   { kind: "leaf", id: "1", cells: { name: "민지", team: "디자인" } },
   { kind: "leaf", id: "2", cells: { name: "서준", team: "개발" } },
 ] as const;
 
-const table = useUIDataTable({
+const table = useDataTable({
   source: async (request) => {
     await new Promise<void>((resolve) => setTimeout(resolve, 700));
     return {

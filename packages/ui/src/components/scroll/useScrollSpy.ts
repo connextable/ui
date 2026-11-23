@@ -16,7 +16,7 @@ export interface UIScrollToSectionOptions {
   focus?: boolean;
 }
 
-export function useUIScrollSpy(sections: MaybeRefOrGetter<readonly UIScrollSpySection[]>, options: UIScrollSpyOptions = {}) {
+export function useScrollSpy(sections: MaybeRefOrGetter<readonly UIScrollSpySection[]>, options: UIScrollSpyOptions = {}) {
   const activeId = ref<string | null>(null);
   const mounted = ref(false);
   let frame = 0;

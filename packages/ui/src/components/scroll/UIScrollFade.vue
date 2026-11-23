@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, readonly, shallowRef, useTemplateRef, watch } from "vue";
-import { scrollEdges, type UIScrollEdge, type UIScrollState } from "./useUIScrollArea";
+import { scrollEdges, type UIScrollEdge, type UIScrollState } from "./useScrollArea";
 
 const props = withDefaults(defineProps<{
   state: UIScrollState;

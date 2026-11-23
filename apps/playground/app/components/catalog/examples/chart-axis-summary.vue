@@ -10,7 +10,7 @@ import {
   UIChartRenderer,
   UIChartXAxis,
   UIChartYAxis,
-  useUIChartAxisSelector,
+  useChartAxisSelector,
 } from "@connextable/ui";
 import { computed, defineComponent, h, ref } from "vue";
 
@@ -33,7 +33,7 @@ const labels = new Map(series.flatMap(layer => layer.data.map(row => [
 
 const AxisSummary = defineComponent({
   setup() {
-    const axis = useUIChartAxisSelector("requests", value => value);
+    const axis = useChartAxisSelector("requests", value => value);
     return () => {
       const current = axis.value;
       if (current?.domain.kind !== "numeric") return null;

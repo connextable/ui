@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { UIButton, UIDataActions, createUIDataTableComponents, createUITabularSource, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataActions, createUIDataTableComponents, createUITabularSource, useDataTable } from "@connextable/ui";
 
 const failNext = ref(false);
 const rows = [
@@ -8,7 +8,7 @@ const rows = [
   { kind: "leaf", id: "search", cells: { service: "검색", status: "점검 완료" } },
 ] as const;
 
-const table = useUIDataTable({
+const table = useDataTable({
   source: createUITabularSource({
     columns: [{ id: "service" }, { id: "status" }],
     async load(_request, { signal }) {

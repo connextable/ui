@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { createUIDataTableComponents, useUIDataTable, useUIDataTableContext } from "@connextable/ui";
+import { createUIDataTableComponents, useDataTable, useDataTableContext } from "@connextable/ui";
 import { defineComponent, h } from "vue";
 
 const users = [
   { kind: "leaf", id: "minji", cells: { selection: null, name: "민지", team: "디자인" } },
   { kind: "leaf", id: "seojun", cells: { selection: null, name: "서준", team: "개발" } },
 ] as const;
-const data = useUIDataTable({
+const data = useDataTable({
   source: (request) => ({
     ...request,
     rows: users,
@@ -21,7 +21,7 @@ const DataTable = createUIDataTableComponents(data);
 
 const SelectionSummary = defineComponent({
   setup() {
-    const { rowSelection } = useUIDataTableContext();
+    const { rowSelection } = useDataTableContext();
     return () => {
       const value = rowSelection.value;
       const text = value.kind === "all-matching" ? "이 범위의 모든 행을 선택했습니다." : `${value.rowIDs.length}개 행을 선택했습니다.`;

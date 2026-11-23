@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { UIButton, UIDataSurface, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataSurface, createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const columns = [
   { id: "filename", label: "문서" },
@@ -13,7 +13,7 @@ const rows = [
   { kind: "leaf", id: "3", cells: { filename: "예약 관리", owner: "지우", version: "2.4" } },
 ] as const;
 
-const table = useUIDataTable({
+const table = useDataTable({
   source: request => ({
     ...request, rows, viewRevision: request.requestID,
     matchingLeafCount: { kind: "known", value: rows.length },

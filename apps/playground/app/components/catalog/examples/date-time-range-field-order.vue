@@ -3,12 +3,12 @@ import {
   UIDateTimeRangeField,
   UIDateTimeRangeFieldStartInput,
   UIDateTimeRangeFieldEndInput,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 import { ref } from "vue";
 
 const range = ref({ start: { date: { year: 2026, month: 8, day: 22 }, time: { hour: 9, minute: 0, second: 0, millisecond: 0 } }, end: { date: { year: 2026, month: 8, day: 22 }, time: { hour: 18, minute: 0, second: 0, millisecond: 0 } } });
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

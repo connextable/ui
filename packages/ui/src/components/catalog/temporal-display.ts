@@ -22,7 +22,7 @@ const defaultFormats: UITemporalDisplayFormats = {
   weekday: { weekday: "short" },
 } satisfies UITemporalDisplayFormats;
 
-export function useUITemporalDisplay() {
+export function useTemporalDisplay() {
   const temporal = useTemporalFormatter();
   const formats = inject(temporalDisplayFormatsKey, undefined);
   const locale = computed(() => temporal.value?.locale ?? defaultTemporalFormatting.locale);

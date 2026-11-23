@@ -42,7 +42,7 @@ function clampOffset(value: number, max: number) {
   return Math.max(0, Math.min(value, max));
 }
 
-export function useUIScrollArea(target: ScrollElement, options: UIScrollAreaOptions = {}) {
+export function useScrollArea(target: ScrollElement, options: UIScrollAreaOptions = {}) {
   const element = computed(() => toValue(target) ?? null);
   const state = shallowRef(scrollState());
   const isScrolling = ref(false);
@@ -150,4 +150,4 @@ export function useUIScrollArea(target: ScrollElement, options: UIScrollAreaOpti
   return { element, state: readonly(state), isScrolling: readonly(isScrolling), refresh, scrollTo, scrollBy, scrollToEdge, scrollToElement };
 }
 
-export type UIScrollAreaController = ReturnType<typeof useUIScrollArea>;
+export type UIScrollAreaController = ReturnType<typeof useScrollArea>;

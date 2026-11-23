@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatDateTimeValue, type DateTimeRange, type DateTimeValue } from "@sectile/temporal/date-time-field";
 import PickerRangeValue from "./PickerRangeValue.vue";
-import { useUITemporalDisplay } from "./temporal-display";
+import { useTemporalDisplay } from "./temporal-display";
 
 const { value, layout = "inline", placeholder, format, startPlaceholder = "시작 일시", endPlaceholder = "종료 일시" } = defineProps<{
   value: DateTimeRange | null;
@@ -12,7 +12,7 @@ const { value, layout = "inline", placeholder, format, startPlaceholder = "시�
   format?: (dateTime: DateTimeValue) => string;
 }>();
 
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 
 function endpoint(value: DateTimeValue) {
   return { datetime: formatDateTimeValue(value), label: format?.(value) ?? display.dateTime(value) };

@@ -86,7 +86,7 @@ export function apiGroup(name: string, description: string) {
   if (name.includes("#")) return "슬롯";
   if (/^(?:to|href|external|rel|target|download|no-prefetch|prefetch(?:-on)?)(?:\b|\s)/.test(name)) return "링크";
   if (/^(?:readonly|disabled|loading|required|invalid)(?:\b|\s)/.test(name)) return "입력 상태";
-  if (name.startsWith("useUI")) return "컴포저블";
+  if (/^use[A-Z]/.test(name)) return "컴포저블";
   if (name.startsWith("createUI")) return "팩토리와 유틸리티";
   if (/^(?:(?:source|defaultAccessState|defaultExpansion|rowSelection|expansion|isCellDisabled)\b|controller\.)/.test(name)) return "데이터 소스와 컨트롤러";
   if (name.includes("(") || /^scroll(?:To|By)/.test(name)) return "메서드";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIDataActions, UITabularEditTrigger, createUIDataGridComponents, createUITabularSource, useUIDataGrid } from "@connextable/ui";
+import { UIDataActions, UITabularEditTrigger, createUIDataGridComponents, createUITabularSource, useDataGrid } from "@connextable/ui";
 
 import { onScopeDispose, ref } from "vue";
 
@@ -9,7 +9,7 @@ let tasks = [
   { kind: "leaf", id: "2", cells: { task: "접근성 검사", status: "대기" } },
 ] satisfies { kind: "leaf"; id: string; cells: { task: string; status: string } }[];
 
-const grid = useUIDataGrid({
+const grid = useDataGrid({
   source: createUITabularSource({
     columns: [{ id: "task" }, { id: "status", capabilities: ["edit"] }],
     load: () => ({ rows: tasks }),

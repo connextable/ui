@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { ArrowUpRight, Receipt } from "@lucide/vue";
-import { UIButton, UIDataLabel, UIDataSurface, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataLabel, UIDataSurface, createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const rows = [
   { kind: "leaf", id: "EX-018", cells: { name: "장비 대여", amount: 86000, note: "워크숍에서 사용할 프로젝터 1대와 화면을 대여했습니다." } },
@@ -10,7 +10,7 @@ const rows = [
 ] as const;
 const opened = ref<(typeof rows)[number]>();
 const won = new Intl.NumberFormat("ko-KR");
-const table = useUIDataTable({
+const table = useDataTable({
   source: request => ({
     ...request, rows, viewRevision: request.requestID,
     matchingLeafCount: { kind: "known", value: rows.length },

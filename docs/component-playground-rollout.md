@@ -172,4 +172,4 @@
 - [x] `UIVirtualGrid` · 반응형 열, 행 높이, 이동·선택, 실시간 목록
 - [x] `UIVirtualMasonry` · 높이 측정, 재배치, 확장
 - [x] `UIVirtualSpatial` · 좌표·겹침, 여백, 일정, 위치 이동
-- [x] `UIVirtualizer` · 뷰포트, 오버스캔, 어댑터와 useUIVirtualizer
+- [x] `UIVirtualizer` · 뷰포트, 오버스캔, 어댑터와 useVirtualizer

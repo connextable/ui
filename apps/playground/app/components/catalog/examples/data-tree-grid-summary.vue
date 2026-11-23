@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIDataStatus, UIDataSurface, UITabularRows, createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/ui";
+import { UIDataStatus, UIDataSurface, UITabularRows, createUIDataTreeGridComponents, useDataTreeGrid } from "@connextable/ui";
 import { ChevronRight, CircleCheck, TriangleAlert } from "@lucide/vue";
 
 const regions = [
@@ -7,7 +7,7 @@ const regions = [
   { id: "jp", name: "일본", cities: [{ name: "도쿄", alerts: 1 }, { name: "오사카", alerts: 0 }] },
   { id: "de", name: "독일", cities: [{ name: "프랑크푸르트", alerts: 0 }] },
 ];
-const tree = useUIDataTreeGrid({
+const tree = useDataTreeGrid({
   source: request => {
     const rows = regions.flatMap(region => {
       const expanded = request.expansion.includes(region.id);

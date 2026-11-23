@@ -13,13 +13,13 @@ import {
   UIFormActions,
   UIFormSubmit,
   type UIDateValue,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 
 import { ref } from 'vue'
 const selected = ref<UIDateValue | null>({ year: 2026, month: 8, day: 24 });
 const submitted = ref("");
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

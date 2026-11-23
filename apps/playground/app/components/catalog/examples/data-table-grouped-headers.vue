@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const rows = [
   { kind: "leaf", id: "web", cells: { channel: "웹", march: 680, april: 810, may: 990, june: 1040 } },
@@ -7,7 +7,7 @@ const rows = [
   { kind: "leaf", id: "partner", cells: { channel: "제휴", march: 210, april: 245, may: 310, june: 390 } },
 ] as const;
 const columns = ["channel", "march", "april", "may", "june"] as const;
-const table = useUIDataTable({
+const table = useDataTable({
   source: request => ({
     ...request, rows, viewRevision: request.requestID,
     matchingLeafCount: { kind: "known", value: rows.length },

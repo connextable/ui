@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUIDataGridComponents, UISelect, UISelectContent, UISelectTrigger, UITabularColumnHeading, UITabularFilterPopover, useUIDataGrid } from "@connextable/ui";
+import { createUIDataGridComponents, UISelect, UISelectContent, UISelectTrigger, UITabularColumnHeading, UITabularFilterPopover, useDataGrid } from "@connextable/ui";
 import { computed } from "vue";
 
 const tasks = [
@@ -12,7 +12,7 @@ const statusOptions = [
   { value: "완료", label: "완료" },
   { value: "대기", label: "대기" },
 ];
-const data = useUIDataGrid({
+const data = useDataGrid({
   source: (request) => {
     const query = String(request.query.filters.find(filter => filter.id === filterID)?.value ?? "");
     const rows = tasks.filter(row => !query || row.cells.status === query);

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { UIDatePicker, UIDatePickerAnchor, UIDatePickerInput, UIDatePickerTrigger, UIDatePickerContent, UIDatePickerGrid, UIDatePickerCell, useUITemporalDisplay } from "@connextable/ui";
+import { UIDatePicker, UIDatePickerAnchor, UIDatePickerInput, UIDatePickerTrigger, UIDatePickerContent, UIDatePickerGrid, UIDatePickerCell, useTemporalDisplay } from "@connextable/ui";
 import { CalendarDays } from "@lucide/vue";
 import { ref } from "vue";
 
 const min = { year: 2026, month: 8, day: 20 };
 const max = { year: 2026, month: 8, day: 27 };
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 
 const date = ref({ year: 2026, month: 8, day: 22 });
 </script>

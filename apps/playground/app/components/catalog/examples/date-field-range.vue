@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIDateField, type UIDateValue, useUITemporalDisplay } from "@connextable/ui";
+import { UIDateField, type UIDateValue, useTemporalDisplay } from "@connextable/ui";
 import { ref } from "vue";
 
 const date = ref<UIDateValue | null>({ year: 2026, month: 8, day: 22 });
@@ -7,7 +7,7 @@ const policies = {
   min: { year: 2026, month: 8, day: 1 },
   max: { year: 2026, month: 8, day: 31 },
 };
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

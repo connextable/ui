@@ -9,10 +9,10 @@ import {
   UIDateRangePickerGrid,
   UIDateRangePickerStartInput,
   UIDateRangePickerTrigger,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 import { CalendarDays } from "@lucide/vue";
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

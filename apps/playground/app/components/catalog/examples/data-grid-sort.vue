@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { createUIDataGridComponents, UITabularColumnAction, UITabularColumnHeading, useUIDataGrid } from "@connextable/ui";
+import { createUIDataGridComponents, UITabularColumnAction, UITabularColumnHeading, useDataGrid } from "@connextable/ui";
 
 const tasks = [
   { kind: "leaf", id: "1", cells: { task: "시안 검토", status: "완료" } },
   { kind: "leaf", id: "2", cells: { task: "접근성 검사", status: "대기" } },
 ] as const;
 
-const grid = useUIDataGrid({
+const grid = useDataGrid({
   source: (request) => {
     const sort = request.query.sort.find((entry) => entry.columnID === "task");
     const original = tasks;

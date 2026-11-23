@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { UICalendar, useUITemporalDisplay, type UIDateValue, type UITimeValue } from "@connextable/ui";
+import { UICalendar, useTemporalDisplay, type UIDateValue, type UITimeValue } from "@connextable/ui";
 import { ref } from "vue";
 
 const date = ref<UIDateValue | null>({ year: 2026, month: 8, day: 22 });
 const time = ref<UITimeValue | null>(null);
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

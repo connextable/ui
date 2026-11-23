@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useUIScrollArea, type UIScrollEdge } from "./useUIScrollArea";
-import { useUIInfiniteScroll, type UIInfiniteScrollRequest } from "./useUIInfiniteScroll";
+import { useScrollArea, type UIScrollEdge } from "./useScrollArea";
+import { useInfiniteScroll, type UIInfiniteScrollRequest } from "./useInfiniteScroll";
 
 const props = withDefaults(defineProps<{
   target?: HTMLElement | null;
@@ -18,8 +18,8 @@ defineSlots<{
     canLoadMore: boolean; loadMore(): Promise<boolean>; reset(): void }): unknown;
 }>();
 
-const scroll = useUIScrollArea(() => props.target, { content: () => props.content });
-const { loading, failure, canLoadMore, loadMore, reset } = useUIInfiniteScroll(scroll, {
+const scroll = useScrollArea(() => props.target, { content: () => props.content });
+const { loading, failure, canLoadMore, loadMore, reset } = useInfiniteScroll(scroll, {
   loadMore: request => props.loadMore(request),
   edge: () => props.edge,
   distance: () => props.distance,

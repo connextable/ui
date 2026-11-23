@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { ChevronDown } from "@lucide/vue";
-import { useUIScrollArea, useUIScrollSpy } from "@connextable/ui";
+import { useScrollArea, useScrollSpy } from "@connextable/ui";
 import { computed, onMounted, onUnmounted, ref, shallowRef, useTemplateRef, watch } from "vue";
 
 const props = defineProps<{ content: HTMLElement | null }>();
 const headingSelector = "[data-playground-heading][id]";
 const headings = shallowRef<{ element: HTMLElement; id: string; text: string; level: number }[]>([]);
 const scroller = useTemplateRef<HTMLDivElement>("scroller");
-const { scrollToElement } = useUIScrollArea(scroller);
+const { scrollToElement } = useScrollArea(scroller);
 const list = useTemplateRef<HTMLUListElement>("list");
 const narrow = ref(false);
 const expanded = ref(false);
 const route = useRoute();
 const rail = shallowRef<{ path: string; length: number; segments: Map<string, { start: number; length: number }> }>();
-const { activeId, markTarget } = useUIScrollSpy(headings, { content: () => props.content, trackHash: true });
+const { activeId, markTarget } = useScrollSpy(headings, { content: () => props.content, trackHash: true });
 const indicator = computed(() => activeId.value ? rail.value?.segments.get(activeId.value) : undefined);
 
 let narrowLayout: MediaQueryList | undefined;

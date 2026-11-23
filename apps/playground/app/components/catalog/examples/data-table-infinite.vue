@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useTemplateRef, watchPostEffect } from "vue";
-import { UIButton, UIDataSurface, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataSurface, createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const total = 192;
 const batch = 24;
@@ -11,7 +11,7 @@ const access = (size: number, revision: number) => ({
   window: { start: 0, size, total, revision, requestGeneration: 0, pending: null },
 });
 
-const table = useUIDataTable({
+const table = useDataTable({
   defaultAccessState: access(batch, 0),
   source: async (request, { signal }) => {
     const count = request.access.kind === "window" ? request.access.count : batch;

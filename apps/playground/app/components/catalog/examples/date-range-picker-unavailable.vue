@@ -19,7 +19,7 @@ import {
   UIDateRangePickerTrigger,
   UIDateRangePickerWeekViewTrigger,
   UIDateRangePickerYearViewTrigger,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
@@ -36,7 +36,7 @@ const policies = {
     ),
 }
 
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

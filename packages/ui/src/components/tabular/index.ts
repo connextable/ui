@@ -22,16 +22,16 @@ export {
 } from "./selection-checkbox";
 export type { UIDataTreeGridComponentOptions, UIDataTreeGridGroupLeavesRequest } from "./tree-grid-selection";
 export {
-  useDataTable as useUIDataTable,
-  useDataTableContext as useUIDataTableContext,
+  useDataTable,
+  useDataTableContext,
 } from "@sectile/vue/data-table";
 export {
-  useDataGrid as useUIDataGrid,
-  useDataGridContext as useUIDataGridContext,
+  useDataGrid,
+  useDataGridContext,
 } from "@sectile/vue/data-grid";
 export {
-  useDataTreeGrid as useUIDataTreeGrid,
-  useDataTreeGridContext as useUIDataTreeGridContext,
+  useDataTreeGrid,
+  useDataTreeGridContext,
 } from "@sectile/vue/data-tree-grid";
 export {
   TreeGridRoot as UITreeGrid,

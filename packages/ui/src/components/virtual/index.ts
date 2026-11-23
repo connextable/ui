@@ -14,7 +14,7 @@ export {
   VirtualizerItem as UIVirtualizerItem,
   VirtualizerHeader as UIVirtualizerHeader,
   VirtualizerFooter as UIVirtualizerFooter,
-  useVirtualizer as useUIVirtualizer,
+  useVirtualizer,
 } from "@sectile/vue/virtual/core";
 export { createUniformExtentIndex } from "@sectile/virtual/extent-index";
 export { createDenseTrackGridLayout, trackGridLayoutStrategy } from "@sectile/virtual/track-grid-layout";

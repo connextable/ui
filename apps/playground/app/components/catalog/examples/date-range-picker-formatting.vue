@@ -13,7 +13,7 @@ import {
   UIDateRangePickerValue,
   UITemporalProvider,
   type UITemporalDisplayFormats,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 import { ref } from "vue";
@@ -24,7 +24,7 @@ const formats: UITemporalDisplayFormats = {
   yearMonth: { year: "numeric", month: "2-digit" },
 };
 const showWeekday = ref(false);
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

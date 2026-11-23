@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UITabularColumnAction, UITabularColumnHeading, UITabularRows, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UITabularColumnAction, UITabularColumnHeading, UITabularRows, createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const users = [
   { kind: "leaf", id: "1", cells: { name: "서준", team: "플랫폼" } },
@@ -8,7 +8,7 @@ const users = [
   { kind: "leaf", id: "4", cells: { name: "민지", team: "제품" } },
 ] as const;
 
-const table = useUIDataTable({
+const table = useDataTable({
   source: (request) => {
     const sort = request.query.sort.find((entry) => entry.columnID === "name");
     const original = users;

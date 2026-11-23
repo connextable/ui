@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUIDataTreeGridComponents, createUITabularSource, useUIDataTreeGrid } from "@connextable/ui";
+import { createUIDataTreeGridComponents, createUITabularSource, useDataTreeGrid } from "@connextable/ui";
 import { ChevronRight } from "@lucide/vue";
 
 const children = [
@@ -7,7 +7,7 @@ const children = [
   { kind: "leaf", id: "api", parentGroupID: "platform", depth: 1, cells: { service: "API", team: "백엔드" } },
 ] as const;
 
-const tree = useUIDataTreeGrid({
+const tree = useDataTreeGrid({
   defaultExpansion: ["platform"],
   source: createUITabularSource({
     columns: [{ id: "service" }, { id: "team" }],

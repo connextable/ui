@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { UIDatePicker, UIDatePickerAnchor, UIDatePickerInput, UIDatePickerTrigger, UIDatePickerPortal, UIDatePickerContent, UIDatePickerPreviousMonth, UIDatePickerNextMonth, UIDatePickerGrid, UIDatePickerCell, useUITemporalDisplay } from "@connextable/ui";
+import { UIDatePicker, UIDatePickerAnchor, UIDatePickerInput, UIDatePickerTrigger, UIDatePickerPortal, UIDatePickerContent, UIDatePickerPreviousMonth, UIDatePickerNextMonth, UIDatePickerGrid, UIDatePickerCell, useTemporalDisplay } from "@connextable/ui";
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 import { ref } from "vue";
 
 const date = ref({ year: 2026, month: 8, day: 22 });
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

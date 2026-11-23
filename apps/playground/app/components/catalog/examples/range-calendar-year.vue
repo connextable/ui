@@ -11,10 +11,10 @@ import {
   UIRangeCalendarPreviousMonth,
   UIRangeCalendarPreviousYear,
   UIRangeCalendarYearViewTrigger,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 import { ChevronLeft, ChevronRight } from "@lucide/vue";
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

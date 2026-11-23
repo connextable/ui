@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { UIRangeCalendar, useUITemporalDisplay, type UITimeValue } from "@connextable/ui";
+import { UIRangeCalendar, useTemporalDisplay, type UITimeValue } from "@connextable/ui";
 import { ref } from "vue";
 
 const stay = ref({ start: { year: 2026, month: 8, day: 22 }, end: { year: 2026, month: 8, day: 25 } });
 const arrival = ref<UITimeValue | null>({ hour: 15, minute: 30, second: 0, millisecond: 0 });
 const departure = ref<UITimeValue | null>({ hour: 11, minute: 0, second: 0, millisecond: 0 });
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

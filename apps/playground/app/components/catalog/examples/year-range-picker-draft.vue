@@ -11,12 +11,12 @@ import {
   UIYearRangePickerPreviousPage,
   UIYearRangePickerNextPage,
   UIYearRangePickerTrigger,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 
 const referenceDate = { year: 2026, month: 1, day: 1 };
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

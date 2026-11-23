@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 import { ref } from "vue";
 
@@ -9,7 +9,7 @@ const users = [
   { kind: "leaf", id: "2", cells: { selected: null, name: "서준", team: "개발" } },
 ] as const;
 
-const table = useUIDataTable({
+const table = useDataTable({
   onRowSelectionChange: (value) => { selected.value = value.kind === "all-matching" || value.rowIDs.length > 0; },
   source: (request) => ({
     ...request,

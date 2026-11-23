@@ -2,7 +2,7 @@
 import { Primitive } from "@sectile/vue/primitive";
 import { computed, shallowRef } from "vue";
 import { definedControlAttrs } from "../control-attrs";
-import { useUIFormControl, type UIFormControlFlags } from "./form-control";
+import { useFormControl, type UIFormControlFlags } from "./form-control";
 
 const props = withDefaults(defineProps<{
   disabled?: boolean;
@@ -19,7 +19,7 @@ function setElement(value: unknown) {
   element.value = value instanceof HTMLInputElement || value instanceof HTMLTextAreaElement ? value : null;
 }
 
-const { flags, controlProps } = useUIFormControl({
+const { flags, controlProps } = useFormControl({
   element,
   semanticControl: element,
   focusTarget: element,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UIDataSurface, UITabularRows, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataSurface, UITabularRows, createUIDataTableComponents, useDataTable } from "@connextable/ui";
 import { ref, watchEffect } from "vue";
 
 let rows = ["문서 검색", "파일 다운로드", "알림 조회", "계정 설정", "팀 초대"].map((service, index) => ({
@@ -7,7 +7,7 @@ let rows = ["문서 검색", "파일 다운로드", "알림 조회", "계정 설
 }));
 const running = ref(false);
 const updateCount = ref(0);
-const table = useUIDataTable({
+const table = useDataTable({
   source: request => ({
     ...request, rows, viewRevision: request.requestID,
     matchingLeafCount: { kind: "known", value: rows.length },

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { UIDateField, useUITemporalDisplay } from "@connextable/ui";
+import { UIDateField, useTemporalDisplay } from "@connextable/ui";
 import { ref } from "vue";
 
 type DateValue = InstanceType<typeof UIDateField>["$props"]["modelValue"];
 const value = ref<DateValue>({ year: 2026, month: 8, day: 22 });
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

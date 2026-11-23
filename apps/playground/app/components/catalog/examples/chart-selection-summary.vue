@@ -9,7 +9,7 @@ import {
   UIChartYAxis,
   UIToggleGroup,
   UIToggleGroupItem,
-  useUIChartSelector,
+  useChartSelector,
 } from "@connextable/ui";
 import { computed, defineComponent, h, ref } from "vue";
 
@@ -31,7 +31,7 @@ const selectedTeams = computed({
 
 const SelectionSummary = defineComponent({
   setup() {
-    const ids = useUIChartSelector(state =>
+    const ids = useChartSelector(state =>
       state?.selection.type === "points" ? state.selection.ids : [],
     );
     return () => {

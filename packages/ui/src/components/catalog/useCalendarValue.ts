@@ -1,11 +1,11 @@
 import { formatDateValue, type DateValue } from "@sectile/temporal/date-field";
-import { useUITemporalDisplay } from "./temporal-display";
+import { useTemporalDisplay } from "./temporal-display";
 
 export type CalendarGranularity = "day" | "month" | "year";
 type CalendarValueFormat = CalendarGranularity | "month-without-year";
 
 export function useCalendarValue() {
-  const display = useUITemporalDisplay();
+  const display = useTemporalDisplay();
   return (date: DateValue, granularity: CalendarValueFormat = "day", format?: (date: DateValue) => string) => {
     const datetime = formatDateValue(date);
     if (granularity === "month" || granularity === "month-without-year") {

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { createUIDataTableComponents, UITabularColumnHeading, UITabularFilterPopover, useUIDataTable } from "@connextable/ui";
+import { createUIDataTableComponents, UITabularColumnHeading, UITabularFilterPopover, useDataTable } from "@connextable/ui";
 
 const users = [
   { kind: "leaf", id: "1", cells: { name: "민지", team: "디자인" } },
   { kind: "leaf", id: "2", cells: { name: "서준", team: "개발" } },
 ] as const;
 
-const table = useUIDataTable({
+const table = useDataTable({
   source: (request) => {
     const query = String(request.query.filters.find((filter) => filter.id === "name-search")?.value ?? "");
     const rows = users.filter((row) => row.cells.name.includes(query));

@@ -17,14 +17,14 @@ import {
   UIDatePickerTrigger,
   UIDatePickerWeekViewTrigger,
   UIDatePickerYearViewTrigger,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
 import { ref } from "vue";
 const date = ref({ year: 2026, month: 8, day: 22 })
 
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { createUIDataGridComponents, useUIDataGrid, useUIDataGridContext } from "@connextable/ui";
+import { createUIDataGridComponents, useDataGrid, useDataGridContext } from "@connextable/ui";
 import { defineComponent, h } from "vue";
 
 const tasks = [
   { kind: "leaf", id: "review", cells: { task: "시안 검토", status: "완료" } },
   { kind: "leaf", id: "audit", cells: { task: "접근성 검사", status: "대기" } },
 ] as const;
-const data = useUIDataGrid({
+const data = useDataGrid({
   source: (request) => ({
     ...request,
     rows: tasks,
@@ -21,7 +21,7 @@ const DataGrid = createUIDataGridComponents(data);
 
 const CursorSummary = defineComponent({
   setup() {
-    const { snapshot } = useUIDataGridContext();
+    const { snapshot } = useDataGridContext();
     return () => {
       const address = snapshot.value.cursor.current;
       const row = tasks.find(task => task.id === address?.rowID);

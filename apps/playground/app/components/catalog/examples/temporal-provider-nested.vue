@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { UITemporalProvider, useUITemporalDisplay, useUITemporalReferenceDate } from "@connextable/ui";
+import { UITemporalProvider, useTemporalDisplay, useTemporalReferenceDate } from "@connextable/ui";
 import { defineComponent, h } from "vue";
 
 const ReferenceDate = defineComponent({
   setup() {
-    const reference = useUITemporalReferenceDate();
-    const display = useUITemporalDisplay();
+    const reference = useTemporalReferenceDate();
+    const display = useTemporalDisplay();
     return () => h("strong", display.date(reference.value));
   },
 });

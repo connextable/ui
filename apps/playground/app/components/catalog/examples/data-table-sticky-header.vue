@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const stages = ["초안", "검토 중", "공개"];
 const names = ["이용 가이드", "릴리스 노트", "운영 매뉴얼", "구성 안내"];
@@ -7,7 +7,7 @@ const rows = Array.from({ length: 24 }, (_, index) => ({
   kind: "leaf" as const, id: String(index + 1),
   cells: { name: `${names[index % names.length]} ${index + 1}`, owner: ["민지", "서준", "지우"][index % 3]!, stage: stages[index % 3]! },
 }));
-const table = useUIDataTable({
+const table = useDataTable({
   source: request => ({
     ...request, rows, viewRevision: request.requestID,
     matchingLeafCount: { kind: "known", value: rows.length },

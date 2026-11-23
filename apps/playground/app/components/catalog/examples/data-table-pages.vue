@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight } from "@lucide/vue";
-import { UIButton, UIDataActions, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataActions, createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const total = 25_000;
 const pageSize = 6;
@@ -9,7 +9,7 @@ const number = new Intl.NumberFormat("ko-KR");
 const pageAccess = (page: number) => ({
   kind: "page" as const, page, itemsPerPage: pageSize, visibleRowCount: null, pagination: null,
 });
-const table = useUIDataTable({
+const table = useDataTable({
   defaultAccessState: pageAccess(1),
   source: (request) => {
     const first = request.access.kind === "page" ? (request.access.page - 1) * request.access.itemsPerPage : request.access.start;

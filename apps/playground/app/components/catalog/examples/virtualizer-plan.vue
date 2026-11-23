@@ -3,7 +3,7 @@ import {
   createDenseTrackGridLayout,
   createUniformExtentIndex,
   trackGridLayoutStrategy,
-  useUIVirtualizer,
+  useVirtualizer,
 } from "@connextable/ui";
 import { computed, shallowRef } from "vue";
 
@@ -18,7 +18,7 @@ const state = shallowRef(createDenseTrackGridLayout(
 ));
 const scrollport = shallowRef<HTMLElement | null>(null);
 const surface = shallowRef<HTMLElement | null>(null);
-const { plan } = useUIVirtualizer({ state, strategy: trackGridLayoutStrategy, scrollport, surface });
+const { plan } = useVirtualizer({ state, strategy: trackGridLayoutStrategy, scrollport, surface });
 const visibleCount = computed(() => plan.value?.placements.filter(item => item.visible).length ?? 0);
 const firstVisible = computed(() => plan.value?.placements.find(item => item.visible)?.id);
 </script>

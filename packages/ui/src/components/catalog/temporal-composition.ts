@@ -21,7 +21,7 @@ import UICalendarPeriodHeader from "./UICalendarPeriodHeader.vue";
 import UIDatePickerValue from "./UIDatePickerValue.vue";
 import UIDateRangePickerValue from "./UIDateRangePickerValue.vue";
 import UIDateTimeRangePickerValue from "./UIDateTimeRangePickerValue.vue";
-import { useUITemporalDisplay } from "./temporal-display";
+import { useTemporalDisplay } from "./temporal-display";
 
 type Value = DateValue | DateRange | DateTimeValue | DateTimeRange | null;
 type State = Omit<DatePickerRootSlotProps, "value"> & { value: Value };
@@ -122,7 +122,7 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
     emits: ["update:highlightedValue", "update:time", "update:startTime", "update:endTime"],
     setup(props, { attrs, slots, emit }) {
       const reference = useTemporalReferenceDate();
-      const display = useUITemporalDisplay();
+      const display = useTemporalDisplay();
       const highlight = shallowRef<DateValue>();
 
       function selectHighlight(value: DateValue) {

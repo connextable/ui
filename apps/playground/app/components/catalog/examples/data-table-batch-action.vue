@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { Archive } from "@lucide/vue";
-import { UIButton, UIDataSurface, UITabularRows, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataSurface, UITabularRows, createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const initialRows = ["오류 추적", "검색 리뉴얼", "분석 이벤트", "접근성 점검"].map((name, index) => ({
   id: String(index + 1), kind: "leaf" as const, cells: { select: null, name },
 }));
 let rows = initialRows;
 const archived = ref(0);
-const table = useUIDataTable({
+const table = useDataTable({
   source: request => ({
     ...request, rows, viewRevision: request.requestID,
     matchingLeafCount: { kind: "known", value: rows.length },

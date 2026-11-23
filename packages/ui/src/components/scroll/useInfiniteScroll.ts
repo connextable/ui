@@ -1,5 +1,5 @@
 import { computed, nextTick, onScopeDispose, readonly, ref, shallowRef, toValue, watch, type MaybeRefOrGetter } from "vue";
-import type { UIScrollAreaController, UIScrollEdge } from "./useUIScrollArea";
+import type { UIScrollAreaController, UIScrollEdge } from "./useScrollArea";
 
 export interface UIInfiniteScrollRequest {
   edge: UIScrollEdge;
@@ -15,7 +15,7 @@ export interface UIInfiniteScrollOptions {
   auto?: MaybeRefOrGetter<boolean>;
 }
 
-export function useUIInfiniteScroll(scroll: UIScrollAreaController, options: UIInfiniteScrollOptions) {
+export function useInfiniteScroll(scroll: UIScrollAreaController, options: UIInfiniteScrollOptions) {
   const loading = ref(false);
   const failure = shallowRef<{ cause: unknown } | null>(null);
   const edge = computed(() => toValue(options.edge) ?? "bottom");

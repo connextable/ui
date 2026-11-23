@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { UITabularEditTrigger, createUIDataTreeGridComponents, useUIDataTreeGrid } from "@connextable/ui";
+import { UITabularEditTrigger, createUIDataTreeGridComponents, useDataTreeGrid } from "@connextable/ui";
 import { ChevronRight } from "@lucide/vue";
 import { onScopeDispose, ref } from "vue";
 
 let owner = "민지";
 const saved = ref("");
-const tree = useUIDataTreeGrid({
+const tree = useDataTreeGrid({
   defaultExpansion: ["platform"],
   source: (request) => {
     const expanded = request.expansion.includes("platform");

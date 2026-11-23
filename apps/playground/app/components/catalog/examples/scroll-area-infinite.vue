@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, useTemplateRef } from "vue";
-import { UIButton, UIScrollFade, UISwitch, useUIInfiniteScroll, useUIScrollArea } from "@connextable/ui";
+import { UIButton, UIScrollFade, UISwitch, useInfiniteScroll, useScrollArea } from "@connextable/ui";
 
 const actions = [
   { title: "검토 요청", detail: "초안을 공유하고 의견을 요청했습니다." },
@@ -27,9 +27,9 @@ const failNext = ref(false);
 const hasMore = computed(() => displayed.value < history.length);
 const viewport = useTemplateRef("viewport");
 const content = useTemplateRef("content");
-const scroll = useUIScrollArea(() => viewport.value?.element, { content });
+const scroll = useScrollArea(() => viewport.value?.element, { content });
 const { state } = scroll;
-const { loading, failure, canLoadMore, loadMore } = useUIInfiniteScroll(scroll, {
+const { loading, failure, canLoadMore, loadMore } = useInfiniteScroll(scroll, {
   auto, hasMore, distance: 24,
   async loadMore({ signal }) {
     await new Promise<void>((resolve) => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronRight } from "@lucide/vue";
-import { UIDataActions, UITabularRows, createUIDataTreeGridComponents, createUITabularSource, useUIDataTreeGrid } from "@connextable/ui";
+import { UIDataActions, UITabularRows, createUIDataTreeGridComponents, createUITabularSource, useDataTreeGrid } from "@connextable/ui";
 
 const departments = [
   { id: "product", name: "제품", projects: ["접근성 검토", "검색 개선", "온보딩"] },
@@ -28,7 +28,7 @@ const source = createUITabularSource({
     return { rows, matchingLeafCount: 5 };
   },
 });
-const tree = useUIDataTreeGrid({ source });
+const tree = useDataTreeGrid({ source });
 const Tree = createUIDataTreeGridComponents(tree);
 </script>
 

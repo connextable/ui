@@ -42,9 +42,9 @@ export function provideUIConfirmation() {
   return controller;
 }
 
-export function useUIConfirm() {
+export function useConfirm() {
   const controller = inject(confirmationKey);
-  if (!controller) throw new Error("useUIConfirm requires UIConfirmProvider.");
+  if (!controller) throw new Error("useConfirm requires UIConfirmProvider.");
   const owner = Symbol();
   let disposed = false;
   onScopeDispose(() => {

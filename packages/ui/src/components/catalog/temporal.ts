@@ -37,16 +37,16 @@ import UIFieldClear from "../clear/UIFieldClear.vue";
 import { definedControlAttrs } from "../control-attrs";
 import { useCompositeValueForm } from "../form/composite-value";
 import UIScrollFade from "../scroll/UIScrollFade.vue";
-import { useUIScrollArea } from "../scroll/useUIScrollArea";
+import { useScrollArea } from "../scroll/useScrollArea";
 import { withDateEditingFormat, withTemporalEditing, withTemporalInputAppearance } from "./temporal-input";
 import { withCalendarDefaults, type CalendarFormComponent, type CalendarTimeModels, type EditableDatePickerOptions, type RangeCalendarTimeModels } from "./temporal-composition";
 import { TemporalInputFormatProvider, temporalInputFormatsKey, withPickerInputPrecision, type UITemporalInputFormats } from "./temporal-input-format";
 import { withRangeGridPresentation, withRangeCellPresentation, withRangeContentPresentation } from "./temporal-range-presentation";
-import { defaultTemporalFormatting, temporalDisplayFormatsKey, useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
+import { defaultTemporalFormatting, temporalDisplayFormatsKey, useTemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
 import type { DateValue } from "@sectile/temporal/date-field";
 import { createTimeFieldFormat, formatTimeFieldValue, type TimeFieldPrecision, type TimeValue } from "@sectile/temporal/time-field";
 
-export { useUITemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
+export { useTemporalDisplay, type UITemporalDisplayFormats } from "./temporal-display";
 export type { UITemporalInputFormats } from "./temporal-input-format";
 export { createDateFieldFormat as createUIDateFieldFormat } from "@sectile/temporal/date-field";
 export { default as UICalendarPeriodHeader } from "./UICalendarPeriodHeader.vue";
@@ -116,7 +116,7 @@ const RangeFieldDefaultParts = defineComponent({
     endLabel: String,
   },
   setup(props) {
-    const { locale } = useUITemporalDisplay();
+    const { locale } = useTemporalDisplay();
     return () => {
       const korean = locale.value.startsWith("ko");
       return [
@@ -182,7 +182,7 @@ function withStyledTimeChoices<Part extends Component>(part: Part): Part {
   return defineComponent({
     inheritAttrs: false,
     setup(_, { attrs, slots }) {
-      const { locale } = useUITemporalDisplay();
+      const { locale } = useTemporalDisplay();
       return () => h(part, attrs, {
         default: (state: DateTimeTimeChoicesSlotProps) => slots.default?.(state) ?? (state.empty
           ? h("p", { role: "status" }, locale.value.startsWith("ko") ? "선택할 수 있는 시간이 없습니다." : "No available times.")
@@ -195,7 +195,7 @@ function withStyledTimeChoices<Part extends Component>(part: Part): Part {
 const TimePickerDefaultParts = defineComponent({
   props: { label: String },
   setup(props) {
-    const { locale } = useUITemporalDisplay();
+    const { locale } = useTemporalDisplay();
     return () => {
       const korean = locale.value.startsWith("ko");
       const label = props.label ?? (korean ? "시간" : "Time");
@@ -223,7 +223,7 @@ const InlineTimeField = defineComponent({
   },
   setup(props, { slots }) {
     const formatter = useTemporalFormatter();
-    const { locale } = useUITemporalDisplay();
+    const { locale } = useTemporalDisplay();
     const renderField = useCompositeValueForm(props, {
       focus: '[role="listbox"]',
       get requiredMessage() { return locale.value.startsWith("ko") ? "시간을 선택하세요." : "Choose a time."; },
@@ -327,8 +327,8 @@ export type { DateValue as UIDateValue } from "@sectile/vue/temporal/calendar";
 export type { TimeValue as UITimeValue } from "@sectile/temporal/time-field";
 export type { DateTimeValue as UIDateTimeValue, DateTimeRange as UIDateTimeRange } from "@sectile/temporal/date-time-field";
 export {
-  useTemporalReferenceDate as useUITemporalReferenceDate,
-  useTemporalFormatter as useUITemporalFormatter,
+  useTemporalReferenceDate,
+  useTemporalFormatter,
 } from "@sectile/vue/temporal/temporal-provider";
 
 export const UITemporalProvider = defineComponent({
@@ -511,10 +511,10 @@ export const UITimePickerColumn = defineComponent({
     label: String,
   },
   setup(props, { attrs, slots }) {
-    const { locale } = useUITemporalDisplay();
+    const { locale } = useTemporalDisplay();
     const formatter = useTemporalFormatter();
     const listbox = shallowRef<HTMLElement>();
-    const { state: scrollState, scrollToElement } = useUIScrollArea(listbox);
+    const { state: scrollState, scrollToElement } = useScrollArea(listbox);
     const centerSelection = () => {
       const selected = listbox.value?.querySelector('[role="option"][aria-selected="true"]');
       if (selected) scrollToElement(selected, { axis: "vertical", align: "center" });

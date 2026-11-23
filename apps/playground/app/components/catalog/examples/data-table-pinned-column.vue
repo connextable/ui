@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIDataSurface, createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { UIDataSurface, createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const periods = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월"] as const;
 const rows = [
@@ -7,7 +7,7 @@ const rows = [
   { kind: "leaf", id: "app", cells: { channel: "앱", periods: [410, 490, 530, 600, 710, 760, 810, 940] } },
   { kind: "leaf", id: "other", cells: { channel: "제휴", periods: [230, 235, 270, 250, 280, 310, 320, 340] } },
 ] as const;
-const table = useUIDataTable({
+const table = useDataTable({
   source: request => ({
     ...request,
     rows: rows.map(row => ({

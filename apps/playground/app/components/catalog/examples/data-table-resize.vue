@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { createUIDataTableComponents, useUIDataTable } from "@connextable/ui";
+import { createUIDataTableComponents, useDataTable } from "@connextable/ui";
 
 const users = [
   { kind: "leaf", id: "1", cells: { name: "민지", team: "디자인" } },
   { kind: "leaf", id: "2", cells: { name: "서준", team: "개발" } },
 ] as const;
 
-const table = useUIDataTable({
+const table = useDataTable({
   defaultColumnSizeState: { name: 160, team: 100 },
   source: (request) => ({
     ...request,

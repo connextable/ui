@@ -12,7 +12,7 @@ import {
   UIMonthRangePickerPreviousYear,
   UIMonthRangePickerStartInput,
   UIMonthRangePickerTrigger,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
@@ -22,7 +22,7 @@ const reportingPeriod = ref({
   end: { year: 2026, month: 9, day: 1 },
 })
 
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

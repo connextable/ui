@@ -2,7 +2,7 @@
 import { computed, shallowRef, useTemplateRef } from "vue";
 import {
   UIButton, UIDataSurface, createDenseTrackGridLayout, createUniformExtentIndex,
-  createUIDataTableComponents, trackGridLayoutStrategy, useUIDataTable, useUIVirtualizer,
+  createUIDataTableComponents, trackGridLayoutStrategy, useDataTable, useVirtualizer,
 } from "@connextable/ui";
 
 const total = 20_000;
@@ -21,7 +21,7 @@ const access = (start: number, size: number, revision: number) => ({
   kind: "window" as const,
   window: { start, size, total, revision, requestGeneration: 0, pending: null },
 });
-const table = useUIDataTable({
+const table = useDataTable({
   defaultAccessState: access(0, 12, 0),
   source: request => {
     const { start, count } = request.access.kind === "window" ? request.access : { start: 0, count: 12 };
@@ -43,7 +43,7 @@ const table = useUIDataTable({
 });
 const Table = createUIDataTableComponents(table);
 
-const { scrollTo } = useUIVirtualizer({
+const { scrollTo } = useVirtualizer({
   state: layout, strategy: trackGridLayoutStrategy, scrollport, surface,
   viewportInsets: { top: headerHeight },
   overscan: rowHeight * 4,

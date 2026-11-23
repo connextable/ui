@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useUIScrollSpy, type UIScrollSpySection, type UIScrollToSectionOptions } from "./useUIScrollSpy";
+import { useScrollSpy, type UIScrollSpySection, type UIScrollToSectionOptions } from "./useScrollSpy";
 
 const props = defineProps<{
   sections: readonly UIScrollSpySection[];
@@ -12,7 +12,7 @@ defineSlots<{
     scrollToSection(id: string, options?: UIScrollToSectionOptions): boolean }): unknown;
 }>();
 
-const { activeId, refresh, markTarget, scrollToSection } = useUIScrollSpy(() => props.sections, {
+const { activeId, refresh, markTarget, scrollToSection } = useScrollSpy(() => props.sections, {
   root: () => props.root,
   content: () => props.content,
   trackHash: () => props.trackHash,

@@ -4,8 +4,8 @@ import {
   UIToggleGroup,
   UIToggleGroupItem,
   createUIChartComponents,
-  useUIChart,
-  useUIChartContext,
+  useChart,
+  useChartContext,
 } from "@connextable/ui";
 import { computed, defineComponent, h } from "vue";
 
@@ -17,7 +17,7 @@ const channels = [
 const channelIds = channels.map(({ id }) => id);
 const legend = channels.map(({ label, value }) => ({ label, value: `${value}%` }));
 const entry = { id: "entry", kind: "donut", data: channels, valueField: "value", labelField: "label", innerRadius: 0.64, outerRadius: 0.88 } as const;
-const { controller, dispatch, snapshot } = useUIChart<string>({
+const { controller, dispatch, snapshot } = useChart<string>({
   defaultSelection: { type: "points", ids: ["search"] },
   definition: {
     coordinate: { kind: "radial" },
@@ -37,7 +37,7 @@ const selectedChannels = computed({
 
 const ChannelShare = defineComponent({
   setup() {
-    const { snapshot } = useUIChartContext<string>();
+    const { snapshot } = useChartContext<string>();
     return () => {
       const selection = snapshot.value?.state.selection;
       const channel = selection?.type === "points" ? channels.find(item => item.id === selection.ids[0]) : undefined;

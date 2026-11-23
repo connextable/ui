@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UIDataSurface, createUIDataTableComponents, createUITabularSource, useUIDataTable } from "@connextable/ui";
+import { UIButton, UIDataSurface, createUIDataTableComponents, createUITabularSource, useDataTable } from "@connextable/ui";
 
 const total = 37;
 const sizes = [4, 8, 12];
@@ -18,7 +18,7 @@ const source = createUITabularSource({
     return { rows, matchingLeafCount: total, visibleRowCount: total };
   },
 });
-const table = useUIDataTable({ source, defaultAccessState: pageAccess(3, sizes[0]!) });
+const table = useDataTable({ source, defaultAccessState: pageAccess(3, sizes[0]!) });
 const Table = createUIDataTableComponents(table);
 
 function setSize(size: number, page: number, previousSize: number) {

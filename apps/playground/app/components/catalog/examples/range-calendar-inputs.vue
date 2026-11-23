@@ -13,7 +13,7 @@ import {
   UIForm,
   UIFormActions,
   UIFormSubmit,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 import { ref } from "vue";
 
@@ -23,7 +23,7 @@ const stay = ref({
 });
 const submitted = ref("");
 
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>

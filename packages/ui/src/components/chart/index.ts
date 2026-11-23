@@ -24,11 +24,11 @@ export {
   ChartGridLines as UIChartGridLines,
   ChartAxisTicks as UIChartAxisTicks,
   ChartTicks as UIChartTicks,
-  useChart as useUIChart,
-  useChartContext as useUIChartContext,
-  useChartSelector as useUIChartSelector,
-  useChartLayerSelector as useUIChartLayerSelector,
-  useChartAxisSelector as useUIChartAxisSelector,
+  useChart,
+  useChartContext,
+  useChartSelector,
+  useChartLayerSelector,
+  useChartAxisSelector,
 } from "@sectile/vue/chart";
 export { UIChart, createUIChartComponents } from "./chart";
 export type { ChartTooltipDatum, ChartTooltipGroup } from "./chart-tooltip";

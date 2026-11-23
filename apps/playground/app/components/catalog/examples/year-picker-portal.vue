@@ -11,14 +11,14 @@ import {
   UIYearPickerNextPage,
   UIYearPickerPreviousPage,
   UIYearPickerTrigger,
-  useUITemporalDisplay,
+  useTemporalDisplay,
 } from "@connextable/ui";
 
 import { CalendarDays, ChevronLeft, ChevronRight } from '@lucide/vue'
 import { ref } from "vue";
 const graduationYear = ref({ year: 2028, month: 1, day: 1 })
 
-const display = useUITemporalDisplay();
+const display = useTemporalDisplay();
 </script>
 
 <template>
