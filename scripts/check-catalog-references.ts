@@ -5,7 +5,9 @@ import { catalogGuides } from "../apps/docs/app/data/catalog-guides.ts";
 import { catalogNavigation } from "../apps/docs/app/data/catalog-navigation.ts";
 import { readPublicComponentApi } from "../apps/docs/build/public-component-api.ts";
 
-const origin = new URL(process.argv[2] ?? "http://127.0.0.1:3000");
+const docsURL = process.argv[2] ?? process.env.DOCS_URL;
+if (!docsURL) throw new Error("Pass the docs URL as the first argument or set DOCS_URL");
+const origin = new URL(docsURL);
 const componentPath = "/components/";
 const mainSectionOrder = ["usage", "settings-and-behavior", "practical-examples", "examples", "composition-and-extension", "parts", "api"];
 const routeFiles = await readdir(new URL("../apps/docs/app/pages/components/", import.meta.url));

@@ -67,4 +67,4 @@
 - `catalog.ts`는 구성 항목의 공개 이름을, `catalog-parts.ts`는 역할과 사용 설명을 관리한다. 개별 페이지의 직접 작성한 예제와 API는 `standalone-references.ts`에 연결한다.
 - `catalog-guides.ts`에서 주요 API의 설명과 필요한 타입과 기본값을 추가한다. 동작을 한 번에 확인할 예제가 명확한 경우 `example`으로 직접 연결한다. 공통 페이지에서는 구성 항목과 실제 코드에서 확인한 기본 속성, 슬롯, 이벤트도 예제에 연결한다.
 - 한 페이지에서 여러 컴포넌트를 설명하면 `owner`로 각 API의 소속을 표시한다. `label`에 실제 속성이나 메서드 이름을 써서 중복된 이름도 각 컴포넌트에서 그대로 읽을 수 있게 한다. `readonly`와 `disabled`는 입력 상태 묶음에서 확인할 수 있다.
-- `node scripts/check-catalog-references.ts http://127.0.0.1:3099`로 실행 중인 빌드의 전체 참조 섹션, 구성 항목 앵커, 예제 링크를 검사한다.
+- 문서 개발 서버가 실행 중일 때 `dvt run check:docs-references`로 참조 섹션, 구성 항목 앵커, 예제 링크를 검사한다. 다른 빌드를 검사할 때는 `node scripts/check-catalog-references.ts <문서 URL>`을 실행한다.

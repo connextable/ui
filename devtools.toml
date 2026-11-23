@@ -8,8 +8,8 @@ pnpm = { version = "12" }
 tools = ["node", "pnpm"]
 
 [ports.docs]
-port = 3000
-range = [3000, 3099]
+port = 14600
+range = [14600, 14699]
 
 [commands."install:workspace"]
 exec = ["pnpm", "install", "--frozen-lockfile"]
@@ -35,3 +35,10 @@ DOCS_URL = { template = "http://127.0.0.1:${bind.DOCS_PORT}" }
 [commands."dev:docs".ready]
 exec = ["node", "scripts/check-docs.ts"]
 timeout = "3s"
+
+[commands."check:docs-references"]
+exec = ["node", "scripts/check-catalog-references.ts"]
+
+[commands."check:docs-references".bind]
+DOCS_PORT = { port = "docs" }
+DOCS_URL = { template = "http://127.0.0.1:${bind.DOCS_PORT}" }
