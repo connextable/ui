@@ -16,10 +16,10 @@ function toggle(format: string) {
 <template>
   <UIToolbar v-model="active" :items="items" label="문단 서식" @invoke="toggle">
     <UIToolbarItem value="bold" aria-label="굵게" :aria-pressed="formats.includes('bold')">
-      <Bold :size="16" aria-hidden="true" />
+      <Bold aria-hidden="true" />
     </UIToolbarItem>
     <UIToolbarItem value="italic" aria-label="기울임" :aria-pressed="formats.includes('italic')">
-      <Italic :size="16" aria-hidden="true" />
+      <Italic aria-hidden="true" />
     </UIToolbarItem>
   </UIToolbar>
 </template>

@@ -27,14 +27,14 @@ const display = useUITemporalDisplay();
       <UIMonthPickerInput hidden />
       <UIDatePickerValue :value="value" granularity="month" placeholder="월 선택" />
       <UIMonthPickerTrigger aria-label="월 선택 열기">
-        <CalendarDays :size="18" aria-hidden="true" />
+        <CalendarDays aria-hidden="true" />
       </UIMonthPickerTrigger>
     </UIMonthPickerAnchor>
     <UIMonthPickerPortal>
       <UIMonthPickerContent>
-        <UIMonthPickerPreviousYear aria-label="이전"><ChevronLeft :size="16" aria-hidden="true" /></UIMonthPickerPreviousYear>
+        <UIMonthPickerPreviousYear aria-label="이전"><ChevronLeft aria-hidden="true" /></UIMonthPickerPreviousYear>
         <strong>{{ display.year(view) }}</strong>
-        <UIMonthPickerNextYear aria-label="다음"><ChevronRight :size="16" aria-hidden="true" /></UIMonthPickerNextYear>
+        <UIMonthPickerNextYear aria-label="다음"><ChevronRight aria-hidden="true" /></UIMonthPickerNextYear>
         <UIMonthPickerGrid>
           <UIMonthPickerCell v-for="month in months.flat()" :key="month.year + '-' + month.month" :value="month">
             {{ display.month(month) }}

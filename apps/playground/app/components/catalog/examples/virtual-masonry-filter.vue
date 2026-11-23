@@ -29,7 +29,7 @@ const shown = computed(() => selected.value ? items.filter(item => item.kind ===
       data-ui-virtual-layout-motion aria-label="분류별 조사 메모">
       <template #item="{ value }">
         <UIDataLabel :label="value.kind" :detail="`메모 #${value.id}`">
-          <template #icon><NotebookPen :size="15" aria-hidden="true" /></template>
+          <template #icon><NotebookPen aria-hidden="true" /></template>
         </UIDataLabel>
         <p>{{ value.note }}</p>
       </template>

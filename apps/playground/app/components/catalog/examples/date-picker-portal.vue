@@ -11,14 +11,14 @@ const display = useUITemporalDisplay();
   <UIDatePicker v-model="date"  v-slot="{ dates, view }">
     <UIDatePickerAnchor>
       <UIDatePickerInput aria-label="날짜" />
-      <UIDatePickerTrigger aria-label="날짜 선택 창 열기"><CalendarDays :size="18" /></UIDatePickerTrigger>
+      <UIDatePickerTrigger aria-label="날짜 선택 창 열기"><CalendarDays /></UIDatePickerTrigger>
     </UIDatePickerAnchor>
     <UIDatePickerPortal>
       <UIDatePickerContent>
         <header>
-          <UIDatePickerPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" /></UIDatePickerPreviousMonth>
+          <UIDatePickerPreviousMonth aria-label="이전 달"><ChevronLeft /></UIDatePickerPreviousMonth>
           <strong>{{ display.yearMonth(view) }}</strong>
-          <UIDatePickerNextMonth aria-label="다음 달"><ChevronRight :size="16" /></UIDatePickerNextMonth>
+          <UIDatePickerNextMonth aria-label="다음 달"><ChevronRight /></UIDatePickerNextMonth>
         </header>
         <UIDatePickerGrid>
           <UIDatePickerCell v-for="day in dates.flat()" :key="[day.year, day.month, day.day].join('-')" :value="day">

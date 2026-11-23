@@ -43,8 +43,8 @@ onBeforeUnmount(() => clearTimeout(timer));
     <UIToastViewport label="정산 보고서 알림">
       <UIToast v-for="item in toasts" :key="item.id" :value="item.id">
         <UISpinner v-if="item.kind === 'loading'" />
-        <CircleAlert v-else-if="item.kind === 'error'" :size="17" aria-hidden="true" class="toast-job__error" />
-        <CircleCheck v-else :size="17" aria-hidden="true" class="toast-job__success" />
+        <CircleAlert v-else-if="item.kind === 'error'" aria-hidden="true" class="toast-job__error" />
+        <CircleCheck v-else aria-hidden="true" class="toast-job__success" />
         <div class="toast-job__body">
           <UIToastTitle />
           <UIToastDescription />

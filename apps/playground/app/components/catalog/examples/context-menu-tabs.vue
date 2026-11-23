@@ -32,7 +32,7 @@ function invoke(command: string, tab: typeof initialTabs[number]) {
     <li v-for="tab in orderedTabs" :key="tab.id">
       <UIContextMenu :items="commands" :label="`${tab.label} 탭 작업`" @invoke="invoke($event, tab)">
         <UIContextMenuTrigger as="div" tabindex="0" class="example-tab" :data-pinned="tab.pinned || undefined">
-          <component :is="tab.pinned ? Pin : Globe" :size="16" aria-hidden="true" />
+          <component :is="tab.pinned ? Pin : Globe" aria-hidden="true" />
           {{ tab.label }}<span v-if="tab.pinned" class="example-tab__badge">고정됨</span>
         </UIContextMenuTrigger>
         <UIContextMenuContent>

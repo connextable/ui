@@ -30,10 +30,10 @@ const values = new Map(files.flatMap(file => [[file.id, file.name], [`${file.id}
         )" :key="file.id" :value="file.id" :row-index="index + 1" :level="file.level" :expandable="file.folder">
           <UITreeGridCell :value="file.id" :column-index="1">
             <UITreeGridDisclosure v-if="file.folder" as="button" type="button" :for="file.id" :aria-label="`${file.name} 하위 항목`">
-              <ChevronRight :size="16" aria-hidden="true" />
+              <ChevronRight aria-hidden="true" />
             </UITreeGridDisclosure>
             <UIDataLabel :label="file.name">
-              <template #icon><component :is="file.folder ? Folder : FileText" :size="15" aria-hidden="true" /></template>
+              <template #icon><component :is="file.folder ? Folder : FileText" aria-hidden="true" /></template>
             </UIDataLabel>
           </UITreeGridCell>
           <UITreeGridCell :value="`${file.id}-date`" :column-index="2" data-ui-tabular-numeric>{{ file.date }}</UITreeGridCell>

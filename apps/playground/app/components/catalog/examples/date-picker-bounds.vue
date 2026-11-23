@@ -14,7 +14,7 @@ const date = ref({ year: 2026, month: 8, day: 22 });
   <UIDatePicker v-model="date" :policies="{ min, max }" v-slot="{ dates }">
     <UIDatePickerAnchor>
       <UIDatePickerInput aria-label="배송 날짜" />
-      <UIDatePickerTrigger aria-label="배송 날짜 선택"><CalendarDays :size="18" aria-hidden="true" /></UIDatePickerTrigger>
+      <UIDatePickerTrigger aria-label="배송 날짜 선택"><CalendarDays aria-hidden="true" /></UIDatePickerTrigger>
     </UIDatePickerAnchor>
     <UIDatePickerContent>
       <UIDatePickerGrid>

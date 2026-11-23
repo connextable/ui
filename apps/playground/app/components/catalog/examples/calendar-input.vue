@@ -29,9 +29,9 @@ const display = useUITemporalDisplay();
       <UICalendarInput hidden name="releaseDate" />
       <UICalendarContent>
         <header>
-          <UICalendarPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" aria-hidden="true" /></UICalendarPreviousMonth>
+          <UICalendarPreviousMonth aria-label="이전 달"><ChevronLeft aria-hidden="true" /></UICalendarPreviousMonth>
           <strong>{{ display.yearMonth(view) }}</strong>
-          <UICalendarNextMonth aria-label="다음 달"><ChevronRight :size="16" aria-hidden="true" /></UICalendarNextMonth>
+          <UICalendarNextMonth aria-label="다음 달"><ChevronRight aria-hidden="true" /></UICalendarNextMonth>
         </header>
         <UICalendarGrid>
           <UICalendarCell v-for="day in dates.flat()" :key="`${day.year}-${day.month}-${day.day}`" :value="day">

@@ -22,7 +22,7 @@ const display = useUITemporalDisplay();
       <UIDateRangePickerEndInput hidden />
       <UIDateRangePickerValue :value="value" />
       <UIDateRangePickerTrigger aria-label="일정의 날짜 범위 고르기">
-        <CalendarDays :size="18" aria-hidden="true" />
+        <CalendarDays aria-hidden="true" />
       </UIDateRangePickerTrigger>
     </UIDateRangePickerAnchor>
     <UIDateRangePickerContent>

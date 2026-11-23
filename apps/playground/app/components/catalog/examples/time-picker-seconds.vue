@@ -10,7 +10,7 @@ const time = ref({ hour: 9, minute: 30, second: 0, millisecond: 0 });
 <template>
   <UITimePicker label="시간 선택" precision="second" v-model="time">
     <UITimePickerInput label="시작 시간" />
-    <UITimePickerTrigger aria-label="시간 선택 열기"><Clock :size="16" aria-hidden="true" /></UITimePickerTrigger>
+    <UITimePickerTrigger aria-label="시간 선택 열기"><Clock aria-hidden="true" /></UITimePickerTrigger>
     <UITimePickerContent v-slot="{ columns }">
       <UITimePickerColumn v-for="column in columns" :key="column.part" :part="column.part">
         <UITimePickerItem v-for="choice in column.choices" :key="choice.id" :value="choice.id">

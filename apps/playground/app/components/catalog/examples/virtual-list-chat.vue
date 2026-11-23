@@ -39,14 +39,14 @@ async function receive() {
       }">
       <template #item="{ value }">
         <UIDataLabel :label="replies[(value - 1) % replies.length]!" :detail="`메시지 #${value}`">
-          <template #icon><MessageSquare :size="15" aria-hidden="true" /></template>
+          <template #icon><MessageSquare aria-hidden="true" /></template>
         </UIDataLabel>
       </template>
     </UIVirtualList>
     <template #footer>
       <output aria-live="polite">{{ unread ? `새 메시지 ${unread}개` : atLatest ? '최신 메시지를 보고 있음' : '이전 메시지를 보고 있음' }}</output>
       <UIButton size="sm" variant="ghost" @click="showLatest">
-        <template #leading><ArrowDown :size="16" /></template>최신 메시지
+        <template #leading><ArrowDown /></template>최신 메시지
       </UIButton>
     </template>
   </UIDataSurface>

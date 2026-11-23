@@ -19,17 +19,17 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
     <UIReorderGroup framed :tree-nodes="currentNodes" :interaction="interaction" :get-preview-state="getPreviewState">
       <template #default="{ items }">
         <UITreeReorderItem v-for="{ id, level } in items" :key="id" :value="id">
-          <UITreeReorderHandle :label="`${id} 이동`"><GripVertical :size="16" aria-hidden="true" /></UITreeReorderHandle>
+          <UITreeReorderHandle :label="`${id} 이동`"><GripVertical aria-hidden="true" /></UITreeReorderHandle>
           <span data-ui-reorder-indent :style="{ '--ui-reorder-depth': level - 1 }">{{ id }}</span>
         </UITreeReorderItem>
       </template>
-      <template #preview-handle><GripVertical :size="16" /></template>
+      <template #preview-handle><GripVertical /></template>
       <template #preview="{ id, level }">
         <span data-ui-reorder-indent :style="{ '--ui-reorder-depth': level - 1 }">{{ id }}</span>
       </template>
     </UIReorderGroup>
     <UIReorderFeedback :interaction="interaction">
-      <template #lift-handle><GripVertical :size="16" /></template>
+      <template #lift-handle><GripVertical /></template>
     </UIReorderFeedback>
   </UITreeReorder>
 </template>

@@ -36,7 +36,7 @@ const values = new Map(services.flatMap<[string, string]>(({ id, name, owner, st
       >
         <UITreeGridCell :value="`${service.id}-name`" :column-index="1">
           <UITreeGridDisclosure v-if="service.id === 'platform'" as="button" type="button" :for="service.id" aria-label="제품 플랫폼 하위 서비스">
-            <ChevronRight :size="16" aria-hidden="true" />
+            <ChevronRight aria-hidden="true" />
           </UITreeGridDisclosure>
           {{ service.name }}
         </UITreeGridCell>

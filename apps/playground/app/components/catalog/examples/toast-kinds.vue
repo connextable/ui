@@ -26,7 +26,7 @@ let nextID = 0;
     <UIToastViewport label="유형별 알림">
       <UIToast v-for="item in toasts" :key="item.id" :value="item.id">
         <component :is="notices[item.kind as keyof typeof notices].icon" class="toast-kind-icon"
-          :data-kind="item.kind" :size="17" aria-hidden="true" />
+          :data-kind="item.kind" aria-hidden="true" />
         <div>
           <UIToastTitle />
           <UIToastDescription />

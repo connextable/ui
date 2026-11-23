@@ -9,7 +9,7 @@ const tags = ref<readonly string[]>(['승인', '검토']);
 <template>
   <UITagsInput v-model="tags" label="워크플로 태그" size="sm" variant="soft" v-slot="{ value }">
     <UITagsInputItem v-for="(tag, index) in value" :key="tag" :index="index">
-      <Check v-if="tag === '승인'" :size="14" aria-hidden="true" />
+      <Check v-if="tag === '승인'" aria-hidden="true" />
       <UITagsInputItemText />
       <UITagsInputItemDelete :aria-label="`${tag} 삭제`"><X aria-hidden="true" /></UITagsInputItemDelete>
     </UITagsInputItem>

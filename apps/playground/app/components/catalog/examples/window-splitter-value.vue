@@ -17,7 +17,7 @@ const position = ref("40");
       </ul>
     </UIWindowSplitterPane>
     <UIWindowSplitterHandle>
-      <span class="split-handle" aria-hidden="true"><GripVertical :size="14" /></span>
+      <span class="split-handle" aria-hidden="true"><GripVertical /></span>
     </UIWindowSplitterHandle>
     <UIWindowSplitterPane side="after" class="report-pane">
       <strong>11월 정산 보고서</strong>

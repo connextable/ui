@@ -30,7 +30,7 @@ const rect = computed(() => {
       data-ui-virtual-layout-motion aria-label="작업 시작 시각과 지속 시간">
       <template #item="{ value }">
         <UIDataLabel :label="value.label">
-          <template #icon><CalendarClock :size="15" aria-hidden="true" /></template>
+          <template #icon><CalendarClock aria-hidden="true" /></template>
         </UIDataLabel>
       </template>
     </UIVirtualSpatial>

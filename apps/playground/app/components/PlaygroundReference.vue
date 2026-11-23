@@ -70,7 +70,7 @@ function groupAnchor(section: string, group: string) {
               <dd>
                 <p>{{ entry.description }}</p>
                 <UIAnchor v-if="entry.example" class="playground-reference__example" :to="{ path: $route.path, hash: `#${entry.example.id}` }">
-                  <span>{{ entry.example.title }} 예제</span><ArrowRight aria-hidden="true" :size="14" />
+                  <span>{{ entry.example.title }} 예제</span><ArrowRight aria-hidden="true" />
                 </UIAnchor>
               </dd>
             </div>

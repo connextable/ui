@@ -34,15 +34,15 @@ const display = useUITemporalDisplay();
       <UIDateRangePicker v-model="range" v-slot="{ dates, value, view }">
         <UIDateRangePickerAnchor>
           <UIDateRangePickerValue :value="value" />
-          <UIDateRangePickerTrigger aria-label="표기 예제의 날짜 범위 선택"><CalendarDays :size="18" aria-hidden="true" /></UIDateRangePickerTrigger>
+          <UIDateRangePickerTrigger aria-label="표기 예제의 날짜 범위 선택"><CalendarDays aria-hidden="true" /></UIDateRangePickerTrigger>
         </UIDateRangePickerAnchor>
         <UIDateRangePickerContent>
           <UICalendarPeriodHeader :view="view">
             <template #previous>
-              <UIDateRangePickerPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" aria-hidden="true" /></UIDateRangePickerPreviousMonth>
+              <UIDateRangePickerPreviousMonth aria-label="이전 달"><ChevronLeft aria-hidden="true" /></UIDateRangePickerPreviousMonth>
             </template>
             <template #next>
-              <UIDateRangePickerNextMonth aria-label="다음 달"><ChevronRight :size="16" aria-hidden="true" /></UIDateRangePickerNextMonth>
+              <UIDateRangePickerNextMonth aria-label="다음 달"><ChevronRight aria-hidden="true" /></UIDateRangePickerNextMonth>
             </template>
             <template #grid>
               <UIDateRangePickerGrid>

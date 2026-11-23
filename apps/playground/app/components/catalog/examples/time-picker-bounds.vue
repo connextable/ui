@@ -19,7 +19,7 @@ const max = { hour: 17, minute: 0, second: 0, millisecond: 0 };
 <template>
   <UITimePicker label="시간 선택" v-model="time" precision="minute" :policies="{ min, max }" clearable>
     <UITimePickerInput label="시작 시간" />
-    <UITimePickerTrigger aria-label="시작 시간 선택"><Clock :size="16" aria-hidden="true" /></UITimePickerTrigger>
+    <UITimePickerTrigger aria-label="시작 시간 선택"><Clock aria-hidden="true" /></UITimePickerTrigger>
     <UITimePickerContent v-slot="{ columns }">
 
       <UITimePickerColumn v-for="column in columns" :key="column.part" :part="column.part">

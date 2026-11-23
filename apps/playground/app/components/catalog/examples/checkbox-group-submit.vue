@@ -17,7 +17,7 @@ function submit({ values }: UIFormSubmitEvent) {
     <UIFormField label="알림 채널" name="channels">
       <UICheckboxGroup :items="channels">
         <UICheckboxGroupItem v-for="channel in channels" :key="channel" :value="channel">
-          <UICheckboxGroupIndicator><Check :size="16" aria-hidden="true" /></UICheckboxGroupIndicator>
+          <UICheckboxGroupIndicator><Check aria-hidden="true" /></UICheckboxGroupIndicator>
           {{ channel }}
         </UICheckboxGroupItem>
       </UICheckboxGroup>

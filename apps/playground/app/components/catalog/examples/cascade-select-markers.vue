@@ -23,8 +23,8 @@ const region = ref<string | null>("서울");
     <UICascadeSelectContent>
       <UICascadeSelectColumn v-for="(_, depth) in columns" :key="depth" :depth="depth" v-slot="{ items }">
         <UICascadeSelectItem v-for="item in items" :key="item" :value="item">{{ item }}
-          <UICascadeSelectItemChevron><ChevronRight :size="14" /></UICascadeSelectItemChevron>
-          <UICascadeSelectItemIndicator><Check :size="14" /></UICascadeSelectItemIndicator>
+          <UICascadeSelectItemChevron><ChevronRight /></UICascadeSelectItemChevron>
+          <UICascadeSelectItemIndicator><Check /></UICascadeSelectItemIndicator>
         </UICascadeSelectItem>
       </UICascadeSelectColumn>
     </UICascadeSelectContent>

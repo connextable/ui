@@ -31,7 +31,7 @@ function receiveShipment() {
       data-ui-virtual-layout-motion aria-label="재고 순으로 정렬한 품목">
       <template #item="{ value }">
         <UIDataLabel :label="value.name" :detail="`품목 #${value.id}`">
-          <template #icon><Package :size="15" aria-hidden="true" /></template>
+          <template #icon><Package aria-hidden="true" /></template>
         </UIDataLabel>
         <div><UIDataStatus :tone="value.stock < 12 ? 'warning' : 'success'">{{ value.stock }}개</UIDataStatus></div>
       </template>

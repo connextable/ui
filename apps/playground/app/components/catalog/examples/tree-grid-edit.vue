@@ -42,7 +42,7 @@ function editOwner() {
       <UITreeGridRow value="platform" :row-index="1" expandable>
         <UITreeGridCell value="platform-name" :column-index="1">
           <UITreeGridDisclosure as="button" type="button" for="platform" aria-label="플랫폼 하위 서비스">
-            <ChevronRight :size="16" aria-hidden="true" />
+            <ChevronRight aria-hidden="true" />
           </UITreeGridDisclosure>
           {{ read("platform-name") }}
         </UITreeGridCell>

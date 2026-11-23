@@ -16,7 +16,7 @@ const selected = ref<readonly string[]>(['email']);
   <UICheckboxTree v-model="selected" :nodes="nodes" :default-expanded-values="['notifications']" label="알림 채널">
     <UICheckboxTreeItem value="notifications">
       <UICheckboxTreeDisclosure for="notifications" as="button" aria-label="알림 채널 펼치기">
-        <ChevronRight :size="16" />
+        <ChevronRight />
       </UICheckboxTreeDisclosure>
       <UICheckboxTreeIndicator />
       알림 채널

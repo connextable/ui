@@ -27,14 +27,14 @@ const display = useUITemporalDisplay();
       <UIYearPickerInput hidden />
       <UIDatePickerValue :value="value" granularity="year" placeholder="연도 선택" />
       <UIYearPickerTrigger aria-label="연도 선택 열기">
-        <CalendarDays :size="18" aria-hidden="true" />
+        <CalendarDays aria-hidden="true" />
       </UIYearPickerTrigger>
     </UIYearPickerAnchor>
     <UIYearPickerPortal>
       <UIYearPickerContent>
-        <UIYearPickerPreviousPage aria-label="이전 연도 묶음"><ChevronLeft :size="16" aria-hidden="true" /></UIYearPickerPreviousPage>
+        <UIYearPickerPreviousPage aria-label="이전 연도 묶음"><ChevronLeft aria-hidden="true" /></UIYearPickerPreviousPage>
         <strong>{{ display.yearRange(years[0]?.[0], years.at(-1)?.at(-1)) }}</strong>
-        <UIYearPickerNextPage aria-label="다음 연도 묶음"><ChevronRight :size="16" aria-hidden="true" /></UIYearPickerNextPage>
+        <UIYearPickerNextPage aria-label="다음 연도 묶음"><ChevronRight aria-hidden="true" /></UIYearPickerNextPage>
         <UIYearPickerGrid>
           <UIYearPickerCell v-for="year in years.flat()" :key="year.year" :value="year">
             {{ display.year(year) }}

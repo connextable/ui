@@ -53,7 +53,7 @@ const ExpansionSummary = defineComponent({
         <DataTreeGrid.Body v-slot="{ row }">
           <DataTreeGrid.Cell column="service" data-ui-tree-column>
             <DataTreeGrid.RowDisclosure v-if="row.kind === 'group'" :aria-label="`${row.cells.service} 펼치기 또는 접기`">
-              <ChevronRight :size="16" aria-hidden="true" />
+              <ChevronRight aria-hidden="true" />
             </DataTreeGrid.RowDisclosure>
             {{ row.cells.service }}
           </DataTreeGrid.Cell>

@@ -43,7 +43,7 @@ const updateValue = (id: string, value: string) => values.set(id, value)
     <UITreeGridRow value="platform" :row-index="1" expandable>
       <UITreeGridCell value="platform-name" :column-index="1">
         <UITreeGridDisclosure as="button" type="button" for="platform" aria-label="상거래 플랫폼 하위 리소스">
-          <ChevronRight :size="16" aria-hidden="true" />
+          <ChevronRight aria-hidden="true" />
         </UITreeGridDisclosure>
         {{ valueFor('platform-name') }}
       </UITreeGridCell>
@@ -56,7 +56,7 @@ const updateValue = (id: string, value: string) => values.set(id, value)
     <UITreeGridRow v-if="expandedValue.includes('platform')" value="storefront" :row-index="2" :level="2" expandable>
       <UITreeGridCell value="storefront-name" :column-index="1">
         <UITreeGridDisclosure as="button" type="button" for="storefront" aria-label="스토어 하위 리소스">
-          <ChevronRight :size="16" aria-hidden="true" />
+          <ChevronRight aria-hidden="true" />
         </UITreeGridDisclosure>
         {{ valueFor('storefront-name') }}
       </UITreeGridCell>

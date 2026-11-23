@@ -45,7 +45,7 @@ function reset() {
     <template #toolbar>
       <output aria-live="polite">{{ selected.length }}개 선택 · {{ archived }}개 보관</output>
       <UIButton size="sm" :disabled="!selected.length" @click="archive">
-        <template #leading><Archive :size="16" /></template>선택 항목 보관
+        <template #leading><Archive /></template>선택 항목 보관
       </UIButton>
     </template>
     <Table.Provider>

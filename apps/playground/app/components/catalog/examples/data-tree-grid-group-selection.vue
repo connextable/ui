@@ -66,7 +66,7 @@ const DataTreeGrid = createUIDataTreeGridComponents(tree, {
         </DataTreeGrid.Cell>
         <DataTreeGrid.Cell column="service" data-ui-tree-column>
           <DataTreeGrid.RowDisclosure v-if="row.kind === 'group'" :aria-label="`${row.cells.service} 하위 서비스 펼치기`">
-            <ChevronRight :size="16" aria-hidden="true" />
+            <ChevronRight aria-hidden="true" />
           </DataTreeGrid.RowDisclosure>
           {{ row.cells.service }}
         </DataTreeGrid.Cell>

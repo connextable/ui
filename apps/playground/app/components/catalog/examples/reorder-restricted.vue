@@ -33,11 +33,11 @@ const policies = {
         <h4>{{ column }}</h4>
         <UIReorderGroup :parent-id="column" framed :min-rows="3" :interaction="interaction" :get-preview-state="getPreviewState">
           <UITreeReorderItem v-for="id in getChildren(column)" :key="id" :value="id">
-            <component :is="types[id] === '문서' ? FileText : ImageIcon" :size="16" aria-hidden="true" />
+            <component :is="types[id] === '문서' ? FileText : ImageIcon" aria-hidden="true" />
             {{ id }}
           </UITreeReorderItem>
           <template #preview="{ id }">
-            <component :is="types[id] === '문서' ? FileText : ImageIcon" :size="16" aria-hidden="true" />
+            <component :is="types[id] === '문서' ? FileText : ImageIcon" aria-hidden="true" />
             {{ id }}
           </template>
         </UIReorderGroup>

@@ -25,7 +25,7 @@ function toggle(id: number) {
       <template #item="{ value }">
         <UIButton variant="ghost" size="sm" :aria-pressed="chosen.includes(value.id)" @click="toggle(value.id)">
           <UIDataLabel :label="value.label" :detail="`${value.weight}g`">
-            <template #icon><Package :size="15" aria-hidden="true" /></template>
+            <template #icon><Package aria-hidden="true" /></template>
           </UIDataLabel>
         </UIButton>
       </template>

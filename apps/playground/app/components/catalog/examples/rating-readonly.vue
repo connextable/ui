@@ -15,7 +15,7 @@ const rating = ref("4");
 <template>
   <UIRating readonly :items="ratings" v-model="rating">
     <UIRatingItem v-for="value in ratings" :key="value" :value="value" :aria-label="`${value}점`">
-      <Star :size="18" aria-hidden="true" />
+      <Star aria-hidden="true" />
     </UIRatingItem>
   </UIRating>
 </template>

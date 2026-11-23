@@ -34,9 +34,9 @@ const display = useUITemporalDisplay();
       <UIDateRangePickerValue :value="value" />
       <UIRangeCalendarContent>
         <header>
-          <UIRangeCalendarPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" aria-hidden="true" /></UIRangeCalendarPreviousMonth>
+          <UIRangeCalendarPreviousMonth aria-label="이전 달"><ChevronLeft aria-hidden="true" /></UIRangeCalendarPreviousMonth>
           <strong>{{ display.yearMonth(view) }}</strong>
-          <UIRangeCalendarNextMonth aria-label="다음 달"><ChevronRight :size="16" aria-hidden="true" /></UIRangeCalendarNextMonth>
+          <UIRangeCalendarNextMonth aria-label="다음 달"><ChevronRight aria-hidden="true" /></UIRangeCalendarNextMonth>
         </header>
         <UIRangeCalendarGrid>
           <UIRangeCalendarCell v-for="day in dates.flat()" :key="JSON.stringify(day)" :value="day">

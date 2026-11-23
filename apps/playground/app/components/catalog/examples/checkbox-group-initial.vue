@@ -15,7 +15,7 @@ const selected = ref<readonly string[]>(['메일', '앱']);
 <template>
   <UICheckboxGroup :items="channels" v-model="selected" label="받을 채널" clearable>
     <UICheckboxGroupItem v-for="item in channels" :key="item" :value="item">
-      <UICheckboxGroupIndicator><Check :size="16" aria-hidden="true" /></UICheckboxGroupIndicator>
+      <UICheckboxGroupIndicator><Check aria-hidden="true" /></UICheckboxGroupIndicator>
       {{ item }}
     </UICheckboxGroupItem>
   </UICheckboxGroup>

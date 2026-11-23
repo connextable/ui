@@ -20,7 +20,7 @@ let nextID = 0;
     <UIToastViewport label="검토 알림">
       <UIToast v-for="item in toasts" :key="item.id" :value="item.id">
         <UIToastTitle />
-        <UIToastClose><X :size="16" aria-hidden="true" /></UIToastClose>
+        <UIToastClose><X aria-hidden="true" /></UIToastClose>
       </UIToast>
     </UIToastViewport>
   </UIToastProvider>

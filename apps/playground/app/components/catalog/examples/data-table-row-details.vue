@@ -42,7 +42,7 @@ const Table = createUIDataTableComponents(table);
           <Table.Cell column="note" data-ui-tabular-align="end">
             <UIButton size="sm" variant="ghost" icon-only :aria-label="`${row.cells.name} 상세`"
               :aria-pressed="opened?.id === row.id" @click="opened = rows.find(item => item.id === row.id)">
-              <ArrowUpRight :size="16" aria-hidden="true" />
+              <ArrowUpRight aria-hidden="true" />
             </UIButton>
           </Table.Cell>
         </Table.Body>

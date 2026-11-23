@@ -6,7 +6,7 @@ import { Check } from "@lucide/vue";
 <template>
   <UICheckboxGroup :items="['email', 'sms']" label="알림 수단">
     <UICheckboxGroupItem value="email">
-      <UICheckboxGroupIndicator><Check :size="16" aria-hidden="true" /></UICheckboxGroupIndicator>
+      <UICheckboxGroupIndicator><Check aria-hidden="true" /></UICheckboxGroupIndicator>
       이메일
     </UICheckboxGroupItem>
     <UICheckboxGroupItem value="sms" disabled>문자</UICheckboxGroupItem>

@@ -11,9 +11,9 @@ const commands = [
 
 <template>
   <UIMenu :items="commands" aria-label="문서 작업">
-    <UIMenuItem value="rename"><Pencil :size="16" aria-hidden="true" /> 이름 바꾸기</UIMenuItem>
-    <UIMenuItem value="copy"><Copy :size="16" aria-hidden="true" /> 복제</UIMenuItem>
+    <UIMenuItem value="rename"><Pencil aria-hidden="true" /> 이름 바꾸기</UIMenuItem>
+    <UIMenuItem value="copy"><Copy aria-hidden="true" /> 복제</UIMenuItem>
     <UIMenuSeparator />
-    <UIMenuItem value="download"><Download :size="16" aria-hidden="true" /> 다운로드</UIMenuItem>
+    <UIMenuItem value="download"><Download aria-hidden="true" /> 다운로드</UIMenuItem>
   </UIMenu>
 </template>

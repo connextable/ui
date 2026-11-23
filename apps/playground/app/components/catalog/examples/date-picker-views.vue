@@ -32,19 +32,19 @@ const display = useUITemporalDisplay();
     <UIDatePickerAnchor>
       <UIDatePickerInput />
       <UIDatePickerTrigger aria-label="날짜 선택 열기">
-        <CalendarDays :size="18" aria-hidden="true" />
+        <CalendarDays aria-hidden="true" />
       </UIDatePickerTrigger>
     </UIDatePickerAnchor>
     <UIDatePickerContent>
       <div>
         <div>
-          <UIDatePickerPreviousWeek v-if="viewMode === 'week'" aria-label="이전"><ChevronLeft :size="16" aria-hidden="true" /></UIDatePickerPreviousWeek>
-          <UIDatePickerPreviousMonth v-else-if="viewMode === 'month'" aria-label="이전"><ChevronLeft :size="16" aria-hidden="true" /></UIDatePickerPreviousMonth>
-          <UIDatePickerPreviousYear v-else aria-label="이전"><ChevronLeft :size="16" aria-hidden="true" /></UIDatePickerPreviousYear>
+          <UIDatePickerPreviousWeek v-if="viewMode === 'week'" aria-label="이전"><ChevronLeft aria-hidden="true" /></UIDatePickerPreviousWeek>
+          <UIDatePickerPreviousMonth v-else-if="viewMode === 'month'" aria-label="이전"><ChevronLeft aria-hidden="true" /></UIDatePickerPreviousMonth>
+          <UIDatePickerPreviousYear v-else aria-label="이전"><ChevronLeft aria-hidden="true" /></UIDatePickerPreviousYear>
           <strong>{{ viewMode === 'year' ? display.year(view) : display.yearMonth(view) }}</strong>
-          <UIDatePickerNextWeek v-if="viewMode === 'week'" aria-label="다음"><ChevronRight :size="16" aria-hidden="true" /></UIDatePickerNextWeek>
-          <UIDatePickerNextMonth v-else-if="viewMode === 'month'" aria-label="다음"><ChevronRight :size="16" aria-hidden="true" /></UIDatePickerNextMonth>
-          <UIDatePickerNextYear v-else aria-label="다음"><ChevronRight :size="16" aria-hidden="true" /></UIDatePickerNextYear>
+          <UIDatePickerNextWeek v-if="viewMode === 'week'" aria-label="다음"><ChevronRight aria-hidden="true" /></UIDatePickerNextWeek>
+          <UIDatePickerNextMonth v-else-if="viewMode === 'month'" aria-label="다음"><ChevronRight aria-hidden="true" /></UIDatePickerNextMonth>
+          <UIDatePickerNextYear v-else aria-label="다음"><ChevronRight aria-hidden="true" /></UIDatePickerNextYear>
         </div>
         <div>
           <UIDatePickerWeekViewTrigger>주</UIDatePickerWeekViewTrigger>

@@ -12,7 +12,7 @@ const selected = ref<string | readonly string[]>([]);
     <UIListbox v-model="selected" :items="channels" selection-mode="multiple" aria-label="알림 수단" clearable>
       <UIListboxItem v-for="channel in channels" :key="channel" :value="channel">
         <UIListboxItemText>{{ channel }}</UIListboxItemText>
-        <UIListboxItemIndicator><Check :size="16" aria-hidden="true" /></UIListboxItemIndicator>
+        <UIListboxItemIndicator><Check aria-hidden="true" /></UIListboxItemIndicator>
       </UIListboxItem>
     </UIListbox>
     <p>선택 <output>{{ (typeof selected === "string" ? selected : selected.join(", ")) || "없음" }}</output></p>

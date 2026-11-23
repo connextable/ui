@@ -8,7 +8,7 @@ const invalidImage = "data:image/png;base64,AA==";
 <template>
   <UIImage :src="invalidImage" alt="프로젝트 이미지">
     <template #fallback>
-      <ImageOff :size="24" aria-hidden="true" />
+      <ImageOff aria-hidden="true" />
       프로젝트 이미지를 불러올 수 없습니다
     </template>
   </UIImage>

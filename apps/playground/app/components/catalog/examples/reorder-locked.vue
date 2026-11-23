@@ -21,11 +21,11 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
       <UITreeReorderItem v-for="id in getChildren(parentID)" :key="id" :value="id"
         :aria-disabled="id === locked || undefined">
         {{ id }}
-        <LockKeyhole v-if="id === locked" :size="16" aria-hidden="true" />
+        <LockKeyhole v-if="id === locked" aria-hidden="true" />
       </UITreeReorderItem>
       <template #preview="{ id }">
         {{ id }}
-        <LockKeyhole v-if="id === locked" :size="16" aria-hidden="true" />
+        <LockKeyhole v-if="id === locked" aria-hidden="true" />
       </template>
     </UIReorderGroup>
     <UIReorderFeedback :interaction="interaction" />

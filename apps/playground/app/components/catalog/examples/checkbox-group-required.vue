@@ -29,7 +29,7 @@ const schema = object({
     <UIFormField name="channels" label="알림 채널">
       <UICheckboxGroup :items="channels">
         <UICheckboxGroupItem v-for="item in channels" :key="item" :value="item">
-          <UICheckboxGroupIndicator><Check :size="16" aria-hidden="true" /></UICheckboxGroupIndicator>
+          <UICheckboxGroupIndicator><Check aria-hidden="true" /></UICheckboxGroupIndicator>
           {{ item }}
         </UICheckboxGroupItem>
       </UICheckboxGroup>

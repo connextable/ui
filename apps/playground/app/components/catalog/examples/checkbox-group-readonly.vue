@@ -20,7 +20,7 @@ const selected = ref<readonly string[]>(['dom']);
 <template>
   <UICheckboxGroup readonly :items="items.map(item => item.value)" v-model="selected" label="사용 중인 모듈">
     <UICheckboxGroupItem v-for="item in items" :key="item.value" :value="item.value">
-      <UICheckboxGroupIndicator><Check :size="16" aria-hidden="true" /></UICheckboxGroupIndicator>
+      <UICheckboxGroupIndicator><Check aria-hidden="true" /></UICheckboxGroupIndicator>
       {{ item.label }}
     </UICheckboxGroupItem>
   </UICheckboxGroup>

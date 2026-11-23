@@ -21,14 +21,14 @@ const display = useUITemporalDisplay();
   <UIRangeCalendar :default-highlighted-value="{ year: 2026, month: 8, day: 22 }" default-view="year" v-slot="{ dates, months, view, viewMode }">
     <UIRangeCalendarContent>
       <header v-if="viewMode === 'year'">
-        <UIRangeCalendarPreviousYear aria-label="이전 연도"><ChevronLeft :size="16" aria-hidden="true" /></UIRangeCalendarPreviousYear>
+        <UIRangeCalendarPreviousYear aria-label="이전 연도"><ChevronLeft aria-hidden="true" /></UIRangeCalendarPreviousYear>
         <strong>{{ display.year(view) }}</strong>
-        <UIRangeCalendarNextYear aria-label="다음 연도"><ChevronRight :size="16" aria-hidden="true" /></UIRangeCalendarNextYear>
+        <UIRangeCalendarNextYear aria-label="다음 연도"><ChevronRight aria-hidden="true" /></UIRangeCalendarNextYear>
       </header>
       <header v-else>
-        <UIRangeCalendarPreviousMonth aria-label="이전 달"><ChevronLeft :size="16" aria-hidden="true" /></UIRangeCalendarPreviousMonth>
+        <UIRangeCalendarPreviousMonth aria-label="이전 달"><ChevronLeft aria-hidden="true" /></UIRangeCalendarPreviousMonth>
         <strong>{{ display.yearMonth(view) }}</strong>
-        <UIRangeCalendarNextMonth aria-label="다음 달"><ChevronRight :size="16" aria-hidden="true" /></UIRangeCalendarNextMonth>
+        <UIRangeCalendarNextMonth aria-label="다음 달"><ChevronRight aria-hidden="true" /></UIRangeCalendarNextMonth>
       </header>
       <div role="group" aria-label="달력 보기">
         <UIRangeCalendarMonthViewTrigger>월의 날짜</UIRangeCalendarMonthViewTrigger>

@@ -46,7 +46,7 @@ const Tree = createUIDataTreeGridComponents(tree);
           <Tree.Row v-for="row in visibleRows" :key="row.id" :row-i-d="row.id">
             <Tree.Cell :row-i-d="row.id" column="name" data-ui-tree-column>
               <Tree.RowDisclosure v-if="row.kind === 'group'" :row-i-d="row.id" :aria-label="`${row.cells.name} 프로젝트`">
-                <ChevronRight :size="16" aria-hidden="true" />
+                <ChevronRight aria-hidden="true" />
               </Tree.RowDisclosure>
               {{ row.cells.name }}
             </Tree.Cell>
