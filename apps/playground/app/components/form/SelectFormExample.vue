@@ -10,14 +10,10 @@ const options = [
 const submitted = ref("");
 const initialDensity = "standard";
 const density = ref<string | null>(initialDensity);
-
-function submit(formData: FormData) {
-  submitted.value = String(formData.get("density") || "미선택");
-}
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => submit(formData)" @reset="density = initialDensity">
+  <UIForm @submit="({ values }) => { submitted = String(values.density || '미선택') }" @reset="density = initialDensity">
     <UIFormField label="화면 밀도" name="density">
       <UISelect v-model="density" :options="options" clearable />
     </UIFormField>

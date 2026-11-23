@@ -3,15 +3,10 @@ import { UIButton, UICheckbox, UIForm, UIFormActions, UIFormField } from "@conne
 import { ref } from "vue";
 
 const submitted = ref<string | null>(null);
-
-function submit(formData: FormData) {
-  const value = formData.get("notifications");
-  submitted.value = typeof value === "string" ? value : "없음";
-}
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => submit(formData)">
+  <UIForm @submit="({ values }) => { submitted = String(values.notifications ?? '없음') }">
     <UIFormField name="notifications">
       <UICheckbox label="이메일 알림" />
     </UIFormField>

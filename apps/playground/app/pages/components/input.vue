@@ -84,7 +84,7 @@ definePageMeta({
         <PlaygroundExample
           id="input-form"
           title="입력값 제출"
-          description="UIFormField의 name을 키로 사용해 입력값을 FormData에서 읽습니다."
+          description="UIFormField에 name을 지정하고 제출 핸들러에서 values.name으로 입력값을 읽습니다."
           :source="formSource"
           :heading-level="3"
         >

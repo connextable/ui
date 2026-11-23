@@ -19,7 +19,7 @@ const submitted = ref("");
 
 <template>
   <UITemporalProvider :input-formats="custom ? inputFormats : undefined">
-    <UIForm @submit="({ formData }) => { submitted = String(formData.get('appointment') ?? '') }">
+    <UIForm @submit="({ values }) => { submitted = String(values.appointment ?? '') }">
       <UIFormField label="방문 날짜">
         <UIDateField v-model="date" />
       </UIFormField>

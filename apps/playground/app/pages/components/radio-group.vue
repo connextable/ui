@@ -62,7 +62,7 @@ definePageMeta({
         <PlaygroundExample
           id="radio-form"
           title="선택값 제출"
-          description="UIFormField에 name을 지정하면 그룹에서 선택한 값이 FormData에 포함됩니다."
+          description="그룹에서 선택한 값을 제출 핸들러의 values.density에서 읽습니다."
           :source="formSource"
           :heading-level="3"
         >

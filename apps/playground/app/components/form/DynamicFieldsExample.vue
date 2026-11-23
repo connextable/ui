@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIButton, UIForm, UIFormActions, UIFormField, UIInput } from "@connextable/ui";
+import { UIButton, UIForm, UIFormActions, UIFormField, UIInput, type UIFormSubmitEvent } from "@connextable/ui";
 import { ref } from "vue";
 
 const items = ref([{ id: 1, value: "" }]);
@@ -14,15 +14,15 @@ function removeItem(id: number) {
   items.value = items.value.filter((item) => item.id !== id);
 }
 
-function submit(formData: FormData) {
-  submittedItems.value = formData.getAll("items").map(String);
+function submit({ values }: UIFormSubmitEvent) {
+  submittedItems.value = Array.isArray(values.items) ? values.items.map(String) : [];
 }
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => submit(formData)">
+  <UIForm @submit="submit">
     <div v-for="(item, index) in items" :key="item.id" class="dynamic-fields__row">
-      <UIFormField :label="`항목 ${index + 1}`" name="items" required>
+      <UIFormField :label="`항목 ${index + 1}`" :name="['items', index]" required>
         <UIInput v-model="item.value" />
       </UIFormField>
       <UIButton

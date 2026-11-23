@@ -7,7 +7,7 @@ const initial = ref({ date: { year: 2026, month: 8, day: 22 }, time: { hour: 13,
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => { submitted = String(formData.get('appointment') ?? '') }">
+  <UIForm @submit="({ values }) => { submitted = String(values.appointment ?? '') }">
     <UIFormField label="약속 일시" name="appointment" required>
       <UIDateTimeField v-model="initial" precision="minute" />
     </UIFormField>

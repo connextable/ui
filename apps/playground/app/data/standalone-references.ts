@@ -73,7 +73,7 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     "#default": note("UIDisclosureTrigger와 UIDisclosureContent를 연결합니다.", disclosure),
   },
   form: {
-    "@submit": note("유효성 검사를 통과한 필드 값을 제출 핸들러에서 받습니다.", example("form-schema", "스키마 검사와 제출")),
+    "@submit": note("UIFormSubmitEvent의 values에서 필드 이름으로 제출값을 읽습니다. 중첩 경로는 객체와 배열로 조립되며, schema가 있으면 검증·변환된 값이 전달됩니다.", example("form-submit", "기본 제출"), "UIFormSubmitEvent"),
     schema: note("필드 값을 검증하고 지원하는 스키마 변환을 제출 데이터에 적용합니다.", example("form-schema", "스키마 검사와 제출")),
     "Field name": { ...note("제출 객체에서 사용할 필드 키입니다. 같은 필드 안에 라벨과 입력을 배치합니다.", form, "string"), owner: "UIFormField", label: "name" },
     "Field required": { ...note("라벨에 필수 표시를 추가합니다. PIN은 모든 자리, 다중 선택은 한 개 이상의 값이 필요합니다.", example("composite-fields", "복합 입력 검증과 제출"), "boolean"), owner: "UIFormField", label: "required" },

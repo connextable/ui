@@ -107,7 +107,7 @@ const parts = {
         <PlaygroundExample
           id="select-form"
           title="선택값 제출"
-          description="UIFormField에 name을 지정하면 선택한 값이 FormData에 포함됩니다."
+          description="선택한 값을 제출 핸들러의 values.density에서 읽습니다."
           :source="formSource"
           :heading-level="3"
         >

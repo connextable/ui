@@ -4,15 +4,11 @@ import { ref } from "vue";
 
 const result = ref("");
 const value = ref<string | null>(null);
-
-function submit({ formData }: { formData: FormData }) {
-  result.value = String(formData.get("quantity") ?? "");
-}
 </script>
 
 <template>
   <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
-    <UIForm @submit="submit">
+    <UIForm @submit="({ values }) => { result = String(values.quantity ?? '') }">
       <UIFormField label="수량" name="quantity" required>
         <UINumberField v-model="value" unit="개" />
       </UIFormField>

@@ -8,7 +8,7 @@ const selectedDate = ref({ year: 2026, month: 8, day: 22 });
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => { submitted = String(formData.get('date') ?? '') }">
+  <UIForm @submit="({ values }) => { submitted = String(values.date ?? '') }">
     <UIFormField label="업데이트 날짜" name="date" required>
       <UIDateField v-model="selectedDate" />
     </UIFormField>

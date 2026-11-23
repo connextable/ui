@@ -3,14 +3,10 @@ import { UIButton, UIForm, UIFormActions, UIFormField, UISwitch } from "@connext
 import { ref } from "vue";
 
 const submitted = ref<boolean | null>(null);
-
-function submit(formData: FormData) {
-  submitted.value = formData.has("description");
-}
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => submit(formData)">
+  <UIForm @submit="({ values }) => { submitted = values.description !== undefined }">
     <UIFormField name="description">
       <UISwitch variant="outline" label="설명 표시" />
     </UIFormField>

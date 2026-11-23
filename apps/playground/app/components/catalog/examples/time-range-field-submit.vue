@@ -7,6 +7,7 @@ import {
   UIFormActions,
   UIFormFieldGroup,
   UIFormSubmit,
+  type UIFormSubmitEvent,
 } from "@connextable/ui";
 import { computed, ref } from "vue";
 
@@ -21,10 +22,15 @@ const fieldValues = computed({
   set: (value: Range) => { range.value = value; },
 });
 const submitted = ref("");
+
+function submit({ values }: UIFormSubmitEvent<{ period?: { start?: string; end?: string } }>) {
+  const { start, end } = values.period ?? {};
+  submitted.value = start && end ? `${start} ~ ${end}` : "";
+}
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => { submitted = Array.from(formData.values()).map(String).join(' ~ ') }">
+  <UIForm @submit="submit">
     <UIFormFieldGroup v-model="fieldValues" label="알림 운영 시간" name="period" v-slot="{ field }">
       <UITimeRangeField v-model="range" precision="minute" start-label="시작" end-label="종료">
         <UITimeRangeFieldStartInput :name="field('start').name" />

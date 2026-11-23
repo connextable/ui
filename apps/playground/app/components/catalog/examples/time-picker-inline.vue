@@ -7,7 +7,7 @@ const submitted = ref("");
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => { submitted = String(formData.get('arrival') ?? '') }">
+  <UIForm @submit="({ values }) => { submitted = String(values.arrival ?? '') }">
     <UIFormField name="arrival" label="도착 시간" label-mode="labelledby" required>
       <UITimePicker v-model="time" inline clearable />
     </UIFormField>

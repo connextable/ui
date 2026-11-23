@@ -135,7 +135,7 @@ definePageMeta({
       <PlaygroundExample :heading-level="3"
         id="dynamic-fields"
         title="동적 필드"
-        description="목록에서 입력 필드를 추가하거나 삭제합니다. 화면에 있는 필드만 필수값을 검사하며, 같은 name의 값은 FormData.getAll()로 읽습니다."
+        description="각 입력에 items와 현재 인덱스를 이름으로 지정합니다. 화면에 남은 항목만 검증하고, 제출값은 values.items 배열에서 순서대로 읽습니다."
         :source="dynamicFieldsSource"
       >
         <DynamicFieldsExample />

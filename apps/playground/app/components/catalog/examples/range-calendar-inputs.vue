@@ -27,7 +27,7 @@ const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => { submitted = [formData.get('start'), formData.get('end')].join(' – ') }">
+  <UIForm @submit="({ values }) => { submitted = [values.start, values.end].join(' – ') }">
     <UIRangeCalendar v-model="stay" v-slot="{ value, dates, view }" label="숙박 기간">
       <UIRangeCalendarStartInput name="start" hidden />
       <UIRangeCalendarEndInput name="end" hidden />

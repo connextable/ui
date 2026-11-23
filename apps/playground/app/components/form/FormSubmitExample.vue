@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { UIForm, UIFormActions, UIFormField, UIFormReset, UIFormSubmit, UIInput } from "@connextable/ui";
+import { UIForm, UIFormActions, UIFormField, UIFormReset, UIFormSubmit, UIInput, type UIFormSubmitEvent } from "@connextable/ui";
 import { ref } from "vue";
 import source from "./FormSubmitExample.vue?example-code&raw";
 
 const name = ref("");
 const submitted = ref("");
 
-function submit({ formData }: { formData: FormData }) {
-  submitted.value = String(formData.get("name") ?? "");
+function submit({ values }: UIFormSubmitEvent) {
+  submitted.value = typeof values.name === "string" ? values.name : "";
 }
 </script>
 
@@ -15,7 +15,7 @@ function submit({ formData }: { formData: FormData }) {
   <PlaygroundExample
     id="form-submit"
     title="기본 제출"
-    description="UIFormField에 입력을 연결합니다. 폼은 제출할 때 입력값을 FormData로 전달합니다."
+    description="UIFormField에 지정한 name이 제출 객체의 키가 됩니다. 제출 핸들러에서 values.name으로 이름을 읽습니다."
     :source="source"
     :heading-level="3"
   >

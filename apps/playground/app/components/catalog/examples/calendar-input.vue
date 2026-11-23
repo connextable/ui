@@ -23,7 +23,7 @@ const display = useUITemporalDisplay();
 </script>
 
 <template>
-  <UIForm @submit="({ formData }) => { submitted = String(formData.get('releaseDate') ?? '') }">
+  <UIForm @submit="({ values }) => { submitted = String(values.releaseDate ?? '') }">
     <UIDateField v-model="selected" label="배포 날짜" />
     <UICalendar v-model="selected" v-slot="{ dates, view }" label="배포 달력">
       <UICalendarInput hidden name="releaseDate" />

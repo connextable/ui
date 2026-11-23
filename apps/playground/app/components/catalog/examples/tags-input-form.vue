@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { UIButton, UIForm, UIFormActions, UIFormField, UITagsInput } from "@connextable/ui";
+import { UIButton, UIForm, UIFormActions, UIFormField, UITagsInput, type UIFormSubmitEvent } from "@connextable/ui";
 import { ref } from "vue";
 
 const submitted = ref("");
 
-function submit({ formData }: { formData: FormData }) {
-  submitted.value = formData.getAll("topics").join(" · ");
+function submit({ values }: UIFormSubmitEvent) {
+  const { topics } = values;
+  submitted.value = Array.isArray(topics) ? topics.join(" · ") : String(topics ?? "");
 }
 
 const initialTags = ["프로젝트", "회의"];

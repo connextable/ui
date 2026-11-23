@@ -75,7 +75,7 @@ definePageMeta({
         <PlaygroundExample
           id="checkbox-form"
           title="선택값 제출"
-          description="체크하면 UIFormField의 name으로 해당 값이 FormData에 포함됩니다."
+          description="체크하면 해당 값이 values.notifications로 제출됩니다."
           :source="formSource"
           :heading-level="3"
         >

@@ -10,16 +10,10 @@ const channels = [{ value: "email", label: "이메일" }, { value: "chat", label
 const periods = [{ value: "am", label: "오전" }, { value: "pm", label: "오후" }];
 const date = { year: 2026, month: 8, day: 22 };
 const submitted = ref("");
-
-function submit({ formData }: { formData: FormData }) {
-  submitted.value = JSON.stringify(Object.fromEntries(
-    [...new Set(formData.keys())].map(name => [name, formData.getAll(name)]),
-  ));
-}
 </script>
 
 <template>
-  <UIForm @submit="submit" @reset="submitted = ''">
+  <UIForm @submit="({ values }) => { submitted = JSON.stringify(values) }" @reset="submitted = ''">
     <UIFormField name="pin" label="확인 코드" description="네 자리를 모두 입력하세요." required>
       <UIPinInput :length="4" label="확인 코드" clearable />
     </UIFormField>

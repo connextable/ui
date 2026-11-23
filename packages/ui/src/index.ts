@@ -31,6 +31,7 @@ export { default as UIDisclosure } from "./components/disclosure/UIDisclosure.vu
 export { default as UIDisclosureContent } from "./components/disclosure/UIDisclosureContent.vue";
 export { default as UIDisclosureTrigger } from "./components/disclosure/UIDisclosureTrigger.vue";
 export { default as UIForm } from "./components/form/UIForm.vue";
+export type { FormSubmitEvent as UIFormSubmitEvent } from "@sectile/vue/form";
 export { default as UIFormActions } from "./components/form/UIFormActions.vue";
 export { default as UIFormField } from "./components/form/UIFormField.vue";
 export { default as UIFormFieldGroup } from "./components/form/UIFormFieldGroup.vue";
