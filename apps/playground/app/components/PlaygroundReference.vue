@@ -2,13 +2,28 @@
 import { ArrowRight } from "@lucide/vue";
 import { computed } from "vue";
 import { legacyStructureAnchorSlugs, referenceBlocks, type ReferenceRow } from "~/data/catalog-reference";
+import publicApi from "virtual:public-component-api";
 
-const props = defineProps<{ component: string; parts: readonly ReferenceRow[]; api: readonly ReferenceRow[]; headingAnchors?: Record<string, string> }>();
+const props = defineProps<{
+  component: string;
+  parts: readonly ReferenceRow[];
+  api: readonly ReferenceRow[];
+  headingAnchors?: Record<string, string>;
+  declaredParts?: readonly string[];
+}>();
 const route = useRoute();
 const legacyStructureAnchor = computed(() => legacyStructureAnchorSlugs.has(route.path.split("/").filter(Boolean).at(-1) ?? ""));
+const declarations = computed(() => [...new Set([props.component, ...(props.declaredParts ?? []), ...props.parts.map(part => part.name)])]
+  .flatMap(name => publicApi[name]?.length ? [{ name, members: publicApi[name] }] : []));
+const documentedApi = computed(() => props.api.map(entry => {
+  if (entry.type) return entry;
+  const name = entry.name === "v-model" ? "model-value" : entry.name.replace(/^v-model:/, "");
+  const declaration = publicApi[entry.owner ?? props.component]?.find(member => member.name === name);
+  return declaration ? { ...entry, type: declaration.type } : entry;
+}));
 const sections = computed(() => [
   { id: "parts" as const, title: "구성 컴포넌트", entries: props.parts },
-  { id: "api" as const, title: "주요 API", entries: props.api },
+  { id: "api" as const, title: "주요 API", entries: documentedApi.value },
 ].filter(section => section.entries.length).map(section => ({
   ...section,
   blocks: referenceBlocks(section.entries, section.id, props.component),
@@ -62,6 +77,18 @@ function groupAnchor(section: string, group: string) {
           </dl>
         </section>
       </div>
+      <details v-if="section.id === 'api' && declarations.length" id="declared-api" class="playground-reference__declarations">
+        <summary>전체 속성, 이벤트와 슬롯</summary>
+        <div v-for="declaration in declarations" :key="declaration.name" :data-api-component="declaration.name">
+          <h3><code>{{ declaration.name }}</code></h3>
+          <dl>
+            <div v-for="member in declaration.members" :key="member.name" :data-api-name="member.name">
+              <dt><code>{{ member.name }}</code><small v-if="member.required">필수</small></dt>
+              <dd><code>{{ member.type }}</code></dd>
+            </div>
+          </dl>
+        </div>
+      </details>
     </PlaygroundExampleSection>
   </div>
 </template>
@@ -71,6 +98,27 @@ function groupAnchor(section: string, group: string) {
   container: playground-reference / inline-size;
   min-inline-size: 0;
 }
+
+.playground-reference__declarations {
+  margin-block-start: var(--ui-space-lg);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-md);
+  padding: var(--ui-space-sm) var(--ui-space-md);
+}
+
+.playground-reference__declarations summary { cursor: pointer; font-weight: 600; }
+.playground-reference__declarations h3 { font-size: var(--ui-font-size-body); overflow-wrap: anywhere; }
+.playground-reference__declarations dl > div {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) minmax(0, 2fr);
+  gap: var(--ui-space-sm);
+  border-block-start: 1px solid var(--ui-color-border);
+  padding-block: var(--ui-space-xs);
+  overflow-wrap: anywhere;
+  font-size: var(--ui-font-size-body-sm);
+}
+.playground-reference__declarations :is(dd, dt) { margin: 0; }
+.playground-reference__declarations small { margin-inline-start: var(--ui-space-xs); }
 
 .playground-reference__block + .playground-reference__block {
   margin-block-start: 2.5rem;

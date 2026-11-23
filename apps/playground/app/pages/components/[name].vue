@@ -81,7 +81,7 @@ for (const name of entry.parts ?? []) {
       :wide="entry.wide"
       :defer-previews="entry.deferPreviews"
     />
-  <PlaygroundReference :component="entry.title" :parts="parts" :api="api" />
+    <PlaygroundReference :component="entry.title" :parts="parts" :api="api" :declared-parts="entry.parts" />
   </div>
 </template>
 

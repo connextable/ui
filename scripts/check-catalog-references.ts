@@ -1,9 +1,10 @@
-import { readdir } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { catalog } from "../apps/playground/app/data/catalog.ts";
 import { arrangeCatalogExamples } from "../apps/playground/app/data/catalog-example-sections.ts";
 import { catalogGuides } from "../apps/playground/app/data/catalog-guides.ts";
 import { catalogNavigation } from "../apps/playground/app/data/catalog-navigation.ts";
 import { legacyStructureAnchorSlugs } from "../apps/playground/app/data/catalog-reference.ts";
+import { readPublicComponentApi } from "../apps/playground/build/public-component-api.ts";
 
 const origin = new URL(process.argv[2] ?? "http://127.0.0.1:3000");
 const componentPath = "/components/";
@@ -13,6 +14,13 @@ const standalone = routeFiles.filter(file => file.endsWith(".vue") && !file.star
 const routes = new Set([...catalog.map(entry => entry.slug), ...standalone]);
 const slugs = catalogNavigation.flatMap(group => [...group.slugs]);
 const entries = new Map(catalog.map(entry => [entry.slug, entry]));
+const standaloneTitles = new Map(await Promise.all(standalone.map(async slug => {
+  const source = await readFile(new URL(`../apps/playground/app/pages/components/${slug}.vue`, import.meta.url), "utf8");
+  const title = /definePageMeta\(\s*\{\s*title:\s*"(UI\w+)"/.exec(source)?.[1];
+  if (!title) throw new Error(`Missing component title for ${slug}`);
+  return [slug, title] as const;
+})));
+const publicApi = readPublicComponentApi();
 const failures: string[] = [];
 const navigationSlugs = new Set<string>(slugs);
 if (navigationSlugs.size !== slugs.length) failures.push("Duplicate sidebar component route");
@@ -29,6 +37,7 @@ let checkedExamples = 0;
 let checkedParts = 0;
 let checkedInitialExamples = 0;
 let checkedDetailedExamples = 0;
+let checkedDeclaredMembers = 0;
 
 async function check(slug: string) {
   const path = `${componentPath}${slug}`;
@@ -113,6 +122,21 @@ async function check(slug: string) {
 
     const reference = /<div class="playground-reference"[\s\S]*?(?=<\/article>)/.exec(html)?.[0];
     if (!reference) throw new Error("missing shared reference");
+    const components = [...reference.matchAll(/data-api-component="([^"]+)"([\s\S]*?)(?=data-api-component=|<\/details>)/g)]
+      .map(([, name, source]) => [name!, new Set([...source!.matchAll(/data-api-name="([^"]+)"/g)].map(([, member]) => member!))] as const);
+    const renderedApi = new Map(components);
+    const entry = entries.get(slug);
+    const expectedApi = [entry?.title ?? standaloneTitles.get(slug)!, ...(entry?.parts ?? [])]
+      .filter(name => !!publicApi[name]?.length);
+    if (!renderedApi.size) failures.push(`${path} has no declaration API reference`);
+    for (const name of new Set([...expectedApi, ...renderedApi.keys()])) {
+      const members = publicApi[name] ?? [];
+      const rendered = renderedApi.get(name);
+      for (const { name: member } of members) {
+        if (!rendered?.has(member)) failures.push(`${path} omits public API ${name} / ${member}`);
+        else checkedDeclaredMembers++;
+      }
+    }
     for (const [, description] of reference.matchAll(/<dd[^>]*>\s*<p[^>]*>([\s\S]*?)<\/p>/g)) {
       if (!description?.trim()) failures.push(`${path} reference entry has no description`);
     }
@@ -140,7 +164,7 @@ async function check(slug: string) {
 
 for (let index = 0; index < slugs.length; index += 8) await Promise.all(slugs.slice(index, index + 8).map(check));
 
-console.log(`${slugs.length} pages in ${catalogNavigation.length} groups, ${checkedInitialExamples} initially open Vue examples, ${checkedDetailedExamples} detailed examples, ${checkedParts} reference anchors, ${checkedExamples} example links`);
+console.log(`${slugs.length} pages in ${catalogNavigation.length} groups, ${checkedInitialExamples} initially open Vue examples, ${checkedDetailedExamples} detailed examples, ${checkedParts} reference anchors, ${checkedExamples} example links, ${checkedDeclaredMembers} declaration members`);
 if (failures.length) {
   console.error(failures.sort().join("\n"));
   process.exitCode = 1;

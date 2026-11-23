@@ -15,6 +15,12 @@ export interface ApiNote {
 
 export type ApiNotes = Readonly<Record<string, string | ApiNote>>;
 
+export interface DeclaredApiMember {
+  name: string;
+  type: string;
+  required?: boolean;
+}
+
 export interface ReferenceRow extends ApiNote {
   name: string;
   anchor?: string;
