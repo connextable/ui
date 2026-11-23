@@ -21,6 +21,7 @@ export function useScrollSpy(sections: MaybeRefOrGetter<readonly UIScrollSpySect
   const mounted = ref(false);
   let frame = 0;
   let requestedId: string | undefined;
+  let layout: ReturnType<typeof measure> | undefined;
 
   function metrics() {
     const root = toValue(options.root);
@@ -38,9 +39,22 @@ export function useScrollSpy(sections: MaybeRefOrGetter<readonly UIScrollSpySect
     return Math.max(0, Math.min(max, scroller.scrollTop + element.getBoundingClientRect().top - top - sectionOffset(element, padding)));
   }
 
+  function measure() {
+    const { scroller, top, padding, max } = metrics();
+    const scrollTop = scroller.scrollTop;
+    const entries = toValue(sections)
+      .filter(({ element }) => element.isConnected && element.getClientRects().length)
+      .map(({ id, element }) => ({ id, element, offset: scrollTop + element.getBoundingClientRect().top - top }));
+    return {
+      scroller, max, top, padding, entries,
+      readingOffset: entries[0] ? sectionOffset(entries[0].element, padding) : padding,
+    };
+  }
+
   function update() {
     frame = 0;
-    const entries = toValue(sections).filter(section => section.element.isConnected && section.element.getClientRects().length);
+    const position = layout ??= measure();
+    const { scroller, entries, max, readingOffset } = position;
     const first = entries[0];
     const last = entries.at(-1);
     if (!first || !last) {
@@ -48,30 +62,39 @@ export function useScrollSpy(sections: MaybeRefOrGetter<readonly UIScrollSpySect
       return;
     }
 
-    const position = metrics();
-    const { scroller, top, padding, max } = position;
+    const scrollTop = scroller.scrollTop;
     if (requestedId) {
       const target = entries.find(section => section.id === requestedId);
-      if (target && Math.abs(scroller.scrollTop - destination(target.element, position)) < 2) {
+      if (target && Math.abs(scrollTop - destination(target.element, position)) < 2) {
         activeId.value = target.id;
         return;
       }
       requestedId = undefined;
     }
 
-    const offset = sectionOffset(first.element, padding);
-    const remaining = Math.max(0, max - scroller.scrollTop);
+    const remaining = Math.max(0, max - scrollTop);
     // At the end, include headings below the reading line that cannot scroll any higher.
-    const overflow = Math.max(0, last.element.getBoundingClientRect().top - top - remaining - offset);
+    const overflow = Math.max(0, last.offset - scrollTop - remaining - readingOffset);
     const approach = Math.min(max, overflow);
     const progress = approach > 0 ? Math.max(0, 1 - remaining / approach) : 0;
-    const line = top + offset + overflow * progress;
-    const current = entries.reverse().find(section => section.element.getBoundingClientRect().top <= line + 4);
-    activeId.value = (current ?? first).id;
+    const line = scrollTop + readingOffset + overflow * progress;
+    for (let index = entries.length - 1; index >= 0; index--) {
+      const entry = entries[index]!;
+      if (entry.offset <= line + 4) {
+        activeId.value = entry.id;
+        return;
+      }
+    }
+    activeId.value = first.id;
+  }
+
+  function scheduleUpdate() {
+    if (mounted.value && !frame) frame = requestAnimationFrame(update);
   }
 
   function refresh() {
-    if (mounted.value && !frame) frame = requestAnimationFrame(update);
+    layout = undefined;
+    scheduleUpdate();
   }
 
   function markTarget(id: string) {
@@ -103,22 +126,36 @@ export function useScrollSpy(sections: MaybeRefOrGetter<readonly UIScrollSpySect
     ([ready, root, content, trackHash], _, onCleanup) => {
       if (!ready) return;
       const viewport = root ?? window;
-      viewport.addEventListener("scroll", refresh, { passive: true });
+      viewport.addEventListener("scroll", scheduleUpdate, { passive: true });
       window.addEventListener("resize", refresh);
       if (trackHash) window.addEventListener("hashchange", syncHash);
       const resize = typeof ResizeObserver === "undefined" ? undefined : new ResizeObserver(refresh);
       resize?.observe(root ?? document.documentElement);
       if (content && content !== root) resize?.observe(content);
+      const mutations = typeof MutationObserver === "undefined" ? undefined : new MutationObserver(refresh);
+      const scope = content ?? root ?? document.body;
+      scope.addEventListener("load", refresh, true);
+      mutations?.observe(scope, {
+        subtree: true, childList: true, characterData: true,
+        attributes: true, attributeFilter: ["class", "style", "hidden", "open"],
+      });
+      for (let ancestor = scope.parentElement; ancestor; ancestor = ancestor.parentElement) {
+        mutations?.observe(ancestor, { attributes: true, attributeFilter: ["class", "style", "hidden", "open"] });
+      }
+      document.fonts?.addEventListener("loadingdone", refresh);
       if (trackHash) syncHash();
       else {
         requestedId = undefined;
         refresh();
       }
       onCleanup(() => {
-        viewport.removeEventListener("scroll", refresh);
+        viewport.removeEventListener("scroll", scheduleUpdate);
         window.removeEventListener("resize", refresh);
         window.removeEventListener("hashchange", syncHash);
+        scope.removeEventListener("load", refresh, true);
+        document.fonts?.removeEventListener("loadingdone", refresh);
         resize?.disconnect();
+        mutations?.disconnect();
       });
     },
     { flush: "post" },
