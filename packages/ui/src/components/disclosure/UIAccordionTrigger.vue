@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ChevronDown } from "@lucide/vue";
 import { AccordionTrigger, type AccordionPartProps } from "@sectile/vue/accordion";
 import type { Component } from "vue";
 import UIButton from "../button/UIButton.vue";
 import UIItemIcon from "../UIItemIcon.vue";
+import UIOpeningIcon from "../UIOpeningIcon.vue";
 
 defineOptions({ inheritAttrs: false });
 const { as, asChild, icon } = defineProps<AccordionPartProps & { icon?: Component }>();
@@ -15,9 +15,9 @@ const { as, asChild, icon } = defineProps<AccordionPartProps & { icon?: Componen
     <slot v-bind="state" />
   </AccordionTrigger>
   <AccordionTrigger v-else as-child v-slot="state">
-    <UIButton v-bind="$attrs" class="ui-expandable-heading" variant="ghost" :icon="icon">
+    <UIButton v-bind="$attrs" class="ui-expandable-heading ui-opening-trigger" variant="ghost" :icon="icon">
       <slot v-bind="state" />
-      <template #trailing><ChevronDown class="ui-expandable-chevron" /></template>
+      <template #trailing><UIOpeningIcon /></template>
     </UIButton>
   </AccordionTrigger>
 </template>

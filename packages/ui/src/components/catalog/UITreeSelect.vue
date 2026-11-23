@@ -159,7 +159,8 @@ function Rows({ state }: { state: TreeSelectRootSlotProps<ID> }) {
     icon: id => byID.value.get(id)?.icon,
     children: state.getChildren,
     isBranch: state.isBranch,
-    afterLabel: id => state.value.includes(id) ? h(Check, { size: 16, "aria-hidden": "true" }) : null,
+    afterLabel: id => h("span", { class: "ui-inset-icon ui-option-indicator", "aria-hidden": "true" },
+      state.value.includes(id) ? [h(Check)] : []),
   });
 }
 

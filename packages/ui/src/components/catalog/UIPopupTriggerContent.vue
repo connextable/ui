@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronDown } from "@lucide/vue";
+import UIOpeningIcon from "../UIOpeningIcon.vue";
 
 defineProps<{ hideIndicator?: boolean }>();
 </script>
@@ -10,6 +10,8 @@ defineProps<{ hideIndicator?: boolean }>();
   </span>
   <slot />
   <span v-if="!hideIndicator || $slots.trailing" class="ui-popup-trigger__indicator" aria-hidden="true">
-    <slot name="trailing"><ChevronDown class="ui-popup-trigger__chevron" /></slot>
+    <UIOpeningIcon>
+      <template v-if="$slots.trailing" #default><slot name="trailing" /></template>
+    </UIOpeningIcon>
   </span>
 </template>

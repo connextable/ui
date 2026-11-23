@@ -56,6 +56,7 @@
   --ui-space-md: 0.75rem;
   --ui-frame-border-width: 1px;
   --ui-frame-padding: var(--ui-space-xs);
+  --ui-tree-leaf-marker: radial-gradient(circle 1.5px, currentColor 95%, transparent);
   --ui-motion-fast: 140ms;
   --ui-motion-standard: 220ms;
   --ui-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -102,7 +103,7 @@
 }
 
 /* Resolve on each frame so its children inherit the geometry of their immediate parent. */
-:where(.ui-inset-frame, .ui-clearable-control, .ui-clearable-inline, .ui-tree-select-field,
+:where(.ui-inset-frame, .ui-clearable-control, .ui-clearable-inline, .ui-tree-select-field, .ui-popup-trigger,
   .ui-tags-input__chip, .ui-number-control, .ui-quantity-control, .ui-color-sample,
   [data-scope="editable"][data-part="area"],
   [data-part="anchor"]:is([data-scope^="date"], [data-scope^="month-"][data-scope$="-picker"], [data-scope^="year-"][data-scope$="-picker"]),

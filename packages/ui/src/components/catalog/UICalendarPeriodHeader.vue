@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronDown, ChevronLeft, ChevronRight } from "@lucide/vue";
+import { ChevronLeft, ChevronRight } from "@lucide/vue";
 import { provideFormBoundary } from "@sectile/vue/form-boundary";
 import {
   YearPickerRoot,
@@ -12,6 +12,7 @@ import {
 } from "@sectile/vue/temporal/year-picker";
 import type { DateValue } from "@sectile/temporal/date-field";
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
+import UIOpeningIcon from "../UIOpeningIcon.vue";
 import { useUITemporalDisplay } from "./temporal-display";
 
 const { view, choosingMonth = false, yearFirst = false, min, max, labels } = defineProps<{
@@ -71,8 +72,8 @@ watch([yearOpen, () => choosingMonth], async ([showYears], _, onCleanup) => {
         v-slot="{ years }"
         @update:model-value="value => { if (value) emit('select-year', value.year) }"
       >
-        <YearPickerTrigger v-show="choosingMonth" class="ui-calendar-period-header__year" :aria-label="`${display.year(view)}, ${selectYearLabel}`">
-          {{ display.year(view) }} <ChevronDown :size="14" aria-hidden="true" />
+        <YearPickerTrigger v-show="choosingMonth" class="ui-calendar-period-header__year ui-opening-trigger" :aria-label="`${display.year(view)}, ${selectYearLabel}`">
+          {{ display.year(view) }} <UIOpeningIcon />
         </YearPickerTrigger>
         <YearPickerContent class="ui-calendar-period-header__years" :aria-label="selectYearLabel">
           <header>

@@ -15,22 +15,43 @@
   gap: var(--ui-space-xs);
   min-inline-size: 0;
   min-block-size: var(--ui-control-height-small);
-  padding: var(--ui-space-2xs) var(--ui-space-xs);
+  padding: var(--ui-frame-padding);
   border-radius: var(--ui-radius-sm);
   overflow-wrap: normal;
 }
 
-:where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="item"]:not(:has(> [data-part="disclosure"]))::before {
-  flex: 0 0 1.625rem;
+:where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="item"] {
+  --ui-tree-leading-size: calc(var(--ui-control-height-small) - 2 * var(--ui-frame-padding));
+}
+
+:where([data-scope="tree-select"])[data-part="item"] {
+  --ui-tree-leading-size: var(--ui-icon-frame-size);
+}
+
+.ui-tree-item__leaf {
+  --ui-icon-frame-size: var(--ui-tree-leading-size);
+  color: var(--ui-color-text-muted);
+}
+
+.ui-tree-item__leaf[data-leaf-dot] {
+  background-image: var(--ui-tree-leaf-marker);
+}
+
+/* Custom rows without a disclosure keep the same glyph column as the default rows. */
+:where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="item"]:not(:has(> :is([data-part="disclosure"], .ui-tree-item__leaf)))::before {
   content: "";
+  flex: 0 0 var(--ui-tree-leading-size);
+  block-size: var(--ui-tree-leading-size);
+  color: var(--ui-color-text-muted);
+  background-image: var(--ui-tree-leaf-marker);
 }
 
 :where([data-scope="tree-view"], [data-scope="checkbox-tree"], [data-scope="tree-select"])[data-part="disclosure"] {
   display: inline-grid;
   place-items: center;
   flex: none;
-  inline-size: 1.625rem;
-  block-size: 1.625rem;
+  inline-size: var(--ui-tree-leading-size);
+  block-size: var(--ui-tree-leading-size);
   min-inline-size: 0;
   min-block-size: 0;
   padding: 0;
@@ -98,24 +119,26 @@
 
   > input {
     inline-size: 100%;
-    padding-inline-end: calc(var(--ui-control-height-small) + var(--ui-space-md));
+    padding-inline-end: var(--ui-field-secondary-icon-inset);
   }
 
-  > svg {
+  &:has(> .ui-clear-button) > input {
+    padding-inline-end: calc(var(--ui-field-secondary-icon-inset) + var(--ui-inset-size) + var(--ui-field-icon-gap));
+  }
+
+  > .ui-tree-select-field__indicator {
     position: absolute;
     inset-block-start: 50%;
-    inset-inline-end: var(--ui-control-padding-inline);
+    inset-inline-end: var(--ui-field-end-inset);
     translate: 0 -50%;
     color: var(--ui-color-text-muted);
-    pointer-events: none;
-    transition: rotate var(--ui-motion-fast) var(--ui-ease-out);
   }
 
   &[data-has-selection] input::placeholder {
     color: var(--ui-color-text);
   }
 
-  &:has(> input[aria-expanded="true"]) > svg {
+  &:has(> input[aria-expanded="true"]) .ui-opening-chevron {
     rotate: 180deg;
   }
 }
@@ -166,18 +189,16 @@
 
 :where([data-scope="cascade-list"])[data-part="item"] {
   display: flex;
+  box-sizing: border-box;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: var(--ui-space-xs);
   min-inline-size: 0;
-  padding: var(--ui-space-xs) var(--ui-space-sm);
+  min-block-size: var(--ui-option-row-height);
+  padding: var(--ui-frame-padding) var(--ui-space-sm);
   font-size: var(--ui-font-size-body-sm);
   overflow-wrap: anywhere;
   cursor: pointer;
-
-  > :where([data-part="item-indicator"], [data-part="item-chevron"]) {
-    flex: none;
-  }
 }
 
 :where([data-scope="cascade-list"])[data-part="item"]:where([aria-selected="true"], [data-state="checked"]) {

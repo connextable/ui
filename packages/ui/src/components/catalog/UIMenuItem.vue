@@ -45,7 +45,9 @@ defineSlots<{
     <slot v-bind="state" />
     <template v-if="!asChild">
       <slot name="trailing" v-bind="state">
-        <ChevronRight v-if="state.branch" class="ui-menu-item__chevron" aria-hidden="true" />
+        <span v-if="state.branch" class="ui-inset-icon ui-menu-item__chevron" aria-hidden="true">
+          <ChevronRight />
+        </span>
       </slot>
     </template>
   </MenuItemLink>

@@ -35,13 +35,13 @@
   --ui-clear-offset: var(--ui-inset-distance);
 
   position: relative;
+}
 
-  > .ui-clear-button.ui-button {
-    position: absolute;
-    inset-block-start: 50%;
-    inset-inline-end: var(--ui-clear-offset);
-    translate: 0 -50%;
-  }
+:where(.ui-clearable-control, .ui-tree-select-field) > .ui-clear-button.ui-button {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--ui-clear-offset);
+  translate: 0 -50%;
 }
 
 .ui-clearable-control {
@@ -63,19 +63,16 @@
   --ui-clear-size: 1.5rem;
 }
 
-.ui-clearable-control--trigger {
-  --ui-clear-offset: calc(
-    var(--ui-frame-border-width) + var(--ui-control-size-padding-inline) +
-    var(--ui-control-size-icon) + var(--ui-space-xs)
-  );
+.ui-clearable-control--trigger:has(> .ui-popup-trigger > .ui-popup-trigger__indicator),
+.ui-tree-select-field {
+  --ui-clear-offset: var(--ui-field-secondary-icon-inset);
+}
 
-  &:has(> .ui-clear-button) > .ui-popup-trigger:has(> .ui-popup-trigger__indicator) {
-    padding-inline-end: var(--ui-control-size-padding-inline);
+.ui-clearable-control--trigger:has(> .ui-clear-button) > .ui-popup-trigger:has(> .ui-popup-trigger__indicator) {
+  padding-inline-end: var(--ui-frame-padding);
 
-    > .ui-popup-trigger__indicator {
-      box-sizing: content-box;
-      padding-inline-start: calc(var(--ui-clear-size) + var(--ui-space-xs));
-    }
+  > .ui-popup-trigger__indicator {
+    padding-inline-start: calc(var(--ui-inset-size) + var(--ui-field-icon-gap));
   }
 }
 
@@ -166,21 +163,6 @@
 
   > input.ui-temporal-input { inline-size: 100%; }
 }
-.ui-tree-select-field:has(> .ui-clear-button) {
-  --ui-clear-offset: calc(var(--ui-control-padding-inline) + 1rem + var(--ui-space-xs));
-
-  > input {
-    padding-inline-end: calc(var(--ui-clear-offset) + var(--ui-inset-size) + var(--ui-space-xs));
-  }
-}
-
-.ui-tree-select-field > .ui-clear-button {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-end: var(--ui-clear-offset);
-  translate: 0 -50%;
-}
-
 :where(
   [data-part="anchor"]:is([data-scope^="date"], [data-scope^="month-"], [data-scope^="year-"]),
   [data-scope="time-picker"][data-part="root"]:not(.ui-clearable-inline)

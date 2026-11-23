@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ChevronDown } from "@lucide/vue";
 import { DisclosureTrigger } from "@sectile/vue/disclosure";
 import type { Component } from "vue";
 import UIButton from "../button/UIButton.vue";
+import UIOpeningIcon from "../UIOpeningIcon.vue";
 
 defineProps<{
   size?: "sm" | "md" | "lg";
@@ -13,24 +13,14 @@ defineProps<{
 
 <template>
   <DisclosureTrigger as-child v-slot="state">
-    <UIButton class="ui-disclosure-trigger" :size="size" :variant="variant" :icon="icon">
+    <UIButton class="ui-disclosure-trigger ui-opening-trigger" :size="size" :variant="variant" :icon="icon">
       <slot v-bind="state" />
-      <template #trailing>
-        <ChevronDown class="ui-expandable-chevron" />
-      </template>
+      <template #trailing><UIOpeningIcon /></template>
     </UIButton>
   </DisclosureTrigger>
 </template>
 
 <style>
-.ui-expandable-chevron {
-  transition: transform var(--ui-motion-fast) var(--ui-ease-out);
-}
-
-[aria-expanded="true"] .ui-expandable-chevron {
-  transform: rotate(180deg);
-}
-
 .ui-expandable-heading.ui-button,
 .ui-disclosure[data-variant="outline"] > .ui-disclosure-trigger.ui-button {
   --ui-control-size-radius: calc(var(--ui-expandable-radius, var(--ui-radius-md)) - 1px);

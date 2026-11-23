@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ChevronDown } from "@lucide/vue";
 import { PopoverRoot, PopoverContent, PopoverPortal } from "@sectile/vue/popover";
 import { computed, nextTick, onBeforeUnmount, shallowRef, useId, useTemplateRef, watch, type Component } from "vue";
 import type { RouteLocationRaw } from "vue-router";
@@ -7,6 +6,7 @@ import type { LinkPrefetchProps } from "../link-component";
 import { UIAnchor } from "./anchor";
 import { useNavigationPanelMotion } from "./useNavigationPanelMotion";
 import UIItemIcon from "../UIItemIcon.vue";
+import UIOpeningIcon from "../UIOpeningIcon.vue";
 
 export interface UINavigationMenuEntry extends LinkPrefetchProps {
   id: string;
@@ -204,7 +204,7 @@ onBeforeUnmount(() => {
         <li v-for="entry in items" :key="entry.id">
           <button
             v-if="entry.children?.length"
-            class="ui-navigation-popover__row"
+            class="ui-navigation-popover__row ui-opening-trigger"
             type="button"
             :disabled="entry.disabled"
             :aria-expanded="displayed && active?.id === entry.id"
@@ -217,7 +217,7 @@ onBeforeUnmount(() => {
             <slot name="label" :entry="entry" :open="displayed && active?.id === entry.id">
               <UIItemIcon v-if="entry.icon" :icon="entry.icon" />{{ entry.label }}
             </slot>
-            <ChevronDown class="ui-navigation-rail__chevron" aria-hidden="true" />
+            <UIOpeningIcon />
           </button>
           <UIAnchor
             v-else

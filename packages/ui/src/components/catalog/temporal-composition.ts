@@ -1,4 +1,4 @@
-import { CalendarDays, ChevronDown, ChevronLeft, ChevronRight } from "@lucide/vue";
+import { CalendarDays, ChevronLeft, ChevronRight } from "@lucide/vue";
 import { appendFormFieldPath, encodeFormFieldPath } from "@sectile/form/path";
 import { provideFormBoundary } from "@sectile/vue/form-boundary";
 import { useTemporalReferenceDate } from "@sectile/vue/temporal/temporal-provider";
@@ -16,6 +16,7 @@ import type { TimeFieldPolicies, TimeFieldPrecision, TimeValue } from "@sectile/
 import { defineComponent, h, shallowRef, type Component, type PropType } from "vue";
 import { controlFlag } from "../clear/clearable";
 import { definedControlAttrs, inputStateAttrs } from "../control-attrs";
+import UIOpeningIcon from "../UIOpeningIcon.vue";
 import UICalendarPeriodHeader from "./UICalendarPeriodHeader.vue";
 import UIDatePickerValue from "./UIDatePickerValue.vue";
 import UIDateRangePickerValue from "./UIDateRangePickerValue.vue";
@@ -172,8 +173,8 @@ export function withCalendarDefaults<Root extends Component, Extra = object>(roo
           previous: previousButton,
           next: nextButton,
           grid: cells,
-          default: () => h(DatePickerYearViewTrigger, { "aria-label": labels.monthYear }, () => [
-            display.yearMonth(state.view), h(ChevronDown, { size: 14, "aria-hidden": true }),
+          default: () => h(DatePickerYearViewTrigger, { class: "ui-opening-trigger", "aria-label": labels.monthYear }, () => [
+            display.yearMonth(state.view), h(UIOpeningIcon),
           ]),
         });
       }

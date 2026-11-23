@@ -359,6 +359,11 @@
   box-shadow: none;
 }
 
+.ui-quantity-control .ui-select-trigger:has(> .ui-popup-trigger__indicator) {
+  --ui-icon-frame-size: calc(var(--ui-inset-size) - 2 * var(--ui-frame-padding));
+  padding-inline-end: var(--ui-frame-padding);
+}
+
 .ui-quantity-control .ui-select-trigger:hover:enabled:not([data-ui-readonly]) {
   background: var(--ui-color-surface-hover);
 }

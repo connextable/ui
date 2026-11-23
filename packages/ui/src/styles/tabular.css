@@ -330,6 +330,18 @@
     flex: 0 0 calc((var(--ui-tabular-tree-depth) - 1) * var(--ui-space-md) + var(--ui-tabular-tree-disclosure-space));
   }
 
+  :where([data-scope="tree-grid"][data-part="row"] > [data-part="cell"]:first-child,
+    [data-scope="data-tree-grid"][data-part="row"] > [data-part="cell"][data-ui-tree-column]):where(:not(:has(> [data-part="disclosure"], > [data-part="row-disclosure"])))::before {
+    block-size: 1lh;
+    color: var(--ui-color-text-muted);
+    background: var(--ui-tree-leaf-marker) right var(--ui-space-xs) center / var(--ui-tabular-action-size) 100% no-repeat;
+  }
+
+  :where([data-scope="tree-grid"][data-part="row"] > [data-part="cell"]:first-child,
+    [data-scope="data-tree-grid"][data-part="row"] > [data-part="cell"][data-ui-tree-column]):where(:dir(rtl))::before {
+    background-position: left var(--ui-space-xs) center;
+  }
+
   :where([data-scope="data-table"], [data-scope="data-grid"], [data-scope="data-tree-grid"], [data-scope="tree-grid"])
     :is(button[data-part="sort-trigger"], button[data-part="disclosure"], button[data-part="row-disclosure"]) {
     flex: none;

@@ -1,0 +1,63 @@
+/* Decorative affordances use the same square and inset as a field action. */
+:is(.ui-inset-icon,
+    :where([data-scope="cascade-list"], [data-scope="cascade-select"], [data-scope="select"], [data-scope="listbox"])
+      :is([data-part="item-indicator"], [data-part="item-chevron"])):not([hidden]) {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  min-inline-size: var(--ui-icon-frame-size, var(--ui-inset-size));
+  block-size: var(--ui-icon-frame-size, var(--ui-inset-size));
+  pointer-events: none;
+
+  > svg {
+    inline-size: var(--ui-icon-frame-glyph, var(--ui-control-size-icon, 1rem));
+    block-size: var(--ui-icon-frame-glyph, var(--ui-control-size-icon, 1rem));
+  }
+}
+
+.ui-inset-icon {
+  inline-size: var(--ui-icon-frame-size, var(--ui-inset-size));
+}
+
+:where([data-scope="select"], [data-scope="listbox"])[data-part="item-indicator"] {
+  transition: opacity var(--ui-motion-fast) var(--ui-ease-out);
+
+  &[data-state="unchecked"] {
+    opacity: 0;
+  }
+}
+
+.ui-opening-chevron {
+  transition: rotate var(--ui-motion-fast) var(--ui-ease-out);
+}
+
+:is([aria-expanded="true"], [data-state="open"]) > .ui-inset-icon > .ui-opening-chevron,
+:is([aria-expanded="true"], [data-state="open"]) > .ui-popup-trigger__indicator > .ui-inset-icon > .ui-opening-chevron,
+.ui-opening-trigger[aria-expanded="true"] > .ui-button__content > .ui-button__icon > .ui-inset-icon > .ui-opening-chevron {
+  rotate: 180deg;
+}
+
+.ui-opening-trigger:has(.ui-inset-icon) {
+  --ui-icon-frame-size: calc(var(--ui-control-size-height, var(--ui-control-height-small)) -
+    2 * (var(--ui-frame-padding) + var(--ui-opening-trigger-border, var(--ui-frame-border-width))));
+
+  padding-block: var(--ui-frame-padding);
+  padding-inline-end: var(--ui-frame-padding);
+}
+
+.ui-opening-trigger .ui-button__icon:has(> .ui-inset-icon) {
+  inline-size: auto;
+  block-size: auto;
+
+  > .ui-inset-icon > svg {
+    inline-size: var(--ui-control-size-icon);
+    block-size: var(--ui-control-size-icon);
+  }
+}
+
+:where(.ui-popup-trigger, .ui-tree-select-field, .ui-clearable-control--trigger) {
+  --ui-icon-frame-glyph: var(--ui-control-size-icon, 1.125rem);
+  --ui-field-end-inset: var(--ui-inset-distance);
+  --ui-field-icon-gap: var(--ui-frame-padding);
+  --ui-field-secondary-icon-inset: calc(var(--ui-field-end-inset) + var(--ui-inset-size) + var(--ui-field-icon-gap));
+}

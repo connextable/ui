@@ -30,7 +30,7 @@ const id = useId();
       <span v-if="description" :id="id" class="ui-select-item__description">{{ description }}</span>
     </span>
     <SelectItemIndicator class="ui-select-item__indicator" force-present>
-      <slot name="indicator" v-bind="state"><Check class="ui-select-item__check" aria-hidden="true" /></slot>
+      <slot name="indicator" v-bind="state"><Check aria-hidden="true" /></slot>
     </SelectItemIndicator>
   </SelectItem>
 </template>
@@ -58,8 +58,7 @@ const id = useId();
   color: inherit;
 }
 
-.ui-select-item__leading,
-.ui-select-item__indicator {
+.ui-select-item__leading {
   color: var(--ui-color-accent);
   display: grid;
   flex: none;
@@ -68,20 +67,6 @@ const id = useId();
 }
 
 .ui-select-item__indicator {
-  opacity: 0;
-  scale: 0.75;
-  transition:
-    opacity var(--ui-motion-fast) var(--ui-ease-out),
-    scale var(--ui-motion-fast) var(--ui-ease-out);
-}
-
-.ui-select-item__indicator[data-state="checked"] {
-  opacity: 1;
-  scale: 1;
-}
-
-.ui-select-item__check {
-  inline-size: 100%;
-  block-size: auto;
+  color: var(--ui-color-accent);
 }
 </style>

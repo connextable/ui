@@ -3,6 +3,7 @@ import "./styles/tabular.css";
 import "./components/catalog/splitter.css";
 import "./styles/virtual.css";
 import "./styles/tokens.css";
+import "./styles/inset-icon.css";
 import "./styles/scrollbar.css";
 import "./styles/interaction.css";
 import "./styles/expandable.css";

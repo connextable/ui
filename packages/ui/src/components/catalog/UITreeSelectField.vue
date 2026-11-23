@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ChevronDown } from "@lucide/vue";
 import { TreeSelectInput } from "@sectile/vue/tree-select";
 import { nextTick, type VNode } from "vue";
 import UIFieldClear from "../clear/UIFieldClear.vue";
+import UIOpeningIcon from "../UIOpeningIcon.vue";
 
 defineOptions({ inheritAttrs: false });
 const props = defineProps<{
@@ -91,6 +91,6 @@ function endComposition(event: CompositionEvent) {
       @compositionend="endComposition"
     ><slot /></TreeSelectInput>
     <UIFieldClear v-if="!asChild" />
-    <ChevronDown :size="16" aria-hidden="true" />
+    <UIOpeningIcon class="ui-tree-select-field__indicator" />
   </div>
 </template>

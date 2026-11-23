@@ -1,3 +1,4 @@
+import { Check } from "@lucide/vue";
 import { CheckboxGroupItem, CheckboxGroupRoot } from "@sectile/vue/checkbox-group";
 import { ListboxItem, ListboxItemIndicator, ListboxItemText, ListboxRoot } from "@sectile/vue/listbox";
 import { ToggleGroupItem, ToggleGroupRoot } from "@sectile/vue/toggle-group";
@@ -85,5 +86,5 @@ export const ListboxComposition = withOptions(ListboxRoot, ({ value, label, disa
   h(ListboxItem, { key: value, value, disabled }, () => [
     icon && h(UIItemIcon, { icon }),
     h(ListboxItemText, null, () => label),
-    h(ListboxItemIndicator, { "aria-hidden": "true" }, () => "선택됨"),
+    h(ListboxItemIndicator, { forcePresent: true }, () => h(Check)),
   ]));

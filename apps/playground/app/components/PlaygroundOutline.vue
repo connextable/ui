@@ -200,7 +200,10 @@ onUnmounted(() => {
     <nav v-if="headings.length" aria-label="이 페이지">
       <h2 id="playground-outline-title" class="playground-outline__title">이 페이지</h2>
       <details :open="!narrow || expanded" @toggle="onOutlineToggle">
-        <summary>이 페이지 <ChevronDown aria-hidden="true" :size="16" /></summary>
+        <summary class="ui-opening-trigger">
+          이 페이지
+          <span class="ui-inset-icon" aria-hidden="true"><ChevronDown class="ui-opening-chevron" /></span>
+        </summary>
         <div ref="scroller" class="playground-outline__scroller">
           <div class="playground-outline__entries">
             <svg v-if="rail" class="playground-outline__rail" aria-hidden="true">
@@ -345,13 +348,13 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--ui-space-sm) var(--ui-space-md);
+    padding-inline-start: var(--ui-space-md);
     font-size: var(--ui-font-size-body-sm);
     font-weight: 650;
     cursor: pointer;
   }
 
-  .playground-outline details[open] summary svg {
+  .playground-outline details[open] summary .ui-opening-chevron {
     rotate: 180deg;
   }
 

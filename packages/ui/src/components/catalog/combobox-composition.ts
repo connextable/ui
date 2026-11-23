@@ -1,6 +1,7 @@
+import { Check } from "@lucide/vue";
 import {
   ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxResults, ComboboxRoot,
-  type ComboboxResultsSlotProps, type ComboboxRootProps,
+  type ComboboxItemSlotProps, type ComboboxResultsSlotProps, type ComboboxRootProps,
 } from "@sectile/vue/combobox";
 import { computed, defineComponent, h, type Component, type PropType } from "vue";
 import { controlFlag } from "../clear/clearable";
@@ -41,7 +42,13 @@ export const ComboboxComposition = defineComponent({
             h(ComboboxResults, null, {
               default: ({ items }: ComboboxResultsSlotProps) => items.map(({ id, label }) => {
                 const icon = itemsByID.value.get(id)?.icon;
-                return h(ComboboxItem, { key: id, value: id }, () => [icon && h(UIItemIcon, { icon }), label]);
+                return h(ComboboxItem, { key: id, value: id }, {
+                  default: ({ selected }: ComboboxItemSlotProps) => [
+                    icon && h(UIItemIcon, { icon }), label,
+                    h("span", { class: "ui-inset-icon ui-option-indicator", "aria-hidden": "true" },
+                      selected ? [h(Check)] : []),
+                  ],
+                });
               }),
             }),
             h(ComboboxEmpty, null, () => props.emptyLabel),

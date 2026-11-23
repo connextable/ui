@@ -35,10 +35,12 @@ export function renderTreeChoiceRows<ID extends string>(options: {
     const icon = options.icon?.(id);
     const branch = options.isBranch?.(id) ?? options.children(id).length > 0;
     const row = h(options.item, { key: `item:${id}`, value: id, "aria-label": label }, () => [
-      branch && h(options.disclosure, { for: id, as: "button", "aria-label": `${label} 하위 항목` },
-        () => h(ChevronRight, { size: 16, "aria-hidden": "true" })),
+      branch ? h(options.disclosure, { for: id, as: "button", "aria-label": `${label} 하위 항목` },
+        () => h(ChevronRight, { size: 16, "aria-hidden": "true" }))
+        : h("span", { class: "ui-inset-icon ui-tree-item__leaf", "data-leaf-dot": icon ? undefined : "", "aria-hidden": "true" },
+          icon ? [h(UIItemIcon, { icon })] : []),
       options.beforeLabel?.(id),
-      icon && h(UIItemIcon, { icon }),
+      branch && icon && h(UIItemIcon, { icon }),
       label,
       options.afterLabel?.(id),
     ]);
