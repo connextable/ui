@@ -44,8 +44,8 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     },
   },
   "in-view": {
-    title: "스크롤하면 나타나는 점검 메모",
-    description: "목록을 아래로 내려 11월 9일 기록이 보이면 점검 메모가 나타납니다. 위로 올라갔다가 다시 내려와도 메모는 그대로입니다.",
+    title: "영상이 보일 때 플레이어 표시",
+    description: "미리보기 안에서 아래로 내려 보세요. 예고편 영역이 절반쯤 보이면 플레이어가 나타납니다. 위로 올라갔다가 돌아와도 플레이어는 그대로입니다.",
     api: {
       "as / as-child": "기본 요소는 div입니다. as-child로 기존 li 또는 article 한 개를 관찰 대상으로 사용합니다.",
       root: "안쪽 스크롤 영역을 지정합니다. 생략하거나 null을 넘기면 문서 뷰포트를 관찰합니다.",
