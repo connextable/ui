@@ -12,17 +12,13 @@ const directory = resolve(destination);
 const packageRoot = new URL("../packages/ui/", import.meta.url);
 const workspace = new URL("../", import.meta.url);
 const { name, version } = JSON.parse(readFileSync(new URL("package.json", packageRoot), "utf8"));
-const { GITHUB_EVENT_NAME, GITHUB_REF_NAME, GITHUB_REF_TYPE, GITHUB_REPOSITORY, GITHUB_SHA } = process.env;
+const { GITHUB_REPOSITORY, GITHUB_SHA } = process.env;
 if (GITHUB_REPOSITORY || GITHUB_SHA) {
   assert(GITHUB_REPOSITORY && GITHUB_SHA, "Both GitHub source fields must be present.");
   const git = args => execFileSync("git", args, { cwd: workspace, encoding: "utf8" }).trim();
   assert.equal(git(["rev-parse", "HEAD"]), GITHUB_SHA, "The package must be sealed against the workflow checkout.");
   assert.equal(git(["status", "--porcelain"]), "", "The workflow checkout must be clean before packing.");
 }
-if (GITHUB_EVENT_NAME === "push" && GITHUB_REF_TYPE === "tag") {
-  assert.equal(GITHUB_REF_NAME, `v${version}`, "The release tag must match the package version.");
-}
-
 mkdirSync(directory, { recursive: true });
 const tarball = join(directory, `connextable-ui-${version}.tgz`);
 execFileSync("pnpm", ["pack", "--silent", "--out", tarball], { cwd: packageRoot, stdio: "inherit" });

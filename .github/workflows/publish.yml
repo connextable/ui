@@ -2,15 +2,18 @@ name: Publish npm package
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - "v*"
+    inputs:
+      publish:
+        description: Publish the verified package to npm
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   package:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     outputs:
       artifact-id: ${{ steps.bundle.outputs.artifact-id }}
@@ -61,8 +64,11 @@ jobs:
 
   publish:
     needs: [package, types]
-    if: github.event_name == 'push' && github.ref_type == 'tag'
+    if: github.ref == 'refs/heads/main' && inputs.publish
     runs-on: ubuntu-24.04
+    concurrency:
+      group: connextable-ui-npm
+      cancel-in-progress: false
     permissions:
       contents: read
       id-token: write
