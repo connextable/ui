@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.exports.json",
+  "compilerOptions": { "skipLibCheck": true },
+  "vueCompilerOptions": { "strictTemplates": true },
+  "include": ["app/**/*.vue", "connextable-ui.d.ts", "exports.ts", "vite.config.ts"]
+}

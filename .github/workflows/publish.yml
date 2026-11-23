@@ -1,0 +1,87 @@
+name: Publish npm package
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    outputs:
+      artifact-id: ${{ steps.bundle.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:copy
+      - run: pnpm --filter @connextable/ui build
+      - run: node --test packages/ui/tests/*.test.mjs
+      - name: Pack and verify the npm artifact
+        run: node scripts/pack-npm-release.mjs "$RUNNER_TEMP/npm-release"
+      - id: bundle
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: npm-package-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/npm-release
+          if-no-files-found: error
+
+  types:
+    needs: package
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: ["5.9", "6", "7", "7-vue"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.package.outputs.artifact-id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/npm-release
+      - name: Check published types
+        run: node scripts/check-npm-types.mjs "$RUNNER_TEMP/npm-release" "${{ matrix.compiler }}"
+
+  publish:
+    needs: [package, types]
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.package.outputs.artifact-id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/npm-release
+      - id: npm
+        uses: releaseway/npm-actions@9f054e6aa942e473d18817056f296ad5f560117b # v0.9.0
+        with:
+          artifacts-manifest: ${{ runner.temp }}/npm-release/artifacts.json
+      - if: always() && steps.npm.outputs.artifact-report-path != ''
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: npm-publication-report-${{ github.run_attempt }}
+          path: ${{ steps.npm.outputs.artifact-report-path }}
+          if-no-files-found: warn

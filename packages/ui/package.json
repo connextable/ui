@@ -1,6 +1,13 @@
 {
   "name": "@connextable/ui",
   "version": "0.1.0",
+  "description": "Styled Vue components and composables with Nuxt and Vite integrations.",
+  "homepage": "https://ui.connextable.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/connextable/ui.git",
+    "directory": "packages/ui"
+  },
   "type": "module",
   "files": ["dist"],
   "sideEffects": ["**/*.css"],
