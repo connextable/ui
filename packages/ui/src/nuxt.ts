@@ -50,8 +50,7 @@ export default defineNuxtPlugin(nuxtApp => {
         }
       }
       if (options.composables) {
-        addImports(names.filter(name => /^use[A-Z]/.test(name) && !/^useUI[A-Z]/.test(name))
-          .map(name => ({ name, from: packageName })));
+        addImports(names.filter(name => /^use[A-Z]/.test(name)).map(name => ({ name, from: packageName })));
       }
     }
   },

@@ -39,8 +39,6 @@ export default defineNuxtConfig({
 
 이 설정에서 `UIInView`는 `<AppInView>`로 자동 등록됩니다. 컴포저블은 `prefix`와 관계없이 `useScrollArea`, `useConfirm` 같은 이름으로 등록됩니다. 직접 import할 때는 `@connextable/ui`에서 `UIButton`, `useScrollArea`를 가져옵니다.
 
-기존 `useUI…` 이름은 직접 import하는 코드의 호환용 별칭입니다. Nuxt 자동 임포트를 사용하던 코드는 `useUIScrollArea`를 `useScrollArea`로 바꿉니다.
-
 ## 링크로 이동하기
 
 `UIButton`, `UIAnchor`, `UINavigationMenuLink`, `UIMenuItem`, `UIContextMenuItem`, `UIMenubarItem`에 `href`나 `to`를 직접 넘깁니다. `UINavigationMenuPopover`에서는 각 항목에 같은 속성을 지정합니다. 두 속성을 함께 쓰면 `to`가 우선합니다. Nuxt에서는 경로 문자열과 라우트 객체를 `to`로 전달할 수 있고, 일반 Vue에서는 문자열 주소를 사용할 수 있습니다.

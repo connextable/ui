@@ -32,11 +32,6 @@ const sections = computed(() => [
 function groupAnchor(section: string, group: string) {
   return props.headingAnchors?.[group] ?? `${section}-${group}`;
 }
-
-function legacyComposableAnchor(anchor?: string) {
-  if (!anchor || !/^use[A-Z]/.test(anchor)) return;
-  return { id: `useUI${anchor.slice(3)}`, tabindex: -1, "data-playground-anchor": "" };
-}
 </script>
 
 <template>
@@ -65,7 +60,7 @@ function legacyComposableAnchor(anchor?: string) {
           >{{ block.owner ? `${block.owner} · ${group.title}` : group.title }}</h3>
           <dl class="playground-reference__entries">
             <div v-for="entry in group.entries" :id="entry.anchor" :key="entry.name" :tabindex="entry.anchor ? -1 : undefined">
-              <dt v-bind="legacyComposableAnchor(entry.anchor)">
+              <dt>
                 <UIAnchor v-if="entry.route" :to="entry.route"><code>{{ entry.label ?? entry.name }}</code></UIAnchor>
                 <code v-else>{{ entry.label ?? entry.name }}</code>
                 <span v-if="entry.type" class="playground-reference__meta">

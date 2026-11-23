@@ -86,36 +86,3 @@ export * from "./components/catalog/input";
 export * from "./components/catalog/navigation";
 export * from "./components/catalog/layout";
 export * from "./components/catalog/temporal";
-
-// Keep existing explicit imports working while Nuxt auto-imports the canonical names.
-export {
-  useChart as useUIChart,
-  useChartAxisSelector as useUIChartAxisSelector,
-  useChartContext as useUIChartContext,
-  useChartLayerSelector as useUIChartLayerSelector,
-  useChartSelector as useUIChartSelector,
-} from "./components/chart";
-export {
-  useDataGrid as useUIDataGrid,
-  useDataGridContext as useUIDataGridContext,
-  useDataTable as useUIDataTable,
-  useDataTableContext as useUIDataTableContext,
-  useDataTreeGrid as useUIDataTreeGrid,
-  useDataTreeGridContext as useUIDataTreeGridContext,
-} from "./components/tabular";
-export {
-  useInfiniteScroll as useUIInfiniteScroll,
-  useScrollArea as useUIScrollArea,
-  useScrollSpy as useUIScrollSpy,
-} from "./components/scroll";
-export { useVirtualizer as useUIVirtualizer } from "./components/virtual";
-export { useConfirm as useUIConfirm } from "./components/headless/confirm";
-export { useFullscreen as useUIFullscreen } from "@sectile/vue/fullscreen";
-export { useMediaGesture as useUIMediaGesture } from "@sectile/vue/media-gesture";
-export { useFormControl as useUIFormControl, useNativeFormControl as useUINativeFormControl } from "./components/form/form-control";
-export { useFileUpload as useUIFileUpload, useFileUploadGroup as useUIFileUploadGroup } from "./components/catalog/file-input";
-export {
-  useTemporalDisplay as useUITemporalDisplay,
-  useTemporalFormatter as useUITemporalFormatter,
-  useTemporalReferenceDate as useUITemporalReferenceDate,
-} from "./components/catalog/temporal";

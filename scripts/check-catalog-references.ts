@@ -146,7 +146,6 @@ async function check(slug: string) {
     }
     for (const part of parts) {
       expectAnchor(part, "sidebar reference");
-      if (/^use[A-Z]/.test(part)) expectAnchor(`useUI${part.slice(3)}`, "legacy composable reference");
       checkedParts++;
     }
 
