@@ -1,5 +1,5 @@
 import { PinInputInput, PinInputRoot, type PinInputRootProps, type PinInputRootSlotProps } from "@sectile/vue/pin-input";
-import { defineComponent, h, mergeProps, nextTick, type VNode } from "vue";
+import { defineComponent, h, mergeProps, nextTick, watch, type VNode } from "vue";
 import UIFieldClear from "../clear/UIFieldClear.vue";
 import { controlFlag, useFieldClear } from "../clear/clearable";
 import { withClearableModel, type ClearableComponent } from "../clear/with-clearable";
@@ -8,7 +8,7 @@ import { useCompositeValueForm } from "../form/composite-value";
 
 type PinInputInstance = InstanceType<typeof PinInputRoot>;
 type PinInputWithPlaceholder = new () => Omit<PinInputInstance, "$props"> & {
-  $props: PinInputInstance["$props"] & { placeholder?: string };
+  $props: PinInputInstance["$props"] & { placeholder?: string; onCompletionChange?: (completed: boolean) => void };
 };
 
 const inputSelector = '[data-scope="pin-input"][data-part="input"]';
@@ -18,22 +18,29 @@ const PinInputComposition = defineComponent({
   inheritAttrs: false,
   __sectileFormLabelMode: "labelledby",
   props: {
-    placeholder: { type: String, default: "–" },
+    placeholder: { type: String, default: "◦" },
+    length: { type: Number, default: 6 },
+    modelValue: String,
     name: String,
     form: String,
     required: { type: Boolean, default: undefined },
     readonly: { type: Boolean, default: undefined },
     disabled: { type: Boolean, default: undefined },
   },
-  emits: ["update:modelValue", "complete"],
+  emits: {
+    "update:modelValue": (_value: string) => true,
+    complete: (_value: string) => true,
+    completionChange: (_completed: boolean) => true,
+  },
   setup(props, { attrs, slots, emit }) {
     const clear = useFieldClear();
     const { readonly, disabled, editable, attrs: stateAttrs } = useInputState(props);
-    const value = () => (attrs.modelValue as string | undefined) ?? "";
-    const length = () => typeof attrs.length === "number" ? attrs.length : 6;
+    const value = () => props.modelValue ?? "";
+    const complete = () => Array.from(value()).length === props.length;
+    watch(complete, completed => emit("completionChange", completed));
     const renderForm = useCompositeValueForm(props, {
       values: () => [value()],
-      complete: () => Array.from(value()).length === length(),
+      complete,
       focus: inputSelector,
       requiredMessage: "확인 코드의 모든 자리를 입력하세요.",
     });
@@ -61,7 +68,7 @@ const PinInputComposition = defineComponent({
     }
 
     function defaultCells() {
-      const count = length();
+      const count = props.length;
       const name = typeof attrs.label === "string" ? attrs.label : "인증 코드";
       const { placeholder } = props;
       // Keep the cells and their paste handlers stable when the slot state changes.
@@ -83,6 +90,8 @@ const PinInputComposition = defineComponent({
       const bindings = {
         ...attrs,
         ...stateAttrs.value,
+        modelValue: props.modelValue,
+        length: props.length,
         "aria-disabled": disabled.value || undefined,
         readonly: readonly.value,
         disabled: disabled.value,

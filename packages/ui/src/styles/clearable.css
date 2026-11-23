@@ -61,6 +61,8 @@
 
 :where([data-scope="editable"][data-part="area"]) > .ui-clear-button {
   --ui-clear-size: 1.5rem;
+  grid-area: 1 / 2;
+  margin-inline-start: var(--ui-space-2xs);
 }
 
 .ui-clearable-control--trigger:has(> .ui-popup-trigger > .ui-popup-trigger__indicator),
@@ -106,7 +108,7 @@
   flex: 1 1 auto;
 }
 
-.ui-clearable-inline:is([data-scope="pin-input"], [data-scope="rating"], [data-scope="time-picker"])[data-part="root"] {
+.ui-clearable-inline:is([data-scope="rating"], [data-scope="time-picker"])[data-part="root"] {
   --ui-frame-radius: var(--ui-radius-md);
 
   box-sizing: border-box;
@@ -119,11 +121,14 @@
   > .ui-clear-button { align-self: center; }
 }
 
-.ui-clearable-inline:is([data-scope="pin-input"], [data-scope="time-picker"])[data-part="root"] {
+.ui-clearable-inline[data-scope="time-picker"][data-part="root"] {
   inline-size: fit-content;
 }
 
-.ui-clearable-inline[data-scope="pin-input"][data-part="root"] {
+:where([data-scope="pin-input"][data-part="root"]) {
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  box-sizing: border-box;
   flex-wrap: nowrap;
   gap: var(--ui-space-xs);
 

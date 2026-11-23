@@ -8,6 +8,7 @@ const lengths = [
   { value: "6", label: "6자리" },
 ];
 const code = ref("");
+const completed = ref(false);
 const selectedLength = ref<string | null>("6");
 const length = computed(() => selectedLength.value === "4" ? 4 : 6);
 const mask = ref(false);
@@ -30,8 +31,9 @@ const source = computed(() => vueExampleCode("UIPinInput", {
     'import { ref } from "vue";',
     "",
     'const code = ref("");',
+    "const completed = ref(false);",
   ],
-  attributes: { "v-model": "code", ...attributes.value },
+  attributes: { "v-model": "code", "@completion-change": "completed = $event", ...attributes.value },
 }));
 </script>
 
@@ -46,7 +48,7 @@ const source = computed(() => vueExampleCode("UIPinInput", {
       <UISwitch variant="outline" v-model="readonly" size="sm" label="readonly" />
       <UISwitch variant="outline" v-model="disabled" size="sm" label="disabled" />
     </template>
-    <UIPinInput v-model="code" v-bind="attributes" />
-    <template #footer><output>{{ code.length }} / {{ length }}자리 입력</output></template>
+    <UIPinInput v-model="code" v-bind="attributes" @completion-change="completed = $event" />
+    <template #footer><output>{{ completed ? "입력 완료" : `${code.length} / ${length}자리 입력` }}</output></template>
   </PlaygroundExample>
 </template>

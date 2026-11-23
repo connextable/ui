@@ -13,13 +13,14 @@ defineSlots<{
   trailing?(): unknown;
 }>();
 
-const { size = "md", variant = "outline", disabled = undefined, readonly = undefined, required = undefined, clearable, clearLabel, icon, ...fieldProps } = defineProps<
+const { size = "md", variant = "outline", disabled = undefined, readonly = undefined, required = undefined, clearable, clearLabel, icon, rows, ...fieldProps } = defineProps<
   Omit<TextFieldProps, "modelValue" | "name" | "form" | "required"> & FormControlProps & ClearableProps & {
     id?: string;
     icon?: Component;
     modelValue?: Value;
     size?: "sm" | "md" | "lg";
     variant?: "outline" | "soft";
+    rows?: number;
   }
 >();
 
@@ -53,7 +54,7 @@ function inputBindings(attrs: Record<string, unknown>) {
   const { class: _class, style: _style, ...inputAttrs } = attrs;
   return {
     ...inputAttrs,
-    ...definedControlAttrs({ ...fieldProps, disabled, readonly, required }),
+    ...definedControlAttrs({ ...fieldProps, disabled, readonly, required, rows: fieldProps.multiline ? rows : undefined }),
     "onUpdate:modelValue": (next: string | number) => {
       text.value = String(next);
       emit("update:modelValue", next as Value);
@@ -125,6 +126,10 @@ function focusFromFrame(event: MouseEvent) {
   align-items: center;
   gap: var(--ui-space-sm);
   padding-block: var(--ui-frame-padding);
+}
+
+.ui-input--with-slots:has(> textarea) {
+  align-items: flex-start;
 }
 
 .ui-input--with-slots[data-size="sm"] {

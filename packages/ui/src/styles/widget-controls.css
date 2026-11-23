@@ -5,30 +5,41 @@
 }
 
 :where([data-scope="editable"][data-part="area"]) {
-  display: inline-flex;
+  --ui-editable-action-size: 1.5rem;
+
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--ui-space-2xs);
   max-inline-size: 100%;
-  border-radius: var(--ui-radius-xs);
+  vertical-align: baseline;
 }
 
 :where([data-scope="editable"]:is([data-part="preview"], [data-part="input"])) {
   box-sizing: border-box;
   min-inline-size: 0;
-  border-radius: inherit;
+  min-block-size: 1lh;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   font: inherit;
 }
 
-:where([data-scope="editable"][data-part="preview"]:not([hidden])) {
-  display: inline;
+:where([data-scope="editable"][data-part="preview"]:not([hidden]), [data-scope="editable"][data-part="area"] > [data-part="preview"]) {
+  display: block;
   max-inline-size: 100%;
-  min-block-size: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
   color: var(--ui-input-state-ink, inherit);
   text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
   overflow-wrap: anywhere;
+}
+
+:where([data-scope="editable"][data-part="area"] > [data-part="preview"][hidden]) {
+  /* Keep the committed text's dimensions while the input occupies its box. */
+  visibility: hidden;
+  pointer-events: none;
 }
 
 :where([data-scope="editable"][data-part="preview"][tabindex="0"]:not([aria-readonly="true"])) {
@@ -36,28 +47,47 @@
 }
 
 :where([data-scope="editable"][data-part="input"]) {
-  inline-size: min(16ch, 100%);
-  padding: 0;
-  border: 0;
-  background: transparent;
   color: inherit;
+  box-shadow: inset 0 -1px var(--ui-color-focus);
 }
 
-@supports (field-sizing: content) {
-  :where([data-scope="editable"][data-part="input"]) {
-    field-sizing: content;
-    inline-size: auto;
-    min-inline-size: min(3ch, 100%);
-  }
+:where([data-scope="editable"][data-part="area"]:has(> [data-part="preview"]) > [data-part="input"]) {
+  position: absolute;
+  grid-area: 1 / 1;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 0;
+  resize: none;
+}
+
+:where([data-scope="editable"]:is([data-part="preview"], [data-part="input"])):focus-visible {
+  outline: none;
+  box-shadow: inset 0 -2px var(--ui-color-focus);
+}
+
+:where([data-scope="editable"][data-part="input"][aria-invalid="true"]) {
+  box-shadow: inset 0 -2px var(--ui-color-danger);
 }
 
 :where([data-scope="editable"]:is([data-part="submit-trigger"], [data-part="cancel-trigger"])) {
-  min-inline-size: 1.5rem;
-  min-block-size: 1.5rem;
+  min-inline-size: var(--ui-editable-action-size, 1.5rem);
+  min-block-size: var(--ui-editable-action-size, 1.5rem);
   padding: 0 var(--ui-space-2xs);
   border: 0;
   background: transparent;
   color: var(--ui-color-text-muted);
+}
+
+:where([data-scope="editable"][data-part="area"]) > [data-scope="editable"]:is([data-part="submit-trigger"], [data-part="cancel-trigger"]) {
+  position: absolute;
+  z-index: 1;
+  inset-block-end: calc(100% + var(--ui-space-2xs));
+  inset-inline-end: 0;
+}
+
+:where([data-scope="editable"][data-part="area"]:has(> [data-part="cancel-trigger"])) > [data-part="submit-trigger"][data-scope="editable"] {
+  inset-inline-end: calc(var(--ui-editable-action-size) + var(--ui-space-2xs));
 }
 
 :where([data-scope="editable"]:is([data-part="submit-trigger"], [data-part="cancel-trigger"])).ui-button {
@@ -79,8 +109,7 @@
   opacity: 1;
 }
 
-:where([data-scope="editable"]:is([data-part="preview"], [data-part="input"]),
-  [data-scope="rating"][data-part="item"],
+:where([data-scope="rating"][data-part="item"],
   [data-scope="stepper"][data-part="step"],
   [data-scope="color-picker"] input,
   input[data-scope="color-picker"]
