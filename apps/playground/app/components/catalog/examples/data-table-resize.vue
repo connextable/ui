@@ -1,43 +1,55 @@
 <script setup lang="ts">
-import { createUIDataTableComponents, useDataTable } from "@connextable/ui";
+import { createUIDataTableComponents, createUITabularSource, useDataTable } from "@connextable/ui";
 
-const users = [
-  { kind: "leaf", id: "1", cells: { name: "민지", team: "디자인" } },
-  { kind: "leaf", id: "2", cells: { name: "서준", team: "개발" } },
+const files = [
+  { kind: "leaf", id: "guide", cells: { filename: "신규 입점사 계약 검토 및 등록 절차.pdf", team: "운영", format: "PDF" } },
+  { kind: "leaf", id: "quality", cells: { filename: "모바일 결제 접근성 점검 결과.xlsx", team: "제품", format: "XLSX" } },
+  { kind: "leaf", id: "assets", cells: { filename: "가을 캠페인 모바일 배너 최종 시안.fig", team: "디자인", format: "FIG" } },
 ] as const;
 
 const table = useDataTable({
-  defaultColumnSizeState: { name: 160, team: 100 },
-  source: (request) => ({
-    ...request,
-    rows: users,
-    viewRevision: request.requestID,
-    matchingLeafCount: { kind: "known", value: users.length },
-    visibleRowCount: { kind: "known", value: users.length },
-    columnSchema: { revision: request.columnSchemaRevision, columns: [{ id: "name" }, { id: "team" }], headers: [] },
-    removedRowIDs: [],
+  defaultColumnSizeState: { filename: 175 },
+  source: createUITabularSource({
+    columns: [{ id: "filename" }, { id: "team" }, { id: "format" }],
+    load: () => ({ rows: files }),
   }),
 });
-const DataTable = createUIDataTableComponents(table);
+const Table = createUIDataTableComponents(table);
 </script>
 
 <template>
-  <DataTable.Provider>
-    <DataTable.Root>
-      <DataTable.Caption>사용자</DataTable.Caption>
-      <DataTable.Header>
-        <DataTable.HeaderRow>
-          <DataTable.ColumnHeader column="name">
-            이름
-            <DataTable.ColumnResizeHandle column="name" :min-size="80" :max-size="320" aria-label="이름 열 너비 조절" />
-          </DataTable.ColumnHeader>
-          <DataTable.ColumnHeader column="team">팀</DataTable.ColumnHeader>
-        </DataTable.HeaderRow>
-      </DataTable.Header>
-      <DataTable.Body v-slot="{ row }">
-        <DataTable.Cell column="name">{{ row.cells.name }}</DataTable.Cell>
-        <DataTable.Cell column="team">{{ row.cells.team }}</DataTable.Cell>
-      </DataTable.Body>
-    </DataTable.Root>
-  </DataTable.Provider>
+  <PlaygroundExample v-bind="$attrs as { id: string; title: string }">
+    <div data-ui-tabular-scroll tabindex="0" role="region" aria-label="공유 파일 표 스크롤 영역">
+      <Table.Provider>
+        <Table.Root class="files" aria-label="공유 파일">
+          <Table.Header>
+            <Table.HeaderRow>
+              <Table.ColumnHeader column="filename">
+                파일명
+                <Table.ColumnResizeHandle column="filename" :min-size="120" :max-size="360" aria-label="파일명 열 너비 조절" />
+              </Table.ColumnHeader>
+              <Table.ColumnHeader column="team">담당 팀</Table.ColumnHeader>
+              <Table.ColumnHeader column="format">형식</Table.ColumnHeader>
+            </Table.HeaderRow>
+          </Table.Header>
+          <Table.Body v-slot="{ row }">
+            <Table.Cell column="filename">{{ row.cells.filename }}</Table.Cell>
+            <Table.Cell column="team">{{ row.cells.team }}</Table.Cell>
+            <Table.Cell column="format">{{ row.cells.format }}</Table.Cell>
+          </Table.Body>
+        </Table.Root>
+      </Table.Provider>
+    </div>
+    <template #footer>
+      <output>파일명 열 너비 {{ table.columnSizes.value.filename }}px</output>
+    </template>
+  </PlaygroundExample>
 </template>
+
+<style scoped>
+.files {
+  min-inline-size: 31rem;
+  table-layout: fixed;
+  word-break: keep-all;
+}
+</style>
