@@ -5,7 +5,6 @@ import { ref } from "vue";
 
 const parentID = "페이지";
 const locked = "시스템 블록";
-const policies = { canMove: ({ id }: { id: string }) => id !== locked };
 const nodes = ref<readonly { id: string; parentID: string | null }[]>([
   { id: parentID, parentID: null },
   ...[locked, "소개", "자주 묻는 질문"].map((id) => ({ id, parentID })),
@@ -14,17 +13,15 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
 
 <template>
   <UITreeReorder
-    v-model:nodes="nodes" :policies="policies" layout="columns" label="이동 권한이 있는 페이지 영역"
+    v-model:nodes="nodes" layout="columns" label="이동 권한이 있는 페이지 영역"
     keyboard-mode="preview" v-slot="{ getChildren, interaction, getPreviewState }"
   >
     <UIReorderGroup :parent-id="parentID" framed :interaction="interaction" :get-preview-state="getPreviewState">
-      <!-- Sectile checks the disabled attribute before starting a pointer or keyboard lift. -->
       <UITreeReorderItem
         v-for="id in getChildren(parentID)"
         :key="id"
         :value="id"
-        :disabled="id === locked || undefined"
-        :aria-disabled="id === locked || undefined"
+        :disabled="id === locked"
       >
         {{ id }}
         <LockKeyhole v-if="id === locked" aria-hidden="true" />

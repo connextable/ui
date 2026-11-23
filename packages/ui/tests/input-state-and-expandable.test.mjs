@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createSSRApp, h } from "vue";
 import { renderToString } from "vue/server-renderer";
-import { UICalendar, UICheckboxTree, UIDisclosure, UIDisclosureContent, UIEditable, UIFileInput, UIFileUploadQueue, UIForm, UIFormField, UIGridEditor, UIPinInput, UISelect } from "@connextable/ui";
+import { UICalendar, UICheckboxTree, UIDisclosure, UIDisclosureContent, UIEditable, UIFileInput, UIFileUploadQueue, UIForm, UIFormField, UIGridEditor, UIPinInput, UISelect, UISequenceReorder, UISequenceReorderItem, UITreeReorder, UITreeReorderItem } from "@connextable/ui";
 
 const render = (component, props, children) => renderToString(createSSRApp({ render: () => h(component, props, children) }));
 
@@ -30,6 +30,35 @@ test("a disabled editable value renders an inactive preview button", async () =>
   const disabled = await render(UIEditable, { modelValue: "확정 값", disabled: true });
   assert.match(disabled, /<button[^>]*\sdisabled[^>]*data-part="preview"[^>]*>확정 값<\/button>/);
 });
+
+for (const { name, Root, Item, props } of [
+  { name: "sequence", Root: UISequenceReorder, Item: UISequenceReorderItem, props: { items: ["fixed", "movable", "native"] } },
+  { name: "tree", Root: UITreeReorder, Item: UITreeReorderItem, props: { nodes: ["fixed", "movable", "native"].map(id => ({ id, parentID: null })) } },
+]) {
+  test(`${name} reorder items expose one disabled prop on the rendered item`, async () => {
+    const html = await render(Root, props, () => [
+      h(Item, { value: "fixed", disabled: true, asChild: true }, {
+        default: ({ value }) => h("article", { class: "custom-item" }, value),
+      }),
+      h(Item, { value: "movable", disabled: false, as: "article" }, {
+        default: ({ value }) => value,
+      }),
+      h(Item, { value: "native", asChild: true }, {
+        default: () => h("button", { disabled: true, "aria-disabled": "true" }, "native"),
+      }),
+    ]);
+    const fixed = html.match(/<article[^>]*data-value="fixed"[^>]*>fixed<\/article>/)?.[0] ?? "";
+    const movable = html.match(/<article[^>]*data-value="movable"[^>]*>movable<\/article>/)?.[0] ?? "";
+    assert.match(fixed, /class="custom-item"/);
+    assert.match(fixed, /\sdisabled(?:=|[\s>])/);
+    assert.match(fixed, /aria-disabled="true"/);
+    assert.ok(movable, "the enabled item still renders the requested element and slot");
+    assert.doesNotMatch(movable, /\s(?:aria-)?disabled(?:=|[\s>])/);
+    const native = html.match(/<button[^>]*data-value="native"[^>]*>native<\/button>/)?.[0] ?? "";
+    assert.match(native, /\sdisabled(?:=|[\s>])/);
+    assert.match(native, /aria-disabled="true"/);
+  });
+}
 
 test("grid cell editors expose native readonly and disabled without losing the displayed value", async () => {
   const readonly = await render(UIGridEditor, { modelValue: "예정", readonly: true });

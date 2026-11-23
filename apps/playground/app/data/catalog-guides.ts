@@ -1575,7 +1575,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
     ],
     examples: [
       { id: "reorder-disabled", section: "usage-options", title: "목록 전체 이동 잠금", description: "잠금이 켜져 있으면 어떤 카드도 들어 올릴 수 없습니다. 잠금을 해제하면 같은 목록을 정렬할 수 있습니다." },
-      { id: "reorder-locked", section: "usage-options", title: "이동이 잠긴 항목", description: "‘시스템 블록’의 이동은 잠겨 있습니다. 다른 블록의 순서는 바꿀 수 있습니다." },
+      { id: "reorder-locked", section: "usage-options", title: "이동이 잠긴 항목", description: "‘시스템 블록’에 disabled를 지정해 드래그와 키보드 이동을 잠급니다. 다른 블록의 순서는 바꿀 수 있습니다." },
       { id: "reorder-handle-icon", section: "usage-options", title: "아이콘 손잡이", description: "손잡이 아이콘을 잡아 옮기세요. 화면 낭독기에서 각 손잡이를 구분할 수 있도록 label을 지정합니다.", parts: ["UISequenceReorderHandle"] },
       { id: "reorder-handle-button", section: "usage-options", title: "텍스트 버튼 손잡이", description: "as-child로 UIButton에 손잡이 동작을 연결합니다. 각 항목의 ‘이동’ 버튼을 잡아 순서를 바꿔 보세요." },
       { id: "reorder-handle-title", section: "usage-options", title: "제목 영역 손잡이", description: "위젯의 제목 영역을 잡아 옮깁니다. 설명 영역에서는 텍스트를 선택할 수 있습니다." },

@@ -1,6 +1,7 @@
 <script setup lang="ts" generic="ID extends string">
-import { TreeReorderDropTarget, TreeReorderItem } from "@sectile/vue/reorder";
+import { TreeReorderDropTarget } from "@sectile/vue/reorder";
 import { computed } from "vue";
+import { UITreeReorderItem } from "./reorder-item";
 
 const props = defineProps<{
   value: ID;
@@ -19,7 +20,7 @@ const beforeId = computed(() => {
 </script>
 
 <template>
-  <TreeReorderItem :value="value" class="ui-reorder-grid-item" v-slot="state">
+  <UITreeReorderItem :value="value" class="ui-reorder-grid-item" v-slot="state">
     <slot v-bind="state" />
     <TreeReorderDropTarget
       as="span"
@@ -29,5 +30,5 @@ const beforeId = computed(() => {
       :data-active="pointerSourceId != null || undefined"
       aria-hidden="true"
     />
-  </TreeReorderItem>
+  </UITreeReorderItem>
 </template>

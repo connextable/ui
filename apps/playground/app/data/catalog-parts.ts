@@ -148,6 +148,8 @@ const partRoles: Readonly<Record<string, string>> = {
   UIReorderGroup: "목록과 그리드의 예상 배치를 Vue TransitionGroup으로 표시합니다.",
   UIReorderGridItem: "드래그 중 그리드 셀과 인접 여백을 하나의 드롭 위치로 연결합니다.",
   UIReorderFeedback: "포인터를 따라가는 항목과 이동할 수 없는 위치를 표시합니다.",
+  UISequenceReorderItem: "목록 항목을 표시합니다. disabled를 켜면 해당 항목의 드래그와 키보드 순서 변경이 잠깁니다.",
+  UITreeReorderItem: "계층 항목을 표시합니다. disabled를 켜면 해당 항목의 드래그와 키보드 순서 변경이 잠깁니다.",
   UISequenceReorderHandle: "목록 항목의 이동을 시작할 수 있는 선택적 조작 영역입니다. as-child로 기존 버튼에 연결할 수 있습니다.",
   UITreeReorderHandle: "트리 항목의 이동을 시작할 수 있는 선택적 조작 영역입니다. as-child로 기존 버튼에 연결할 수 있습니다.",
   UIComboboxInput: "검색어를 입력하고 결과 목록으로 키보드 탐색을 전달합니다.",
