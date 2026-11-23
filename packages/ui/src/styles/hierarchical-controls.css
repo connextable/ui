@@ -101,7 +101,7 @@
   color: var(--ui-color-text);
 }
 
-:where([data-scope="tree-view"], [data-scope="tree-select"])[data-part="item"]:where([aria-selected="true"]) {
+:where([data-scope="tree-view"])[data-part="item"]:where([aria-selected="true"]) {
   background-color: var(--ui-color-accent-soft);
   color: var(--ui-color-accent);
 }
@@ -199,11 +199,6 @@
   font-size: var(--ui-font-size-body-sm);
   overflow-wrap: anywhere;
   cursor: pointer;
-}
-
-:where([data-scope="cascade-list"])[data-part="item"]:where([aria-selected="true"], [data-state="checked"]) {
-  background-color: var(--ui-color-accent-soft);
-  color: var(--ui-color-accent);
 }
 
 :where([data-scope="tree-view"], [data-scope="tree-select"], [data-scope="checkbox-tree"], [data-scope="cascade-list"])[data-part]:focus-visible {

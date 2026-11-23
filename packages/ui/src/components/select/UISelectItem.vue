@@ -65,8 +65,4 @@ const id = useId();
   place-items: center;
   inline-size: 1rem;
 }
-
-.ui-select-item__indicator {
-  color: var(--ui-color-accent);
-}
 </style>

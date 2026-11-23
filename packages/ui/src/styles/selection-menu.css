@@ -83,6 +83,7 @@
   [data-scope="combobox"][data-part="item"],
   [data-scope="tree-select"][role="treeitem"],
   [data-scope="cascade-select"][role="option"],
+  [data-scope="cascade-list"][data-part="item"],
   [data-scope="listbox"][data-part="item"]
 ) {
   display: flex;
@@ -109,17 +110,25 @@
     display: none;
   }
 
-  &[data-highlighted]:not([aria-selected="true"], [aria-expanded="true"], [aria-disabled="true"]) {
-    background: var(--ui-color-surface-hover);
+  &:not([aria-selected="true"], [data-state="checked"], [aria-disabled="true"]) {
+    &[data-highlighted] {
+      background: var(--ui-color-surface-hover);
+    }
+
+    &:active {
+      background: var(--ui-color-surface-active);
+    }
+
+    @media (hover: hover) {
+      &:hover:not(:active) {
+        background: var(--ui-color-surface-hover);
+      }
+    }
   }
 
-  &:is([aria-selected="true"]:not(.ui-select-item), [aria-current]:not([aria-current="false"]), [aria-expanded="true"]):not([aria-disabled="true"]) {
+  &:is([data-scope="menu"], [data-scope="menubar"], [data-scope="navigation-menu"]):is([aria-current]:not([aria-current="false"]), [aria-expanded="true"]):not([aria-disabled="true"]) {
     background: var(--ui-color-accent-soft);
     color: var(--ui-color-accent);
-  }
-
-  &:active:not([aria-selected="true"], [aria-disabled="true"]) {
-    background: var(--ui-color-surface-active);
   }
 
   &:focus-visible {
@@ -149,12 +158,6 @@
   &[aria-disabled="true"] > kbd {
     color: inherit;
   }
-
-  @media (hover: hover) {
-    &:hover:not(:active, [aria-selected="true"], [aria-expanded="true"], [aria-disabled="true"]) {
-      background: var(--ui-color-surface-hover);
-    }
-  }
 }
 
 :where(.ui-select-item, [data-scope="menu"][data-part="item"],
@@ -176,6 +179,10 @@
   > :is(.ui-option-indicator, .ui-menu-item__chevron, [data-part="item-chevron"], [data-part="item-indicator"]) {
     margin-inline-start: auto;
     white-space: nowrap;
+  }
+
+  &:not([aria-disabled="true"]) > :is(.ui-option-indicator, [data-part="item-indicator"]) {
+    color: var(--ui-color-accent);
   }
 
   > [data-part="item-chevron"]:not([hidden]) + [data-part="item-indicator"] {

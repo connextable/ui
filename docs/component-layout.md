@@ -1,6 +1,7 @@
 # 컴포넌트 공통 스타일
 
-- 기본 표면에는 `--ui-color-surface` (`#F9FAFB`)를 사용한다. 호버와 누름에는 `--ui-color-surface-hover`, `--ui-color-surface-active`를 쓴다. 선택값의 배경은 `--ui-color-selected`와 해당 호버·누름 토큰으로 표현한다.
+- 기본 표면에는 `--ui-color-surface` (`#F9FAFB`)를 사용한다. 호버와 누름에는 `--ui-color-surface-hover`, `--ui-color-surface-active`를 쓴다. 배경으로 선택을 표현하는 컨트롤에는 `--ui-color-selected`와 해당 호버·누름 토큰을 사용한다.
+- Select, Combobox, TreeSelect, CascadeSelect, CascadeList, Listbox는 같은 행 스타일을 쓴다. 확정값은 오른쪽 체크로 표시한다. TreeSelect의 펼침 상태는 가지의 화살표 방향으로 표시한다. 행 배경은 미선택 항목의 호버·누름·키보드 강조에 사용한다.
 - 프레임은 테두리와 안쪽 여백을 한 곳에서 정의한다. `--ui-inset-distance`는 테두리와 여백의 합이다. 정사각형 액션은 `--ui-inset-size`를 양 축에 쓰고, 모서리 반경은 `--ui-inset-radius`를 사용한다. 이 반경은 프레임 반경에서 `--ui-inset-distance`를 뺀 값이다. 중첩된 프레임과 선택 목록에도 같은 관계를 적용한다.
 - 내용이 바뀌는 컨트롤은 부모가 제공하는 너비를 기준으로 배치한다. 편집 전후와 단계 이동 전후에 상자의 치수를 비교한다. 짧은 값, 긴 값, 좁은 화면에서도 확인한다.
 - 같은 역할의 인터랙션은 효과, 시간, 이징을 공유한다. Disclosure, Accordion, TreeView, CheckboxTree, TreeSelect의 펼침·접힘에는 같은 높이 전환 스타일과 모션 토큰을 쓴다. 애니메이션 도중 반대 방향으로 조작했을 때 현재 높이에서 이어지는지 확인한다. 닫히는 콘텐츠는 즉시 키보드와 접근성 탐색에서 빠지며, 모션 줄이기 설정에서는 상태를 즉시 반영한다.
