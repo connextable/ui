@@ -1,57 +1,59 @@
 <script setup lang="ts">
-import { UIButton, UIInView, UISpinner } from "@connextable/ui";
-import { ref, shallowRef, type Component } from "vue";
+import { UIInView } from "@connextable/ui";
+import { nextTick, ref, shallowRef, useTemplateRef, type Component } from "vue";
 
-const props = defineProps<{ load: () => Promise<Component> }>();
+const props = defineProps<{
+  load: () => Promise<Component>;
+  example?: { id: string; title: string; description?: string; source: string | (() => Promise<string>); wide?: boolean };
+}>();
 
 const component = shallowRef<Component>();
+const pending = useTemplateRef<HTMLDivElement>("pending");
 const loading = ref(false);
 const failed = ref(false);
 
 async function loadPreview() {
+  if (loading.value || component.value) return;
   loading.value = true;
+  failed.value = false;
   try {
-    component.value = await props.load();
+    const preview = await props.load();
+    const focused = pending.value?.contains(document.activeElement);
+    component.value = preview;
+    if (focused && props.example) {
+      await nextTick();
+      document.getElementById(props.example.id)?.focus({ preventScroll: true });
+    }
   } catch {
     failed.value = true;
   } finally {
     loading.value = false;
   }
 }
-
-function reloadPage() {
-  window.location.reload();
-}
 </script>
 
 <template>
-  <UIInView class="playground-deferred-preview" :aria-busy="loading || undefined" once fallback root-margin="160px 0px" @enter="loadPreview">
-    <component :is="component" v-if="component" />
-    <div v-else-if="loading" class="playground-deferred-preview__status" role="status">
-      <UISpinner />
-      <span>예제를 불러오는 중</span>
-    </div>
-    <div v-else-if="failed" class="playground-deferred-preview__status">
-      <span role="status">예제를 불러오지 못했습니다.</span>
-      <UIButton variant="outline" size="sm" @click="reloadPage">페이지 새로고침</UIButton>
+  <UIInView class="playground-deferred-preview" :class="{ 'playground-deferred-preview--framed': example }"
+    :aria-busy="loading || undefined" once fallback root-margin="160px 0px" @enter="loadPreview">
+    <component :is="component" v-if="component" v-bind="example" />
+    <div v-else ref="pending">
+      <slot name="pending" :loading="loading" :failed="failed" :retry="loadPreview" />
     </div>
   </UIInView>
 </template>
 
 <style scoped>
 .playground-deferred-preview {
-  min-block-size: var(--ui-chart-plot-height, 17rem);
+  inline-size: 100%;
   min-inline-size: 0;
 }
 
-.playground-deferred-preview__status {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  min-block-size: inherit;
-  gap: var(--ui-space-sm);
-  color: var(--ui-color-text-muted);
-  font-size: var(--ui-font-size-body-sm);
+.playground-deferred-preview:not(.playground-deferred-preview--framed) {
+  display: grid;
+  justify-items: inherit;
+}
+
+.playground-deferred-preview > div:has(.playground-preview-status) {
+  inline-size: 100%;
 }
 </style>

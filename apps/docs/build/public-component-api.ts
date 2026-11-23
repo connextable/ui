@@ -1,6 +1,8 @@
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import type { DeclaredApiMember } from "../app/data/catalog-reference";
+import { catalog, catalogBySlug } from "../app/data/catalog.ts";
+import { catalogNavigation } from "../app/data/catalog-navigation.ts";
 
 const declaration = fileURLToPath(new URL("../../../packages/ui/dist/index.d.ts", import.meta.url));
 const declarationDirectory = fileURLToPath(new URL("../../../packages/ui/dist/", import.meta.url));
@@ -108,12 +110,38 @@ export function readPublicComponentApi(watchFile?: (path: string) => void) {
 }
 
 export function publicComponentApi() {
+  const resolved = `\0${virtualId}`;
+  const standaloneRoots = catalogNavigation.flatMap(group => [...group.slugs]).filter(slug => !catalogBySlug.has(slug)).map(slug =>
+    `UI${slug.split("-").map(part => part[0]!.toUpperCase() + part.slice(1)).join("")}`);
+  const roots = [...new Set([...catalog.map(entry => entry.title), ...standaloneRoots])]
+    .sort((a, b) => b.length - a.length);
+  let declarations: ReturnType<typeof readPublicComponentApi> | undefined;
+
   return {
     name: "playground:public-component-api",
-    resolveId(id: string) { return id === virtualId ? `\0${virtualId}` : undefined; },
+    resolveId(id: string) {
+      if (id === virtualId || id.startsWith(`${virtualId}/`)) return `\0${id}`;
+    },
+    watchChange(id: string) {
+      if (id.startsWith(declarationDirectory)) declarations = undefined;
+    },
     load(this: { addWatchFile(path: string): void }, id: string) {
-      if (id !== `\0${virtualId}`) return;
-      return `export default ${JSON.stringify(readPublicComponentApi(file => this.addWatchFile(file)))};`;
+      if (id !== resolved && !id.startsWith(`${resolved}/`)) return;
+      declarations ??= readPublicComponentApi(file => this.addWatchFile(file));
+      const families = new Map<string, Record<string, DeclaredApiMember[]>>();
+      for (const [name, members] of Object.entries(declarations)) {
+        const root = name.includes(".") ? `UI${name.split(".")[0]}` : roots.find(prefix => name.startsWith(prefix)) ?? name;
+        const family = families.get(root) ?? {};
+        family[name] = members;
+        families.set(root, family);
+      }
+      if (id !== resolved) return `export default ${JSON.stringify(families.get(id.slice(resolved.length + 1)) ?? {})};`;
+
+      const loaders = [...families].map(([root], index) =>
+        `const load${index} = () => import(${JSON.stringify(`${virtualId}/${root}`)}).then(module => module.default);`);
+      const entries = [...families.values()].flatMap((family, index) =>
+        Object.keys(family).map(name => `${JSON.stringify(name)}: load${index}`));
+      return `${loaders.join("\n")}\nexport default { ${entries.join(",")} };`;
     },
   };
 }

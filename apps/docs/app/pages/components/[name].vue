@@ -79,7 +79,7 @@ for (const name of entry.parts ?? []) {
       :examples="guide.examples"
       :groups="guide.sections"
       :wide="entry.wide"
-      :defer-previews="entry.deferPreviews"
+      :tall-previews="entry.tallPreviews"
     />
     <PlaygroundReference :component="entry.title" :parts="parts" :api="api" :declared-parts="entry.parts" />
   </div>

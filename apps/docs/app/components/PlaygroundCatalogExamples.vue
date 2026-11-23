@@ -3,11 +3,11 @@ import type { Component } from "vue";
 import { arrangeCatalogExamples } from "~/data/catalog-example-sections";
 import type { CatalogExample, CatalogExampleSection } from "~/data/catalog-guides";
 
-const { examples, groups, wide, deferPreviews } = defineProps<{
+const { examples, groups, wide, tallPreviews } = defineProps<{
   examples: readonly CatalogExample[];
   groups?: readonly CatalogExampleSection[];
   wide?: boolean;
-  deferPreviews?: boolean;
+  tallPreviews?: boolean;
 }>();
 
 const previews = import.meta.glob<Component>("./catalog/examples/*.vue", { import: "default" });
@@ -22,12 +22,6 @@ const phases = arrangeCatalogExamples(examples, groups).map(phase => ({
   }),
 }));
 
-// Resolve preview modules before rendering so their teleports hydrate in document order.
-const loadedPreviews = new Map(await Promise.all(
-  phases.flatMap(phase => phase.examples)
-    .filter((example) => !deferPreviews || example.framed)
-    .map(async ({ id, loadPreview }) => [id, await loadPreview()] as const),
-));
 </script>
 
 <template>
@@ -37,8 +31,8 @@ const loadedPreviews = new Map(await Promise.all(
       :key="example.id"
       :example="{ id: example.id, title: example.title, description: example.description, source: example.source, wide }"
       :framed="example.framed"
-      :load-preview="deferPreviews && !example.framed ? example.loadPreview : undefined"
-      :preview="loadedPreviews.get(example.id)"
+      :load-preview="example.loadPreview"
+      :tall="tallPreviews"
     />
   </PlaygroundExampleSection>
 </template>

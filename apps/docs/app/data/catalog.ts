@@ -4,7 +4,7 @@ interface CatalogEntry {
   description: string;
   wide?: boolean;
   visualStates?: boolean;
-  deferPreviews?: boolean;
+  tallPreviews?: boolean;
   parts?: readonly string[];
 }
 
@@ -53,7 +53,7 @@ export const catalog: readonly CatalogEntry[] = [
     title: "UIVirtualizer",
     description: "사용자가 정의한 배치 방식에서 보이는 항목만 렌더링합니다.",
     wide: true,
-    deferPreviews: true,
+    tallPreviews: true,
     parts: [
       "UIVirtualizerSurface", "UIVirtualizerItem", "UIVirtualizerHeader", "UIVirtualizerFooter", "useVirtualizer",
       "createUniformExtentIndex", "createDenseTrackGridLayout", "trackGridLayoutStrategy",
@@ -740,7 +740,7 @@ export const catalog: readonly CatalogEntry[] = [
     title: "UIChart",
     description: "추이, 비교, 분포, 비중에 맞는 차트를 구성합니다.",
     wide: true,
-    deferPreviews: true,
+    tallPreviews: true,
     parts: [
       "UIChartProvider",
       "UIChartCartesian",
@@ -792,28 +792,28 @@ export const catalog: readonly CatalogEntry[] = [
     title: "UIVirtualList",
     description: "화면에 보이는 구간의 목록을 렌더링합니다.",
     wide: true,
-    deferPreviews: true,
+    tallPreviews: true,
   },
   {
     slug: "virtual-grid",
     title: "UIVirtualGrid",
     description: "행과 열 중 보이는 구간을 렌더링합니다.",
     wide: true,
-    deferPreviews: true,
+    tallPreviews: true,
   },
   {
     slug: "virtual-masonry",
     title: "UIVirtualMasonry",
     description: "서로 다른 높이의 항목을 가상화된 열에 배치합니다.",
     wide: true,
-    deferPreviews: true,
+    tallPreviews: true,
   },
   {
     slug: "virtual-spatial",
     title: "UIVirtualSpatial",
     description: "좌표로 배치된 항목에서 보이는 구간을 렌더링합니다.",
     wide: true,
-    deferPreviews: true,
+    tallPreviews: true,
   },
   {
     slug: "calendar",

@@ -12,6 +12,7 @@ const props = defineProps<{
   code?: string;
   wide?: boolean;
   inline?: boolean;
+  pending?: boolean;
 }>();
 
 const primaryExample = inject(playgroundPrimaryExampleKey, undefined);
@@ -69,7 +70,7 @@ watch(codeOpen, revealSource, { immediate: true });
       <footer v-if="$slots.footer" class="playground-example__footer">
         <slot name="footer" />
       </footer>
-      <div class="playground-example__code-bar">
+      <div v-if="!pending" class="playground-example__code-bar">
         <UIDisclosureTrigger
           class="playground-example__toggle"
           size="sm"
@@ -80,6 +81,7 @@ watch(codeOpen, revealSource, { immediate: true });
         </UIDisclosureTrigger>
       </div>
       <UIDisclosureContent
+        v-if="!pending"
         divided flush role="region"
         :aria-label="`${title} Vue 코드`"
       >

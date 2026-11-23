@@ -2,7 +2,7 @@
 import { ArrowRight } from "@lucide/vue";
 import { computed } from "vue";
 import { referenceBlocks, type ReferenceRow } from "~/data/catalog-reference";
-import publicApi from "virtual:public-component-api";
+import declarationLoaders from "virtual:public-component-api";
 
 const props = defineProps<{
   component: string;
@@ -10,12 +10,21 @@ const props = defineProps<{
   api: readonly ReferenceRow[];
   declaredParts?: readonly string[];
 }>();
-const declarations = computed(() => [...new Set([props.component, ...(props.declaredParts ?? []), ...props.parts.map(part => part.name)])]
-  .flatMap(name => publicApi[name]?.length ? [{ name, members: publicApi[name] }] : []));
+const declaredNames = computed(() => [...new Set([props.component, ...(props.declaredParts ?? []), ...props.parts.map(part => part.name)])]);
+const { data: publicApi } = useAsyncData(`public-api:${useRoute().path}`, async () => {
+  const names = new Set([...declaredNames.value, ...props.api.flatMap(entry => entry.owner ? [entry.owner] : [])]);
+  const loaders = new Set([...names].flatMap(name => declarationLoaders[name] ?? []));
+  const loaded = await Promise.all([...loaders].map(load => load()));
+  return Object.fromEntries(loaded.flatMap(family => Object.entries(family).filter(([name]) => names.has(name))));
+});
+const declarations = computed(() => declaredNames.value.flatMap(name => {
+  const members = publicApi.value?.[name];
+  return members?.length ? [{ name, members }] : [];
+}));
 const documentedApi = computed(() => props.api.map(entry => {
   if (entry.type) return entry;
   const name = entry.name === "v-model" ? "model-value" : entry.name.replace(/^v-model:/, "");
-  const declaration = publicApi[entry.owner ?? props.component]?.find(member => member.name === name);
+  const declaration = publicApi.value?.[entry.owner ?? props.component]?.find(member => member.name === name);
   return declaration ? { ...entry, type: declaration.type } : entry;
 }));
 const sections = computed(() => [

@@ -33,13 +33,13 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
           :pointer-source-id="interaction.input === 'pointer' ? interaction.sourceID : null"
         >
           <figure class="reorder-photo">
-            <img :src="photos[id]" alt="" draggable="false" />
+            <img :src="photos[id]" alt="" draggable="false" loading="lazy" decoding="async" />
             <figcaption>{{ id }}</figcaption>
           </figure>
         </UIReorderGridItem>
         <template #preview="{ id }">
           <figure class="reorder-photo">
-            <img :src="photos[id]" alt="" draggable="false" />
+            <img :src="photos[id]" alt="" draggable="false" loading="lazy" decoding="async" />
             <figcaption>{{ id }}</figcaption>
           </figure>
         </template>
@@ -47,7 +47,7 @@ const nodes = ref<readonly { id: string; parentID: string | null }[]>([
       <UIReorderFeedback :interaction="interaction">
         <template #lift="{ id }">
           <figure class="reorder-photo">
-            <img :src="photos[id]" alt="" draggable="false" />
+            <img :src="photos[id]" alt="" draggable="false" loading="lazy" decoding="async" />
             <figcaption>{{ id }}</figcaption>
           </figure>
         </template>

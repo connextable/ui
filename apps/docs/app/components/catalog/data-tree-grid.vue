@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createUIDataTreeGridComponents, createUITabularSource, useDataTreeGrid } from "@connextable/ui";
+import { createInitialTabularView, createUIDataTreeGridComponents, createUITabularSource, useDataTreeGrid } from "@connextable/ui";
 import { ChevronRight } from "@lucide/vue";
 
 const children = [
@@ -7,19 +7,24 @@ const children = [
   { kind: "leaf", id: "api", parentGroupID: "platform", depth: 1, cells: { service: "API", team: "백엔드" } },
 ] as const;
 
+const schema = { columns: [{ id: "service" }, { id: "team" }] };
+const access = { kind: "page", page: 1, itemsPerPage: 25 } as const;
+const defaultExpansion = ["platform"];
+
+function project(expansion: readonly string[]) {
+  const expanded = expansion.includes("platform");
+  const group = {
+    kind: "group", id: "platform", parentGroupID: null, depth: 0, expanded,
+    cells: { service: "플랫폼", team: "서비스 팀" },
+  } as const;
+  return { rows: expanded ? [group, ...children] : [group], matchingLeafCount: children.length };
+}
+
 const tree = useDataTreeGrid({
-  defaultExpansion: ["platform"],
-  source: createUITabularSource({
-    columns: [{ id: "service" }, { id: "team" }],
-    load({ expansion }) {
-      const expanded = expansion.includes("platform");
-      const group = {
-        kind: "group", id: "platform", parentGroupID: null, depth: 0, expanded,
-        cells: { service: "플랫폼", team: "서비스 팀" },
-      } as const;
-      return { rows: expanded ? [group, ...children] : [group], matchingLeafCount: children.length };
-    },
-  }),
+  defaultExpansion,
+  defaultAccessState: { ...access, visibleRowCount: null, pagination: null },
+  source: createUITabularSource({ ...schema, load: ({ expansion }) => project(expansion) }),
+  initialView: createInitialTabularView(access, schema, project(defaultExpansion)),
 });
 const DataTreeGrid = createUIDataTreeGridComponents(tree);
 </script>
