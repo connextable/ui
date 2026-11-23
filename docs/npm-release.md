@@ -34,14 +34,13 @@ npm publish /tmp/connextable-ui-release/connextable-ui-0.1.0.tgz --access public
 
 Connextable UI 공식 문서는 `apps/docs`의 Nuxt 앱입니다. 저장소 루트에서 `dvt run dev:docs` 또는 `pnpm dev`로 실행합니다.
 
-문서 사이트와 npm 패키지 홈페이지의 공개 주소는 `https://ui.connextable.com`입니다. Node.js 호스팅에 `apps/docs/.env.example`의 `NUXT_PUBLIC_SITE_URL`을 런타임 환경 변수로 설정합니다. Nuxt는 이 주소로 문서의 canonical URL과 `/robots.txt`, `/sitemap.xml`을 만듭니다. [Nuxt 런타임 설정](https://nuxt.com/docs/4.x/guide/going-further/runtime-config)
+GitHub Actions의 `Deploy documentation`은 `main`에 푸시하거나 수동 실행하면 문서를 빌드해 Cloudflare Pages의 `connextable-ui`에 배포합니다. `main`에서 실행한 빌드의 산출물을 같은 실행의 배포 작업에서 사용합니다.
 
-저장소 루트에서 빌드해 `apps/docs/.output`을 배포합니다. 실행 명령의 경로는 저장소 루트 기준입니다.
+### 최초 배포 설정
 
-```sh
-pnpm install --frozen-lockfile
-pnpm build
-node apps/docs/.output/server/index.mjs
-```
+1. Cloudflare에서 `connextable` 계정의 **Cloudflare Pages Edit** 권한으로 API 토큰을 만듭니다. [Cloudflare Pages CI 자격 증명](https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/)
+2. GitHub의 `docs-production` 환경에 `CLOUDFLARE_API_TOKEN`과 `CLOUDFLARE_ACCOUNT_ID`를 시크릿으로 등록합니다.
+3. GitHub Actions에서 `main`의 `Deploy documentation`을 실행합니다. Pages 프로젝트가 없으면 처음 실행에서 생성합니다.
+4. 첫 배포가 끝나면 Cloudflare Pages의 `connextable-ui` 프로젝트에서 **Custom domains**에 `ui.connextable.com`을 연결합니다. [Cloudflare Pages 커스텀 도메인](https://developers.cloudflare.com/pages/configuration/custom-domains/)
 
-호스팅에서 제공한 DNS 대상으로 `ui.connextable.com`을 연결합니다. 연결 후 HTTPS로 시작하기, 디자인 시스템, 컴포넌트 문서와 sitemap을 열어 공개 주소를 확인합니다.
+Pages에서 사용하는 공개 주소는 `apps/docs/wrangler.toml`의 `NUXT_PUBLIC_SITE_URL`입니다. 도메인 연결 후에는 `main`에 푸시할 때마다 같은 프로젝트에 배포됩니다. HTTPS로 시작하기, 디자인 시스템, 컴포넌트 문서와 `/sitemap.xml`을 열어 확인합니다.

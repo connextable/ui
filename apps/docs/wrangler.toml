@@ -1,0 +1,7 @@
+name = "connextable-ui"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-11-20"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+NUXT_PUBLIC_SITE_URL = "https://ui.connextable.com"
