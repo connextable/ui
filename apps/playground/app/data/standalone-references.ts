@@ -81,6 +81,9 @@ export const standaloneApi: Readonly<Record<string, ApiNotes>> = {
     "Field readonly": { owner: "UIFormField", label: "readonly", type: "boolean", description: "지정하면 하위 입력이 읽기 전용 상태를 상속합니다. UIFormFieldGroup에도 적용할 수 있습니다." },
     "Field disabled": { owner: "UIFormField", label: "disabled", type: "boolean", description: "하위 입력을 비활성화합니다. UIFormFieldGroup에도 적용할 수 있습니다." },
     "Field Group v-model": { ...note("서로 관련된 입력의 값을 하나의 객체로 관리합니다. 기본 슬롯의 field(key)로 이름과 모델 바인딩을 함께 연결할 수 있습니다.", example("UIFormFieldGroup", "객체 값으로 필드 그룹 연결")), owner: "UIFormFieldGroup", label: "v-model" },
+    "Control get-value / reset": { ...note("get-value로 현재 입력 모델을 읽고 reset에서 처음 값으로 되돌립니다. 기본 슬롯에는 부모 필드에서 상속한 입력 상태를 전달합니다.", example("UIFormControl", "직접 만든 입력을 폼에 연결")), owner: "UIFormControl", label: "get-value / reset" },
+    useUIFormControl: { group: "컴포저블", description: "복합 위젯의 제어 요소, 포커스 대상, 제출 요소를 UIFormField에 등록합니다. 결과의 controlProps와 flags를 해당 요소에 연결합니다." },
+    useUINativeFormControl: { group: "컴포저블", description: "스크립트에서 직접 관리하는 input 또는 textarea를 등록합니다. controlProps를 입력에 적용하고 reset을 연결할 수 있습니다." },
     "#default": note("필드, 오류 요약, 제출·초기화 버튼을 한 폼으로 조합합니다.", example("UIFormActions", "폼 동작")),
     "#output": note("제출 결과를 폼 하단에 표시합니다.", example("UIFormActions", "폼 동작")),
   },
@@ -155,6 +158,7 @@ const partDescriptions: Readonly<Record<string, string>> = {
   UIFormSummary: "폼 전체의 검증 오류나 서버에서 받은 제출 실패를 요약합니다.",
   UIFormSelector: "폼 전체에서 선택한 상태를 구독합니다. 수정된 필드가 있는지 표시할 때 사용할 수 있습니다.",
   UIFormFieldSelector: "지정한 이름의 필드에서 필요한 상태만 구독합니다. 필드 방문 상태 등을 표시할 때 사용할 수 있습니다.",
+  UIFormControl: "별도 래퍼 없이 input 또는 textarea에 필드 이름, 라벨 연결, 입력 상태를 적용합니다.",
 };
 
 const formPartExamples: Readonly<Record<string, ReferenceExample>> = {

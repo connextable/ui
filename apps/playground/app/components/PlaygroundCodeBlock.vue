@@ -1,25 +1,12 @@
 <script setup lang="ts">
-import { UIIconButton } from "@connextable/ui";
+import { UICopyToClipboard, UIIconButton } from "@connextable/ui";
 import { Check, Copy } from "@lucide/vue";
-import { ref, shallowRef, useTemplateRef, watch } from "vue";
+import { shallowRef, useTemplateRef, watch } from "vue";
 
 const props = defineProps<{ code?: string }>();
 const highlighted = shallowRef<{ code: string; html: string }>();
 const content = useTemplateRef<HTMLDivElement>("content");
-const copyStatus = ref<"idle" | "copied" | "failed">("idle");
-
-async function copyCode() {
-  const source = props.code ?? content.value?.querySelector("pre code")?.textContent;
-  if (source == null) return;
-  try {
-    await navigator.clipboard.writeText(source);
-    copyStatus.value = "copied";
-  } catch {
-    copyStatus.value = "failed";
-  }
-}
-
-watch(() => props.code, () => { copyStatus.value = "idle"; });
+const getSource = () => content.value?.querySelector("pre code")?.textContent;
 
 if (import.meta.client) {
   watch(() => props.code, async (code, _, onCleanup) => {
@@ -45,18 +32,21 @@ if (import.meta.client) {
       <slot v-else />
     </div>
     <div class="playground-code-block__actions">
-      <span role="status">{{ copyStatus === "copied" ? "복사됨" : copyStatus === "failed" ? "복사 실패" : "" }}</span>
-      <UIIconButton
-        class="playground-code-block__copy"
-        aria-label="Vue 코드 복사"
-        title="Vue 코드 복사"
-        size="sm"
-        variant="ghost"
-        @click="copyCode"
-      >
-        <Check v-if="copyStatus === 'copied'" />
-        <Copy v-else />
-      </UIIconButton>
+      <UICopyToClipboard :value="code ?? getSource" v-slot="{ status, pending, copied, copy }">
+        <span role="status">{{ copied ? "복사됨" : status === "failed" ? "복사 실패" : "" }}</span>
+        <UIIconButton
+          class="playground-code-block__copy"
+          aria-label="Vue 코드 복사"
+          title="Vue 코드 복사"
+          size="sm"
+          variant="ghost"
+          :loading="pending"
+          @click="copy()"
+        >
+          <Check v-if="copied" />
+          <Copy v-else />
+        </UIIconButton>
+      </UICopyToClipboard>
     </div>
   </div>
 </template>

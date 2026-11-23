@@ -1,5 +1,5 @@
 export const catalogNavigation = [
-  { title: "동작", slugs: ["button", "toolbar"] },
+  { title: "동작", slugs: ["button", "toolbar", "copy-to-clipboard", "async-action"] },
   { title: "입력·폼", slugs: [
     "input", "editable", "pin-input", "tags-input",
     "number-field", "spin-button", "quantity-field", "slider", "multi-thumb-slider",
@@ -16,14 +16,14 @@ export const catalogNavigation = [
     "date-time-field", "date-time-picker", "date-time-range-field", "date-time-range-picker",
     "month-picker", "month-range-picker", "year-picker", "year-range-picker", "temporal-provider",
   ] },
-  { title: "탐색", slugs: ["anchor", "tabs", "navigation-menu", "pagination", "stepper", "tree-view"] },
+  { title: "탐색", slugs: ["anchor", "tabs", "navigation-menu", "pagination", "stepper", "tree-view", "scroll-spy"] },
   { title: "메뉴", slugs: ["menu-button", "menu", "context-menu", "menubar"] },
-  { title: "오버레이", slugs: ["dialog", "alert-dialog", "drawer", "sheet", "popover", "tooltip"] },
-  { title: "레이아웃", slugs: ["dashboard", "window-splitter", "scroll-area", "disclosure", "accordion"] },
-  { title: "콘텐츠·미디어", slugs: ["image", "carousel", "lightbox", "feed"] },
+  { title: "오버레이", slugs: ["dialog", "alert-dialog", "confirm-provider", "drawer", "sheet", "popover", "tooltip"] },
+  { title: "레이아웃", slugs: ["dashboard", "window-splitter", "scroll-area", "infinite-scroll", "disclosure", "accordion"] },
+  { title: "콘텐츠·미디어", slugs: ["image", "carousel", "lightbox", "fullscreen", "media-gesture", "feed"] },
   { title: "상태 표시", slugs: ["toast", "spinner", "progress", "meter", "meter-group", "timer"] },
   { title: "표와 그리드", slugs: ["data-table", "grid", "data-grid", "tree-grid", "data-tree-grid"] },
   { title: "데이터", slugs: ["chart", "reorder", "tree-reorder"] },
   { title: "가상화", slugs: ["virtual-list", "virtual-grid", "virtual-masonry", "virtual-spatial", "virtualizer"] },
-  { title: "기반", slugs: ["primitive", "host-provider"] },
+  { title: "기반", slugs: ["primitive", "host-provider", "in-view"] },
 ] as const;

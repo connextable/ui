@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { ChevronDown } from "@lucide/vue";
+import { useUIScrollArea, useUIScrollSpy } from "@connextable/ui";
 import { computed, onMounted, onUnmounted, ref, shallowRef, useTemplateRef, watch } from "vue";
 
 const props = defineProps<{ content: HTMLElement | null }>();
 const headingSelector = "[data-playground-heading][id]";
 const headings = shallowRef<{ element: HTMLElement; id: string; text: string; level: number }[]>([]);
-const activeId = ref("");
 const scroller = useTemplateRef<HTMLDivElement>("scroller");
+const { scrollToElement } = useUIScrollArea(scroller);
 const list = useTemplateRef<HTMLUListElement>("list");
 const narrow = ref(false);
 const expanded = ref(false);
 const route = useRoute();
 const rail = shallowRef<{ path: string; length: number; segments: Map<string, { start: number; length: number }> }>();
-const indicator = computed(() => rail.value?.segments.get(activeId.value));
+const { activeId, markTarget } = useUIScrollSpy(headings, { content: () => props.content, trackHash: true });
+const indicator = computed(() => activeId.value ? rail.value?.segments.get(activeId.value) : undefined);
 
-let frame = 0;
-let requestedFragment = "";
 let narrowLayout: MediaQueryList | undefined;
 
 function updateLayout() {
@@ -28,61 +28,14 @@ function onOutlineToggle(event: Event) {
 
 watch(() => route.path, () => { expanded.value = false; });
 
-function updateActive() {
-  frame = 0;
-  const first = headings.value[0];
-  const last = headings.value.at(-1);
-  if (!first || !last) return;
-
-  const scrollRoot = document.scrollingElement ?? document.documentElement;
-  const scrollTop = scrollRoot.scrollTop;
-  const maxScroll = Math.max(0, scrollRoot.scrollHeight - scrollRoot.clientHeight);
-  const sticky = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-  const offsetFor = (element: HTMLElement) => sticky + (Number.parseFloat(getComputedStyle(element).scrollMarginTop) || 0);
-
-  if (requestedFragment) {
-    const target = headings.value.find(heading => `#${encodeURIComponent(heading.id)}` === requestedFragment);
-    if (target) {
-      const destination = scrollTop + target.element.getBoundingClientRect().top - offsetFor(target.element);
-      const reachable = Math.max(0, Math.min(maxScroll, destination));
-      if (Math.abs(scrollTop - reachable) < 2) {
-        activeId.value = target.id;
-        return;
-      }
-    }
-    requestedFragment = "";
-  }
-
-  const offset = offsetFor(first.element);
-  const remaining = Math.max(0, maxScroll - scrollTop);
-  // Some headings cannot reach the sticky header. Move the reading line toward them near the end.
-  const overflow = Math.max(0, last.element.getBoundingClientRect().top - remaining - offset);
-  const approach = Math.min(maxScroll, overflow);
-  const progress = approach > 0 ? Math.max(0, 1 - remaining / approach) : 0;
-  const readingLine = offset + overflow * progress;
-  const current = headings.value.findLast(heading => heading.element.getBoundingClientRect().top <= readingLine + 4);
-  activeId.value = (current ?? first).id;
-}
-
-function onScroll() {
-  if (!frame) frame = requestAnimationFrame(updateActive);
-}
-
-function syncFragment() {
-  requestedFragment = window.location.hash;
-  onScroll();
-}
-
 function onOutlineClick(event: MouseEvent, id: string) {
   if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-  requestedFragment = `#${encodeURIComponent(id)}`;
-  onScroll();
+  markTarget(id);
 }
 
 watch(() => props.content, (content, _previous, onCleanup) => {
   if (!content) {
     headings.value = [];
-    activeId.value = "";
     return;
   }
   const collectHeadings = () => {
@@ -92,7 +45,6 @@ watch(() => props.content, (content, _previous, onCleanup) => {
       text: element.textContent?.trim() ?? "",
       level: Number(element.tagName.slice(1)),
     }));
-    onScroll();
   };
   collectHeadings();
   const containsHeading = (node: Node) => node instanceof Element
@@ -105,12 +57,7 @@ watch(() => props.content, (content, _previous, onCleanup) => {
     })) collectHeadings();
   });
   observer.observe(content, { childList: true, subtree: true, characterData: true });
-  const resize = new ResizeObserver(onScroll);
-  resize.observe(content);
-  onCleanup(() => {
-    observer.disconnect();
-    resize.disconnect();
-  });
+  onCleanup(() => observer.disconnect());
 }, { flush: "post", immediate: true });
 
 function measureRail() {
@@ -168,29 +115,17 @@ watch(activeId, () => {
   const visible = viewport.getBoundingClientRect();
   const target = link.getBoundingClientRect();
   if (target.top >= visible.top && target.bottom <= visible.bottom) return;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  viewport.scrollTo({
-    top: viewport.scrollTop + target.top - visible.top - (viewport.clientHeight - target.height) / 2,
-    behavior: reduced ? "instant" : "smooth",
-  });
+  scrollToElement(link, { axis: "vertical", align: "center", behavior: "smooth" });
 }, { flush: "post" });
 
 onMounted(() => {
   narrowLayout = window.matchMedia("(width < 68rem)");
   updateLayout();
   narrowLayout.addEventListener("change", updateLayout);
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll);
-  window.addEventListener("hashchange", syncFragment);
-  syncFragment();
 });
 
 onUnmounted(() => {
   narrowLayout?.removeEventListener("change", updateLayout);
-  window.removeEventListener("scroll", onScroll);
-  window.removeEventListener("resize", onScroll);
-  window.removeEventListener("hashchange", syncFragment);
-  if (frame) cancelAnimationFrame(frame);
 });
 </script>
 

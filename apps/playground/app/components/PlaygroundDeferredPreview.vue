@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { UIButton, UISpinner } from "@connextable/ui";
-import { onMounted, onUnmounted, ref, shallowRef, useTemplateRef, type Component } from "vue";
+import { UIButton, UIInView, UISpinner } from "@connextable/ui";
+import { ref, shallowRef, type Component } from "vue";
 
 const props = defineProps<{ load: () => Promise<Component> }>();
 
-const preview = useTemplateRef<HTMLDivElement>("preview");
 const component = shallowRef<Component>();
 const loading = ref(false);
 const failed = ref(false);
-let observer: IntersectionObserver | undefined;
 
 async function loadPreview() {
   loading.value = true;
@@ -21,28 +19,13 @@ async function loadPreview() {
   }
 }
 
-onMounted(() => {
-  if (typeof IntersectionObserver === "undefined") {
-    void loadPreview();
-    return;
-  }
-  observer = new IntersectionObserver(([entry]) => {
-    if (!entry?.isIntersecting) return;
-    observer?.disconnect();
-    void loadPreview();
-  }, { rootMargin: "160px 0px" });
-  observer.observe(preview.value!);
-});
-
-onUnmounted(() => observer?.disconnect());
-
 function reloadPage() {
   window.location.reload();
 }
 </script>
 
 <template>
-  <div ref="preview" class="playground-deferred-preview" :aria-busy="loading || undefined">
+  <UIInView class="playground-deferred-preview" :aria-busy="loading || undefined" once fallback root-margin="160px 0px" @enter="loadPreview">
     <component :is="component" v-if="component" />
     <div v-else-if="loading" class="playground-deferred-preview__status" role="status">
       <UISpinner />
@@ -52,7 +35,7 @@ function reloadPage() {
       <span role="status">예제를 불러오지 못했습니다.</span>
       <UIButton variant="outline" size="sm" @click="reloadPage">페이지 새로고침</UIButton>
     </div>
-  </div>
+  </UIInView>
 </template>
 
 <style scoped>

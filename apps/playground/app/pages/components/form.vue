@@ -32,11 +32,13 @@ import FormResetExample from "~/components/form/FormResetExample.vue";
 import resetSource from "~/components/form/FormResetExample.vue?example-code&raw";
 import FormSummaryExample from "~/components/form/FormSummaryExample.vue";
 import summarySource from "~/components/form/FormSummaryExample.vue?example-code&raw";
+import CustomFormControlExample from "~/components/form/CustomFormControlExample.vue";
+import customControlSource from "~/components/form/CustomFormControlExample.vue?example-code&raw";
 
 definePageMeta({
   title: "UIForm",
   description: "입력과 동작을 묶어 유효성을 검사하고 값을 제출합니다.",
-  componentParts: ["UIFormField", "UIFormLabel", "UIFormDescription", "UIFormMessage", "UIFormFieldGroup", "UIFormActions", "UIFormSubmit", "UIFormReset", "UIFormSummary", "UIFormSelector", "UIFormFieldSelector"],
+  componentParts: ["UIFormField", "UIFormLabel", "UIFormDescription", "UIFormMessage", "UIFormFieldGroup", "UIFormActions", "UIFormSubmit", "UIFormReset", "UIFormSummary", "UIFormSelector", "UIFormFieldSelector", "UIFormControl"],
 });
 </script>
 
@@ -156,6 +158,11 @@ definePageMeta({
       </PlaygroundExample>
     </PlaygroundExampleSection>
     <PlaygroundExampleSection id="composition-and-extension" title="조합과 확장">
+      <PlaygroundExample id="UIFormControl" title="직접 만든 입력을 폼에 연결"
+        description="참조 번호를 고쳐 제출하거나 초기화해 보세요. 읽기 전용과 비활성 상태는 부모 필드에서 제어합니다."
+        :source="customControlSource">
+        <CustomFormControlExample />
+      </PlaygroundExample>
       <div id="form-state" data-playground-anchor tabindex="-1">
         <PlaygroundExample id="UIFormFieldSelector" title="UIFormFieldSelector" description="필드 하나가 방문된 상태를 구독해 표시합니다." :source="FormFieldSelectorExampleSource">
           <FormFieldSelectorExample />

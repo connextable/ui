@@ -9,6 +9,14 @@ interface CatalogEntry {
 }
 
 export const catalog: readonly CatalogEntry[] = [
+  { slug: "copy-to-clipboard", title: "UICopyToClipboard", description: "커스텀 버튼에 텍스트 복사와 결과 상태를 연결합니다.", visualStates: false },
+  { slug: "in-view", title: "UIInView", description: "뷰포트 또는 스크롤 영역에서 요소가 보이는 시점을 감지합니다.", visualStates: false },
+  { slug: "confirm-provider", title: "UIConfirmProvider", description: "여러 요청을 한 확인창에 연결하고 선택 결과를 기다립니다.", visualStates: false },
+  { slug: "infinite-scroll", title: "UIInfiniteScroll", description: "현재 목록 끝에 접근하면 다음 데이터를 요청합니다.", visualStates: false },
+  { slug: "scroll-spy", title: "UIScrollSpy", description: "현재 읽는 섹션을 알리고 지정한 섹션으로 이동합니다.", visualStates: false },
+  { slug: "async-action", title: "UIAsyncAction", description: "사용자가 시작한 비동기 작업의 진행, 취소, 결과를 관리합니다.", visualStates: false },
+  { slug: "media-gesture", title: "UIMediaGesture", description: "미디어에 적용할 드래그와 핀치 입력을 읽습니다.", visualStates: false },
+  { slug: "fullscreen", title: "UIFullscreen", description: "선택한 요소를 브라우저 전체 화면으로 전환합니다.", visualStates: false },
   {
     slug: "lightbox",
     title: "UILightbox",

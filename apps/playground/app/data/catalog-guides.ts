@@ -35,6 +35,92 @@ const queueExample = { id: "file-upload-group", title: "여러 파일의 전송 
 const queueApi = { owner: "UIFileUploadQueue", example: queueExample };
 
 export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
+  "copy-to-clipboard": {
+    title: "주문번호 복사와 결과 표시",
+    description: "주문번호 복사를 누르면 같은 버튼 옆에 결과를 표시합니다. 브라우저가 복사를 거부하면 주문번호를 선택해 복사할 수 있습니다.",
+    api: {
+      value: "복사할 텍스트를 전달합니다. 함수로 전달하면 버튼을 누르는 순간 값을 읽습니다.",
+      "copied-duration": { default: "1500", description: "복사 성공 상태를 유지하는 시간입니다. 단위는 밀리초입니다." },
+      "#default": "copy, status, pending, copied, error를 받습니다. copy는 성공하면 true를 반환하고 실패하면 상태와 오류를 갱신합니다. 결과 안내는 role=status나 화면에 맞는 피드백에 연결합니다.",
+    },
+  },
+  "in-view": {
+    title: "점검 기록이 처음 보일 때 첨부 내용 표시",
+    description: "목록 아래로 스크롤해 9일 기록을 드러내세요. 한 번 표시한 내용은 목록 위로 올라가도 유지됩니다.",
+    api: {
+      "as / as-child": "기본 요소는 div입니다. as-child로 기존 li 또는 article 한 개를 관찰 대상으로 사용합니다.",
+      root: "안쪽 스크롤 영역을 지정합니다. 생략하거나 null을 넘기면 문서 뷰포트를 관찰합니다.",
+      "root-margin": "관찰 영역을 늘리거나 줄입니다. 아래쪽 여백을 늘리면 요소가 보이기 전에 자료를 준비할 수 있습니다.",
+      threshold: { default: "0", description: "보여야 하는 요소 면적의 비율입니다. 0부터 1 사이 값을 사용합니다." },
+      once: "같은 요소가 처음 들어오면 관찰을 끝내고 상태를 유지합니다. 관찰 요소를 바꾸면 다시 시작합니다.",
+      "disabled / fallback": "disabled가 켜진 동안 관찰을 멈춥니다. fallback을 켜면 IntersectionObserver를 지원하지 않는 환경에서 마운트 후 진입 처리합니다.",
+      "@enter / @leave": "교차 상태가 바뀌면 관찰 결과를 전달합니다. fallback 진입에서는 null을 전달합니다.",
+      "#default": "현재 관찰 상태 inView와 해당 요소가 한 번이라도 진입했는지 나타내는 hasEntered를 받습니다.",
+    },
+  },
+  "confirm-provider": {
+    title: "여러 초안을 한 확인창에서 삭제",
+    description: "각 초안의 삭제를 눌러 같은 확인창을 엽니다. 취소하거나 Escape를 누르면 목록이 유지되고, 삭제를 확정하면 해당 초안만 사라집니다.",
+    api: {
+      "#default": "confirm({ title, description, trigger })를 전달합니다. 확인하면 true가 되고, 취소하거나 다른 확인 요청이 진행 중이면 false가 됩니다.",
+      "#dialog": "open, request, accept, cancel을 받습니다. UIAlertDialog의 open과 restore-focus-target에 연결하고 Escape 등으로 닫힐 때 cancel을 호출합니다.",
+      useUIConfirm: "Provider 하위 컴포넌트의 setup에서 confirm을 가져옵니다. 요청한 컴포넌트가 사라지면 그 요청을 취소합니다.",
+    },
+  },
+  "infinite-scroll": {
+    title: "활동 기록을 이어서 불러오기",
+    description: "목록 끝에 접근하거나 더 보기를 눌러 다음 기록을 요청합니다. 첫 요청은 실패하며 다시 시도로 복구할 수 있습니다.",
+    api: {
+      target: "스크롤되는 HTMLElement를 전달합니다. 별도의 내용 요소 크기를 관찰하려면 content도 지정합니다.",
+      "load-more": "실제 요청을 반환하는 콜백입니다. 취소를 지원하는 로더에 signal을 전달하고 다음 기록을 추가합니다.",
+      "edge / distance": "어느 쪽에 얼마나 가까워졌을 때 요청할지 지정합니다. 기본값은 bottom과 48px입니다.",
+      "has-more / enabled / auto": "추가 데이터의 유무, 요청 허용 여부, 자동 실행을 제어합니다. auto를 꺼도 수동 요청을 실행할 수 있습니다.",
+      "#default": "loading, failure, canLoadMore, loadMore, reset을 받습니다. 실패 후에는 같은 loadMore를 다시 호출합니다.",
+      useUIInfiniteScroll: "이미 useUIScrollArea 컨트롤러를 쓰고 있다면 같은 컨트롤러를 받아 추가 로드를 관리합니다.",
+    },
+  },
+  "scroll-spy": {
+    title: "변경 절차 목차와 읽는 위치 연결",
+    description: "절차를 스크롤하면 읽고 있는 항목이 표시됩니다. 목차를 선택하면 해당 절차로 이동하고 제목에 포커스를 줍니다.",
+    api: {
+      sections: "읽는 순서대로 id와 실제 제목 요소를 전달합니다. 표시할 제목과 aria-current는 호출부에서 구성합니다.",
+      "root / content": "root에 안쪽 스크롤 영역을 넘깁니다. 문서 전체를 추적할 때는 생략합니다. 크기가 바뀌는 본문은 content로 추가 관찰할 수 있습니다.",
+      "track-hash": "주소의 해시와 활성 항목을 연결합니다. 섹션 id는 해시에 쓰는 실제 id와 일치해야 합니다.",
+      "#default": "activeId, scrollToSection, refresh, markTarget을 받습니다. scrollToSection의 focus를 켜려면 대상이 포커스 가능한 요소여야 합니다.",
+      useUIScrollSpy: "스크립트에서 읽기 위치와 이동 기능만 연결합니다.",
+    },
+  },
+  "async-action": {
+    title: "검토 기록 내보내기 준비와 재시도",
+    description: "준비 중에는 같은 요청을 한 번만 실행합니다. 첫 요청 실패 후 다시 시도하거나 준비 중에 취소할 수 있습니다.",
+    api: {
+      action: "실행할 함수입니다. AbortSignal을 전달받습니다. 네트워크 요청이나 작업에서 이 signal을 사용해야 실제 취소가 적용됩니다.",
+      disabled: "새 요청의 실행을 막습니다. 실행 중인 요청은 cancel로 취소합니다.",
+      "#default": "run, cancel, status, pending, result, error를 받습니다. 취소하거나 컴포넌트가 사라지면 늦은 결과를 사용하지 않습니다.",
+    },
+  },
+  "media-gesture": {
+    title: "끌거나 방향키로 자르기 위치 변경",
+    description: "표시선을 좌우로 끌어 이동합니다. 키보드에서는 영역에 포커스한 뒤 방향키, Home, End로 위치를 조절합니다.",
+    api: {
+      "as / as-child": "제스처를 받을 요소를 정합니다. as-child는 이미 배치한 요소 한 개에 동작을 연결합니다.",
+      start: "포인터의 시작 위치를 받습니다. true를 반환하면 제스처에 참여합니다.",
+      "admit-pointer / drag-threshold": "대상과 포인터 유형에 따라 입력을 허용합니다. 기본 동작은 링크와 입력 등 자체 조작이 있는 요소를 보호합니다. 기본 드래그 감지 거리는 4px입니다.",
+      "@move / @end": "드래그·핀치의 이전 좌표와 현재 좌표, 종료 이유를 전달합니다. 요소 이동이나 확대 배율은 호출부에서 정합니다.",
+      "#default": "진행 중인 제스처를 취소하는 cancel, 대상과 좌표를 측정하는 measure, 연결 오류 error를 받습니다.",
+      useUIMediaGesture: "직접 관리하는 요소 ref에 같은 Sectile 제스처 컨트롤러를 연결합니다.",
+    },
+  },
+  fullscreen: {
+    title: "발표 미리보기 전체 화면으로 열기",
+    description: "전체 화면 버튼을 누르면 발표 미리보기 영역이 커집니다. 닫기 버튼이나 Escape로 돌아옵니다.",
+    api: {
+      "as / as-child": "전체 화면으로 전환할 요소를 연결합니다. as-child로 이미 배치한 컨테이너 한 개를 사용할 수 있습니다.",
+      disabled: "요소의 전체 화면 연결을 비활성화합니다.",
+      "#default": "snapshot에서 사용 가능 여부, 현재 상태, 처리 중인 전환을 읽습니다. enter와 exit는 작업 결과를 반환하며 error는 연결 오류를 나타냅니다. enter는 버튼 클릭 같은 사용자 동작에서 호출합니다.",
+      useUIFullscreen: "직접 관리하는 요소 ref에 전체 화면 전환을 연결합니다.",
+    },
+  },
   lightbox: {
     title: "사진과 영상이 있는 관찰 기록 열기",
     description: "썸네일을 눌러 해당 자료부터 엽니다. 화살표, 방향키, 좌우 스와이프로 탐색하며 마지막 자료에서 다음으로 가면 첫 자료가 나옵니다. 작은 화면에서는 전체 화면으로 열리고 하단 썸네일을 숨깁니다.",
@@ -1228,6 +1314,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       { id: "scroll-area-horizontal", section: "usage-options", title: "가로 일정과 가장자리 페이드", description: "스크롤바를 숨긴 예약 목록입니다. fade에 left와 right를 전달해 더 볼 일정이 있는 쪽을 투명하게 표시합니다. 앞·뒤 일정 버튼이나 방향키로 이동할 수 있습니다." },
       { id: "scroll-area-sticky", section: "usage-options", title: "높이가 바뀌는 헤더와 푸터", description: "검토 요청을 스크롤하다가 필터와 선택 요약을 펼쳐 보세요. 두 영역은 제자리에 있고 콘텐츠의 페이드는 화면에 보이는 목록의 가장자리로 이동합니다." },
       { id: "scroll-area-both", section: "usage-options", title: "공간별 예약표를 두 방향으로 탐색", description: "첫 열의 시간과 상단의 회의실 이름이 제자리에 남습니다. 안쪽에 더 볼 내용이 있으면 고정 행과 열 바로 뒤에서 페이드가 시작됩니다." },
+      { id: "scroll-area-center", section: "usage-options", title: "월별 점검 목록의 선택 항목으로 이동", description: "선택한 달로 이동을 누르면 현재 선택된 달이 보이는 위치로 스크롤됩니다. 다시 직접 스크롤할 수 있습니다.", parts: ["useUIScrollArea"] },
       { id: "scroll-area-progress", section: "examples-2", title: "읽기 위치를 푸터에 표시", description: "가이드를 읽는 위치에 따라 고정 푸터의 진행률이 갱신됩니다. 처음으로 버튼으로 스크롤 위치를 되돌릴 수 있습니다." },
       { id: "scroll-area-infinite", section: "examples-2", title: "활동 240건 추가 로드와 재시도", description: "처음 24건을 표시하고 목록 끝에 다가갈 때마다 24건씩 더 읽습니다. 자동 로드를 끄고 직접 요청하거나 다음 요청을 실패시켜 재시도할 수 있습니다.", parts: ["UIScrollFade", "useUIScrollArea", "useUIInfiniteScroll"] },
     ],
@@ -1240,6 +1327,7 @@ export const catalogGuides: Readonly<Record<string, CatalogGuide>> = {
       "--ui-scroll-fade-size": "콘텐츠가 투명해지는 길이입니다. --ui-scroll-fade-top, --ui-scroll-fade-right, --ui-scroll-fade-bottom, --ui-scroll-fade-left로 방향별 길이를 지정할 수 있습니다.",
       "#controls": "뷰포트 ID, 스크롤 상태와 이동 메서드를 외부 조작 버튼에 연결합니다. 가로 좌표는 쓰기 방향과 관계없이 왼쪽에서 시작합니다.",
       "scrollTo / scrollBy / scrollToEdge": "절대 위치, 상대 위치, 지정한 가장자리로 스크롤합니다. 모션 줄이기가 켜져 있으면 즉시 이동합니다.",
+      scrollToElement: "스크롤 영역의 자식 요소를 가까운 가장자리 또는 중앙에 배치합니다. axis로 세로, 가로, 양축을 지정할 수 있습니다.",
       "useUIScrollArea(target, { content })": "기존 스크롤 요소를 연결합니다. 크기가 바뀌는 콘텐츠 요소를 함께 넘기거나 refresh()로 직접 새로 측정할 수 있습니다.",
       "useUIInfiniteScroll(scroll, options)": "edge, distance, hasMore, auto로 자동 요청을 제어하고 loading, failure, loadMore, reset으로 대기·오류·재시도를 처리합니다. 요청의 signal을 데이터 로더에 전달할 수 있습니다.",
       "--ui-scroll-area-max-height": "헤더·푸터를 포함한 스크롤 영역의 최대 높이입니다. 기본값은 20rem입니다.",
